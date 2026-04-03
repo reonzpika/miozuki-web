@@ -1,65 +1,170 @@
-import Image from "next/image";
+import Image from 'next/image';
+import Link from 'next/link';
+import { getCollections, getProducts } from '@/lib/shopify';
+import type { Collection, Product } from '@/lib/shopify';
+import ProductCard from '@/components/product-card';
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  let collections: Collection[] = [];
+  let products: Product[] = [];
+
+  try {
+    [collections, products] = await Promise.all([
+      getCollections(6),
+      getProducts(8),
+    ]);
+  } catch (error) {
+    console.error('Failed to fetch Shopify data:', error);
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main>
+      {/* ── Hero ─────────────────────────────────────────── */}
+      <section className="relative flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-6 text-center bg-cream overflow-hidden">
+        {/* Decorative ornament */}
+        <div
+          className="flex items-center gap-3 mb-10"
+          style={{ animation: 'fade-up 0.7s ease both' }}
+        >
+          <div className="h-px w-10 bg-burgundy/30" />
+          <div className="w-1 h-1 bg-burgundy/40 rotate-45" />
+          <div className="h-px w-10 bg-burgundy/30" />
+        </div>
+
+        <h1
+          className="font-serif text-5xl md:text-7xl lg:text-8xl text-charcoal leading-tight tracking-tight mb-6 max-w-3xl"
+          style={{ animation: 'fade-up 0.7s 0.1s ease both' }}
+        >
+          Crafted to Last.
+          <br />
+          <em>Made to Shine.</em>
+        </h1>
+
+        <p
+          className="text-sm md:text-base text-charcoal/60 tracking-wide max-w-sm mb-10 leading-relaxed"
+          style={{ animation: 'fade-up 0.7s 0.2s ease both' }}
+        >
+          Moissanite &amp; pearl fine jewellery —<br />
+          ethically made, designed in New Zealand.
+        </p>
+
+        <Link
+          href="/collections"
+          className="inline-block bg-burgundy text-cream text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-burgundy/90 transition-colors"
+          style={{ animation: 'fade-up 0.7s 0.3s ease both' }}
+        >
+          Shop Collections
+        </Link>
+
+        {/* Bottom ornament */}
+        <div
+          className="flex items-center gap-3 mt-10"
+          style={{ animation: 'fade-up 0.7s 0.4s ease both' }}
+        >
+          <div className="h-px w-10 bg-burgundy/30" />
+          <div className="w-1 h-1 bg-burgundy/40 rotate-45" />
+          <div className="h-px w-10 bg-burgundy/30" />
+        </div>
+      </section>
+
+      {/* ── Collections ──────────────────────────────────── */}
+      {collections.length > 0 && (
+        <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto w-full">
+          <div className="flex items-end justify-between mb-12">
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal">
+              Our Collections
+            </h2>
+            <Link
+              href="/collections"
+              className="text-xs tracking-widest uppercase text-burgundy hover:text-burgundy/70 transition-colors hidden md:block"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              View All
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {collections.map((collection) => (
+              <Link
+                key={collection.id}
+                href={`/collections/${collection.handle}`}
+                className="group block"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden bg-cream/60 mb-4">
+                  {collection.image ? (
+                    <Image
+                      src={collection.image.url}
+                      alt={collection.image.altText ?? collection.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center border border-charcoal/8">
+                      <span className="font-serif text-lg text-charcoal/30 italic">
+                        {collection.title}
+                      </span>
+                    </div>
+                  )}
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/20 transition-colors duration-500 flex items-end justify-center pb-8">
+                    <span className="text-xs tracking-[0.2em] uppercase text-cream opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      View Collection
+                    </span>
+                  </div>
+                </div>
+                <h3 className="font-serif text-lg text-charcoal mb-1">
+                  {collection.title}
+                </h3>
+                {collection.description && (
+                  <p className="text-xs text-charcoal/50 line-clamp-2 leading-relaxed">
+                    {collection.description}
+                  </p>
+                )}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Featured Products ─────────────────────────────── */}
+      {products.length > 0 && (
+        <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto w-full border-t border-charcoal/8">
+          <div className="flex items-end justify-between mb-12">
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal">
+              New Arrivals
+            </h2>
+            <Link
+              href="/collections/all"
+              className="text-xs tracking-widest uppercase text-burgundy hover:text-burgundy/70 transition-colors hidden md:block"
             >
-              Learning
-            </a>{" "}
-            center.
+              View All
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Footer ───────────────────────────────────────── */}
+      <footer className="mt-auto border-t border-charcoal/8 py-12 px-6 md:px-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <span className="font-serif text-lg tracking-[0.2em] uppercase text-charcoal">
+            Miozuki
+          </span>
+          <p className="text-xs text-charcoal/40 tracking-wide text-center">
+            Fine jewellery, designed in New Zealand
+          </p>
+          <p className="text-xs text-charcoal/30">
+            © {new Date().getFullYear()} Miozuki
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </footer>
+    </main>
   );
 }

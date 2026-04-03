@@ -1,0 +1,114 @@
+const IMAGE_FRAGMENT = `
+  fragment ImageFragment on Image {
+    url
+    altText
+    width
+    height
+  }
+`;
+
+const MONEY_FRAGMENT = `
+  fragment MoneyFragment on MoneyV2 {
+    amount
+    currencyCode
+  }
+`;
+
+const PRODUCT_CARD_FRAGMENT = `
+  fragment ProductCard on Product {
+    id
+    handle
+    title
+    featuredImage { ...ImageFragment }
+    priceRange {
+      minVariantPrice { ...MoneyFragment }
+      maxVariantPrice { ...MoneyFragment }
+    }
+    tags
+    productType
+  }
+  ${IMAGE_FRAGMENT}
+  ${MONEY_FRAGMENT}
+`;
+
+export const GET_PRODUCTS = `
+  query GetProducts($first: Int!) {
+    products(first: $first) {
+      edges {
+        node { ...ProductCard }
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+`;
+
+export const GET_PRODUCT_BY_HANDLE = `
+  query GetProductByHandle($handle: String!) {
+    productByHandle(handle: $handle) {
+      id
+      handle
+      title
+      description
+      descriptionHtml
+      tags
+      productType
+      featuredImage { ...ImageFragment }
+      images(first: 10) {
+        edges { node { ...ImageFragment } }
+      }
+      priceRange {
+        minVariantPrice { ...MoneyFragment }
+        maxVariantPrice { ...MoneyFragment }
+      }
+      variants(first: 50) {
+        edges {
+          node {
+            id
+            title
+            availableForSale
+            price { ...MoneyFragment }
+            compareAtPrice { ...MoneyFragment }
+            selectedOptions { name value }
+          }
+        }
+      }
+    }
+  }
+  ${IMAGE_FRAGMENT}
+  ${MONEY_FRAGMENT}
+`;
+
+export const GET_COLLECTIONS = `
+  query GetCollections($first: Int!) {
+    collections(first: $first) {
+      edges {
+        node {
+          id
+          handle
+          title
+          description
+          image { ...ImageFragment }
+        }
+      }
+    }
+  }
+  ${IMAGE_FRAGMENT}
+`;
+
+export const GET_COLLECTION_BY_HANDLE = `
+  query GetCollectionByHandle($handle: String!, $productsFirst: Int!) {
+    collectionByHandle(handle: $handle) {
+      id
+      handle
+      title
+      description
+      image { ...ImageFragment }
+      products(first: $productsFirst) {
+        edges {
+          node { ...ProductCard }
+        }
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+`;

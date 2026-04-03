@@ -9,14 +9,18 @@ interface CartContextValue {
   cartId: string | null;
   cartCount: number;
   addToCart: (variantId: string, quantity?: number) => Promise<void>;
+  updateCartCount: (count: number) => void;
   checkoutUrl: string | null;
+  setCheckoutUrl: (url: string) => void;
 }
 
 const CartContext = createContext<CartContextValue>({
   cartId: null,
   cartCount: 0,
   addToCart: async () => {},
+  updateCartCount: () => {},
   checkoutUrl: null,
+  setCheckoutUrl: () => {},
 });
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -58,7 +62,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <CartContext.Provider value={{ cartId, cartCount, addToCart, checkoutUrl }}>
+    <CartContext.Provider value={{ cartId, cartCount, addToCart, updateCartCount: setCartCount, checkoutUrl, setCheckoutUrl }}>
       {children}
     </CartContext.Provider>
   );

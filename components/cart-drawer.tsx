@@ -21,7 +21,7 @@ export default function CartDrawer({
   open: boolean;
   onClose: () => void;
 }) {
-  const { cartId, cartCount, checkoutUrl } = useCart();
+  const { cartId, cartCount, checkoutUrl, updateCartCount, setCheckoutUrl } = useCart();
   const [cart, setCart] = useState<Cart | null>(null);
   const [removing, setRemoving] = useState<string | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -46,6 +46,8 @@ export default function CartDrawer({
     try {
       const updated = await removeCartLines(cartId, [lineId]);
       setCart(updated);
+      updateCartCount(updated.totalQuantity);
+      setCheckoutUrl(updated.checkoutUrl);
     } finally {
       setRemoving(null);
     }

@@ -136,7 +136,7 @@ export default async function Home() {
               New Arrivals
             </h2>
             <Link
-              href="/collections/all"
+              href="/collections"
               className="text-xs tracking-widest uppercase text-burgundy hover:text-burgundy/70 transition-colors hidden md:block"
             >
               View All
@@ -151,20 +151,6 @@ export default async function Home() {
         </section>
       )}
 
-      {/* ── Footer ───────────────────────────────────────── */}
-      <footer className="mt-auto border-t border-charcoal/8 py-12 px-6 md:px-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="font-serif text-lg tracking-[0.2em] uppercase text-charcoal">
-            Miozuki
-          </span>
-          <p className="text-xs text-charcoal/40 tracking-wide text-center">
-            Fine jewellery, designed in New Zealand
-          </p>
-          <p className="text-xs text-charcoal/30">
-            © {new Date().getFullYear()} Miozuki
-          </p>
-        </div>
-      </footer>
     </main>
   );
 }

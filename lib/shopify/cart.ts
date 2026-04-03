@@ -101,7 +101,7 @@ const GET_CART = `
 
 // ── Fetch helper ───────────────────────────────────────────────────────
 
-const endpoint = `https://${process.env.SHOPIFY_STORE_DOMAIN}/api/2026-04/graphql.json`;
+const endpoint = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2026-04/graphql.json`;
 
 async function cartFetch<T>(
   query: string,
@@ -112,7 +112,7 @@ async function cartFetch<T>(
     headers: {
       'Content-Type': 'application/json',
       'X-Shopify-Storefront-Access-Token':
-        process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
+        process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
     },
     body: JSON.stringify({ query, variables }),
     cache: 'no-store',

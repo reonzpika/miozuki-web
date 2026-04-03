@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Playfair_Display, Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/header';
+import Footer from '@/components/footer';
 import { CartProvider } from '@/components/cart-provider';
 
 const playfair = Playfair_Display({
@@ -33,6 +34,7 @@ export default function RootLayout({
         <CartProvider>
           <Header />
           <div className="flex flex-col flex-1">{children}</div>
+          <Footer />
         </CartProvider>
       </body>
     </html>

@@ -24,17 +24,14 @@ function getServerShopifyConfig(): { graphqlUrl: string; token: string } | null 
   };
 }
 
+/** When unset (e.g. CI without secrets), returns null so callers can skip work; production should always set env. */
 async function shopifyFetch<T>(
   query: string,
   variables?: Record<string, unknown>,
   revalidate = 60,
-): Promise<T> {
+): Promise<T | null> {
   const cfg = getServerShopifyConfig();
-  if (!cfg) {
-    throw new Error(
-      'Missing Shopify Storefront env: set SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_ACCESS_TOKEN, or NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN and NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN.',
-    );
-  }
+  if (!cfg) return null;
   const res = await fetch(cfg.graphqlUrl, {
     method: 'POST',
     headers: {
@@ -65,6 +62,7 @@ export async function getProducts(first = 24): Promise<Product[]> {
     GET_PRODUCTS,
     { first }
   );
+  if (!data) return [];
   return data.products.edges.map((e) => e.node);
 }
 
@@ -73,6 +71,7 @@ export async function getProductByHandle(handle: string): Promise<Product | null
     GET_PRODUCT_BY_HANDLE,
     { handle }
   );
+  if (!data) return null;
   return data.productByHandle;
 }
 
@@ -83,6 +82,7 @@ export async function getCollections(first = 20): Promise<Collection[]> {
     GET_COLLECTIONS,
     { first }
   );
+  if (!data) return [];
   return data.collections.edges.map((e) => e.node);
 }
 
@@ -94,6 +94,7 @@ export async function getCollectionByHandle(
     GET_COLLECTION_BY_HANDLE,
     { handle, productsFirst }
   );
+  if (!data) return null;
   return data.collectionByHandle;
 }
 
@@ -103,6 +104,7 @@ export async function getBlogArticles(blogHandle = 'news', first = 50): Promise<
   const data = await shopifyFetch<{
     blog: { articles: { edges: { node: Article }[] } } | null;
   }>(GET_BLOG_ARTICLES, { blogHandle, first }, 3600);
+  if (!data) return [];
   return data.blog?.articles.edges.map((e) => e.node) ?? [];
 }
 
@@ -113,5 +115,6 @@ export async function getArticleByHandle(
   const data = await shopifyFetch<{
     blog: { articleByHandle: Article | null } | null;
   }>(GET_ARTICLE_BY_HANDLE, { blogHandle, articleHandle }, 86400);
+  if (!data) return null;
   return data.blog?.articleByHandle ?? null;
 }

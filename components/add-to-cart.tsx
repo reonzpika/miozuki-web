@@ -36,13 +36,10 @@ function findVariant(
 
 type ButtonState = 'idle' | 'loading' | 'added' | 'error';
 
-export default function AddToCart({
-  variants,
-}: {
-  variants: ProductVariant[];
-}) {
+export default function AddToCart({ variants }: { variants: ProductVariant[] }) {
   const { addToCart } = useCart();
   const options = buildOptions(variants);
+  const hasRingSizes = options.some((o) => o.name === 'Ring size');
 
   const [selected, setSelected] = useState<Record<string, string>>(() => {
     const defaults: Record<string, string> = {};
@@ -50,6 +47,7 @@ export default function AddToCart({
     return defaults;
   });
 
+  const [engraving, setEngraving] = useState('');
   const [btnState, setBtnState] = useState<ButtonState>('idle');
 
   const variant = findVariant(variants, selected);
@@ -59,7 +57,11 @@ export default function AddToCart({
     if (!variant || !available) return;
     setBtnState('loading');
     try {
-      await addToCart(variant.id, 1);
+      const attrs =
+        hasRingSizes && engraving.trim()
+          ? [{ key: 'Engraving', value: engraving.trim() }]
+          : undefined;
+      await addToCart(variant.id, 1, attrs);
       setBtnState('added');
       setTimeout(() => setBtnState('idle'), 2000);
     } catch {
@@ -79,12 +81,17 @@ export default function AddToCart({
           <div className="flex flex-wrap gap-2">
             {opt.values.map((val) => {
               const isSelected = selected[opt.name] === val;
-              const testVariant = findVariant(variants, { ...selected, [opt.name]: val });
+              const testVariant = findVariant(variants, {
+                ...selected,
+                [opt.name]: val,
+              });
               const isAvailable = testVariant?.availableForSale ?? false;
               return (
                 <button
                   key={val}
-                  onClick={() => setSelected((s) => ({ ...s, [opt.name]: val }))}
+                  onClick={() =>
+                    setSelected((s) => ({ ...s, [opt.name]: val }))
+                  }
                   disabled={!isAvailable}
                   className={`px-4 py-2 text-xs tracking-wide border transition-colors ${
                     isSelected
@@ -101,6 +108,25 @@ export default function AddToCart({
           </div>
         </div>
       ))}
+
+      {/* Engraving field — rings only */}
+      {hasRingSizes && (
+        <div>
+          <label className="text-xs tracking-widest uppercase text-charcoal/50 mb-2 block">
+            Add Initials Engraving{' '}
+            <span className="normal-case text-charcoal/35">(optional)</span>
+          </label>
+          <input
+            type="text"
+            value={engraving}
+            onChange={(e) => setEngraving(e.target.value.slice(0, 4))}
+            placeholder="e.g. JR"
+            maxLength={4}
+            className="w-28 border border-charcoal/20 bg-transparent px-3 py-2 text-xs text-charcoal placeholder:text-charcoal/25 focus:outline-none focus:border-charcoal/50 transition-colors"
+          />
+          <p className="text-[10px] text-charcoal/35 mt-1">Max 4 characters</p>
+        </div>
+      )}
 
       {/* Add to cart button */}
       <button

@@ -22,7 +22,8 @@ export default function ProductCard({ product }: { product: Product }) {
             src={featuredImage.url}
             alt={featuredImage.altText ?? title}
             fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+            sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
+            quality={85}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

@@ -127,12 +127,17 @@ async function cartFetch<T>(
 
 // ── Exported functions ─────────────────────────────────────────────────
 
+export type CartAttribute = { key: string; value: string };
+
 export async function createCart(
   variantId: string,
-  quantity = 1
+  quantity = 1,
+  attributes?: CartAttribute[]
 ): Promise<Cart> {
+  const line: Record<string, unknown> = { merchandiseId: variantId, quantity };
+  if (attributes?.length) line.attributes = attributes;
   const data = await cartFetch<{ cartCreate: { cart: Cart } }>(CREATE_CART, {
-    lines: [{ merchandiseId: variantId, quantity }],
+    lines: [line],
   });
   return data.cartCreate.cart;
 }
@@ -140,11 +145,14 @@ export async function createCart(
 export async function addCartLines(
   cartId: string,
   variantId: string,
-  quantity = 1
+  quantity = 1,
+  attributes?: CartAttribute[]
 ): Promise<Cart> {
+  const line: Record<string, unknown> = { merchandiseId: variantId, quantity };
+  if (attributes?.length) line.attributes = attributes;
   const data = await cartFetch<{ cartLinesAdd: { cart: Cart } }>(ADD_CART_LINES, {
     cartId,
-    lines: [{ merchandiseId: variantId, quantity }],
+    lines: [line],
   });
   return data.cartLinesAdd.cart;
 }

@@ -1,14 +1,14 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { createCart, addCartLines, getCart } from '@/lib/shopify/cart';
+import { createCart, addCartLines, getCart, type CartAttribute } from '@/lib/shopify/cart';
 
 const CART_ID_KEY = 'miozuki-cart-id';
 
 interface CartContextValue {
   cartId: string | null;
   cartCount: number;
-  addToCart: (variantId: string, quantity?: number) => Promise<void>;
+  addToCart: (variantId: string, quantity?: number, attributes?: CartAttribute[]) => Promise<void>;
   updateCartCount: (count: number) => void;
   checkoutUrl: string | null;
   setCheckoutUrl: (url: string) => void;
@@ -46,12 +46,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addToCart = useCallback(
-    async (variantId: string, quantity = 1) => {
+    async (variantId: string, quantity = 1, attributes?: CartAttribute[]) => {
       let cart;
       if (cartId) {
-        cart = await addCartLines(cartId, variantId, quantity);
+        cart = await addCartLines(cartId, variantId, quantity, attributes);
       } else {
-        cart = await createCart(variantId, quantity);
+        cart = await createCart(variantId, quantity, attributes);
         localStorage.setItem(CART_ID_KEY, cart.id);
         setCartId(cart.id);
       }

@@ -5,15 +5,54 @@ import { useEffect, useState } from 'react';
 import { useCart } from './cart-provider';
 import CartDrawer from './cart-drawer';
 
-const NAV_LINKS = [
-  { href: '/collections', label: 'Collections' },
-  { href: '/about', label: 'About' },
+const NAV = [
+  {
+    label: 'Best Sellers',
+    href: '/collections/best-sellers',
+    children: null,
+  },
+  {
+    label: 'Shop All',
+    href: '/collections/all-moissanite-pearl-nz',
+    children: [
+      { label: 'View All', href: '/collections/all-moissanite-pearl-nz' },
+      { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
+      { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings' },
+      { label: 'Pearl Earrings', href: '/collections/pearl-earrings' },
+      { label: 'Bridal Jewellery', href: '/collections/bridal-jewellery' },
+    ],
+  },
+  {
+    label: 'Moissanite FAQ',
+    href: '/pages/moissanite-faq',
+    children: null,
+  },
+  {
+    label: 'About',
+    href: '/pages/about-us',
+    children: [
+      { label: 'About Miozuki', href: '/pages/about-us' },
+      { label: 'Our Founder', href: '/pages/our-founder' },
+    ],
+  },
+];
+
+const MOBILE_NAV = [
+  { label: 'Best Sellers', href: '/collections/best-sellers', indent: false },
+  { label: 'Moissanite Rings', href: '/collections/moissanite-rings', indent: true },
+  { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings', indent: true },
+  { label: 'Pearl Earrings', href: '/collections/pearl-earrings', indent: true },
+  { label: 'Bridal Jewellery', href: '/collections/bridal-jewellery', indent: true },
+  { label: 'Moissanite FAQ', href: '/pages/moissanite-faq', indent: false },
+  { label: 'About Miozuki', href: '/pages/about-us', indent: false },
+  { label: 'Our Founder', href: '/pages/our-founder', indent: true },
 ];
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { cartCount } = useCart();
 
   useEffect(() => {
@@ -22,7 +61,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change / resize
   useEffect(() => {
     if (menuOpen) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
@@ -60,15 +98,44 @@ export default function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-10">
-            {NAV_LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="text-xs tracking-widest uppercase text-charcoal/70 hover:text-charcoal transition-colors"
+          <nav className="hidden md:flex items-center gap-8">
+            {NAV.map((item) => (
+              <div
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => item.children && setActiveDropdown(item.label)}
+                onMouseLeave={() => setActiveDropdown(null)}
               >
-                {l.label}
-              </Link>
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-1 text-xs tracking-widest uppercase text-charcoal/70 hover:text-charcoal transition-colors py-2"
+                >
+                  {item.label}
+                  {item.children && (
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="opacity-40">
+                      <path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+                    </svg>
+                  )}
+                </Link>
+
+                {/* Dropdown */}
+                {item.children && activeDropdown === item.label && (
+                  <div className="absolute top-full left-0 pt-0 min-w-[200px] z-50">
+                    <div className="bg-cream border border-charcoal/10 shadow-sm py-1 mt-0">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="block px-4 py-2.5 text-xs tracking-widest uppercase text-charcoal/60 hover:text-charcoal hover:bg-charcoal/4 transition-colors"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
 
@@ -97,18 +164,20 @@ export default function Header() {
         {/* Mobile menu */}
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 bg-cream border-t border-charcoal/8 ${
-            menuOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+            menuOpen ? 'max-h-[420px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <nav className="px-6 py-5 flex flex-col gap-5">
-            {NAV_LINKS.map((l) => (
+          <nav className="px-6 py-5 flex flex-col gap-4">
+            {MOBILE_NAV.map((link) => (
               <Link
-                key={l.href}
-                href={l.href}
+                key={link.href}
+                href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-sm tracking-widest uppercase text-charcoal/70 hover:text-charcoal transition-colors"
+                className={`text-sm tracking-widest uppercase hover:text-charcoal transition-colors ${
+                  link.indent ? 'pl-4 text-charcoal/50' : 'text-charcoal/70'
+                }`}
               >
-                {l.label}
+                {link.label}
               </Link>
             ))}
           </nav>

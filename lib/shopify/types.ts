@@ -1,3 +1,10 @@
+export interface ShopifyMetafield {
+  namespace: string;
+  key: string;
+  value: string;
+  type: string;
+}
+
 export interface ShopifyImage {
   url: string;
   altText: string | null;
@@ -34,6 +41,7 @@ export interface Product {
   variants: { edges: { node: ProductVariant }[] };
   tags: string[];
   productType: string;
+  metafields: (ShopifyMetafield | null)[];
 }
 
 export interface Collection {
@@ -42,6 +50,8 @@ export interface Collection {
   title: string;
   description: string;
   image: ShopifyImage | null;
+  metafield: { value: string } | null;
+  descriptionHtml: string;
   products: { edges: { node: Product }[] };
 }
 

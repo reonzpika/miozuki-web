@@ -72,6 +72,16 @@ export const GET_PRODUCT_BY_HANDLE = `
           }
         }
       }
+      metafields(identifiers: [
+        { namespace: "custom", key: "what_is_included" }
+        { namespace: "custom", key: "product_material" }
+        { namespace: "custom", key: "product_details" }
+      ]) {
+        namespace
+        key
+        value
+        type
+      }
     }
   }
   ${IMAGE_FRAGMENT}
@@ -88,6 +98,7 @@ export const GET_COLLECTIONS = `
           title
           description
           image { ...ImageFragment }
+          metafield(namespace: "custom", key: "intro") { value }
         }
       }
     }
@@ -102,7 +113,9 @@ export const GET_COLLECTION_BY_HANDLE = `
       handle
       title
       description
+      descriptionHtml
       image { ...ImageFragment }
+      metafield(namespace: "custom", key: "intro") { value }
       products(first: $productsFirst) {
         edges {
           node { ...ProductCard }

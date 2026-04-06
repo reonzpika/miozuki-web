@@ -57,7 +57,7 @@ export default function WarrantyCoverPage() {
             <li>
               <strong className="text-charcoal font-medium">Return the item.</strong> Once a
               claim is accepted, the affected item must be sent back for inspection and quality
-              testing. Return shipping costs are the customer's responsibility.
+              testing. Return shipping costs are the customer&apos;s responsibility.
             </li>
             <li>
               <strong className="text-charcoal font-medium">Replacement.</strong> If the item

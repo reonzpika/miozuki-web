@@ -28,18 +28,18 @@ export default function AboutPage() {
           Miozuki 澪月 — Waterway to the Moon
         </p>
         <p className="text-sm text-charcoal/60 leading-relaxed mb-4">
-          "The story began with a fortune slip at a shrine in Fukuoka, Japan in 2025 — a small
+          &ldquo;The story began with a fortune slip at a shrine in Fukuoka, Japan in 2025 — a small
           piece of paper that quietly changed everything.
         </p>
         <p className="text-sm text-charcoal/60 leading-relaxed mb-4">
           I still remember the calm I felt as I read it:
         </p>
         <p className="text-sm text-charcoal/70 italic leading-relaxed mb-4">
-          "Even at the deepest part of the sea, if the water remains clear and still, the
-          moonlight will always find its way to you."
+          &ldquo;Even at the deepest part of the sea, if the water remains clear and still, the
+          moonlight will always find its way to you.&rdquo;
         </p>
         <p className="text-sm text-charcoal/60 leading-relaxed">
-          Those words stayed with me — and became the story of the brand."
+          Those words stayed with me — and became the story of the brand.&rdquo;
         </p>
       </blockquote>
 
@@ -48,10 +48,10 @@ export default function AboutPage() {
           Miozuki is a Japanese-inspired fine jewellery brand based in Auckland, New Zealand.
           We believe <strong className="text-charcoal font-medium">true beauty lives in contrast</strong> —
           our mission is to bring the quiet yet powerful strength within every woman. It
-          isn't loud, but softly shines.
+          isn&apos;t loud, but softly shines.
         </p>
         <p>
-          The Japanese word stands for "waterway to the moon," reflecting the journey every
+          The Japanese word stands for &ldquo;waterway to the moon,&rdquo; reflecting the journey every
           woman takes in her own time, in her own way — ever flowing, ever rising. The kind
           of strength that moves like water: gentle, but capable of shaping everything it
           touches.

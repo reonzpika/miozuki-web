@@ -34,7 +34,7 @@ const HOME_FAQ = [
 ];
 
 export default async function Home() {
-  let collections = await getCollections(6).catch(() => []);
+  const collections = await getCollections(6).catch(() => []);
   let products: Product[] = [];
 
   try {
@@ -119,7 +119,7 @@ export default async function Home() {
               <em>meaning over tradition.</em>
             </h2>
             <p className="text-sm text-charcoal/60 leading-relaxed mb-6 max-w-md">
-              Hi, I'm Ting Eguchi, founder of Miozuki. We are a small NZ jewellery brand,
+              Hi, I&apos;m Ting Eguchi, founder of Miozuki. We are a small NZ jewellery brand,
               crafted with the idea of&nbsp;<em>accessible luxury</em> in mind. It all
               started with a fortune slip I picked at a shrine in Japan back in 2025 — and
               became the story of this brand.

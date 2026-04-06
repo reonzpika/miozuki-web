@@ -43,7 +43,7 @@ export default function OurFounderPage() {
 
       <blockquote className="border-l-2 border-burgundy/30 pl-6 mb-10 space-y-4">
         <p className="text-sm text-charcoal/70 leading-relaxed italic">
-          "Miozuki was born during a trip to Japan, after I picked a fortune slip at a shrine.
+          &ldquo;Miozuki was born during a trip to Japan, after I picked a fortune slip at a shrine.
           The words stayed with me, gently guiding me toward finding a quiet confidence that
           already existed in me.
         </p>
@@ -55,7 +55,7 @@ export default function OurFounderPage() {
         <p className="text-sm text-charcoal/70 leading-relaxed italic">
           I created Miozuki to honor this philosophy — just like our pearl and moissanite
           jewellery. Miozuki is for the woman who glows like the moon, flows like water —
-          graceful, yet unforgettable."
+          graceful, yet unforgettable.&rdquo;
         </p>
       </blockquote>
 

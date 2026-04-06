@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function CollectionsPage() {
-  let collections = await getCollections(20).catch(() => []);
+  const collections = await getCollections(20).catch(() => []);
 
   return (
     <main className="max-w-7xl mx-auto w-full px-6 md:px-10 py-16">

@@ -8,22 +8,38 @@ import {
   GET_ARTICLE_BY_HANDLE,
 } from './queries';
 
-const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN!;
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 const API_VERSION = '2026-04';
 
-const endpoint = `https://${SHOPIFY_STORE_DOMAIN}/api/${API_VERSION}/graphql.json`;
+/** Server RSC reads prefer unprefixed vars; fall back to NEXT_PUBLIC_* so one Vercel env set works at build. */
+function getServerShopifyConfig(): { graphqlUrl: string; token: string } | null {
+  const domain =
+    process.env.SHOPIFY_STORE_DOMAIN ?? process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+  const token =
+    process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN ??
+    process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+  if (!domain || !token) return null;
+  return {
+    graphqlUrl: `https://${domain}/api/${API_VERSION}/graphql.json`,
+    token,
+  };
+}
 
 async function shopifyFetch<T>(
   query: string,
   variables?: Record<string, unknown>,
   revalidate = 60,
 ): Promise<T> {
-  const res = await fetch(endpoint, {
+  const cfg = getServerShopifyConfig();
+  if (!cfg) {
+    throw new Error(
+      'Missing Shopify Storefront env: set SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_ACCESS_TOKEN, or NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN and NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN.',
+    );
+  }
+  const res = await fetch(cfg.graphqlUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+      'X-Shopify-Storefront-Access-Token': cfg.token,
     },
     body: JSON.stringify({ query, variables }),
     next: { revalidate },

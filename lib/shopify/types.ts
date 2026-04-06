@@ -59,3 +59,18 @@ export interface ShopifyResponse<T> {
   data: T;
   errors?: { message: string }[];
 }
+
+export interface ArticleAuthor {
+  name: string;
+}
+
+export interface Article {
+  handle: string;
+  title: string;
+  publishedAt: string;
+  excerpt: string | null;
+  contentHtml?: string;
+  image: ShopifyImage | null;
+  tags: string[];
+  author: ArticleAuthor;
+}

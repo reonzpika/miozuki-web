@@ -1,9 +1,11 @@
-import type { Collection, Product, ShopifyResponse } from './types';
+import type { Article, Collection, Product, ShopifyResponse } from './types';
 import {
   GET_COLLECTIONS,
   GET_COLLECTION_BY_HANDLE,
   GET_PRODUCTS,
   GET_PRODUCT_BY_HANDLE,
+  GET_BLOG_ARTICLES,
+  GET_ARTICLE_BY_HANDLE,
 } from './queries';
 
 const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN!;
@@ -12,7 +14,11 @@ const API_VERSION = '2026-04';
 
 const endpoint = `https://${SHOPIFY_STORE_DOMAIN}/api/${API_VERSION}/graphql.json`;
 
-async function shopifyFetch<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
+async function shopifyFetch<T>(
+  query: string,
+  variables?: Record<string, unknown>,
+  revalidate = 60,
+): Promise<T> {
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -20,7 +26,7 @@ async function shopifyFetch<T>(query: string, variables?: Record<string, unknown
       'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
     },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate: 60 },
+    next: { revalidate },
   });
 
   if (!res.ok) {
@@ -73,4 +79,23 @@ export async function getCollectionByHandle(
     { handle, productsFirst }
   );
   return data.collectionByHandle;
+}
+
+// Blog
+
+export async function getBlogArticles(blogHandle = 'news', first = 50): Promise<Article[]> {
+  const data = await shopifyFetch<{
+    blog: { articles: { edges: { node: Article }[] } } | null;
+  }>(GET_BLOG_ARTICLES, { blogHandle, first }, 3600);
+  return data.blog?.articles.edges.map((e) => e.node) ?? [];
+}
+
+export async function getArticleByHandle(
+  blogHandle: string,
+  articleHandle: string
+): Promise<Article | null> {
+  const data = await shopifyFetch<{
+    blog: { articleByHandle: Article | null } | null;
+  }>(GET_ARTICLE_BY_HANDLE, { blogHandle, articleHandle }, 86400);
+  return data.blog?.articleByHandle ?? null;
 }

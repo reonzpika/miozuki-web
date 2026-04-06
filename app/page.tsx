@@ -263,7 +263,7 @@ export default async function Home() {
         <div className="divide-y divide-charcoal/8">
           {HOME_FAQ.map(({ q, a }) => (
             <details key={q} className="group py-5">
-              <summary className="flex items-center justify-between cursor-pointer list-none text-sm font-medium text-charcoal/80 hover:text-charcoal transition-colors">
+              <summary className="flex items-center justify-between cursor-pointer list-none text-sm font-medium text-charcoal/80 hover:text-charcoal group-open:text-burgundy transition-colors">
                 <span>{q}</span>
                 <svg
                   width="16"

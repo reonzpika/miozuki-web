@@ -106,6 +106,44 @@ export const GET_COLLECTIONS = `
   ${IMAGE_FRAGMENT}
 `;
 
+export const GET_BLOG_ARTICLES = `
+  query GetBlogArticles($blogHandle: String!, $first: Int!) {
+    blog(handle: $blogHandle) {
+      articles(first: $first) {
+        edges {
+          node {
+            handle
+            title
+            publishedAt
+            excerpt
+            image { ...ImageFragment }
+            tags
+            author { name }
+          }
+        }
+      }
+    }
+  }
+  ${IMAGE_FRAGMENT}
+`;
+
+export const GET_ARTICLE_BY_HANDLE = `
+  query GetArticleByHandle($blogHandle: String!, $articleHandle: String!) {
+    blog(handle: $blogHandle) {
+      articleByHandle(handle: $articleHandle) {
+        title
+        publishedAt
+        contentHtml
+        excerpt
+        image { ...ImageFragment }
+        tags
+        author { name }
+      }
+    }
+  }
+  ${IMAGE_FRAGMENT}
+`;
+
 export const GET_COLLECTION_BY_HANDLE = `
   query GetCollectionByHandle($handle: String!, $productsFirst: Int!) {
     collectionByHandle(handle: $handle) {

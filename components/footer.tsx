@@ -12,6 +12,7 @@ const HELP_LINKS = [
 const ABOUT_LINKS = [
   { label: 'About Miozuki', href: '/pages/about-us' },
   { label: 'Our Founder', href: '/pages/our-founder' },
+  { label: 'Journal', href: '/blogs/news' },
   { label: 'Shipping Policy', href: '/policies/shipping-policy' },
 ];
 
@@ -79,7 +80,7 @@ export default function Footer() {
 
         {/* Help */}
         <div>
-          <p className="text-xs tracking-widest uppercase text-charcoal/40 mb-4">Help</p>
+          <p className="text-xs tracking-widest uppercase text-burgundy/70 mb-4">Help</p>
           <nav className="flex flex-col gap-2.5">
             {HELP_LINKS.map((l) => (
               <Link
@@ -95,7 +96,7 @@ export default function Footer() {
 
         {/* About */}
         <div>
-          <p className="text-xs tracking-widest uppercase text-charcoal/40 mb-4">About</p>
+          <p className="text-xs tracking-widest uppercase text-burgundy/70 mb-4">About</p>
           <nav className="flex flex-col gap-2.5">
             {ABOUT_LINKS.map((l) => (
               <Link
@@ -111,7 +112,7 @@ export default function Footer() {
 
         {/* Shop */}
         <div>
-          <p className="text-xs tracking-widest uppercase text-charcoal/40 mb-4">Shop</p>
+          <p className="text-xs tracking-widest uppercase text-burgundy/70 mb-4">Shop</p>
           <nav className="flex flex-col gap-2.5">
             <Link href="/collections/best-sellers" className="text-xs text-charcoal/55 hover:text-charcoal transition-colors">Best Sellers</Link>
             <Link href="/collections/moissanite-rings" className="text-xs text-charcoal/55 hover:text-charcoal transition-colors">Moissanite Rings</Link>

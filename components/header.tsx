@@ -2,51 +2,64 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useCart } from './cart-provider';
 import CartDrawer from './cart-drawer';
 
 const NAV = [
   {
+    label: 'Rings',
+    href: '/collections/moissanite-rings',
+    children: [
+      { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
+      { label: 'Bridal Rings', href: '/collections/bridal-jewellery' },
+      { label: 'Learn About Moissanite', href: '/pages/moissanite-faq' },
+    ],
+  },
+  {
+    label: 'Earrings',
+    href: '/collections/moissanite-ear-rings',
+    children: [
+      { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings' },
+      { label: 'Pearl Earrings', href: '/collections/pearl-earrings' },
+    ],
+  },
+  {
+    label: 'Pearl Jewellery',
+    href: '/collections/pearl-earrings',
+    children: null,
+  },
+  {
+    label: 'Bridal',
+    href: '/collections/bridal-jewellery',
+    children: null,
+  },
+  {
     label: 'Best Sellers',
     href: '/collections/best-sellers',
     children: null,
-  },
-  {
-    label: 'Shop All',
-    href: '/collections/all-moissanite-pearl-nz',
-    children: [
-      { label: 'View All', href: '/collections/all-moissanite-pearl-nz' },
-      { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
-      { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings' },
-      { label: 'Pearl Earrings', href: '/collections/pearl-earrings' },
-      { label: 'Bridal Jewellery', href: '/collections/bridal-jewellery' },
-    ],
-  },
-  {
-    label: 'Moissanite FAQ',
-    href: '/pages/moissanite-faq',
-    children: null,
-  },
-  {
-    label: 'About',
-    href: '/pages/about-us',
-    children: [
-      { label: 'About Miozuki', href: '/pages/about-us' },
-      { label: 'Our Founder', href: '/pages/our-founder' },
-    ],
   },
 ];
 
 const MOBILE_NAV = [
   { label: 'Best Sellers', href: '/collections/best-sellers', indent: false },
   { label: 'Moissanite Rings', href: '/collections/moissanite-rings', indent: true },
+  { label: 'Bridal Rings', href: '/collections/bridal-jewellery', indent: true },
   { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings', indent: true },
-  { label: 'Pearl Earrings', href: '/collections/pearl-earrings', indent: true },
-  { label: 'Bridal Jewellery', href: '/collections/bridal-jewellery', indent: true },
-  { label: 'Moissanite FAQ', href: '/pages/moissanite-faq', indent: false },
+  { label: 'Pearl Jewellery', href: '/collections/pearl-earrings', indent: true },
   { label: 'About Miozuki', href: '/pages/about-us', indent: false },
   { label: 'Our Founder', href: '/pages/our-founder', indent: true },
+  { label: 'Moissanite Guide', href: '/pages/moissanite-faq', indent: true },
 ];
+
+const ease1 = [0.22, 1, 0.36, 1] as [number, number, number, number];
+const ease2 = [0.4, 0, 1, 1] as [number, number, number, number];
+
+const dropdownVariants = {
+  hidden: { opacity: 0, y: -6, scaleY: 0.96 },
+  show: { opacity: 1, y: 0, scaleY: 1, transition: { duration: 0.18, ease: ease1 } },
+  exit: { opacity: 0, y: -4, scaleY: 0.97, transition: { duration: 0.13, ease: ease2 } },
+};
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -99,42 +112,57 @@ export default function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8">
-            {NAV.map((item) => (
+            {NAV.map((navItem) => (
               <div
-                key={item.label}
+                key={navItem.label}
                 className="relative"
-                onMouseEnter={() => item.children && setActiveDropdown(item.label)}
+                onMouseEnter={() => navItem.children && setActiveDropdown(navItem.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <Link
-                  href={item.href}
+                  href={navItem.href}
                   className="flex items-center gap-1 text-xs tracking-widest uppercase text-charcoal/70 hover:text-charcoal transition-colors py-2 nav-underline"
                 >
-                  {item.label}
-                  {item.children && (
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="opacity-40">
+                  {navItem.label}
+                  {navItem.children && (
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="opacity-35">
                       <path d="M2 4l3 3 3-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                     </svg>
                   )}
                 </Link>
 
-                {/* Dropdown */}
-                {item.children && activeDropdown === item.label && (
-                  <div className="absolute top-full left-0 pt-0 min-w-[200px] z-50">
-                    <div className="bg-cream border border-charcoal/10 shadow-sm py-1 mt-0">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          onClick={() => setActiveDropdown(null)}
-                          className="block px-4 py-2.5 text-xs tracking-widest uppercase text-charcoal/60 hover:text-charcoal hover:bg-charcoal/4 transition-colors"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                {/* Animated dropdown */}
+                <AnimatePresence>
+                  {navItem.children && activeDropdown === navItem.label && (
+                    <motion.div
+                      variants={dropdownVariants}
+                      initial="hidden"
+                      animate="show"
+                      exit="exit"
+                      className="absolute top-full left-0 pt-1 min-w-[210px] z-50 origin-top"
+                    >
+                      <div className="bg-cream border border-charcoal/10 shadow-md py-1.5">
+                        {navItem.children.map((child, i, arr) => {
+                          const isDivider = i > 0 && child.label === 'Learn About Moissanite';
+                          return (
+                            <div key={child.href}>
+                              {isDivider && <div className="my-1 border-t border-charcoal/8 mx-3" />}
+                              <Link
+                                href={child.href}
+                                onClick={() => setActiveDropdown(null)}
+                                className={`block px-4 py-2.5 text-xs tracking-widest uppercase hover:bg-charcoal/4 transition-colors ${
+                                  isDivider ? 'text-burgundy/70 hover:text-burgundy' : 'text-charcoal/60 hover:text-charcoal'
+                                }`}
+                              >
+                                {child.label}
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ))}
           </nav>
@@ -164,13 +192,13 @@ export default function Header() {
         {/* Mobile menu */}
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 bg-cream border-t border-charcoal/8 ${
-            menuOpen ? 'max-h-[420px] opacity-100' : 'max-h-0 opacity-0'
+            menuOpen ? 'max-h-[460px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           <nav className="px-6 py-5 flex flex-col gap-4">
             {MOBILE_NAV.map((link) => (
               <Link
-                key={link.href}
+                key={link.href + link.label}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className={`text-sm tracking-widest uppercase hover:text-charcoal transition-colors ${

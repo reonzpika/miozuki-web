@@ -86,6 +86,43 @@
   }
 }
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Hide scrollbar on horizontal scroll rails */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Section diamond divider */
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 3rem;
+  background: oklch(0.14 0 0 / 0.10);
+}
+.section-divider > span {
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: oklch(0.14 0 0 / 0.13);
+  transform: rotate(45deg);
+}
+
 .nav-underline {
   text-decoration: underline 1px transparent;
   text-underline-offset: 2px;

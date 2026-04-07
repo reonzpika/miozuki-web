@@ -16,31 +16,36 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link href={`/products/${handle}`} className="group block">
       {/* Image */}
-      <div className="relative aspect-square overflow-hidden bg-cream/60 mb-4 transition-shadow duration-300 group-hover:ring-1 group-hover:ring-burgundy/25">
+      <div className="relative aspect-[4/5] overflow-hidden bg-surface mb-3">
         {featuredImage ? (
           <Image
             src={featuredImage.url}
             alt={featuredImage.altText ?? title}
             fill
-            sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
+            sizes="(max-width: 767px) 70vw, (max-width: 1023px) 33vw, 25vw"
             quality={85}
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-charcoal/20 text-xs tracking-widest uppercase">
-              Miozuki
-            </span>
+            <span className="text-charcoal/20 text-xs tracking-widest uppercase">Miozuki</span>
           </div>
         )}
+
+        {/* Luxury hover overlay — slides up from bottom */}
+        <div className="absolute inset-x-0 bottom-0 bg-charcoal/72 px-4 py-3 translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0 backdrop-blur-[2px]">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-cream text-center">
+            View Piece
+          </p>
+        </div>
       </div>
 
       {/* Text */}
       <div>
-        <h3 className="text-sm text-charcoal leading-snug mb-1 line-clamp-2">
+        <h3 className="text-[13px] text-charcoal leading-snug mb-1 line-clamp-2 group-hover:text-charcoal/70 transition-colors duration-200">
           {title}
         </h3>
-        <p className="text-sm text-burgundy font-medium">
+        <p className="text-[13px] text-burgundy font-medium">
           {formatPrice(price.amount, price.currencyCode)}
         </p>
       </div>

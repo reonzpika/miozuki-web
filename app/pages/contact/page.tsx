@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import ContactForm from '@/components/contact-form';
 
 export const metadata: Metadata = {
   title: 'Contact Us — Miozuki',
@@ -64,74 +65,7 @@ export default function ContactPage() {
         {/* Contact form */}
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-5">Send a Message</h2>
-          <form
-            action="mailto:info@miozuki.co.nz"
-            method="POST"
-            encType="text/plain"
-            className="space-y-5"
-          >
-            <div>
-              <label htmlFor="name" className="block text-xs tracking-widest uppercase text-charcoal/50 mb-2">
-                Your Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                className="w-full border border-charcoal/15 bg-transparent px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/40 transition-colors"
-                placeholder="Full name"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-xs tracking-widest uppercase text-charcoal/50 mb-2">
-                Email Address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="w-full border border-charcoal/15 bg-transparent px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/40 transition-colors"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="order" className="block text-xs tracking-widest uppercase text-charcoal/50 mb-2">
-                Order Number <span className="normal-case text-charcoal/30">(if applicable)</span>
-              </label>
-              <input
-                id="order"
-                name="order"
-                type="text"
-                className="w-full border border-charcoal/15 bg-transparent px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/40 transition-colors"
-                placeholder="#1234"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="message" className="block text-xs tracking-widest uppercase text-charcoal/50 mb-2">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={5}
-                className="w-full border border-charcoal/15 bg-transparent px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/40 transition-colors resize-none"
-                placeholder="How can we help?"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-charcoal text-cream text-xs tracking-widest uppercase py-4 hover:bg-charcoal/85 transition-colors"
-            >
-              Send Message
-            </button>
-          </form>
+          <ContactForm />
         </div>
       </div>
     </main>

@@ -13,7 +13,6 @@ const NAV = [
     children: [
       { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
       { label: 'Bridal Rings', href: '/collections/bridal-jewellery' },
-      { label: 'Learn About Moissanite', href: '/pages/moissanite-faq' },
     ],
   },
   {
@@ -49,7 +48,6 @@ const MOBILE_NAV = [
   { label: 'Pearl Jewellery', href: '/collections/pearl-earrings', indent: true },
   { label: 'About Miozuki', href: '/pages/about-us', indent: false },
   { label: 'Our Founder', href: '/pages/our-founder', indent: true },
-  { label: 'Moissanite Guide', href: '/pages/moissanite-faq', indent: true },
 ];
 
 const ease1 = [0.22, 1, 0.36, 1] as [number, number, number, number];
@@ -142,23 +140,16 @@ export default function Header() {
                       className="absolute top-full left-0 pt-1 min-w-[210px] z-50 origin-top"
                     >
                       <div className="bg-cream border border-charcoal/10 shadow-md py-1.5">
-                        {navItem.children.map((child, i, arr) => {
-                          const isDivider = i > 0 && child.label === 'Learn About Moissanite';
-                          return (
-                            <div key={child.href}>
-                              {isDivider && <div className="my-1 border-t border-charcoal/8 mx-3" />}
-                              <Link
-                                href={child.href}
-                                onClick={() => setActiveDropdown(null)}
-                                className={`block px-4 py-2.5 text-xs tracking-widest uppercase hover:bg-charcoal/4 transition-colors ${
-                                  isDivider ? 'text-burgundy/70 hover:text-burgundy' : 'text-charcoal/60 hover:text-charcoal'
-                                }`}
-                              >
-                                {child.label}
-                              </Link>
-                            </div>
-                          );
-                        })}
+                        {navItem.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setActiveDropdown(null)}
+                            className="block px-4 py-2.5 text-xs tracking-widest uppercase text-charcoal/60 hover:text-charcoal hover:bg-charcoal/4 transition-colors"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
                       </div>
                     </motion.div>
                   )}

@@ -21,9 +21,38 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://miozuki.co.nz'),
   title: 'Miozuki — Fine Jewellery',
   description:
     'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand. Discover pieces that last a lifetime.',
+  openGraph: {
+    title: 'Miozuki — Fine Jewellery',
+    description:
+      'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand.',
+    url: 'https://miozuki.co.nz',
+    siteName: 'Miozuki',
+    type: 'website',
+    locale: 'en_NZ',
+    // /og-image.jpg is the magazine-masthead background generated via scripts/gen-image.mjs
+    // (sidecar: scripts/prompts/og-image.prompt.md). No model-drawn wordmark — the og:title
+    // above provides the brand name in unfurls. To overlay a Playfair "Miozuki" wordmark on
+    // top later, switch to a dynamic next/og ImageResponse route.
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Miozuki — Fine Jewellery',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Miozuki — Fine Jewellery',
+    description:
+      'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand.',
+    images: ['/og-image.jpg'],
+  },
 };
 
 export default function RootLayout({

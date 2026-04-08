@@ -3,11 +3,11 @@
 :root {
   --background: oklch(0.96 0.010 75);
   --foreground: oklch(0.14 0 0);
-  --surface: oklch(0.93 0.012 75);
+  --surface: oklch(0.90 0.014 75);
   --muted: oklch(0.55 0.015 75);
   --border: oklch(0.88 0.010 75);
-  --accent: oklch(0.33 0.10 15);
-  --accent-hover: oklch(0.27 0.09 15);
+  --accent: oklch(0.45 0.12 15);
+  --accent-hover: oklch(0.38 0.11 15);
 }
 
 @theme inline {
@@ -16,7 +16,7 @@
   --color-surface: var(--surface);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --color-burgundy: oklch(0.33 0.10 15);
+  --color-burgundy: oklch(0.45 0.12 15);
   --color-cream: oklch(0.96 0.010 75);
   --color-charcoal: oklch(0.14 0 0);
   --color-accent: var(--accent);

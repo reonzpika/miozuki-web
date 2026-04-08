@@ -7,6 +7,7 @@ import RichText from '@/components/rich-text';
 import ProductGallery from '@/components/product-gallery';
 import AddToCart from '@/components/add-to-cart';
 import RingSizeGuide from '@/components/ring-size-guide';
+import PdpTrustStrip from '@/components/pdp-trust-strip';
 import ProductReviews from '@/components/product-reviews';
 
 export const revalidate = 60;
@@ -102,6 +103,9 @@ export default async function ProductPage({
           {/* Variant selector + add to cart */}
           <AddToCart variants={variants} />
 
+          {/* Trust strip */}
+          <PdpTrustStrip />
+
           {/* Ring size guide link */}
           {hasRingSizes && <RingSizeGuide />}
 
@@ -123,7 +127,6 @@ export default async function ProductPage({
           {[
             { label: "What's Included", value: getMetafield('what_is_included') },
             { label: 'Details', value: getMetafield('product_details') },
-            { label: 'Materials', value: getMetafield('product_material') },
           ].map(({ label, value }) =>
             value ? (
               <details key={label} className="group border-t border-charcoal/8 pt-4">
@@ -141,6 +144,36 @@ export default async function ProductPage({
             ) : null
           )}
 
+          {/* Materials — always renders, metafield first then stone data fallback */}
+          <details className="group border-t border-charcoal/8 pt-4">
+            <summary className="flex items-center justify-between cursor-pointer list-none text-xs tracking-widest uppercase text-charcoal/50 hover:text-charcoal transition-colors">
+              <span>Materials</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="shrink-0 transition-transform duration-200 group-open:rotate-180">
+                <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+              </svg>
+            </summary>
+            {getMetafield('product_material') && (
+              <RichText
+                value={getMetafield('product_material') as string}
+                className="mt-3 text-xs text-charcoal/55 leading-relaxed"
+              />
+            )}
+            <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-xs text-charcoal/55 leading-relaxed">
+              <dt className="text-charcoal/40">Stone</dt>
+              <dd>Lab-grown moissanite</dd>
+              <dt className="text-charcoal/40">Hardness</dt>
+              <dd>Mohs 9.25 (second only to diamond)</dd>
+              <dt className="text-charcoal/40">Refractive index</dt>
+              <dd>2.65 (greater fire than diamond)</dd>
+              <dt className="text-charcoal/40">Colour</dt>
+              <dd>DEF (colourless grade)</dd>
+              <dt className="text-charcoal/40">Clarity</dt>
+              <dd>VVS</dd>
+              <dt className="text-charcoal/40">Certification</dt>
+              <dd>AGS or IGI graded</dd>
+            </dl>
+          </details>
+
           {/* Shipping note */}
           <details className="group border-t border-charcoal/8 pt-4">
             <summary className="flex items-center justify-between cursor-pointer list-none text-xs tracking-widest uppercase text-charcoal/50 hover:text-charcoal transition-colors">
@@ -150,10 +183,11 @@ export default async function ProductPage({
               </svg>
             </summary>
             <p className="mt-3 text-xs text-charcoal/55 leading-relaxed">
-              All New Zealand orders ship for a flat rate of $8 NZD via NZ Post,
-              with tracking and a signature required on delivery. Orders typically
-              arrive within 2–7 business days (rural may take longer). Made-to-order
-              items ship once ready — approximately 4 weeks from order.
+              Free New Zealand shipping on orders over $150 NZD via NZ Post,
+              tracked and signature required on delivery. Orders under $150
+              ship for a flat $8 NZD. Typical delivery 2–7 business days
+              (rural may take longer). Made-to-order items ship once ready —
+              approximately 4 weeks from order.
             </p>
           </details>
 

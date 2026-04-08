@@ -119,12 +119,12 @@ export default function AddToCart({ variants }: { variants: ProductVariant[] }) 
           <input
             type="text"
             value={engraving}
-            onChange={(e) => setEngraving(e.target.value.slice(0, 4))}
-            placeholder="e.g. JR"
-            maxLength={4}
-            className="w-28 border border-charcoal/20 bg-transparent px-3 py-2 text-xs text-charcoal placeholder:text-charcoal/25 focus:outline-none focus:border-charcoal/50 transition-colors"
+            onChange={(e) => setEngraving(e.target.value.slice(0, 12))}
+            placeholder="e.g. JR ❤ EM"
+            maxLength={12}
+            className="w-52 border border-charcoal/20 bg-transparent px-3 py-2 text-xs text-charcoal placeholder:text-charcoal/25 focus:outline-none focus:border-charcoal/50 transition-colors"
           />
-          <p className="text-[10px] text-charcoal/35 mt-1">Max 4 characters</p>
+          <p className="text-[10px] text-charcoal/35 mt-1">Max 12 characters</p>
         </div>
       )}
 

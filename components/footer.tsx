@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 const HELP_LINKS = [
-  { label: 'Moissanite FAQ', href: '/pages/moissanite-faq' },
+  { label: 'Learn About Moissanite', href: '/pages/moissanite-faq' },
   { label: 'Contact Us', href: '/pages/contact' },
   { label: 'Returns & Refunds', href: '/pages/returns-refunds-policy' },
   { label: 'Warranty', href: '/pages/warranty-cover' },
@@ -62,7 +62,7 @@ export default function Footer() {
             Fine jewellery, designed in New Zealand.<br />
             Inspired by the moon.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 mb-5">
             {SOCIAL.map((s) => (
               <a
                 key={s.label}
@@ -76,6 +76,13 @@ export default function Footer() {
               </a>
             ))}
           </div>
+          <p className="text-xs text-charcoal/45 leading-relaxed">
+            Auckland, New Zealand
+          </p>
+          <p className="text-xs text-charcoal/45 leading-relaxed">
+            Proudly NZ-owned &amp; operated
+          </p>
+          {/* TODO: NZBN once registered */}
         </div>
 
         {/* Help */}

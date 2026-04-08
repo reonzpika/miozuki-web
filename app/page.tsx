@@ -163,8 +163,8 @@ export default async function Home() {
       <section className="overflow-hidden">
         <div className="relative">
           <Image
-            src="https://miozuki.co.nz/cdn/shop/files/Generated_Image_October_03_2025_-_1_19PM.jpg?v=1769746362"
-            alt="Accessible luxury jewellery"
+            src="/generated/accessible-luxury.jpg"
+            alt="Editorial still life — burgundy silk, handmade ceramic vessel and oatmeal linen on cream linen, soft Auckland window light"
             width={2048}
             height={1366}
             sizes="100vw"

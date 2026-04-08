@@ -5,16 +5,32 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 export default function EmailCapture() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: wire to Klaviyo / Mailchimp
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      setSubmitted(true);
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -53,25 +69,42 @@ export default function EmailCapture() {
             Thank you — you&apos;re on the list.
           </motion.p>
         ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-          >
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="flex-1 bg-transparent border border-cream/15 text-cream text-sm px-4 py-3 placeholder-cream/25 focus:outline-none focus:border-cream/40 transition-colors duration-200"
-            />
-            <button
-              type="submit"
-              className="text-xs tracking-[0.2em] uppercase px-8 py-3 bg-cream text-charcoal hover:bg-cream/90 transition-colors duration-200 whitespace-nowrap"
+          <>
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-3 max-w-md mx-auto"
             >
-              Join
-            </button>
-          </form>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
+                disabled={loading}
+                className="bg-transparent border border-cream/15 text-cream text-sm px-4 py-3 placeholder-cream/25 focus:outline-none focus:border-cream/40 transition-colors duration-200 disabled:opacity-50"
+              />
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  disabled={loading}
+                  className="flex-1 bg-transparent border border-cream/15 text-cream text-sm px-4 py-3 placeholder-cream/25 focus:outline-none focus:border-cream/40 transition-colors duration-200 disabled:opacity-50"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="text-xs tracking-[0.2em] uppercase px-8 py-3 bg-cream text-charcoal hover:bg-cream/90 transition-colors duration-200 whitespace-nowrap disabled:opacity-60"
+                >
+                  {loading ? 'Joining...' : 'Join'}
+                </button>
+              </div>
+            </form>
+            {error && (
+              <p className="mt-3 text-xs text-cream/50">{error}</p>
+            )}
+          </>
         )}
       </motion.div>
     </section>

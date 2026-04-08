@@ -5,6 +5,7 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 import AnnouncementBar from '@/components/announcement-bar';
 import { CartProvider } from '@/components/cart-provider';
+import EmailPopup from '@/components/email-popup';
 
 const playfair = Playfair_Display({
   variable: '--font-playfair',
@@ -38,6 +39,7 @@ export default function RootLayout({
           <Header />
           <div className="flex flex-col flex-1">{children}</div>
           <Footer />
+          <EmailPopup />
         </CartProvider>
       </body>
     </html>

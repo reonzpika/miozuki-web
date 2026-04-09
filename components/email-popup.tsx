@@ -121,7 +121,7 @@ export default function EmailPopup() {
                 </h2>
 
                 <p className="text-xs text-charcoal/50 leading-relaxed mb-7 max-w-xs mx-auto">
-                  Join the list for early access to new collections and the occasional piece that doesn&apos;t make it to the main site.
+                  Join the list for early access to new collections and the occasional piece that doesn't make it to the main site.
                 </p>
 
                 {submitted ? (

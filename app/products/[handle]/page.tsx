@@ -6,9 +6,9 @@ import { getProducts, getProductByHandle } from '@/lib/shopify';
 import RichText from '@/components/rich-text';
 import ProductGallery from '@/components/product-gallery';
 import AddToCart from '@/components/add-to-cart';
-import RingSizeGuide from '@/components/ring-size-guide';
 import PdpTrustStrip from '@/components/pdp-trust-strip';
 import ProductReviews from '@/components/product-reviews';
+import ProductRatingSummary from '@/components/product-rating-summary';
 
 export const revalidate = 60;
 
@@ -31,13 +31,6 @@ export async function generateMetadata({
   };
 }
 
-function formatPrice(amount: string, currencyCode: string) {
-  return new Intl.NumberFormat('en-NZ', {
-    style: 'currency',
-    currency: currencyCode,
-  }).format(parseFloat(amount));
-}
-
 export default async function ProductPage({
   params,
 }: {
@@ -50,14 +43,6 @@ export default async function ProductPage({
 
   const images = product.images.edges.map((e) => e.node);
   const variants = product.variants.edges.map((e) => e.node);
-  const price = product.priceRange.minVariantPrice;
-  const maxPrice = product.priceRange.maxVariantPrice;
-  const hasPriceRange =
-    parseFloat(maxPrice.amount) > parseFloat(price.amount);
-
-  const hasRingSizes = variants.some((v) =>
-    v.selectedOptions.some((o) => o.name === 'Ring size')
-  );
 
   const getMetafield = (key: string) =>
     product.metafields?.find((m) => m?.key === key)?.value ?? null;
@@ -81,33 +66,26 @@ export default async function ProductPage({
 
         {/* Product info */}
         <div className="flex flex-col gap-6">
-          {/* Title + price */}
+          {/* Title, rating, variant-aware price, and add to cart */}
           <div>
             {product.productType && (
               <p className="text-xs tracking-widest uppercase text-charcoal/40 mb-2">
                 {product.productType}
               </p>
             )}
-            <h1 className="font-serif text-3xl md:text-4xl text-charcoal leading-tight mb-4">
+            <h1 className="font-serif text-3xl md:text-4xl text-charcoal leading-tight mb-3">
               {product.title}
             </h1>
-            <p className="text-xl text-burgundy font-medium">
-              {hasPriceRange
-                ? `From ${formatPrice(price.amount, price.currencyCode)}`
-                : formatPrice(price.amount, price.currencyCode)}
-            </p>
+            <div className="mb-4">
+              <Suspense fallback={null}>
+                <ProductRatingSummary productId={product.id} />
+              </Suspense>
+            </div>
+            <AddToCart variants={variants} priceRange={product.priceRange} />
           </div>
-
-          <div className="h-px bg-charcoal/8" />
-
-          {/* Variant selector + add to cart */}
-          <AddToCart variants={variants} />
 
           {/* Trust strip */}
           <PdpTrustStrip />
-
-          {/* Ring size guide link */}
-          {hasRingSizes && <RingSizeGuide />}
 
           <div className="h-px bg-charcoal/8" />
 
@@ -208,7 +186,7 @@ export default async function ProductPage({
       </div>
 
       {/* Reviews */}
-      <div className="mt-16 border-t border-charcoal/8 pt-12">
+      <div id="reviews" className="mt-16 border-t border-charcoal/8 pt-12">
         <Suspense fallback={<div className="h-24 animate-pulse bg-charcoal/5" />}>
           <ProductReviews productId={product.id} />
         </Suspense>

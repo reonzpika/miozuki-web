@@ -1,11 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+const RING_SIZE_CHART_SRC =
+  'https://cdn.shopify.com/s/files/1/0797/0819/3023/files/Ring_Sizer_Chart_-_Miozuki_Cropped.jpg?v=1769656662';
+
 export default function RingSizeGuide() {
   const [open, setOpen] = useState(false);
+  const [chartLightbox, setChartLightbox] = useState(false);
+
+  useEffect(() => {
+    if (!chartLightbox) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setChartLightbox(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [chartLightbox]);
 
   return (
     <>
@@ -81,18 +94,81 @@ export default function RingSizeGuide() {
             </ul>
 
             <div className="border-t border-charcoal/8 pt-6 mb-6">
-              <h4 className="font-serif text-lg text-charcoal mb-4">
+              <h4 className="font-serif text-lg text-charcoal mb-1">
                 Size Chart
               </h4>
-              <div className="relative w-full aspect-[4/3] bg-charcoal/5">
+              <p className="text-[11px] text-charcoal/45 mb-3">
+                Tap the chart to open a larger view you can scroll on small
+                screens.
+              </p>
+              <button
+                type="button"
+                onClick={() => setChartLightbox(true)}
+                className="group relative w-full aspect-[4/3] bg-charcoal/5 overflow-hidden text-left ring-1 ring-charcoal/10 transition-shadow hover:ring-charcoal/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy"
+                aria-label="Open ring size chart full size"
+              >
                 <Image
-                  src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/Ring_Sizer_Chart_-_Miozuki_Cropped.jpg?v=1769656662"
+                  src={RING_SIZE_CHART_SRC}
                   alt="Miozuki ring size chart"
                   fill
                   className="object-contain"
+                  sizes="(max-width: 512px) 100vw, 512px"
                 />
-              </div>
+                <span className="absolute bottom-2 right-2 text-[10px] tracking-widest uppercase bg-cream/95 text-charcoal/70 px-2.5 py-1 border border-charcoal/15">
+                  Enlarge
+                </span>
+              </button>
             </div>
+
+            {chartLightbox && (
+              <div
+                className="fixed inset-0 z-[60] flex flex-col bg-charcoal/95 p-3 sm:p-6"
+                onClick={() => setChartLightbox(false)}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Ring size chart enlarged"
+              >
+                <div className="flex justify-end mb-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setChartLightbox(false);
+                    }}
+                    aria-label="Close enlarged chart"
+                    className="text-cream/70 hover:text-cream transition-colors p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-cream rounded-sm"
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      aria-hidden
+                    >
+                      <line x1="4" y1="4" x2="16" y2="16" />
+                      <line x1="16" y1="4" x2="4" y2="16" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="min-h-0 flex-1 overflow-auto flex items-start justify-center">
+                  <div
+                    className="relative w-full max-w-5xl min-h-[min(85vh,1200px)] shrink-0"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Image
+                      src={RING_SIZE_CHART_SRC}
+                      alt="Miozuki ring size chart (enlarged)"
+                      fill
+                      className="object-contain object-top"
+                      sizes="100vw"
+                      priority
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="space-y-4 text-xs text-charcoal/70 leading-relaxed">
               <div>

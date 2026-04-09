@@ -43,11 +43,12 @@ export default async function CollectionPage({
 
   return (
     <main>
-      {/* Collection hero — stacked on mobile, split panel on desktop */}
-      <div className="border-b border-charcoal/8 md:grid md:grid-cols-2 md:min-h-[400px]">
+      {/* Collection hero — same max width as product grid; stacked on mobile, split on desktop */}
+      <div className="border-b border-charcoal/8">
+        <div className="max-w-7xl mx-auto w-full px-6 md:px-10 md:grid md:grid-cols-2 md:min-h-[400px]">
 
         {/* Text — left on desktop, below image on mobile */}
-        <div className="bg-cream flex flex-col justify-center px-6 md:px-14 py-10 md:py-16 order-2 md:order-1">
+        <div className="bg-cream flex flex-col justify-center py-10 md:py-16 md:pr-12 order-2 md:order-1">
           <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-5">
             <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
             <span>/</span>
@@ -77,7 +78,7 @@ export default async function CollectionPage({
               alt={collection.image.altText ?? collection.title}
               fill
               priority
-              sizes="(max-width: 767px) 100vw, 50vw"
+              sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 640px"
               className="object-cover object-center"
             />
           </div>
@@ -85,6 +86,7 @@ export default async function CollectionPage({
           <div className="hidden md:block order-2 bg-charcoal/4" />
         )}
 
+        </div>
       </div>
 
       {/* Products */}
@@ -99,19 +101,7 @@ export default async function CollectionPage({
       {collection.descriptionHtml && (
         <div className="max-w-4xl mx-auto px-6 md:px-10 py-16">
           <div
-            className="text-sm text-charcoal/70 leading-relaxed
-              [&_h1]:font-serif [&_h1]:text-2xl [&_h1]:text-charcoal [&_h1]:mb-6 [&_h1]:mt-10 [&_h1]:first:mt-0
-              [&_h2]:font-serif [&_h2]:text-xl [&_h2]:text-charcoal [&_h2]:mb-4 [&_h2]:mt-8
-              [&_h3]:font-medium [&_h3]:text-charcoal [&_h3]:mb-3 [&_h3]:mt-6
-              [&_p]:mb-4
-              [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_ul]:space-y-1
-              [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4 [&_ol]:space-y-1
-              [&_strong]:font-medium [&_strong]:text-charcoal
-              [&_a]:text-burgundy [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-burgundy/70
-              [&_table]:w-full [&_table]:border-collapse [&_table]:mb-6
-              [&_th]:text-left [&_th]:text-xs [&_th]:tracking-widest [&_th]:uppercase [&_th]:text-charcoal [&_th]:border-b [&_th]:border-charcoal/15 [&_th]:py-2 [&_th]:pr-4
-              [&_td]:border-b [&_td]:border-charcoal/8 [&_td]:py-2 [&_td]:pr-4 [&_td]:align-top
-              [&_img]:max-w-full [&_img]:h-auto [&_img]:my-6"
+            className="text-sm text-charcoal/70 leading-relaxed [&_h1]:font-serif [&_h1]:text-2xl [&_h1]:text-charcoal [&_h1]:mb-6 [&_h1]:mt-10 [&_h1]:first:mt-0 [&_h2]:font-serif [&_h2]:text-xl [&_h2]:text-charcoal [&_h2]:mb-4 [&_h2]:mt-8 [&_h3]:font-medium [&_h3]:text-charcoal [&_h3]:mb-3 [&_h3]:mt-6 [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4 [&_ol]:space-y-1 [&_strong]:font-medium [&_strong]:text-charcoal [&_a]:text-burgundy [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-burgundy/70 [&_table]:w-full [&_table]:border-collapse [&_table]:mb-6 [&_th]:text-left [&_th]:text-xs [&_th]:tracking-widest [&_th]:uppercase [&_th]:text-charcoal [&_th]:border-b [&_th]:border-charcoal/15 [&_th]:py-2 [&_th]:pr-4 [&_td]:border-b [&_td]:border-charcoal/8 [&_td]:py-2 [&_td]:pr-4 [&_td]:align-top [&_img]:max-w-full [&_img]:h-auto [&_img]:my-6"
             dangerouslySetInnerHTML={{ __html: collection.descriptionHtml }}
           />
         </div>

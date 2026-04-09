@@ -100,6 +100,41 @@
   display: none;
 }
 
+/* Full-bleed horizontal scroll rail.
+   Left padding aligns the first snap-start child with the centred
+   max-w-7xl mx-auto px-6 md:px-10 heading above it.
+   scroll-padding-inline-start matches so snap targets the padded
+   offset, not the raw container left edge. */
+.rail-bleed {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  scroll-padding-inline-start: 1.5rem;
+}
+@media (min-width: 768px) {
+  .rail-bleed {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    scroll-padding-inline-start: 2.5rem;
+  }
+}
+@media (min-width: 80rem) {
+  .rail-bleed {
+    padding-left: calc((100vw - 80rem) / 2 + 2.5rem);
+    scroll-padding-inline-start: calc((100vw - 80rem) / 2 + 2.5rem);
+  }
+}
+/* Trailing pseudo-element spacer — padding-right on a flex scroll
+   container is eaten at scroll end in Chromium/WebKit. A flex child
+   (even a pseudo-element) is always scrollable. */
+.rail-bleed::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 1.5rem;
+}
+@media (min-width: 768px) {
+  .rail-bleed::after { width: 2.5rem; }
+}
+
 /* Section diamond divider */
 .section-divider {
   display: flex;

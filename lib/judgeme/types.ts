@@ -18,7 +18,7 @@ export interface JudgeMeReview {
   reviewer: JudgeMeReviewer;
   created_at: string;
   pictures: JudgeMeReviewPicture[];
-  verified: 'unverified' | 'verified_review' | 'verified_buyer';
+  verified: 'unverified' | 'verified_review' | 'verified_buyer' | 'nothing' | string;
 }
 
 export interface JudgeMeProductData {
@@ -30,4 +30,9 @@ export interface JudgeMeProductData {
 export interface JudgeMeReviewsData {
   product: JudgeMeProductData | null;
   reviews: JudgeMeReview[];
+}
+
+export interface RatingSummary {
+  rating: number;
+  count: number;
 }

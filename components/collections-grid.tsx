@@ -70,29 +70,17 @@ function CollectionCard({
 export default function CollectionsGrid({ collections }: { collections: Collection[] }) {
   if (collections.length === 0) return null;
 
-  const [featured, ...rest] = collections;
-
   return (
     <motion.div
       variants={container}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: '-60px' }}
+      className="grid grid-cols-2 md:grid-cols-4 gap-5"
     >
-      {/* Feature card — full width */}
-      <CollectionCard
-        collection={featured}
-        imageClassName="aspect-[21/9] md:aspect-[21/8]"
-      />
-
-      {/* Remaining — 3-column grid */}
-      {rest.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mt-5">
-          {rest.map((c) => (
-            <CollectionCard key={c.id} collection={c} />
-          ))}
-        </div>
-      )}
+      {collections.map((c) => (
+        <CollectionCard key={c.id} collection={c} />
+      ))}
     </motion.div>
   );
 }

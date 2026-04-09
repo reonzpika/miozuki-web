@@ -1,10 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCollections, getCollectionByHandle } from '@/lib/shopify';
+import { getAllRatings } from '@/lib/judgeme/client';
 import type { Product } from '@/lib/shopify';
 import HeroSection from '@/components/hero-section';
 import CollectionsGrid from '@/components/collections-grid';
 import BestSellersGrid from '@/components/best-sellers-grid';
+import FounderSection from '@/components/founder-section';
 import FaqAccordion from '@/components/faq-accordion';
 import EmailCapture from '@/components/email-capture';
 import ScrollReveal from '@/components/scroll-reveal';
@@ -78,8 +80,21 @@ const DIFFERENTIATORS = [
   },
 ];
 
+const ALLOWED_COLLECTION_HANDLES = [
+  'moissanite-ear-rings',
+  'moissanite-rings',
+  'pearl-earrings',
+  'bridal-jewellery',
+];
+
 export default async function Home() {
-  const collections = await getCollections(6).catch(() => []);
+  const all = await getCollections(20).catch(() => []);
+  const byHandle = new Map(all.map((c) => [c.handle, c]));
+  const collections = ALLOWED_COLLECTION_HANDLES.flatMap((h) => {
+    const c = byHandle.get(h);
+    return c ? [c] : [];
+  });
+
   let products: Product[] = [];
 
   try {
@@ -88,6 +103,8 @@ export default async function Home() {
   } catch {
     // best-sellers collection not found
   }
+
+  const ratings = await getAllRatings().catch(() => ({}));
 
   return (
     <main>
@@ -118,10 +135,17 @@ export default async function Home() {
         <SectionDivider />
       </div>
 
+      {/* ── Founder ───────────────────────────────────────── */}
+      <FounderSection />
+
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <SectionDivider />
+      </div>
+
       {/* ── Best Sellers ──────────────────────────────────── */}
       {products.length > 0 && (
-        <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto w-full">
-          <ScrollReveal className="flex items-end justify-between mb-10">
+        <section className="py-24">
+          <ScrollReveal className="flex items-end justify-between mb-10 px-6 md:px-10 max-w-7xl mx-auto">
             <div>
               <p className="text-xs tracking-[0.3em] uppercase text-burgundy mb-2">Most loved</p>
               <h2 className="font-serif text-3xl md:text-4xl text-charcoal">Best Sellers</h2>
@@ -134,7 +158,7 @@ export default async function Home() {
             </Link>
           </ScrollReveal>
 
-          <BestSellersGrid products={products} />
+          <BestSellersGrid products={products} ratings={ratings} />
         </section>
       )}
 

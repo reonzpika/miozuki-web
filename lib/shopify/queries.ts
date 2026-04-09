@@ -20,6 +20,9 @@ const PRODUCT_CARD_FRAGMENT = `
     handle
     title
     featuredImage { ...ImageFragment }
+    images(first: 2) {
+      edges { node { ...ImageFragment } }
+    }
     priceRange {
       minVariantPrice { ...MoneyFragment }
       maxVariantPrice { ...MoneyFragment }

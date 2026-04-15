@@ -674,3 +674,79 @@ async function runContactForm(
     await page.close()
   }
 }
+
+// ---- Tier 2d: Email popup ----
+
+async function runEmailPopup(
+  browser: Browser,
+  allFindings: Finding[],
+  counter: Counter
+): Promise<void> {
+  const url = CONFIG.baseUrl
+  const page = await browser.newPage()
+
+  try {
+    await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
+
+    // Fresh browser context: localStorage empty, shouldShow() returns true, popup fires after 4s
+    await page.waitForTimeout(5000)
+
+    const popupHeading = page.getByRole('heading', { name: 'New drops, first.' })
+    if (!(await popupHeading.isVisible({ timeout: 2000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'medium',
+        tier: 2,
+        page: '/',
+        type: 'flow-failure',
+        message: 'Email popup did not appear after 5s on fresh session',
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-popup-not-shown.png'),
+      }))
+      return
+    }
+
+    await takeScreenshot(page, 'flow-popup-open.png')
+
+    await page.getByPlaceholder('Your name').fill('Audit Test')
+    await page.getByPlaceholder('your@email.com').fill('audit-test@example.com')
+
+    const [subscribeResponse] = await Promise.all([
+      page.waitForResponse(
+        r => r.url().includes('/api/subscribe'),
+        { timeout: 10_000 }
+      ),
+      page.getByRole('button', { name: 'Join the List' }).click(),
+    ])
+
+    const status = subscribeResponse.status()
+    if (status !== 200) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 2,
+        page: '/',
+        type: 'api-failure',
+        message: `/api/subscribe returned ${status} (expected 200)`,
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-popup-api-error.png'),
+      }))
+    } else {
+      await page.waitForTimeout(500)
+      const successMsg = page.getByText(/you're on the list/i)
+      if (!(await successMsg.isVisible({ timeout: 2000 }).catch(() => false))) {
+        allFindings.push(makeFinding(counter, {
+          severity: 'medium',
+          tier: 2,
+          page: '/',
+          type: 'flow-failure',
+          message: '/api/subscribe returned 200 but success message not visible in popup',
+          url,
+          screenshotPath: await takeScreenshot(page, 'flow-popup-no-success.png'),
+        }))
+      } else {
+        await takeScreenshot(page, 'flow-popup-success.png')
+      }
+    }
+  } finally {
+    await page.close()
+  }
+}

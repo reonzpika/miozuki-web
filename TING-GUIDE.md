@@ -13,7 +13,7 @@ That's it. The site is now running locally.
 
 ## Making changes
 
-1. In Cursor, describe what you want to change to the AI (Agent panel or Cmd+I)
+1. In Cursor, describe what you want to change to the AI (open the Agent panel, or press `Ctrl+I`)
 2. The AI will edit the files
 3. Check **http://localhost:3000** — the page will reload automatically
 4. Keep going until it looks right

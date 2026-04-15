@@ -333,6 +333,35 @@ async function runPageCrawl(
   return results
 }
 
+// ---- Popup suppression helpers ----
+
+/**
+ * Call BEFORE page.goto — sets miozuki_popup_v1 so the custom email popup never fires.
+ * Does not suppress the Tier 2d test, which intentionally uses a fresh context.
+ */
+async function suppressCustomPopup(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    try {
+      localStorage.setItem(
+        'miozuki_popup_v1',
+        JSON.stringify({ subscribedAt: Date.now() })
+      )
+    } catch {}
+  })
+}
+
+/**
+ * Call AFTER page.goto — presses Escape to dismiss any 3rd-party modal
+ * (Klaviyo, etc.) that may be intercepting pointer events.
+ */
+async function dismissAnyModal(page: Page): Promise<void> {
+  // Press Escape twice with a short gap — handles focus-trapped modals
+  await page.keyboard.press('Escape').catch(() => {})
+  await page.waitForTimeout(300)
+  await page.keyboard.press('Escape').catch(() => {})
+  await page.waitForTimeout(300)
+}
+
 // ---- Tier 2a: Cart drawer flow ----
 
 async function runCartFlow(
@@ -344,10 +373,12 @@ async function runCartFlow(
   const url = `${CONFIG.baseUrl}/products/${productHandle}`
   const page = await browser.newPage()
 
+  await suppressCustomPopup(page)
   attachListeners(page, allFindings, counter, `/products/${productHandle}`, url)
 
   try {
     await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
+    await dismissAnyModal(page)
 
     const addBtn = page.getByRole('button', { name: 'Add to Cart' })
     if (!(await addBtn.isVisible({ timeout: 5000 }).catch(() => false))) {
@@ -386,6 +417,7 @@ async function runCartFlow(
     }
 
     await page.waitForTimeout(2000)
+    await dismissAnyModal(page)
 
     const cartIcon = page.locator('#headerCartStatus, [aria-controls="shtCartDrawer"]').first()
     await cartIcon.click()
@@ -454,8 +486,11 @@ async function runCheckoutFlow(
   const url = `${CONFIG.baseUrl}/products/${productHandle}`
   const page = await browser.newPage()
 
+  await suppressCustomPopup(page)
+
   try {
     await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
+    await dismissAnyModal(page)
 
     const addBtn = page.getByRole('button', { name: 'Add to Cart' })
     if (!(await addBtn.isVisible({ timeout: 5000 }).catch(() => false))) {
@@ -472,6 +507,7 @@ async function runCheckoutFlow(
 
     await addBtn.click()
     await page.waitForTimeout(2500)
+    await dismissAnyModal(page)
 
     await page.locator('#headerCartStatus, [aria-controls="shtCartDrawer"]').first().click()
     await page.waitForTimeout(500)

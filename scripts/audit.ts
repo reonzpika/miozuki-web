@@ -950,3 +950,64 @@ async function writeReport(
   console.log(`JSON report: ${jsonPath}`)
   console.log(`MD summary:  ${mdPath}`)
 }
+
+// ---- Main ----
+
+async function main() {
+  const startTime = Date.now()
+  console.log(`Miozuki audit — target: ${CONFIG.baseUrl}`)
+  console.log(`Headless: ${CONFIG.headless}`)
+
+  fs.mkdirSync(CONFIG.screenshotDir, { recursive: true })
+
+  const browser = await chromium.launch({ headless: CONFIG.headless })
+  const findings: Finding[] = []
+  const counter: Counter = { n: 0 }
+
+  try {
+    console.log('\nDiscovering handles...')
+    const handles = await discoverHandles(browser)
+    console.log(`  Products: ${handles.products.length} | Collections: ${handles.collections.length} | Blog posts: ${handles.blogPosts.length}`)
+
+    console.log('\nTier 1: Page crawl...')
+    const pages = await runPageCrawl(browser, findings, counter, handles)
+    console.log(`  Crawled ${pages.length} pages`)
+
+    const firstProduct = handles.products[1] ?? handles.products[0]
+
+    if (!firstProduct) {
+      findings.push(makeFinding(counter, {
+        severity: 'critical',
+        tier: 2,
+        page: 'product-discovery',
+        type: 'flow-failure',
+        message: 'No products found — Tier 2 flow tests skipped',
+        url: CONFIG.baseUrl,
+      }))
+    } else {
+      console.log(`\nTier 2a: Cart flow (${firstProduct})...`)
+      await runCartFlow(browser, findings, counter, firstProduct)
+
+      console.log(`Tier 2b: Checkout entry (${firstProduct})...`)
+      await runCheckoutFlow(browser, findings, counter, firstProduct)
+    }
+
+    console.log('\nTier 2c: Contact form...')
+    await runContactForm(browser, findings, counter)
+
+    console.log('Tier 2d: Email popup...')
+    await runEmailPopup(browser, findings, counter)
+
+    console.log('\nTier 3: API checks...')
+    const apiChecks = await runAPIChecks(findings, counter)
+
+    await writeReport(findings, pages, apiChecks, startTime)
+  } finally {
+    await browser.close()
+  }
+}
+
+main().catch(err => {
+  console.error('Audit failed:', err)
+  process.exit(1)
+})

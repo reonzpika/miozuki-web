@@ -1,11 +1,11 @@
 ---
 slot: og-image
-purpose: OpenGraph + Twitter card background, 1200x630. Will be served at /og-image.jpg from app/layout.tsx metadata. The "Miozuki" wordmark and tagline are NOT drawn by the model — they will be overlaid as a real text layer in post (or via next/og). Per research §6, generated typography is HIGH RISK.
+purpose: OpenGraph + Twitter card background, 1200x630. Will be served at /og-image.jpg from app/layout.tsx metadata. The "Miozuki" wordmark and tagline are NOT drawn by the model; they will be overlaid as a real text layer in post (or via next/og). Per `docs/context/miozuki-nano-banana-image-guide.md` §6, generated typography is HIGH RISK.
 model: gemini-3.1-flash-image-preview
 aspect: 16:9
 size: 2K
-template: OG card / typographic background (research §6 / templates §4)
-reviewer: pending owner sign-off (§5.5 gate)
+template: OG card / typographic background (guide §6 / templates §4)
+reviewer: pending owner sign-off (guide §13.4)
 date: 2026-04-08
 notes: NO TEXT in the image. NO LETTERS. NO LOGOS. Generate the background only — wordmark goes on top later.
 ---

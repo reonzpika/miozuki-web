@@ -2,12 +2,12 @@
 
 These are intentionally **incomplete**. Before generating, you MUST re-read:
 
-- `obsidian/context/nano-banana-pro-research.md` §2 (7-part template)
+- `docs/context/miozuki-nano-banana-image-guide.md` §2 (7-part template)
 - §3 (photographic language: cameras, lenses, film, publications)
 - §4 (anti-AI techniques: RAW look, imperfections, no HDR)
 - §5 (hands — high risk; jewellery-on-hand is HIGH risk for AI)
 - §6 (screens / on-image text — high risk)
-- §7 (negative-constraint block, append verbatim)
+- §7.1 (Miozuki negative-constraint block, append verbatim)
 - §11 (quick-reference checklist before clicking generate)
 
 Then expand each scaffold to 250–500 words covering all 7 parts: Subject, Scene, Lens/aperture, Lighting direction, Materials/textures, Colour grade, Fidelity constraints.
@@ -21,9 +21,9 @@ Then expand each scaffold to 250–500 words covering all 7 parts: Subject, Scen
 - **Film stock**: prefer Kodak Portra 400 (warm editorial), Cinestill 800T (mood / blue-hour), Fujifilm Velvia 50 (saturated naturalist).
 - **Camera bodies**: Hasselblad H6D-50c or 907X for hero/still-life, Leica Q3 for documentary mood, Fujifilm GFX 100 II for medium-format editorial. Skip Sony A7 line.
 - **Light direction default**: soft Auckland window light from camera left at 30°, single source, 4500K, hard shadow falloff on the right.
-- **Hands**: NEVER include hands holding jewellery in AI work. Per research §5, jewellery-on-hand is the highest AI-tell category.
+- **Hands**: NEVER include hands holding jewellery in AI work. Per guide §5, jewellery-on-hand is the highest AI-tell category.
 - **Jewellery in frame**: NEVER. AI cannot render moissanite fire, prong settings, or pearl lustre convincingly. All Miozuki AI shots are jewellery-free mood imagery.
-- **Negative constraints — ALWAYS append research §7 standard block PLUS Miozuki additions**: `no jewellery, no rings, no pearls, no models wearing jewellery, no gemstones, no engagement rings, no diamond imagery, no hands, no fingers, no faces`
+- **Negative constraints — ALWAYS append guide §7.1** (full Miozuki block; it already includes jewellery / hands / faces rules plus standard photographic negatives)
 
 ---
 
@@ -43,7 +43,7 @@ FIDELITY:   editorial Kinfolk magazine still life, no jewellery in frame, mood-o
             shot RAW unprocessed, slight imperfection, off-centre composition
 ```
 
-Then expand to 250-500 words per research §2 → append §7 negatives + Miozuki additions.
+Then expand to 250-500 words per guide §2 → append §7.1 verbatim.
 
 ---
 
@@ -102,7 +102,7 @@ FIDELITY:   magazine masthead aesthetic, ~3% paper noise, central negative space
 ```
 
 After generation, overlay "Miozuki" Playfair wordmark in real text layer (Photoshop /
-Figma / `next/og`). Per research §6, generated text is HIGH RISK — never let the model
+Figma / `next/og`). Per guide §6, generated text is HIGH RISK; never let the model
 draw the wordmark.
 
 ---
@@ -124,17 +124,17 @@ COLOUR:     Kodak Portra 400, brand palette
 FIDELITY:   documentary Monocle aesthetic, NO PEOPLE, NO HANDS
 ```
 
-Apply research §5 hands template only if face-out-of-frame hands are unavoidable.
+Apply guide §5 hands template only if face-out-of-frame hands are unavoidable.
 
 ---
 
 ## Generation workflow (per slot)
 
 1. Pick scaffold above.
-2. Re-read research file §2-§4-§7-§11.
+2. Re-read `docs/context/miozuki-nano-banana-image-guide.md` §2, §4, §7.1, §11.
 3. Expand scaffold to 250-500 words → save in `scripts/prompts/<slot-name>.prompt.md`.
 4. `npm run gen-image -- --prompt "<full prompt>" --out public/generated/<slot>.jpg --aspect 16:9 --size 2K`
-5. Sign-off gate (4-point smell test, see plan §5.5).
+5. Sign-off gate (4-point smell test; see guide §13.4 and `docs/context/brand-audit-2026.md` for brand fit).
 6. If pass: commit. If fail: refine via `--ref public/generated/<slot>.jpg` and iterate.
 7. If fail twice: fall back to typographic / abstract treatment for that slot.
 

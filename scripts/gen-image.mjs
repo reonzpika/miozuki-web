@@ -11,7 +11,7 @@
 // Requires LAOZHANG_API_KEY in .env.local. Loaded automatically via:
 //   "gen-image": "node --env-file=.env.local scripts/gen-image.mjs"
 //
-// Reference: obsidian/context/nano-banana-pro-research.md §13 (laozhang.ai integration)
+// Reference: docs/context/miozuki-nano-banana-image-guide.md §13 (laozhang.ai integration)
 // API docs:  https://docs.laozhang.ai/api-capabilities/nano-banana-pro-image
 
 import { parseArgs } from 'node:util';
@@ -45,7 +45,7 @@ if (args.help) {
   console.log(`gen-image — Nano Banana Pro via laozhang.ai
 
 Required (one of):
-  --prompt        Full prompt text (250-500 words per research §2)
+  --prompt        Full prompt text (250-500 words per docs/context/miozuki-nano-banana-image-guide.md §2)
   --prompt-file   Path to a markdown file whose body is the prompt.
                   Use this for multi-line prompts to avoid shell escaping.
                   YAML frontmatter (--- ... ---) is stripped automatically.

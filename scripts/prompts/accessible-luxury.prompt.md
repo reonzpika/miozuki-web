@@ -4,8 +4,8 @@ purpose: Homepage "Accessible Luxury" mood band, full-bleed background under a 3
 model: gemini-3.1-flash-image-preview
 aspect: 3:2
 size: 2K
-template: editorial mood band (research §2 / templates §1)
-reviewer: pending owner sign-off (§5.5 gate)
+template: editorial mood band (guide §2 / templates §1)
+reviewer: pending owner sign-off (guide §13.4)
 date: 2026-04-08
 ---
 

@@ -29,7 +29,7 @@
     {
       "label": "Publish Changes",
       "type": "shell",
-      "command": "git add -A; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; git commit -m ('site update ' + (Get-Date -Format 'yyyy-MM-dd HH:mm')); if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; git push; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }",
+      "command": "git pull; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; git add -A; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; git commit -m ('site update ' + (Get-Date -Format 'yyyy-MM-dd HH:mm')); if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; git push; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }",
       "options": {
         "shell": {
           "executable": "powershell.exe",

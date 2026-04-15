@@ -18,7 +18,7 @@ Source documents this sprint draws from:
 - `docs/context/New Zealand fine jewellery DTC market a strategic landscape analysis.md` — NZ-specific positioning guardrails
 - `docs/context/miozuki-top5-pre-ad-priorities-2026.md` — owner-prioritised quick wins
 - `docs/context/moissanite research.md` — gemstone facts, Mohs/RI/colour grading sourcing
-- `~/.claude/projects/.../obsidian/context/nano-banana-pro-research.md` — canonical Nano Banana Pro prompt-engineering reference (used for §5 image work)
+- `docs/context/miozuki-nano-banana-image-guide.md` — canonical Nano Banana image guide for this repo (2026-04-15 rename from `nano-banana-pro-research.md`)
 
 ---
 
@@ -110,12 +110,12 @@ All eleven items below ship in one branch off `master`. None require external as
 
 This is a separate scope from the code-only Sprint 1 items. It exists because §1.9 (OG image) and §1.10 (Accessible Luxury) both need new visual assets and the photography track is on the non-code parallel timeline. Per the §5 scoping decision in the plan, AI-generated imagery is approved for everything except product macros. The strategy docs explicitly warn that AI imagery on a moissanite site is a brand-integrity risk because the buyer's primary objection is "does it look real?". The mitigation is the §5.5 sign-off gate, applied to every generated image.
 
-**Canonical reference**: `obsidian/context/nano-banana-pro-research.md` — full prompt-engineering theory, 7-part template (§2), photographic language (§3), anti-AI techniques (§4), hands and faces (§5), screens and on-image text (§6), negative-constraint blocks (§7), iteration workflow (§8), aspect ratios (§9), reference prompt (§10), quick checklist (§11). The new appendix §13 documents the laozhang.ai gateway integration and Claude Code script setup.
+**Canonical reference (current path)**: `docs/context/miozuki-nano-banana-image-guide.md` — same content family: 7-part template (§2), photographic language (§3), anti-AI techniques (§4), hands (§5), screens (§6), Miozuki negative blocks (§7), iteration (§8), aspect ratios (§9), example prompt (§10), checklist (§11), laozhang.ai integration (§13). Renamed from `nano-banana-pro-research.md` on 2026-04-15.
 
 ### §5.2 Tooling installed
 
 - **`scripts/gen-image.mjs`** (new) — Node 20+ ESM, no deps. Native `fetch`, `parseArgs` from `node:util`, `--env-file` for .env.local. CLI flags: `--prompt`, `--prompt-file` (multi-line markdown with optional YAML frontmatter), `--out`, `--aspect`, `--size`, `--model`, `--ref` (repeatable, max 14), `--help`. Defaults: `gemini-3.1-flash-image-preview`, 16:9, 2K. POSTs to `https://api.laozhang.ai/v1beta/models/{model}:generateContent`. Decodes the base64 image part from the response and writes the JPEG to `--out`.
-- **`scripts/prompts/_templates.md`** (new) — 5 brand-locked starter scaffolds: Editorial mood band, Blog hero, Atmospheric brand background, OG card / typographic, Founder portrait stand-in. Each scaffold is intentionally incomplete to force the operator to re-read research §2/§3/§4/§7/§11 and expand the scaffold to 250 to 500 words before generating. Top of file lists Miozuki-specific overrides: brand palette, editorial publication anchors (Kinfolk, Cereal, Vogue Italia, Wallpaper*, Monocle), film stocks, camera bodies, hand and jewellery negative constraints.
+- **`scripts/prompts/_templates.md`** (new) — 5 brand-locked starter scaffolds: Editorial mood band, Blog hero, Atmospheric brand background, OG card / typographic, Founder portrait stand-in. Each scaffold is intentionally incomplete to force the operator to re-read `docs/context/miozuki-nano-banana-image-guide.md` §2 / §3 / §4 / §7.1 / §11 and expand the scaffold to 250 to 500 words before generating. Top of file lists Miozuki-specific overrides: brand palette, editorial publication anchors (Kinfolk, Cereal, Vogue Italia, Wallpaper*, Monocle), film stocks, camera bodies, hand and jewellery negative constraints.
 - **`scripts/prompts/<slot>.prompt.md`** — sidecar audit trail, one per generated image. YAML frontmatter (slot, purpose, model, aspect, size, template, reviewer, date) plus the full expanded prompt body. The `gen-image.mjs` script strips the frontmatter automatically when `--prompt-file` is used.
 - **`public/generated/.gitkeep`** (new) — outputs land here, committed (not gitignored) because they ship as static assets.
 - **`package.json`** — added `"gen-image": "node --env-file=.env.local scripts/gen-image.mjs"`.
@@ -137,7 +137,7 @@ This is a separate scope from the code-only Sprint 1 items. It exists because §
 - **Sidecar**: `scripts/prompts/og-image.prompt.md`
 - **Specs**: 2752x1536, 16:9, 2.5 MB, gemini-3.1-flash-image-preview, single generation, ~28s
 - **Subject**: flat magazine masthead background. Cream cotton-rag paper with subtle grain. Two thin burgundy hairlines top and bottom, each broken in the centre by a small four-pointed diamond lozenge ornament. Pure cream negative space in the central two thirds.
-- **Reasoning**: OG card scaffold from `_templates.md`. Per research §6, on-image text is HIGH RISK for AI generation. Mitigation: generate the typographic background only and let `og:title` provide the brand name in the unfurl, or composite the wordmark later via `next/og` ImageResponse. Restricted to a strict two-colour palette (cream #F5F0E9 + burgundy #7B1E22) with massive negative-constraint block forbidding any letters, glyphs, monograms, or wordmarks.
+- **Reasoning**: OG card scaffold from `_templates.md`. Per image guide §6, on-image text is HIGH RISK for AI generation. Mitigation: generate the typographic background only and let `og:title` provide the brand name in the unfurl, or composite the wordmark later via `next/og` ImageResponse. Restricted to a strict two-colour palette (cream #F5F0E9 + burgundy #7B1E22) with massive negative-constraint block forbidding any letters, glyphs, monograms, or wordmarks.
 - **Sign-off gate (§5.5)**: 3 of 4 passed. No hallucinated text, perfect two-colour palette, reads as a real flatbed scan of a magazine divider page. Owner sign-off pending.
 - **Mounted in**: `app/layout.tsx` openGraph and twitter metadata blocks
 - **Future upgrade path**: switch to a `next/og` dynamic route at `app/og-image/route.tsx` that composes the Playfair "Miozuki" wordmark on top of this background, if the owner wants the wordmark visible in unfurls instead of relying on `og:title` text.
@@ -171,7 +171,7 @@ This is a separate scope from the code-only Sprint 1 items. It exists because §
 | `public/generated/.gitkeep` | §5.2 | new |
 | `public/generated/accessible-luxury.jpg` | §5.3 / §1.10 | new |
 | `public/generated/og-image.jpg` | §5.3 / §1.9 | new |
-| `obsidian/context/nano-banana-pro-research.md` | §5.1 | edit (appended §13) |
+| `docs/context/miozuki-nano-banana-image-guide.md` | §5.1 | renamed / retargeted 2026-04-15 (was `nano-banana-pro-research.md`) |
 
 ---
 

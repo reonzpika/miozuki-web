@@ -665,9 +665,19 @@ async function runContactForm(
       return
     }
 
-    await nameInput.fill('Audit Test')
-    await emailInput.fill('audit-test@example.com')
-    await messageInput.fill('Automated audit test submission — please ignore.')
+    // Native form submission may have navigated away — re-navigate to ensure form is present
+    if (!(await nameInput.isVisible({ timeout: 500 }).catch(() => false))) {
+      await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
+    }
+
+    const freshName = page.locator('#name')
+    const freshEmail = page.locator('#email')
+    const freshMessage = page.locator('#message')
+    const freshSubmit = page.getByRole('button', { name: 'Send Message' })
+
+    await freshName.fill('Audit Test')
+    await freshEmail.fill('audit-test@example.com')
+    await freshMessage.fill('Automated audit test submission — please ignore.')
 
     await takeScreenshot(page, 'flow-contact-filled.png')
 
@@ -676,7 +686,7 @@ async function runContactForm(
         r => r.url().includes('/api/contact'),
         { timeout: 15_000 }
       ),
-      submitBtn.click(),
+      freshSubmit.click(),
     ])
 
     const status = contactResponse.status()

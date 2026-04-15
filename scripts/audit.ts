@@ -842,3 +842,109 @@ async function runAPIChecks(
   await apiContext.dispose()
   return results
 }
+
+// ---- Report writer ----
+
+function generateMarkdown(report: AuditReport): string {
+  const { meta, summary, findings, pages, api_checks } = report
+
+  const findingBlock = (f: Finding) =>
+    `### ${f.id} — ${f.page} [${f.type}]\n` +
+    `- **Severity:** ${f.severity}\n` +
+    `- **Tier:** ${f.tier}\n` +
+    `- **URL:** ${f.url}\n` +
+    `- **Message:** ${f.message}` +
+    (f.screenshotPath ? `\n- **Screenshot:** ${f.screenshotPath}` : '')
+
+  const severities: Severity[] = ['critical', 'high', 'medium', 'low']
+  const sections = severities
+    .map(s => {
+      const items = findings.filter(f => f.severity === s)
+      if (!items.length) return ''
+      const title = s.charAt(0).toUpperCase() + s.slice(1)
+      return `## ${title} (${items.length})\n\n${items.map(findingBlock).join('\n\n')}`
+    })
+    .filter(Boolean)
+    .join('\n\n')
+
+  const pagesTable = [
+    '| Route | Status | Console Errors | Network Errors | Broken Images |',
+    '|-------|--------|---------------|----------------|---------------|',
+    ...pages.map(
+      p => `| ${p.route} | ${p.status} | ${p.console_errors} | ${p.network_errors} | ${p.broken_images} |`
+    ),
+  ].join('\n')
+
+  const apiTable = [
+    '| Endpoint | Method | Status | Result | Detail |',
+    '|----------|--------|--------|--------|--------|',
+    ...api_checks.map(
+      a => `| ${a.endpoint} | ${a.method} | ${a.status} | ${a.result} | ${a.detail} |`
+    ),
+  ].join('\n')
+
+  return [
+    `# Miozuki Audit — ${meta.date}`,
+    '',
+    '## Summary',
+    `- **Target:** ${meta.target}`,
+    `- **Duration:** ${meta.duration_seconds}s`,
+    `- **Pages crawled:** ${meta.pages_crawled}`,
+    `- **Total findings:** ${meta.total_findings}`,
+    `- Critical: ${summary.critical} | High: ${summary.high} | Medium: ${summary.medium} | Low: ${summary.low}`,
+    '',
+    `Full detail: docs/audit/audit-${meta.date}.json`,
+    '',
+    sections,
+    '',
+    '## Pages Crawled',
+    '',
+    pagesTable,
+    '',
+    '## API Checks',
+    '',
+    apiTable,
+  ].join('\n')
+}
+
+async function writeReport(
+  findings: Finding[],
+  pages: PageResult[],
+  apiChecks: APIResult[],
+  startTime: number
+): Promise<void> {
+  const durationSeconds = Math.round((Date.now() - startTime) / 1000)
+  const summary = {
+    critical: findings.filter(f => f.severity === 'critical').length,
+    high: findings.filter(f => f.severity === 'high').length,
+    medium: findings.filter(f => f.severity === 'medium').length,
+    low: findings.filter(f => f.severity === 'low').length,
+  }
+
+  const report: AuditReport = {
+    meta: {
+      date: CONFIG.date,
+      target: CONFIG.baseUrl,
+      duration_seconds: durationSeconds,
+      pages_crawled: pages.length,
+      total_findings: findings.length,
+    },
+    summary,
+    findings,
+    pages,
+    api_checks: apiChecks,
+  }
+
+  fs.mkdirSync(CONFIG.outputDir, { recursive: true })
+
+  const jsonPath = path.join(CONFIG.outputDir, `audit-${CONFIG.date}.json`)
+  fs.writeFileSync(jsonPath, JSON.stringify(report, null, 2))
+
+  const mdPath = path.join(CONFIG.outputDir, `audit-${CONFIG.date}.md`)
+  fs.writeFileSync(mdPath, generateMarkdown(report))
+
+  console.log(`\n--- Audit complete ---`)
+  console.log(`Findings: ${findings.length} (Critical: ${summary.critical}, High: ${summary.high}, Medium: ${summary.medium}, Low: ${summary.low})`)
+  console.log(`JSON report: ${jsonPath}`)
+  console.log(`MD summary:  ${mdPath}`)
+}

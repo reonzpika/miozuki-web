@@ -55,7 +55,7 @@ You can publish all your changes with a single key press instead of using the So
    {
      "key": "ctrl+alt+p",
      "command": "workbench.action.tasks.runTask",
-     "args": "Publish Changes"
+     "args": ["Publish Changes"]
    }
    ```
 3. Save the file (`Ctrl+S`)

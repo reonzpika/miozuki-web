@@ -179,6 +179,22 @@ async function discoverHandles(browser: Browser): Promise<Handles> {
       )]
     )
 
+    // Fallback: scrape best-sellers collection for product handles if main scrape is sparse
+    if (handles.products.length < 3) {
+      await page.goto(`${CONFIG.baseUrl}/collections/best-sellers`, {
+        waitUntil: 'networkidle',
+        timeout: CONFIG.pageTimeout,
+      })
+      const fallbackProducts = await page.$$eval('a[href*="/products/"]', links =>
+        [...new Set(
+          links
+            .map(l => (l as HTMLAnchorElement).href.match(/\/products\/([^/?#]+)/)?.[1])
+            .filter((h): h is string => !!h)
+        )]
+      )
+      handles.products = [...new Set([...handles.products, ...fallbackProducts])]
+    }
+
     handles.collections = await page.$$eval('a[href*="/collections/"]', links =>
       [...new Set(
         links
@@ -197,7 +213,7 @@ async function discoverHandles(browser: Browser): Promise<Handles> {
       [...new Set(
         links
           .map(l => (l as HTMLAnchorElement).href.match(/\/blogs\/news\/([^/?#]+)/)?.[1])
-          .filter((h): h is string => !!h)
+          .filter((h): h is string => !!h && h !== 'tagged')
       )]
     )
   } finally {

@@ -1,4 +1,4 @@
-import { chromium } from '@playwright/test'
+import { chromium, request as playwrightRequest } from '@playwright/test'
 import type { Browser, Page } from '@playwright/test'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -749,4 +749,96 @@ async function runEmailPopup(
   } finally {
     await page.close()
   }
+}
+
+// ---- Tier 3: API spot-checks ----
+
+async function runAPIChecks(
+  findings: Finding[],
+  counter: Counter
+): Promise<APIResult[]> {
+  const results: APIResult[] = []
+  const apiContext = await playwrightRequest.newContext({ baseURL: CONFIG.baseUrl })
+
+  // POST /api/subscribe
+  try {
+    const res = await apiContext.post('/api/subscribe', {
+      data: { email: 'audit-test@example.com', name: 'Audit Test' },
+    })
+    const status = res.status()
+    const ok = status === 200
+    results.push({
+      endpoint: '/api/subscribe',
+      method: 'POST',
+      status,
+      result: ok ? 'ok' : 'unexpected',
+      detail: ok ? 'Returned 200 ok:true' : `Unexpected status ${status}`,
+    })
+    if (!ok) {
+      findings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 3,
+        page: '/api/subscribe',
+        type: 'api-failure',
+        message: `POST /api/subscribe returned ${status} (expected 200)`,
+        url: `${CONFIG.baseUrl}/api/subscribe`,
+      }))
+    }
+  } catch (err) {
+    const msg = (err as Error).message
+    results.push({ endpoint: '/api/subscribe', method: 'POST', status: 0, result: 'unexpected', detail: `Request threw: ${msg}` })
+    findings.push(makeFinding(counter, {
+      severity: 'critical',
+      tier: 3,
+      page: '/api/subscribe',
+      type: 'api-failure',
+      message: `POST /api/subscribe threw: ${msg}`,
+      url: `${CONFIG.baseUrl}/api/subscribe`,
+    }))
+  }
+
+  // POST /api/contact
+  try {
+    const res = await apiContext.post('/api/contact', {
+      data: {
+        name: 'Audit Test',
+        email: 'audit-test@example.com',
+        order: '',
+        message: 'Automated audit test — please ignore.',
+      },
+    })
+    const status = res.status()
+    const ok = status === 200
+    results.push({
+      endpoint: '/api/contact',
+      method: 'POST',
+      status,
+      result: ok ? 'ok' : 'unexpected',
+      detail: ok ? 'Returned 200 ok:true' : `Unexpected status ${status}`,
+    })
+    if (!ok) {
+      findings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 3,
+        page: '/api/contact',
+        type: 'api-failure',
+        message: `POST /api/contact returned ${status} (expected 200)`,
+        url: `${CONFIG.baseUrl}/api/contact`,
+      }))
+    }
+  } catch (err) {
+    const msg = (err as Error).message
+    results.push({ endpoint: '/api/contact', method: 'POST', status: 0, result: 'unexpected', detail: `Request threw: ${msg}` })
+    findings.push(makeFinding(counter, {
+      severity: 'critical',
+      tier: 3,
+      page: '/api/contact',
+      type: 'api-failure',
+      message: `POST /api/contact threw: ${msg}`,
+      url: `${CONFIG.baseUrl}/api/contact`,
+    }))
+  }
+
+  await apiContext.dispose()
+  return results
 }

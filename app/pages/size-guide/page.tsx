@@ -49,6 +49,8 @@ export default function SizeGuidePage() {
               src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/Ring_Sizer_Chart_-_Miozuki_Cropped.jpg?v=1769656662"
               alt="Miozuki ring size chart"
               fill
+              priority
+              sizes="(min-width: 768px) 672px, 100vw"
               className="object-contain object-left"
             />
           </div>

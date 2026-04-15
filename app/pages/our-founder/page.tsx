@@ -37,6 +37,8 @@ export default function OurFounderPage() {
           src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/PXL_20241230_060931026_3_480x480.jpg?v=1767920670"
           alt="Ting Eguchi, founder of Miozuki"
           fill
+          priority
+          sizes="256px"
           className="object-cover object-top"
         />
       </div>

@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "spellcheck": "cspell lint \"{app,components,lib}/**/*.{ts,tsx,css}\" \"README.md\" \"CLAUDE.md\" \"AGENTS.md\" --no-progress",
-    "gen-image": "node --env-file=.env.local scripts/gen-image.mjs"
+    "gen-image": "node --env-file=.env.local scripts/gen-image.mjs",
+    "audit": "tsx scripts/audit.ts",
+    "audit:headless": "tsx scripts/audit.ts --headless"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
@@ -17,6 +19,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -25,6 +28,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

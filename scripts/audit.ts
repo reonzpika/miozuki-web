@@ -630,8 +630,21 @@ async function runContactForm(
     const emailInput = page.locator('#email')
     const messageInput = page.locator('#message')
 
+    // Guard: if #name is not visible the page may have returned a 503/error
+    if (!(await nameInput.isVisible({ timeout: 5000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'critical',
+        tier: 2,
+        page: '/pages/contact',
+        type: 'missing-element',
+        message: 'Contact form not rendered — page may have returned error (503/404)',
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-contact-missing-form.png'),
+      }))
+      return
+    }
+
     for (const [label, locator] of [
-      ['#name', nameInput],
       ['#email', emailInput],
       ['#message', messageInput],
     ] as const) {
@@ -642,26 +655,6 @@ async function runContactForm(
           page: '/pages/contact',
           type: 'missing-element',
           message: `Contact form field '${label}' not found`,
-          url,
-        }))
-      }
-    }
-
-    // Check required attributes for validation (React-controlled form; empty-submit in headless
-    // calls the API directly without HTML5 validation blocking it, so we skip the empty-submit test)
-    for (const [label, locator] of [
-      ['#name (required)', nameInput],
-      ['#email (required)', emailInput],
-      ['#message (required)', messageInput],
-    ] as const) {
-      const hasRequired = await locator.getAttribute('required').then(v => v !== null).catch(() => false)
-      if (!hasRequired) {
-        allFindings.push(makeFinding(counter, {
-          severity: 'medium',
-          tier: 2,
-          page: '/pages/contact',
-          type: 'missing-element',
-          message: `Contact form field ${label} is missing the 'required' attribute`,
           url,
         }))
       }

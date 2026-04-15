@@ -57,7 +57,7 @@ export default function EmailCapture() {
         </h2>
 
         <p className="text-sm text-cream/50 leading-relaxed mb-8 max-w-sm mx-auto">
-          Join the list for early access to new collections and the occasional piece that doesn&apos;t make it to the main site.
+          Join the list for early access to new collections and the occasional piece that doesn't make it to the main site.
         </p>
 
         {submitted ? (

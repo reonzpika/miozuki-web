@@ -53,7 +53,7 @@ export default function OurFounderPage() {
           vulnerability and the resilience.
         </p>
         <p className="text-sm text-charcoal/70 leading-relaxed italic">
-          I created Miozuki to honor this philosophy — just like our pearl and moissanite
+          I created Miozuki to honour this philosophy — just like our pearl and moissanite
           jewellery. Miozuki is for the woman who glows like the moon, flows like water —
           graceful, yet unforgettable.&rdquo;
         </p>

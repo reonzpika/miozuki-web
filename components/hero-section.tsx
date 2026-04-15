@@ -5,8 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const LINES = [
-  { text: 'Fine jewellery', em: false },
-  { text: 'inspired by the moon.', em: true },
+  { text: 'Fine jewellery,', em: false },
+  { text: 'reimagined', em: true },
 ];
 
 const container = {

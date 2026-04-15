@@ -69,7 +69,7 @@ export default function BlogTagFilter({ articles }: { articles: Article[] }) {
 
       {/* Articles grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filtered.map((article) => (
+        {filtered.map((article, i) => (
           <Link
             key={article.handle}
             href={`/blogs/news/${article.handle}`}
@@ -81,6 +81,7 @@ export default function BlogTagFilter({ articles }: { articles: Article[] }) {
                   src={article.image.url}
                   alt={article.image.altText ?? article.title}
                   fill
+                  priority={i < 3}
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />

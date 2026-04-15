@@ -28,7 +28,7 @@ export default async function CollectionsPage() {
         <p className="text-center text-charcoal/40 py-24">No collections found.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {collections.map((collection) => (
+          {collections.map((collection, i) => (
             <Link
               key={collection.id}
               href={`/collections/${collection.handle}`}
@@ -40,6 +40,7 @@ export default async function CollectionsPage() {
                     src={collection.image.url}
                     alt={collection.image.altText ?? collection.title}
                     fill
+                    priority={i < 3}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />

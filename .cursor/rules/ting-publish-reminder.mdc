@@ -1,0 +1,37 @@
+---
+description: After meaningful edits in this repo, remind Ting to run Publish Changes (Ctrl+Alt+P).
+alwaysApply: true
+---
+
+# Ting: publish reminder after significant work
+
+This rule applies only to **Ting’s workflow** in **miozuki-web** (no branching or PR talk).
+
+## When to add a reminder
+
+After **you** (the agent) **change files** in this repository, decide if the change is **significant** for the live site or Ting’s preview.
+
+**Treat as significant** (non-exhaustive):
+
+- Anything that affects **UI**, layout, styling, or visible copy on the site (e.g. `app/`, `components/`, `globals.css`, page content).
+- Completing a **planned task** or user-requested change that Ting would expect to see on **http://localhost:3000** or on production.
+- Shopify-facing or customer-visible behaviour wired through this codebase.
+
+**Usually not significant** (no reminder unless paired with meaningful product work):
+
+- Internal docs only (e.g. `docs/`, guides), comments-only edits, formatting-only churn.
+- Generated or build output (e.g. `.next/`), lockfiles, env examples, unless Ting explicitly asked to publish those.
+
+If unsure, prefer a **short** reminder; Ting can always skip publishing.
+
+## What to say
+
+When significant, end your reply with a **brief** note in plain language, NZ English, for example:
+
+- That the changes are ready to check locally, and when happy she can publish with **`Ctrl+Alt+P`** (the **Publish Changes** task from **TING-GUIDE.md**).
+
+Do **not** lecture about Git branches, PRs, or the terminal unless something failed.
+
+## How often
+
+You may remind **multiple times in one session** when **new** significant edits happen after you already reminded (e.g. another batch of UI work). Do **not** repeat the same reminder after trivial follow-ups (single-line tweak, typo) with no new meaningful surface-area change.

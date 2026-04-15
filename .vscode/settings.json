@@ -2,5 +2,6 @@
   "git.postCommitCommand": "sync",
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
-  "git.smartCommitChanges": "all"
+  "git.smartCommitChanges": "all",
+  "workbench.startupEditor": "none"
 }

@@ -43,6 +43,29 @@ That's it. The site is now running locally.
 
 ---
 
+## Quick publish with one key (one-time setup)
+
+You can publish all your changes with a single key press instead of using the Source Control panel.
+
+**Set it up once:**
+
+1. In Cursor, press `Ctrl+Shift+P` and search for **"Open Keyboard Shortcuts (JSON)"**
+2. A file opens. Add this inside the `[...]` brackets:
+   ```json
+   {
+     "key": "ctrl+alt+p",
+     "command": "workbench.action.tasks.runTask",
+     "args": "Publish Changes"
+   }
+   ```
+3. Save the file (`Ctrl+S`)
+
+**To use:** Press `Ctrl+Alt+P` at any time. Cursor will commit and push all your changes automatically. The commit is timestamped so you can track when updates were made.
+
+A terminal panel will briefly show the git output, then close. If it stays open with an error, nothing was published — message Ryo.
+
+---
+
 ## Bookmarks to save
 
 | URL | What it is |

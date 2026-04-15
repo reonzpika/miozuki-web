@@ -25,5 +25,23 @@
         }
       }
     }
+  ,
+    {
+      "label": "Publish Changes",
+      "type": "shell",
+      "command": "git add -A; git commit -m \"site update $(Get-Date -Format 'yyyy-MM-dd HH:mm')\"; git push",
+      "options": {
+        "shell": {
+          "executable": "powershell.exe",
+          "args": ["-NoProfile", "-Command"]
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": false
+      },
+      "problemMatcher": []
+    }
   ]
 }

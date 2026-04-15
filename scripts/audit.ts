@@ -574,3 +574,103 @@ async function runCheckoutFlow(
     await page.close()
   }
 }
+
+// ---- Tier 2c: Contact form ----
+
+async function runContactForm(
+  browser: Browser,
+  allFindings: Finding[],
+  counter: Counter
+): Promise<void> {
+  const url = `${CONFIG.baseUrl}/pages/contact`
+  const page = await browser.newPage()
+
+  attachListeners(page, allFindings, counter, '/pages/contact', url)
+
+  try {
+    await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
+
+    const nameInput = page.locator('#name')
+    const emailInput = page.locator('#email')
+    const messageInput = page.locator('#message')
+
+    for (const [label, locator] of [
+      ['#name', nameInput],
+      ['#email', emailInput],
+      ['#message', messageInput],
+    ] as const) {
+      if (!(await locator.isVisible({ timeout: 3000 }).catch(() => false))) {
+        allFindings.push(makeFinding(counter, {
+          severity: 'high',
+          tier: 2,
+          page: '/pages/contact',
+          type: 'missing-element',
+          message: `Contact form field '${label}' not found`,
+          url,
+        }))
+      }
+    }
+
+    const submitBtn = page.getByRole('button', { name: 'Send Message' })
+    await submitBtn.click()
+    await page.waitForTimeout(500)
+
+    const successMsg = page.getByText('Message received.')
+    if (await successMsg.isVisible({ timeout: 1000 }).catch(() => false)) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 2,
+        page: '/pages/contact',
+        type: 'flow-failure',
+        message: 'Contact form accepted empty submission — required validation not blocking',
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-contact-empty-accepted.png'),
+      }))
+      return
+    }
+
+    await nameInput.fill('Audit Test')
+    await emailInput.fill('audit-test@example.com')
+    await messageInput.fill('Automated audit test submission — please ignore.')
+
+    await takeScreenshot(page, 'flow-contact-filled.png')
+
+    const [contactResponse] = await Promise.all([
+      page.waitForResponse(
+        r => r.url().includes('/api/contact'),
+        { timeout: 15_000 }
+      ),
+      submitBtn.click(),
+    ])
+
+    const status = contactResponse.status()
+    if (status !== 200) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 2,
+        page: '/pages/contact',
+        type: 'api-failure',
+        message: `/api/contact returned ${status} (expected 200)`,
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-contact-api-error.png'),
+      }))
+    } else {
+      await page.waitForTimeout(500)
+      if (!(await successMsg.isVisible({ timeout: 2000 }).catch(() => false))) {
+        allFindings.push(makeFinding(counter, {
+          severity: 'medium',
+          tier: 2,
+          page: '/pages/contact',
+          type: 'flow-failure',
+          message: '/api/contact returned 200 but success message did not appear',
+          url,
+          screenshotPath: await takeScreenshot(page, 'flow-contact-no-success.png'),
+        }))
+      } else {
+        await takeScreenshot(page, 'flow-contact-success.png')
+      }
+    }
+  } finally {
+    await page.close()
+  }
+}

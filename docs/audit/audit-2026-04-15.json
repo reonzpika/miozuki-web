@@ -1,1111 +1,296 @@
 {
   "meta": {
     "date": "2026-04-15",
-    "target": "https://miozuki.co.nz",
-    "duration_seconds": 134,
+    "target": "http://localhost:3001",
+    "duration_seconds": 102,
     "pages_crawled": 19,
-    "total_findings": 100
+    "total_findings": 10
   },
   "summary": {
-    "critical": 3,
-    "high": 13,
-    "medium": 81,
-    "low": 3
+    "critical": 0,
+    "high": 0,
+    "medium": 4,
+    "low": 6
   },
   "findings": [
     {
       "id": "F001",
-      "severity": "high",
+      "severity": "low",
       "tier": 1,
-      "page": "/",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=26f6da62-0a4e-4c68-a8cd-5afa73fddcac&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/"
+      "page": "/collections",
+      "type": "console-warning",
+      "message": "Image with src \"https://cdn.shopify.com/s/files/1/0797/0819/3023/collections/bridal-jewellery-nz-4361781.jpg?v=1773183851\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRead more: https://nextjs.org/docs/app/api-reference/components/image#loading",
+      "url": "http://localhost:3001/collections"
     },
     {
       "id": "F002",
-      "severity": "medium",
+      "severity": "low",
       "tier": 1,
-      "page": "/",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/"
+      "page": "/pages/our-founder",
+      "type": "console-warning",
+      "message": "Image with src \"https://cdn.shopify.com/s/files/1/0797/0819/3023/files/PXL_20241230_060931026_3_480x480.jpg?v=1767920670\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRead more: https://nextjs.org/docs/app/api-reference/components/image#loading",
+      "url": "http://localhost:3001/pages/our-founder"
     },
     {
       "id": "F003",
-      "severity": "medium",
+      "severity": "low",
       "tier": 1,
-      "page": "/",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/"
+      "page": "/pages/our-founder",
+      "type": "console-warning",
+      "message": "Image with src \"https://cdn.shopify.com/s/files/1/0797/0819/3023/files/PXL_20241230_060931026_3_480x480.jpg?v=1767920670\" has \"fill\" but is missing \"sizes\" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes",
+      "url": "http://localhost:3001/pages/our-founder"
     },
     {
       "id": "F004",
-      "severity": "high",
+      "severity": "low",
       "tier": 1,
-      "page": "/",
-      "type": "broken-image",
-      "message": "2 broken image(s) detected",
-      "url": "https://miozuki.co.nz/"
+      "page": "/pages/size-guide",
+      "type": "console-warning",
+      "message": "Image with src \"https://cdn.shopify.com/s/files/1/0797/0819/3023/files/Ring_Sizer_Chart_-_Miozuki_Cropped.jpg?v=1769656662\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRead more: https://nextjs.org/docs/app/api-reference/components/image#loading",
+      "url": "http://localhost:3001/pages/size-guide"
     },
     {
       "id": "F005",
-      "severity": "medium",
+      "severity": "low",
       "tier": 1,
-      "page": "/collections",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=cd0a9adb-3478-4730-818d-65d47cb2882d&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/collections"
+      "page": "/pages/size-guide",
+      "type": "console-warning",
+      "message": "Image with src \"https://cdn.shopify.com/s/files/1/0797/0819/3023/files/Ring_Sizer_Chart_-_Miozuki_Cropped.jpg?v=1769656662\" has \"fill\" but is missing \"sizes\" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes",
+      "url": "http://localhost:3001/pages/size-guide"
     },
     {
       "id": "F006",
-      "severity": "medium",
+      "severity": "low",
       "tier": 1,
-      "page": "/collections",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/collections"
+      "page": "/blogs/news",
+      "type": "console-warning",
+      "message": "Image with src \"https://cdn.shopify.com/s/files/1/0797/0819/3023/articles/guide-to-moissanite-vs-diamond-nz-4598238.jpg?v=1773183850\" was detected as the Largest Contentful Paint (LCP). Please add the `loading=\"eager\"` property if this image is above the fold.\nRead more: https://nextjs.org/docs/app/api-reference/components/image#loading",
+      "url": "http://localhost:3001/blogs/news"
     },
     {
       "id": "F007",
       "severity": "medium",
       "tier": 1,
-      "page": "/collections",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/collections"
+      "page": "/collections/moissanite-rings",
+      "type": "broken-image",
+      "message": "4 broken image(s) detected",
+      "url": "http://localhost:3001/collections/moissanite-rings"
     },
     {
       "id": "F008",
       "severity": "medium",
       "tier": 1,
-      "page": "/collections",
+      "page": "/collections/moissanite-ear-rings",
       "type": "broken-image",
-      "message": "1 broken image(s) detected",
-      "url": "https://miozuki.co.nz/collections"
+      "message": "16 broken image(s) detected",
+      "url": "http://localhost:3001/collections/moissanite-ear-rings"
     },
     {
       "id": "F009",
       "severity": "medium",
       "tier": 1,
-      "page": "/pages/about-us",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=0a467bec-61fc-484c-92e1-be175cb922c3&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/about-us"
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "broken-image",
+      "message": "9 broken image(s) detected",
+      "url": "http://localhost:3001/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
     },
     {
       "id": "F010",
       "severity": "medium",
       "tier": 1,
-      "page": "/pages/about-us",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/about-us"
-    },
-    {
-      "id": "F011",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/about-us",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/about-us"
-    },
-    {
-      "id": "F012",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/contact",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=a3e26d2b-562f-45df-95c8-57f35059cd06&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/contact"
-    },
-    {
-      "id": "F013",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/contact",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/contact"
-    },
-    {
-      "id": "F014",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/contact",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/contact"
-    },
-    {
-      "id": "F015",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/our-founder",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=44317f70-0311-425c-bbaa-3c6f1d40626b&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/our-founder"
-    },
-    {
-      "id": "F016",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/our-founder",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/our-founder"
-    },
-    {
-      "id": "F017",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/our-founder",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/our-founder"
-    },
-    {
-      "id": "F018",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/jewellery-care-guide",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=1fddcb10-5c7f-4f55-bc5f-cfd416585d8e&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/jewellery-care-guide"
-    },
-    {
-      "id": "F019",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/jewellery-care-guide",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/jewellery-care-guide"
-    },
-    {
-      "id": "F020",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/jewellery-care-guide",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/jewellery-care-guide"
-    },
-    {
-      "id": "F021",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/jewellery-care-guide",
-      "type": "console-error",
-      "message": "Failed to load resource: net::ERR_NETWORK_CHANGED",
-      "url": "https://miozuki.co.nz/pages/jewellery-care-guide"
-    },
-    {
-      "id": "F022",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/jewellery-care-guide",
-      "type": "console-error",
-      "message": "Failed to load resource: net::ERR_NETWORK_CHANGED",
-      "url": "https://miozuki.co.nz/pages/jewellery-care-guide"
-    },
-    {
-      "id": "F023",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/moissanite-faq",
-      "type": "network-error",
-      "message": "HTTP 404 — https://miozuki.co.nz/cdn/assets/sprites-core-c9exbsc1.svg",
-      "url": "https://miozuki.co.nz/pages/moissanite-faq"
-    },
-    {
-      "id": "F024",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/moissanite-faq",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 404 ()",
-      "url": "https://miozuki.co.nz/pages/moissanite-faq"
-    },
-    {
-      "id": "F025",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/moissanite-faq",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=75266e9d-ae53-49a4-a4a9-77fde8ac589a&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/moissanite-faq"
-    },
-    {
-      "id": "F026",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/moissanite-faq",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/moissanite-faq"
-    },
-    {
-      "id": "F027",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/moissanite-faq",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/moissanite-faq"
-    },
-    {
-      "id": "F028",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/moissanite-faq",
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
       "type": "broken-image",
-      "message": "1 broken image(s) detected",
-      "url": "https://miozuki.co.nz/pages/moissanite-faq"
-    },
-    {
-      "id": "F029",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/returns-refunds-policy",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=594b8dc1-b7e3-425d-b370-f46aa7ba44bc&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/returns-refunds-policy"
-    },
-    {
-      "id": "F030",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/returns-refunds-policy",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/returns-refunds-policy"
-    },
-    {
-      "id": "F031",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/returns-refunds-policy",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/returns-refunds-policy"
-    },
-    {
-      "id": "F032",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/size-guide",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=4c0c73d3-d9db-45e3-9bfa-8038368a296f&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/size-guide"
-    },
-    {
-      "id": "F033",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/size-guide",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/size-guide"
-    },
-    {
-      "id": "F034",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/size-guide",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/size-guide"
-    },
-    {
-      "id": "F035",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/size-guide",
-      "type": "broken-image",
-      "message": "1 broken image(s) detected",
-      "url": "https://miozuki.co.nz/pages/size-guide"
-    },
-    {
-      "id": "F036",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/warranty-cover",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=adcc1987-8a75-4a36-9d3e-c0e5b85116bd&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/warranty-cover"
-    },
-    {
-      "id": "F037",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/warranty-cover",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/warranty-cover"
-    },
-    {
-      "id": "F038",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/warranty-cover",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/warranty-cover"
-    },
-    {
-      "id": "F039",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/warranty-cover",
-      "type": "broken-image",
-      "message": "1 broken image(s) detected",
-      "url": "https://miozuki.co.nz/pages/warranty-cover"
-    },
-    {
-      "id": "F040",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/policies/shipping-policy",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=13f39c6e-34e9-4ccf-822b-9707151766d8&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/policies/shipping-policy"
-    },
-    {
-      "id": "F041",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/policies/shipping-policy",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/policies/shipping-policy"
-    },
-    {
-      "id": "F042",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/policies/shipping-policy",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/policies/shipping-policy"
-    },
-    {
-      "id": "F043",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=1230455f-6f87-4c77-b816-81b99314c97c&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/blogs/news"
-    },
-    {
-      "id": "F044",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/blogs/news"
-    },
-    {
-      "id": "F045",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/blogs/news"
-    },
-    {
-      "id": "F046",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news",
-      "type": "broken-image",
-      "message": "9 broken image(s) detected",
-      "url": "https://miozuki.co.nz/blogs/news"
-    },
-    {
-      "id": "F047",
-      "severity": "high",
-      "tier": 1,
-      "page": "/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring",
-      "type": "js-exception",
-      "message": "jdgm is not defined",
-      "url": "https://miozuki.co.nz/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring"
-    },
-    {
-      "id": "F048",
-      "severity": "high",
-      "tier": 1,
-      "page": "/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=93d1e7a6-caf0-46b1-9012-1fd9af996033&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring"
-    },
-    {
-      "id": "F049",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring"
-    },
-    {
-      "id": "F050",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring"
-    },
-    {
-      "id": "F051",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring",
-      "type": "console-error",
-      "message": "Error producing monorail event MonorailRequestError: Error completing request. A network failure may have prevented the request from completing. Error: TypeError: Failed to fetch. Schemas: shopify_pay_page_load/2.7\n    at D.produce (https://cdn.shopify.com/shopifycloud/arrive-server/pay/vite-pay/assets/AnalyticsProvider-BjWWtAtf.js:1:6470)",
-      "url": "https://miozuki.co.nz/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring"
-    },
-    {
-      "id": "F052",
-      "severity": "high",
-      "tier": 1,
-      "page": "/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring",
-      "type": "broken-image",
-      "message": "3 broken image(s) detected",
-      "url": "https://miozuki.co.nz/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring"
-    },
-    {
-      "id": "F053",
-      "severity": "high",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=7d697ae9-45e5-4ed1-a5c4-85a556325b8a&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F054",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F055",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F056",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Error producing monorail event MonorailRequestError: Error completing request. A network failure may have prevented the request from completing. Error: TypeError: Failed to fetch. Schemas: shopify_pay_page_load/2.7\n    at D.produce (https://cdn.shopify.com/shopifycloud/arrive-server/pay/vite-pay/assets/AnalyticsProvider-BjWWtAtf.js:1:6470)",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F057",
-      "severity": "high",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "broken-image",
-      "message": "11 broken image(s) detected",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F058",
-      "severity": "high",
-      "tier": 1,
-      "page": "/products/pear-cut-pave-moissanite-ring-nz",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=ebad507d-9647-4c47-954e-08fc02bab6dc&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz"
-    },
-    {
-      "id": "F059",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/pear-cut-pave-moissanite-ring-nz",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz"
-    },
-    {
-      "id": "F060",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/pear-cut-pave-moissanite-ring-nz",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz"
-    },
-    {
-      "id": "F061",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/pear-cut-pave-moissanite-ring-nz",
-      "type": "console-error",
-      "message": "Error producing monorail event MonorailRequestError: Error completing request. A network failure may have prevented the request from completing. Error: TypeError: Failed to fetch. Schemas: shopify_pay_page_load/2.7\n    at D.produce (https://cdn.shopify.com/shopifycloud/arrive-server/pay/vite-pay/assets/AnalyticsProvider-BjWWtAtf.js:1:6470)",
-      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz"
-    },
-    {
-      "id": "F062",
-      "severity": "high",
-      "tier": 1,
-      "page": "/products/pear-cut-pave-moissanite-ring-nz",
-      "type": "broken-image",
-      "message": "8 broken image(s) detected",
-      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz"
-    },
-    {
-      "id": "F063",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/collections/best-sellers",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=2252b69e-69c9-4487-894b-2dac6a5153a3&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/collections/best-sellers"
-    },
-    {
-      "id": "F064",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/collections/best-sellers",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/collections/best-sellers"
-    },
-    {
-      "id": "F065",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/collections/best-sellers",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/collections/best-sellers"
-    },
-    {
-      "id": "F066",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/collections/best-sellers",
-      "type": "broken-image",
-      "message": "3 broken image(s) detected",
-      "url": "https://miozuki.co.nz/collections/best-sellers"
-    },
-    {
-      "id": "F067",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/collections/all-moissanite-pearl-nz",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=cf00c1d6-4a0f-4df7-aad8-456dfbf94dad&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/collections/all-moissanite-pearl-nz"
-    },
-    {
-      "id": "F068",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/collections/all-moissanite-pearl-nz",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/collections/all-moissanite-pearl-nz"
-    },
-    {
-      "id": "F069",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/collections/all-moissanite-pearl-nz",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/collections/all-moissanite-pearl-nz"
-    },
-    {
-      "id": "F070",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/collections/all-moissanite-pearl-nz",
-      "type": "broken-image",
-      "message": "35 broken image(s) detected",
-      "url": "https://miozuki.co.nz/collections/all-moissanite-pearl-nz"
-    },
-    {
-      "id": "F071",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news/best-bridesmaid-jewellery-gifts-guide",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=458bfb07-3226-4ddf-a058-caba5edcca31&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/blogs/news/best-bridesmaid-jewellery-gifts-guide"
-    },
-    {
-      "id": "F072",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news/best-bridesmaid-jewellery-gifts-guide",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/blogs/news/best-bridesmaid-jewellery-gifts-guide"
-    },
-    {
-      "id": "F073",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news/best-bridesmaid-jewellery-gifts-guide",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/blogs/news/best-bridesmaid-jewellery-gifts-guide"
-    },
-    {
-      "id": "F074",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news/guide-to-our-best-baroque-pearl-earrings",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=045e61fb-f63e-4f67-9e0e-cd1841557d0e&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/blogs/news/guide-to-our-best-baroque-pearl-earrings"
-    },
-    {
-      "id": "F075",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news/guide-to-our-best-baroque-pearl-earrings",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/blogs/news/guide-to-our-best-baroque-pearl-earrings"
-    },
-    {
-      "id": "F076",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news/guide-to-our-best-baroque-pearl-earrings",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/blogs/news/guide-to-our-best-baroque-pearl-earrings"
-    },
-    {
-      "id": "F077",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/blogs/news/guide-to-our-best-baroque-pearl-earrings",
-      "type": "broken-image",
-      "message": "1 broken image(s) detected",
-      "url": "https://miozuki.co.nz/blogs/news/guide-to-our-best-baroque-pearl-earrings"
-    },
-    {
-      "id": "F078",
-      "severity": "high",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=fa255aac-42b1-49e2-ac2e-7195135ccff0&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F079",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F080",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F081",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Error producing monorail event MonorailRequestError: Error completing request. A network failure may have prevented the request from completing. Error: TypeError: Failed to fetch. Schemas: shopify_pay_page_load/2.7\n    at D.produce (https://cdn.shopify.com/shopifycloud/arrive-server/pay/vite-pay/assets/AnalyticsProvider-BjWWtAtf.js:1:6470)",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F082",
-      "severity": "low",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-warning",
-      "message": "Multiple versions of Shopify.trackingConsent or Shopify.customerPrivacy loaded -  Version 'v0.1' is already loaded but replacing with version 'v0.1'.\n\nThis could result in unexpected behavior. See documentation https://shopify.dev/docs/api/customer-privacy for more information.",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F083",
-      "severity": "low",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-warning",
-      "message": "Klaviyo tracking is disabled. To enable, set the cookie \"__kla_off\" to false. {is_robot: true, __kla_off: }",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F084",
-      "severity": "low",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-warning",
-      "message": "Specifying 'overflow: visible' on img, video and canvas tags may cause them to produce visual content outside of the element bounds. See https://github.com/WICG/view-transitions/blob/main/debugging_overflow_on_images.md for details.",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F085",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Access to XMLHttpRequest at 'https://a.klaviyo.com/onsite/track-analytics?company_id=SyQaz5' from origin 'https://miozuki.co.nz' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F086",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Failed to load resource: net::ERR_FAILED",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F087",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Access to XMLHttpRequest at 'https://a.klaviyo.com/onsite/track-analytics?company_id=SyQaz5' from origin 'https://miozuki.co.nz' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F088",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Failed to load resource: net::ERR_FAILED",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F089",
-      "severity": "high",
-      "tier": 2,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "flow-failure",
-      "message": "Add to Cart button did not change state after click",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring",
-      "screenshotPath": "docs/audit/screenshots/flow-cart-no-state-change.png"
-    },
-    {
-      "id": "F090",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Access to XMLHttpRequest at 'https://a.klaviyo.com/onsite/track-analytics?company_id=SyQaz5' from origin 'https://miozuki.co.nz' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F091",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/products/classic-moissanite-solitaire-ring",
-      "type": "console-error",
-      "message": "Failed to load resource: net::ERR_FAILED",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
-    },
-    {
-      "id": "F092",
-      "severity": "critical",
-      "tier": 2,
-      "page": "cart-drawer",
-      "type": "flow-failure",
-      "message": "Cart drawer did not open after clicking cart icon",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring",
-      "screenshotPath": "docs/audit/screenshots/flow-cart-drawer-closed.png"
-    },
-    {
-      "id": "F093",
-      "severity": "critical",
-      "tier": 2,
-      "page": "cart-drawer",
-      "type": "missing-element",
-      "message": "Checkout link not visible in cart drawer footer",
-      "url": "https://miozuki.co.nz",
-      "screenshotPath": "docs/audit/screenshots/flow-checkout-no-link.png"
-    },
-    {
-      "id": "F094",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/contact",
-      "type": "network-error",
-      "message": "HTTP 403 — https://shop.app/pay/hop?analytics_trace_id=1da2757f-75a4-4f49-8cd1-902846833479&target_origin=https%3A%2F%2Fmiozuki.co.nz&client_handle=nassuu-px.myshopify.com",
-      "url": "https://miozuki.co.nz/pages/contact"
-    },
-    {
-      "id": "F095",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/contact",
-      "type": "console-error",
-      "message": "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
-      "url": "https://miozuki.co.nz/pages/contact"
-    },
-    {
-      "id": "F096",
-      "severity": "medium",
-      "tier": 1,
-      "page": "/pages/contact",
-      "type": "console-error",
-      "message": "Failed to load resource: the server responded with a status of 403 ()",
-      "url": "https://miozuki.co.nz/pages/contact"
-    },
-    {
-      "id": "F097",
-      "severity": "critical",
-      "tier": 2,
-      "page": "/pages/contact",
-      "type": "missing-element",
-      "message": "Contact form not rendered — page may have returned error (503/404)",
-      "url": "https://miozuki.co.nz/pages/contact",
-      "screenshotPath": "docs/audit/screenshots/flow-contact-missing-form.png"
-    },
-    {
-      "id": "F098",
-      "severity": "medium",
-      "tier": 2,
-      "page": "/",
-      "type": "flow-failure",
-      "message": "Email popup did not appear after 5s on fresh session",
-      "url": "https://miozuki.co.nz",
-      "screenshotPath": "docs/audit/screenshots/flow-popup-not-shown.png"
-    },
-    {
-      "id": "F099",
-      "severity": "high",
-      "tier": 3,
-      "page": "/api/subscribe",
-      "type": "api-failure",
-      "message": "POST /api/subscribe returned 404 (expected 200)",
-      "url": "https://miozuki.co.nz/api/subscribe"
-    },
-    {
-      "id": "F100",
-      "severity": "high",
-      "tier": 3,
-      "page": "/api/contact",
-      "type": "api-failure",
-      "message": "POST /api/contact returned 404 (expected 200)",
-      "url": "https://miozuki.co.nz/api/contact"
+      "message": "22 broken image(s) detected",
+      "url": "http://localhost:3001/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
     }
   ],
   "pages": [
     {
       "route": "/",
-      "url": "https://miozuki.co.nz/",
+      "url": "http://localhost:3001/",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
-      "broken_images": 2,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-homepage.png"
     },
     {
       "route": "/collections",
-      "url": "https://miozuki.co.nz/collections",
+      "url": "http://localhost:3001/collections",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
-      "broken_images": 1,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-collections.png"
     },
     {
       "route": "/pages/about-us",
-      "url": "https://miozuki.co.nz/pages/about-us",
+      "url": "http://localhost:3001/pages/about-us",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
+      "console_errors": 0,
+      "network_errors": 0,
       "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-pages-about-us.png"
     },
     {
       "route": "/pages/contact",
-      "url": "https://miozuki.co.nz/pages/contact",
+      "url": "http://localhost:3001/pages/contact",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
+      "console_errors": 0,
+      "network_errors": 0,
       "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-pages-contact.png"
     },
     {
       "route": "/pages/our-founder",
-      "url": "https://miozuki.co.nz/pages/our-founder",
+      "url": "http://localhost:3001/pages/our-founder",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
+      "console_errors": 0,
+      "network_errors": 0,
       "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-pages-our-founder.png"
     },
     {
       "route": "/pages/jewellery-care-guide",
-      "url": "https://miozuki.co.nz/pages/jewellery-care-guide",
+      "url": "http://localhost:3001/pages/jewellery-care-guide",
       "status": 200,
-      "console_errors": 4,
-      "network_errors": 1,
+      "console_errors": 0,
+      "network_errors": 0,
       "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-pages-jewellery-care-guide.png"
     },
     {
       "route": "/pages/moissanite-faq",
-      "url": "https://miozuki.co.nz/pages/moissanite-faq",
+      "url": "http://localhost:3001/pages/moissanite-faq",
       "status": 200,
-      "console_errors": 3,
-      "network_errors": 2,
-      "broken_images": 1,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-pages-moissanite-faq.png"
     },
     {
       "route": "/pages/returns-refunds-policy",
-      "url": "https://miozuki.co.nz/pages/returns-refunds-policy",
+      "url": "http://localhost:3001/pages/returns-refunds-policy",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
+      "console_errors": 0,
+      "network_errors": 0,
       "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-pages-returns-refunds-policy.png"
     },
     {
       "route": "/pages/size-guide",
-      "url": "https://miozuki.co.nz/pages/size-guide",
+      "url": "http://localhost:3001/pages/size-guide",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
-      "broken_images": 1,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-pages-size-guide.png"
     },
     {
       "route": "/pages/warranty-cover",
-      "url": "https://miozuki.co.nz/pages/warranty-cover",
+      "url": "http://localhost:3001/pages/warranty-cover",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
-      "broken_images": 1,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-pages-warranty-cover.png"
     },
     {
       "route": "/policies/shipping-policy",
-      "url": "https://miozuki.co.nz/policies/shipping-policy",
+      "url": "http://localhost:3001/policies/shipping-policy",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
+      "console_errors": 0,
+      "network_errors": 0,
       "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-policies-shipping-policy.png"
     },
     {
       "route": "/blogs/news",
-      "url": "https://miozuki.co.nz/blogs/news",
+      "url": "http://localhost:3001/blogs/news",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
-      "broken_images": 9,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-blogs-news.png"
     },
     {
-      "route": "/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring",
-      "url": "https://miozuki.co.nz/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring",
-      "status": 200,
-      "console_errors": 3,
-      "network_errors": 1,
-      "broken_images": 3,
-      "screenshot": "docs/audit/screenshots/page-products-order-your-ring-sizer-credited-toward-your-custom-bespoke-ring.png"
-    },
-    {
       "route": "/products/classic-moissanite-solitaire-ring",
-      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring",
+      "url": "http://localhost:3001/products/classic-moissanite-solitaire-ring",
       "status": 200,
-      "console_errors": 3,
-      "network_errors": 1,
-      "broken_images": 11,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-products-classic-moissanite-solitaire-ring.png"
     },
     {
       "route": "/products/pear-cut-pave-moissanite-ring-nz",
-      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz",
+      "url": "http://localhost:3001/products/pear-cut-pave-moissanite-ring-nz",
       "status": 200,
-      "console_errors": 3,
-      "network_errors": 1,
-      "broken_images": 8,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
       "screenshot": "docs/audit/screenshots/page-products-pear-cut-pave-moissanite-ring-nz.png"
     },
     {
-      "route": "/collections/best-sellers",
-      "url": "https://miozuki.co.nz/collections/best-sellers",
+      "route": "/products/moissanite-solitaire-studs",
+      "url": "http://localhost:3001/products/moissanite-solitaire-studs",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
-      "broken_images": 3,
-      "screenshot": "docs/audit/screenshots/page-collections-best-sellers.png"
-    },
-    {
-      "route": "/collections/all-moissanite-pearl-nz",
-      "url": "https://miozuki.co.nz/collections/all-moissanite-pearl-nz",
-      "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
-      "broken_images": 35,
-      "screenshot": "docs/audit/screenshots/page-collections-all-moissanite-pearl-nz.png"
-    },
-    {
-      "route": "/blogs/news/best-bridesmaid-jewellery-gifts-guide",
-      "url": "https://miozuki.co.nz/blogs/news/best-bridesmaid-jewellery-gifts-guide",
-      "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
+      "console_errors": 0,
+      "network_errors": 0,
       "broken_images": 0,
-      "screenshot": "docs/audit/screenshots/page-blogs-news-best-bridesmaid-jewellery-gifts-guide.png"
+      "screenshot": "docs/audit/screenshots/page-products-moissanite-solitaire-studs.png"
     },
     {
-      "route": "/blogs/news/guide-to-our-best-baroque-pearl-earrings",
-      "url": "https://miozuki.co.nz/blogs/news/guide-to-our-best-baroque-pearl-earrings",
+      "route": "/collections/moissanite-rings",
+      "url": "http://localhost:3001/collections/moissanite-rings",
       "status": 200,
-      "console_errors": 2,
-      "network_errors": 1,
-      "broken_images": 1,
-      "screenshot": "docs/audit/screenshots/page-blogs-news-guide-to-our-best-baroque-pearl-earrings.png"
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 4,
+      "screenshot": "docs/audit/screenshots/page-collections-moissanite-rings.png"
+    },
+    {
+      "route": "/collections/moissanite-ear-rings",
+      "url": "http://localhost:3001/collections/moissanite-ear-rings",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 16,
+      "screenshot": "docs/audit/screenshots/page-collections-moissanite-ear-rings.png"
+    },
+    {
+      "route": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "url": "http://localhost:3001/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 9,
+      "screenshot": "docs/audit/screenshots/page-blogs-news-moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly.png"
+    },
+    {
+      "route": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "url": "http://localhost:3001/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 22,
+      "screenshot": "docs/audit/screenshots/page-blogs-news-engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime.png"
     }
   ],
   "api_checks": [
     {
       "endpoint": "/api/subscribe",
       "method": "POST",
-      "status": 404,
-      "result": "unexpected",
-      "detail": "Unexpected status 404"
+      "status": 200,
+      "result": "ok",
+      "detail": "Returned 200 ok:true"
     },
     {
       "endpoint": "/api/contact",
       "method": "POST",
-      "status": 404,
-      "result": "unexpected",
-      "detail": "Unexpected status 404"
+      "status": 200,
+      "result": "ok",
+      "detail": "Returned 200 ok:true"
     }
   ]
 }

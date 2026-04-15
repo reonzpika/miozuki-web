@@ -86,6 +86,9 @@ export default function EmailPopup() {
           {/* Modal */}
           <motion.div
             key="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="email-popup-title"
             className="fixed inset-0 z-50 flex items-center justify-center px-4 pointer-events-none"
             initial={{ opacity: 0, y: 24, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -116,7 +119,7 @@ export default function EmailPopup() {
                   Early Access
                 </p>
 
-                <h2 className="font-serif text-2xl md:text-3xl text-charcoal leading-tight mb-3">
+                <h2 id="email-popup-title" className="font-serif text-2xl md:text-3xl text-charcoal leading-tight mb-3">
                   New drops, first.
                 </h2>
 

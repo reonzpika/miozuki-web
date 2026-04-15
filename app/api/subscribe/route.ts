@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+const KLAVIYO_REVISION = '2024-02-15';
+
 export async function POST(request: Request) {
   const { email, name } = await request.json();
 
@@ -15,14 +17,38 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
   }
 
+  const klaviyoHeaders = {
+    accept: 'application/vnd.api+json',
+    revision: KLAVIYO_REVISION,
+    'content-type': 'application/vnd.api+json',
+    Authorization: `Klaviyo-API-Key ${apiKey}`,
+  };
+
+  // Save the first_name via the Create Profile endpoint. The
+  // profile-subscription-bulk-create-jobs endpoint only accepts email/phone/
+  // subscriptions, so the name must be set separately. 409 = profile already
+  // exists, which is fine — we don't overwrite existing names.
+  if (name && typeof name === 'string' && name.trim().length > 0) {
+    const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
+      method: 'POST',
+      headers: klaviyoHeaders,
+      body: JSON.stringify({
+        data: {
+          type: 'profile',
+          attributes: { email, first_name: name.trim() },
+        },
+      }),
+    });
+    if (!profileRes.ok && profileRes.status !== 409) {
+      const body = await profileRes.text();
+      console.error('Klaviyo create-profile error', profileRes.status, body);
+      // Non-fatal: continue to subscribe regardless
+    }
+  }
+
   const res = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
     method: 'POST',
-    headers: {
-      accept: 'application/vnd.api+json',
-      revision: '2024-02-15',
-      'content-type': 'application/vnd.api+json',
-      Authorization: `Klaviyo-API-Key ${apiKey}`,
-    },
+    headers: klaviyoHeaders,
     body: JSON.stringify({
       data: {
         type: 'profile-subscription-bulk-create-job',
@@ -33,7 +59,6 @@ export async function POST(request: Request) {
                 type: 'profile',
                 attributes: {
                   email,
-                  ...(name ? { first_name: name } : {}),
                   subscriptions: {
                     email: { marketing: { consent: 'SUBSCRIBED' } },
                   },

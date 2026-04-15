@@ -284,6 +284,18 @@ async function runPageCrawl(
         }))
       }
 
+      // Scroll to force lazy-loaded images to fetch, otherwise below-fold imgs
+      // with loading="lazy" report as incomplete (false positive).
+      await page.evaluate(async () => {
+        const h = document.body.scrollHeight
+        for (let y = 0; y < h; y += window.innerHeight) {
+          window.scrollTo(0, y)
+          await new Promise(r => setTimeout(r, 300))
+        }
+        window.scrollTo(0, 0)
+      })
+      await page.waitForLoadState('networkidle', { timeout: 10_000 }).catch(() => {})
+
       brokenImages = await page.evaluate(() =>
         Array.from(document.querySelectorAll('img'))
           .filter(img => !img.complete || img.naturalWidth === 0).length
@@ -371,7 +383,10 @@ async function runCartFlow(
   productHandle: string
 ): Promise<void> {
   const url = `${CONFIG.baseUrl}/products/${productHandle}`
-  const page = await browser.newPage()
+  // Isolated context — cart ID is stored in localStorage; a fresh context
+  // guarantees clean cart state, independent of other flows.
+  const ctx = await browser.newContext()
+  const page = await ctx.newPage()
 
   await suppressCustomPopup(page)
   attachListeners(page, allFindings, counter, `/products/${productHandle}`, url)
@@ -416,12 +431,19 @@ async function runCartFlow(
       }))
     }
 
-    await page.waitForTimeout(2000)
+    // Wait for the header cart badge to show ≥1 — confirms the cart state has
+    // committed before we open the drawer. Avoids race where Add-to-Cart
+    // button shows "Added" but the cart mutation to Shopify hasn't resolved.
+    await page.waitForFunction(() => {
+      const badge = document.querySelector('header button[aria-label^="Cart"] span')
+      return badge && /[1-9]/.test(badge.textContent ?? '')
+    }, { timeout: 10_000 }).catch(() => {})
+
     await dismissAnyModal(page)
 
-    const cartIcon = page.locator('#headerCartStatus, [aria-controls="shtCartDrawer"]').first()
+    const cartIcon = page.locator('header button[aria-label^="Cart"]').first()
     await cartIcon.click()
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(700)
 
     const cartHeading = page.getByRole('heading', { name: 'Your Cart' })
     if (!(await cartHeading.isVisible({ timeout: 3000 }).catch(() => false))) {
@@ -471,7 +493,7 @@ async function runCartFlow(
       await takeScreenshot(page, 'flow-cart-empty.png')
     }
   } finally {
-    await page.close()
+    await ctx.close()
   }
 }
 
@@ -484,7 +506,9 @@ async function runCheckoutFlow(
   productHandle: string
 ): Promise<void> {
   const url = `${CONFIG.baseUrl}/products/${productHandle}`
-  const page = await browser.newPage()
+  // Isolated context — cart state (in localStorage) must not leak from Tier 2a.
+  const ctx = await browser.newContext()
+  const page = await ctx.newPage()
 
   await suppressCustomPopup(page)
 
@@ -506,11 +530,15 @@ async function runCheckoutFlow(
     }
 
     await addBtn.click()
-    await page.waitForTimeout(2500)
+    // Wait for cart badge to confirm the add has committed to Shopify.
+    await page.waitForFunction(() => {
+      const badge = document.querySelector('header button[aria-label^="Cart"] span')
+      return badge && /[1-9]/.test(badge.textContent ?? '')
+    }, { timeout: 10_000 }).catch(() => {})
     await dismissAnyModal(page)
 
-    await page.locator('#headerCartStatus, [aria-controls="shtCartDrawer"]').first().click()
-    await page.waitForTimeout(500)
+    await page.locator('header button[aria-label^="Cart"]').first().click()
+    await page.waitForTimeout(700)
 
     const checkoutLink = page.getByRole('link', { name: 'Checkout' })
     if (!(await checkoutLink.isVisible({ timeout: 3000 }).catch(() => false))) {
@@ -528,8 +556,12 @@ async function runCheckoutFlow(
 
     let checkoutUrl = ''
     try {
+      // Shopify hosts checkout on: the shop's primary domain (most common —
+       // e.g. miozuki.co.nz/checkouts/cn/…), {shop}.myshopify.com/checkouts/,
+       // or (rarely) checkout.shopify.com. Match any URL whose path contains
+       // /checkouts/ plus the legacy subdomain.
       await Promise.all([
-        page.waitForURL(/checkout\.shopify\.com|shopify\.com\/checkouts/, {
+        page.waitForURL(/\/checkouts\/|checkout\.shopify\.com/, {
           timeout: CONFIG.checkoutTimeout,
         }),
         checkoutLink.click(),
@@ -541,7 +573,7 @@ async function runCheckoutFlow(
         tier: 2,
         page: 'checkout-entry',
         type: 'flow-failure',
-        message: 'Checkout redirect did not reach shopify.com checkout URL within 60s',
+        message: 'Checkout redirect did not reach Shopify checkout URL within 60s',
         url: CONFIG.baseUrl,
         screenshotPath: await takeScreenshot(page, 'flow-checkout-redirect-failed.png'),
       }))
@@ -551,20 +583,13 @@ async function runCheckoutFlow(
     await page.waitForTimeout(2000)
     await takeScreenshot(page, 'flow-checkout-landing.png')
 
-    const orderSummarySelectors = [
-      '[data-order-summary]',
-      '[class*="order-summary"]',
-      'section[aria-label*="order" i]',
-      '[id*="order-summary"]',
-      '[class*="OrderSummary"]',
-    ]
-    let summaryFound = false
-    for (const sel of orderSummarySelectors) {
-      if (await page.locator(sel).first().isVisible({ timeout: 2000 }).catch(() => false)) {
-        summaryFound = true
-        break
-      }
-    }
+    // Shopify's checkout DOM uses obfuscated class names; "Subtotal" is unique
+    // to the order summary and stable across checkout UI versions.
+    const summaryFound = await page
+      .getByText('Subtotal', { exact: false })
+      .first()
+      .isVisible({ timeout: 3000 })
+      .catch(() => false)
     if (!summaryFound) {
       allFindings.push(makeFinding(counter, {
         severity: 'high',
@@ -607,7 +632,7 @@ async function runCheckoutFlow(
       }))
     }
   } finally {
-    await page.close()
+    await ctx.close()
   }
 }
 
@@ -727,7 +752,9 @@ async function runEmailPopup(
     // Fresh browser context: localStorage empty, shouldShow() returns true, popup fires after 4s
     await page.waitForTimeout(5000)
 
-    const popupHeading = page.getByRole('heading', { name: 'New drops, first.' })
+    // Scope to the dialog — a homepage section also carries "New drops, first."
+    const popup = page.getByRole('dialog')
+    const popupHeading = popup.getByRole('heading', { name: 'New drops, first.' })
     if (!(await popupHeading.isVisible({ timeout: 2000 }).catch(() => false))) {
       allFindings.push(makeFinding(counter, {
         severity: 'medium',
@@ -743,15 +770,15 @@ async function runEmailPopup(
 
     await takeScreenshot(page, 'flow-popup-open.png')
 
-    await page.getByPlaceholder('Your name').fill('Audit Test')
-    await page.getByPlaceholder('your@email.com').fill('audit-test@example.com')
+    await popup.getByPlaceholder('Your name').fill('Audit Test')
+    await popup.getByPlaceholder('your@email.com').fill('audit-test@example.com')
 
     const [subscribeResponse] = await Promise.all([
       page.waitForResponse(
         r => r.url().includes('/api/subscribe'),
         { timeout: 10_000 }
       ),
-      page.getByRole('button', { name: 'Join the List' }).click(),
+      popup.getByRole('button', { name: 'Join the List' }).click(),
     ])
 
     const status = subscribeResponse.status()

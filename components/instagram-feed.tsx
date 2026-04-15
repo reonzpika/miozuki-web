@@ -1,8 +1,8 @@
 import { getInstagramPosts } from '@/lib/instagram/client';
 
-// Instagram CDN URLs (scontent-*.cdninstagram.com) are time-limited and use
-// variable subdomains — we use plain <img> tags, not next/image, to avoid
-// Next.js caching stale CDN URLs.
+// Instagram CDN URLs are signed and expire within ~1h. We route every image
+// through /api/instagram/image which looks up a fresh media_url on the Graph
+// API at request time, so cached pages never serve expired links.
 
 export default async function InstagramFeed() {
   const posts = await getInstagramPosts(10);
@@ -29,10 +29,7 @@ export default async function InstagramFeed() {
         {/* Grid — 2 col mobile, 3 col tablet, 5 col desktop */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1.5">
           {posts.map((post) => {
-            const src =
-              post.media_type === 'VIDEO'
-                ? (post.thumbnail_url ?? post.media_url)
-                : post.media_url;
+            const src = `/api/instagram/image?id=${encodeURIComponent(post.id)}`;
 
             return (
               <a

@@ -442,3 +442,135 @@ async function runCartFlow(
     await page.close()
   }
 }
+
+// ---- Tier 2b: Checkout entry ----
+
+async function runCheckoutFlow(
+  browser: Browser,
+  allFindings: Finding[],
+  counter: Counter,
+  productHandle: string
+): Promise<void> {
+  const url = `${CONFIG.baseUrl}/products/${productHandle}`
+  const page = await browser.newPage()
+
+  try {
+    await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
+
+    const addBtn = page.getByRole('button', { name: 'Add to Cart' })
+    if (!(await addBtn.isVisible({ timeout: 5000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'critical',
+        tier: 2,
+        page: 'checkout-entry',
+        type: 'flow-failure',
+        message: 'Cannot test checkout — Add to Cart button not found',
+        url,
+      }))
+      return
+    }
+
+    await addBtn.click()
+    await page.waitForTimeout(2500)
+
+    await page.getByRole('button', { name: /Cart/i }).click()
+    await page.waitForTimeout(500)
+
+    const checkoutLink = page.getByRole('link', { name: 'Checkout' })
+    if (!(await checkoutLink.isVisible({ timeout: 3000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'critical',
+        tier: 2,
+        page: 'cart-drawer',
+        type: 'missing-element',
+        message: 'Checkout link not visible in cart drawer footer',
+        url: CONFIG.baseUrl,
+        screenshotPath: await takeScreenshot(page, 'flow-checkout-no-link.png'),
+      }))
+      return
+    }
+
+    let checkoutUrl = ''
+    try {
+      await Promise.all([
+        page.waitForURL(/checkout\.shopify\.com|shopify\.com\/checkouts/, {
+          timeout: CONFIG.checkoutTimeout,
+        }),
+        checkoutLink.click(),
+      ])
+      checkoutUrl = page.url()
+    } catch {
+      allFindings.push(makeFinding(counter, {
+        severity: 'critical',
+        tier: 2,
+        page: 'checkout-entry',
+        type: 'flow-failure',
+        message: 'Checkout redirect did not reach shopify.com checkout URL within 60s',
+        url: CONFIG.baseUrl,
+        screenshotPath: await takeScreenshot(page, 'flow-checkout-redirect-failed.png'),
+      }))
+      return
+    }
+
+    await page.waitForTimeout(2000)
+    await takeScreenshot(page, 'flow-checkout-landing.png')
+
+    const orderSummarySelectors = [
+      '[data-order-summary]',
+      '[class*="order-summary"]',
+      'section[aria-label*="order" i]',
+      '[id*="order-summary"]',
+      '[class*="OrderSummary"]',
+    ]
+    let summaryFound = false
+    for (const sel of orderSummarySelectors) {
+      if (await page.locator(sel).first().isVisible({ timeout: 2000 }).catch(() => false)) {
+        summaryFound = true
+        break
+      }
+    }
+    if (!summaryFound) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 2,
+        page: 'shopify-checkout',
+        type: 'missing-element',
+        message: 'Order summary section not detected on Shopify checkout page',
+        url: checkoutUrl,
+      }))
+    }
+
+    const emailField = page
+      .getByLabel(/email/i)
+      .or(page.locator('input[type="email"]'))
+      .first()
+    if (!(await emailField.isVisible({ timeout: 3000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 2,
+        page: 'shopify-checkout',
+        type: 'missing-element',
+        message: 'Email/contact field not found on Shopify checkout page',
+        url: checkoutUrl,
+      }))
+    }
+
+    const firstNameField = page
+      .getByLabel(/first name/i)
+      .or(page.locator('input[autocomplete="given-name"]'))
+      .first()
+    if (!(await firstNameField.isVisible({ timeout: 3000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 2,
+        page: 'shopify-checkout',
+        type: 'missing-element',
+        message: 'First name / shipping address field not found on Shopify checkout',
+        url: checkoutUrl,
+        screenshotPath: await takeScreenshot(page, 'flow-checkout-no-shipping.png'),
+      }))
+    }
+  } finally {
+    await page.close()
+  }
+}

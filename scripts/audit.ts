@@ -157,3 +157,52 @@ function attachListeners(
     }
   })
 }
+
+// ---- Handle discovery ----
+
+async function discoverHandles(browser: Browser): Promise<Handles> {
+  const page = await browser.newPage()
+  const handles: Handles = { products: [], collections: [], blogPosts: [] }
+
+  try {
+    // Collect product and collection handles from /collections
+    await page.goto(`${CONFIG.baseUrl}/collections`, {
+      waitUntil: 'networkidle',
+      timeout: CONFIG.pageTimeout,
+    })
+
+    handles.products = await page.$$eval('a[href*="/products/"]', links =>
+      [...new Set(
+        links
+          .map(l => (l as HTMLAnchorElement).href.match(/\/products\/([^/?#]+)/)?.[1])
+          .filter((h): h is string => !!h)
+      )]
+    )
+
+    handles.collections = await page.$$eval('a[href*="/collections/"]', links =>
+      [...new Set(
+        links
+          .map(l => (l as HTMLAnchorElement).href.match(/\/collections\/([^/?#]+)/)?.[1])
+          .filter((h): h is string => !!h && h !== 'all')
+      )]
+    )
+
+    // Collect blog post handles from /blogs/news
+    await page.goto(`${CONFIG.baseUrl}/blogs/news`, {
+      waitUntil: 'networkidle',
+      timeout: CONFIG.pageTimeout,
+    })
+
+    handles.blogPosts = await page.$$eval('a[href*="/blogs/news/"]', links =>
+      [...new Set(
+        links
+          .map(l => (l as HTMLAnchorElement).href.match(/\/blogs\/news\/([^/?#]+)/)?.[1])
+          .filter((h): h is string => !!h)
+      )]
+    )
+  } finally {
+    await page.close()
+  }
+
+  return handles
+}

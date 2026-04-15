@@ -387,7 +387,7 @@ async function runCartFlow(
 
     await page.waitForTimeout(2000)
 
-    const cartIcon = page.getByRole('button', { name: /Cart/i })
+    const cartIcon = page.locator('#headerCartStatus, [aria-controls="shtCartDrawer"]').first()
     await cartIcon.click()
     await page.waitForTimeout(500)
 
@@ -473,7 +473,7 @@ async function runCheckoutFlow(
     await addBtn.click()
     await page.waitForTimeout(2500)
 
-    await page.getByRole('button', { name: /Cart/i }).click()
+    await page.locator('#headerCartStatus, [aria-controls="shtCartDrawer"]').first().click()
     await page.waitForTimeout(500)
 
     const checkoutLink = page.getByRole('link', { name: 'Checkout' })

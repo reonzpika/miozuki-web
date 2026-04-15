@@ -332,3 +332,113 @@ async function runPageCrawl(
 
   return results
 }
+
+// ---- Tier 2a: Cart drawer flow ----
+
+async function runCartFlow(
+  browser: Browser,
+  allFindings: Finding[],
+  counter: Counter,
+  productHandle: string
+): Promise<void> {
+  const url = `${CONFIG.baseUrl}/products/${productHandle}`
+  const page = await browser.newPage()
+
+  attachListeners(page, allFindings, counter, `/products/${productHandle}`, url)
+
+  try {
+    await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
+
+    const addBtn = page.getByRole('button', { name: 'Add to Cart' })
+    if (!(await addBtn.isVisible({ timeout: 5000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'critical',
+        tier: 2,
+        page: `/products/${productHandle}`,
+        type: 'missing-element',
+        message: 'Add to Cart button not found on product page',
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-cart-no-add-btn.png'),
+      }))
+      return
+    }
+
+    await addBtn.click()
+
+    const stateChanged = await page.waitForFunction(
+      () => {
+        const btns = Array.from(document.querySelectorAll('button'))
+        return btns.some(b => b.textContent?.includes('Adding') || b.textContent?.includes('Added'))
+      },
+      { timeout: 5000 }
+    ).then(() => true).catch(() => false)
+
+    if (!stateChanged) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 2,
+        page: `/products/${productHandle}`,
+        type: 'flow-failure',
+        message: 'Add to Cart button did not change state after click',
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-cart-no-state-change.png'),
+      }))
+    }
+
+    await page.waitForTimeout(2000)
+
+    const cartIcon = page.getByRole('button', { name: /Cart/i })
+    await cartIcon.click()
+    await page.waitForTimeout(500)
+
+    const cartHeading = page.getByRole('heading', { name: 'Your Cart' })
+    if (!(await cartHeading.isVisible({ timeout: 3000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'critical',
+        tier: 2,
+        page: 'cart-drawer',
+        type: 'flow-failure',
+        message: 'Cart drawer did not open after clicking cart icon',
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-cart-drawer-closed.png'),
+      }))
+      return
+    }
+
+    await takeScreenshot(page, 'flow-cart-drawer-open.png')
+
+    const removeBtn = page.getByRole('button', { name: 'Remove item' })
+    if (!(await removeBtn.isVisible({ timeout: 3000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'high',
+        tier: 2,
+        page: 'cart-drawer',
+        type: 'flow-failure',
+        message: 'Cart drawer open but item not visible (Remove button not found)',
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-cart-item-missing.png'),
+      }))
+      return
+    }
+
+    await removeBtn.click()
+    await page.waitForTimeout(1500)
+
+    const emptyText = page.getByText('Your cart is empty.')
+    if (!(await emptyText.isVisible({ timeout: 3000 }).catch(() => false))) {
+      allFindings.push(makeFinding(counter, {
+        severity: 'medium',
+        tier: 2,
+        page: 'cart-drawer',
+        type: 'flow-failure',
+        message: 'Cart did not show empty state after removing item',
+        url,
+        screenshotPath: await takeScreenshot(page, 'flow-cart-remove-failed.png'),
+      }))
+    } else {
+      await takeScreenshot(page, 'flow-cart-empty.png')
+    }
+  } finally {
+    await page.close()
+  }
+}

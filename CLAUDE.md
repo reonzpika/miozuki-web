@@ -8,6 +8,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Miozuki is a Shopify-backed fine jewellery storefront for a NZ brand (moissanite and pearl). Next.js 16 / React 19 / Tailwind v4, deployed to Vercel.
 
+## Team workflow
+
+This project has two contributors with different workflows:
+
+**Ting (content/UI changes — working directly on `master`):**
+- Do not suggest creating branches, PRs, or terminal commands
+- Do not suggest running `npm run dev` — the dev server starts automatically via VS Code task
+- Keep instructions simple: edit files, check localhost:3000, use Source Control panel to commit
+
+**Ryo (structural/feature changes — working on feature branches):**
+- Normal branching workflow: branch → build → PR → merge to master
+- Vercel generates a preview URL for every branch — share these with Ting for approval before merging
+
 ## Commands
 
 ```bash

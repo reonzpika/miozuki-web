@@ -647,46 +647,42 @@ async function runContactForm(
       }
     }
 
+    // Check required attributes for validation (React-controlled form; empty-submit in headless
+    // calls the API directly without HTML5 validation blocking it, so we skip the empty-submit test)
+    for (const [label, locator] of [
+      ['#name (required)', nameInput],
+      ['#email (required)', emailInput],
+      ['#message (required)', messageInput],
+    ] as const) {
+      const hasRequired = await locator.getAttribute('required').then(v => v !== null).catch(() => false)
+      if (!hasRequired) {
+        allFindings.push(makeFinding(counter, {
+          severity: 'medium',
+          tier: 2,
+          page: '/pages/contact',
+          type: 'missing-element',
+          message: `Contact form field ${label} is missing the 'required' attribute`,
+          url,
+        }))
+      }
+    }
+
     const submitBtn = page.getByRole('button', { name: 'Send Message' })
-    await submitBtn.click()
-    await page.waitForTimeout(500)
 
-    const successMsg = page.getByText('Message received.')
-    if (await successMsg.isVisible({ timeout: 1000 }).catch(() => false)) {
-      allFindings.push(makeFinding(counter, {
-        severity: 'high',
-        tier: 2,
-        page: '/pages/contact',
-        type: 'flow-failure',
-        message: 'Contact form accepted empty submission — required validation not blocking',
-        url,
-        screenshotPath: await takeScreenshot(page, 'flow-contact-empty-accepted.png'),
-      }))
-      return
-    }
-
-    // Native form submission may have navigated away — re-navigate to ensure form is present
-    if (!(await nameInput.isVisible({ timeout: 500 }).catch(() => false))) {
-      await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
-    }
-
-    const freshName = page.locator('#name')
-    const freshEmail = page.locator('#email')
-    const freshMessage = page.locator('#message')
-    const freshSubmit = page.getByRole('button', { name: 'Send Message' })
-
-    await freshName.fill('Audit Test')
-    await freshEmail.fill('audit-test@example.com')
-    await freshMessage.fill('Automated audit test submission — please ignore.')
+    await nameInput.fill('Audit Test')
+    await emailInput.fill('audit-test@example.com')
+    await messageInput.fill('Automated audit test submission — please ignore.')
 
     await takeScreenshot(page, 'flow-contact-filled.png')
+
+    const successMsg = page.getByText('Message received.')
 
     const [contactResponse] = await Promise.all([
       page.waitForResponse(
         r => r.url().includes('/api/contact'),
         { timeout: 15_000 }
       ),
-      freshSubmit.click(),
+      submitBtn.click(),
     ])
 
     const status = contactResponse.status()

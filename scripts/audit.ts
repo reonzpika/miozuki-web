@@ -222,3 +222,113 @@ async function discoverHandles(browser: Browser): Promise<Handles> {
 
   return handles
 }
+
+// ---- Tier 1: Page crawl ----
+
+async function runPageCrawl(
+  browser: Browser,
+  allFindings: Finding[],
+  counter: Counter,
+  handles: Handles
+): Promise<PageResult[]> {
+  const results: PageResult[] = []
+
+  const staticRoutes = [
+    '/',
+    '/collections',
+    '/pages/about-us',
+    '/pages/contact',
+    '/pages/our-founder',
+    '/pages/jewellery-care-guide',
+    '/pages/moissanite-faq',
+    '/pages/returns-refunds-policy',
+    '/pages/size-guide',
+    '/pages/warranty-cover',
+    '/policies/shipping-policy',
+    '/blogs/news',
+  ]
+
+  const dynamicRoutes = [
+    ...handles.products.slice(0, 3).map(h => `/products/${h}`),
+    ...handles.collections.slice(0, 2).map(h => `/collections/${h}`),
+    ...handles.blogPosts.slice(0, 2).map(h => `/blogs/news/${h}`),
+  ]
+
+  const allRoutes = [...staticRoutes, ...dynamicRoutes]
+
+  for (const route of allRoutes) {
+    const url = `${CONFIG.baseUrl}${route}`
+    const pageFindings: Finding[] = []
+    const page = await browser.newPage()
+
+    attachListeners(page, pageFindings, counter, route, url)
+
+    let status = 0
+    let brokenImages = 0
+
+    try {
+      const response = await page.goto(url, {
+        waitUntil: 'networkidle',
+        timeout: CONFIG.pageTimeout,
+      })
+      status = response?.status() ?? 0
+
+      if (status >= 500) {
+        pageFindings.push(makeFinding(counter, {
+          severity: 'critical',
+          tier: 1,
+          page: route,
+          type: 'flow-failure',
+          message: `Page returned HTTP ${status}`,
+          url,
+        }))
+      }
+
+      brokenImages = await page.evaluate(() =>
+        Array.from(document.querySelectorAll('img'))
+          .filter(img => !img.complete || img.naturalWidth === 0).length
+      )
+
+      if (brokenImages > 0) {
+        const isKeyPage = route === '/' || route.startsWith('/products/')
+        pageFindings.push(makeFinding(counter, {
+          severity: isKeyPage ? 'high' : 'medium',
+          tier: 1,
+          page: route,
+          type: 'broken-image',
+          message: `${brokenImages} broken image(s) detected`,
+          url,
+        }))
+      }
+    } catch (err) {
+      pageFindings.push(makeFinding(counter, {
+        severity: 'critical',
+        tier: 1,
+        page: route,
+        type: 'flow-failure',
+        message: `Navigation failed: ${(err as Error).message}`,
+        url,
+      }))
+    }
+
+    const screenshotSlug = route.replace(/\//g, '-').replace(/^-/, '') || 'homepage'
+    const screenshotPath = await takeScreenshot(page, `page-${screenshotSlug}.png`)
+
+    allFindings.push(...pageFindings)
+
+    results.push({
+      route,
+      url,
+      status,
+      console_errors: pageFindings.filter(f => f.type === 'console-error').length,
+      network_errors: pageFindings.filter(f => f.type === 'network-error').length,
+      broken_images: brokenImages,
+      screenshot: screenshotPath,
+    })
+
+    console.log(`  [${status}] ${route} — ${pageFindings.length} finding(s)`)
+    await page.close()
+  }
+
+  return results
+}

@@ -683,7 +683,8 @@ async function runEmailPopup(
   counter: Counter
 ): Promise<void> {
   const url = CONFIG.baseUrl
-  const page = await browser.newPage()
+  const ctx = await browser.newContext()
+  const page = await ctx.newPage()
 
   try {
     await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
@@ -747,7 +748,7 @@ async function runEmailPopup(
       }
     }
   } finally {
-    await page.close()
+    await ctx.close()
   }
 }
 
@@ -936,6 +937,7 @@ async function writeReport(
   }
 
   fs.mkdirSync(CONFIG.outputDir, { recursive: true })
+  fs.mkdirSync(CONFIG.screenshotDir, { recursive: true })
 
   const jsonPath = path.join(CONFIG.outputDir, `audit-${CONFIG.date}.json`)
   fs.writeFileSync(jsonPath, JSON.stringify(report, null, 2))

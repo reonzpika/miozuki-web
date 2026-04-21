@@ -2,24 +2,66 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-@AGENTS.md
-
 ## What this project is
 
 Miozuki is a Shopify-backed fine jewellery storefront for a NZ brand (moissanite and pearl). Next.js 16 / React 19 / Tailwind v4, deployed to Vercel.
+
+Next.js 16 has breaking changes from earlier versions. APIs, conventions, and file structure may differ from training data. Verify against `node_modules/next/dist/docs/` before trusting assumptions.
+
+## Plan check
+
+Before acting on any distinct objective, emit this visible checklist:
+
+**Goal:** success in one sentence
+**In scope:** what you will touch
+**Out of scope:** what you will deliberately not touch
+**Assumptions:** what you are taking as given (flag anything below 95% confidence)
+**Options:** 2-4 approaches with tradeoffs, your lean noted
+**Your approval:** explicit ask
+
+If confidence on any assumption is below 95%, do not guess. Web search or ask the user.
+
+Fire on: session opening, new objective mid-session, major direction change.
+Skip for: trivial follow-ups within an already-approved plan.
+
+## Irreversible actions
+
+Before any of the following, emit a single-line confirmation and wait for "yes":
+- File or folder deletion (`rm`, moves to trash)
+- `git push`, force push, `git commit --amend`, `git reset --hard`
+- Overwriting uncommitted work
+- Scripts that trigger external side effects
+
+This gate fires regardless of Plan check approval. Plan approval covers direction, not destructive moves.
+
+## Analytical standards
+
+- Stay unbiased. Do not let the user's stated preferences steer analysis.
+- When pushed back on a proposal, evaluate honestly. Do not fold to be agreeable.
+- Acknowledge uncertainty explicitly. If guessing, say so.
+- Surface what the user does not know. Flag blind spots before commitment.
+- When no ideal solution is clear, web search first. Do not settle for second-best when a better answer may exist. Check for new platform features, new libraries, new docs. Training data cuts off; the answer may have shipped after.
+
+## Formatting rules (non-negotiable)
+
+- New Zealand English: organise, behaviour, programme, etc.
+- No em dashes. Use commas, colons, or restructure.
+- Telegraph style: short sentences, no preamble, no padding.
+- Bullet points for lists. Prose only when flow requires it.
+- Lead with the answer.
 
 ## Team workflow
 
 This project has two contributors with different workflows:
 
-**Ting (content/UI changes — working directly on `master`):**
+**Ting (content/UI changes, working directly on `master`):**
 - Do not suggest creating branches, PRs, or terminal commands
-- Do not suggest running `npm run dev` — the dev server starts automatically via VS Code task
+- Do not suggest running `npm run dev`. The dev server starts automatically via VS Code task.
 - Keep instructions simple: edit files, check localhost:3000, use Source Control panel to commit
 
-**Ryo (structural/feature changes — working on feature branches):**
+**Ryo (structural/feature changes, working on feature branches):**
 - Normal branching workflow: branch → build → PR → merge to master
-- Vercel generates a preview URL for every branch — share these with Ting for approval before merging
+- Vercel generates a preview URL for every branch. Share these with Ting for approval before merging.
 
 ## Commands
 
@@ -33,14 +75,14 @@ No test suite exists yet.
 
 ## Key architecture
 
-### Data layer — three external APIs
+### Data layer: three external APIs
 
 **Shopify Storefront API** (`lib/shopify/`)
-- `client.ts` — server-only RSC fetches with ISR (`next: { revalidate }`). Uses `SHOPIFY_STORE_DOMAIN` (no `NEXT_PUBLIC_` prefix).
-- `cart.ts` — client-safe cart mutations (`cache: 'no-store'`). Uses `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` and `NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN`.
-- `queries.ts` — all GraphQL query/mutation strings.
-- `types.ts` — shared TypeScript interfaces.
-- `index.ts` — re-exports from `client.ts`.
+- `client.ts`: server-only RSC fetches with ISR (`next: { revalidate }`). Uses `SHOPIFY_STORE_DOMAIN` (no `NEXT_PUBLIC_` prefix).
+- `cart.ts`: client-safe cart mutations (`cache: 'no-store'`). Uses `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` and `NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN`.
+- `queries.ts`: all GraphQL query/mutation strings.
+- `types.ts`: shared TypeScript interfaces.
+- `index.ts`: re-exports from `client.ts`.
 
 The two Shopify clients are intentionally split: RSC reads go through `client.ts`, cart writes go through `cart.ts` directly from the browser.
 
@@ -92,16 +134,16 @@ Motion tokens: `--duration-fast` (150ms), `--duration-normal` (250ms), `--durati
 ## Design System
 
 ### Brand aesthetic
-Fine jewellery — cream and burgundy, editorial, restrained luxury. References: Mejuri, Monica Vinader.
+Fine jewellery: cream and burgundy, editorial, restrained luxury. References: Mejuri, Monica Vinader.
 
 ### Typography rules
 - Headings: `font-serif` (Playfair Display), weight 700–800
 - Body copy / UI: `font-sans` (DM Sans), weight 300 for prose, 500 for labels/prices
-- Never use weight 700+ on DM Sans — wrong register for this brand
+- Never use weight 700+ on DM Sans. Wrong register for this brand.
 - Never use Inter, Roboto, Open Sans, or system font stacks
 
 ### Color rules
-- Always use CSS tokens — never hardcode hex or rgb values
+- Always use CSS tokens. Never hardcode hex or rgb values.
 - `--accent` / `--color-burgundy` for brand moments (links, borders, hover states)
 - `--muted` for secondary text, captions, metadata
 - `--surface` for card and panel backgrounds
@@ -116,10 +158,10 @@ Fine jewellery — cream and burgundy, editorial, restrained luxury. References:
 
 ### UI workflow
 1. Describe design direction before implementing
-2. Use only tokens — no magic values
+2. Use only tokens. No magic values.
 3. Every interactive element needs hover, focus-visible, and disabled states
 4. Check 375px and 1440px breakpoints
-5. Verify dark text on cream background meets 4.5:1 contrast (it does — do not lighten `--foreground`)
+5. Verify dark text on cream background meets 4.5:1 contrast (it does; do not lighten `--foreground`)
 
 ### Reduced motion
 The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. New animations must use the motion token variables (`--duration-*`, `--ease-*`).
@@ -145,5 +187,36 @@ The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. Ne
 | `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` | Client cart mutations |
 | `NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN` | Client cart mutations |
 | `INSTAGRAM_ACCESS_TOKEN` | Instagram feed (server) |
-| `INSTAGRAM_USER_ID` | Instagram feed (server) — value: `17841475205382310` |
+| `INSTAGRAM_USER_ID` | Instagram feed (server), value: `17841475205382310` |
 | `JUDGE_ME_PRIVATE_TOKEN` | Product reviews (server) |
+
+## Coding standards
+
+**Think before coding**
+- State assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them. Do not pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what is confusing. Ask.
+
+**Simplicity first**
+- Minimum code that solves the problem. Nothing speculative.
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No error handling for impossible scenarios.
+- If it took 200 lines and could be 50, rewrite it.
+- Self-check: would a senior engineer say this is overcomplicated?
+
+**Surgical changes**
+- Touch only what you must.
+- Do not improve adjacent code, comments, or formatting.
+- Do not refactor things that are not broken.
+- Match existing style, even if you would do it differently.
+- Remove imports, variables, or functions that your changes made unused. Do not delete pre-existing dead code unless asked.
+- Every changed line must trace directly to the user's request.
+
+**Goal-driven execution**
+- Transform tasks into verifiable goals:
+  - "Add validation" becomes "Write tests for invalid inputs, then make them pass"
+  - "Fix the bug" becomes "Write a test that reproduces it, then make it pass"
+  - "Refactor X" becomes "Ensure tests pass before and after"
+- For multi-step tasks, state a brief plan with a verification check per step.

@@ -35,18 +35,45 @@ async function invokeCart<B extends Record<string, unknown>>(body: B): Promise<u
   return parsed;
 }
 
+function hasCartShape(payload: unknown): payload is { cart: Cart } {
+  if (!payload || typeof payload !== 'object') return false;
+  const cart = (payload as { cart?: unknown }).cart;
+  if (!cart || typeof cart !== 'object') return false;
+  const c = cart as { id?: unknown; checkoutUrl?: unknown; lines?: unknown };
+  if (typeof c.id !== 'string' || typeof c.checkoutUrl !== 'string') return false;
+  if (!c.lines || typeof c.lines !== 'object') return false;
+  return Array.isArray((c.lines as { edges?: unknown }).edges);
+}
+
+function hasNullableCartShape(payload: unknown): payload is { cart: Cart | null } {
+  if (!payload || typeof payload !== 'object') return false;
+  const cart = (payload as { cart?: unknown }).cart;
+  if (cart === null || cart === undefined) return true;
+  return hasCartShape(payload);
+}
+
+function snippet(payload: unknown): string {
+  try {
+    return JSON.stringify(payload).slice(0, 200);
+  } catch {
+    return String(payload).slice(0, 200);
+  }
+}
+
 export async function createCart(
   variantId: string,
   quantity = 1,
   attributes?: CartAttribute[]
 ): Promise<Cart> {
-  const parsed = (await invokeCart({
+  const parsed = await invokeCart({
     op: 'create',
     variantId,
     quantity,
     ...(attributes?.length ? { attributes } : {}),
-  })) as { cart?: Cart };
-  if (!parsed.cart) throw new Error('Unexpected cart response');
+  });
+  if (!hasCartShape(parsed)) {
+    throw new Error(`Unexpected cart response from create: ${snippet(parsed)}`);
+  }
   return parsed.cart;
 }
 
@@ -56,28 +83,35 @@ export async function addCartLines(
   quantity = 1,
   attributes?: CartAttribute[]
 ): Promise<Cart> {
-  const parsed = (await invokeCart({
+  const parsed = await invokeCart({
     op: 'addLines',
     cartId,
     variantId,
     quantity,
     ...(attributes?.length ? { attributes } : {}),
-  })) as { cart?: Cart };
-  if (!parsed.cart) throw new Error('Unexpected cart response');
+  });
+  if (!hasCartShape(parsed)) {
+    throw new Error(`Unexpected cart response from addLines: ${snippet(parsed)}`);
+  }
   return parsed.cart;
 }
 
 export async function removeCartLines(cartId: string, lineIds: string[]): Promise<Cart> {
-  const parsed = (await invokeCart({
+  const parsed = await invokeCart({
     op: 'removeLines',
     cartId,
     lineIds,
-  })) as { cart?: Cart };
-  if (!parsed.cart) throw new Error('Unexpected cart response');
+  });
+  if (!hasCartShape(parsed)) {
+    throw new Error(`Unexpected cart response from removeLines: ${snippet(parsed)}`);
+  }
   return parsed.cart;
 }
 
 export async function getCart(cartId: string): Promise<Cart | null> {
-  const parsed = (await invokeCart({ op: 'get', cartId })) as { cart?: Cart | null };
-  return parsed.cart ?? null;
+  const parsed = await invokeCart({ op: 'get', cartId });
+  if (!hasNullableCartShape(parsed)) {
+    throw new Error(`Unexpected cart response from get: ${snippet(parsed)}`);
+  }
+  return parsed.cart;
 }

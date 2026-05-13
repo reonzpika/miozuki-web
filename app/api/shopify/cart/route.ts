@@ -21,6 +21,25 @@ function isCartAttributeArray(v: unknown): v is CartAttribute[] {
   );
 }
 
+const MAX_QUANTITY = 100;
+const MAX_LINE_IDS = 100;
+
+function parseQuantity(v: unknown): { value: number } | { error: string } {
+  if (typeof v !== 'number' || !Number.isFinite(v)) {
+    return { error: 'Invalid quantity, must be a positive integer.' };
+  }
+  if (!Number.isInteger(v)) {
+    return { error: 'Invalid quantity, must be a whole number.' };
+  }
+  if (v < 1) {
+    return { error: 'Invalid quantity, must be 1 or more.' };
+  }
+  if (v > MAX_QUANTITY) {
+    return { error: `Invalid quantity, must be ${MAX_QUANTITY} or fewer.` };
+  }
+  return { value: v };
+}
+
 export async function POST(req: NextRequest) {
   const credentials = getStorefrontCredentials();
   if (!credentials) {
@@ -57,10 +76,13 @@ export async function POST(req: NextRequest) {
         if (typeof variantId !== 'string' || !variantId) {
           return NextResponse.json({ error: 'Missing variantId.' }, { status: 400 });
         }
-        const qty = typeof quantity === 'number' && Number.isFinite(quantity) ? quantity : 1;
+        const parsedQty = parseQuantity(quantity);
+        if ('error' in parsedQty) {
+          return NextResponse.json({ error: parsedQty.error }, { status: 400 });
+        }
         const attrs =
           attributes !== undefined && isCartAttributeArray(attributes) ? attributes : undefined;
-        const cart = await storefrontCreateCart(credentials, variantId, qty, attrs);
+        const cart = await storefrontCreateCart(credentials, variantId, parsedQty.value, attrs);
         return NextResponse.json({ cart });
       }
       case 'addLines': {
@@ -76,10 +98,19 @@ export async function POST(req: NextRequest) {
         if (typeof variantId !== 'string' || !variantId) {
           return NextResponse.json({ error: 'Missing variantId.' }, { status: 400 });
         }
-        const qty = typeof quantity === 'number' && Number.isFinite(quantity) ? quantity : 1;
+        const parsedQty = parseQuantity(quantity);
+        if ('error' in parsedQty) {
+          return NextResponse.json({ error: parsedQty.error }, { status: 400 });
+        }
         const attrs =
           attributes !== undefined && isCartAttributeArray(attributes) ? attributes : undefined;
-        const cart = await storefrontAddCartLines(credentials, cartId, variantId, qty, attrs);
+        const cart = await storefrontAddCartLines(
+          credentials,
+          cartId,
+          variantId,
+          parsedQty.value,
+          attrs,
+        );
         return NextResponse.json({ cart });
       }
       case 'get': {
@@ -101,6 +132,12 @@ export async function POST(req: NextRequest) {
           !lineIds.every((id): id is string => typeof id === 'string')
         ) {
           return NextResponse.json({ error: 'Missing or invalid lineIds.' }, { status: 400 });
+        }
+        if (lineIds.length > MAX_LINE_IDS) {
+          return NextResponse.json(
+            { error: `Too many lineIds, max ${MAX_LINE_IDS} per request.` },
+            { status: 400 },
+          );
         }
         const cart = await storefrontRemoveCartLines(credentials, cartId, lineIds);
         return NextResponse.json({ cart });

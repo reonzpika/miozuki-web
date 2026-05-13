@@ -24,7 +24,13 @@ export async function generateMetadata({
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
   const { handle } = await params;
-  const collection = await getCollectionByHandle(handle).catch(() => null);
+  let collection;
+  try {
+    collection = await getCollectionByHandle(handle);
+  } catch (err) {
+    console.error('Collection metadata fetch failed', { handle, error: err });
+    return { title: 'Collection — Miozuki' };
+  }
   if (!collection) return { title: 'Collection — Miozuki' };
   return {
     title: `${collection.title} — Miozuki`,
@@ -38,7 +44,13 @@ export default async function CollectionPage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const collection = await getCollectionByHandle(handle, 48).catch(() => null);
+  let collection;
+  try {
+    collection = await getCollectionByHandle(handle, 48);
+  } catch (err) {
+    console.error('Collection fetch failed', { handle, error: err });
+    throw err;
+  }
 
   if (!collection) notFound();
 

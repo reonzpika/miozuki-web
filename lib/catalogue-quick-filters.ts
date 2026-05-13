@@ -17,7 +17,7 @@ export const CATALOGUE_QUICK_FILTERS: { id: CatalogueQuickFilterId; label: strin
 ];
 
 function searchBlobLc(product: Product): string {
-  return `${product.productType}\n${product.title}\n${product.tags.join(' ')}`.toLowerCase();
+  return `${product.productType ?? ''}\n${product.title}\n${product.tags.join(' ')}`.toLowerCase();
 }
 
 /** Shopify tags that mark a product as a best seller (sort / catalogue chip). */

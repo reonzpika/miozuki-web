@@ -30,8 +30,8 @@ export interface Product {
   id: string;
   handle: string;
   title: string;
-  description: string;
-  descriptionHtml: string;
+  description: string | null;
+  descriptionHtml: string | null;
   featuredImage: ShopifyImage | null;
   images: { edges: { node: ShopifyImage }[] };
   priceRange: {
@@ -40,7 +40,7 @@ export interface Product {
   };
   variants: { edges: { node: ProductVariant }[] };
   tags: string[];
-  productType: string;
+  productType: string | null;
   metafields: (ShopifyMetafield | null)[];
 }
 
@@ -48,10 +48,10 @@ export interface Collection {
   id: string;
   handle: string;
   title: string;
-  description: string;
+  description: string | null;
   image: ShopifyImage | null;
   metafield: { value: string } | null;
-  descriptionHtml: string;
+  descriptionHtml: string | null;
   products: { edges: { node: Product }[] };
 }
 

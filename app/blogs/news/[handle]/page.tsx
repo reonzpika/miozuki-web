@@ -7,7 +7,13 @@ import { getBlogArticles, getArticleByHandle } from '@/lib/shopify';
 export const revalidate = 86400;
 
 export async function generateStaticParams() {
-  const articles = await getBlogArticles('news', 50);
+  let articles;
+  try {
+    articles = await getBlogArticles('news', 50);
+  } catch (err) {
+    console.error('Blog generateStaticParams fetch failed', { error: err });
+    return [];
+  }
   return articles.map((a) => ({ handle: a.handle }));
 }
 
@@ -17,7 +23,13 @@ export async function generateMetadata({
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
   const { handle } = await params;
-  const article = await getArticleByHandle('news', handle);
+  let article;
+  try {
+    article = await getArticleByHandle('news', handle);
+  } catch (err) {
+    console.error('Article metadata fetch failed', { handle, error: err });
+    return {};
+  }
   if (!article) return {};
   return {
     title: `${article.title} — Miozuki`,
@@ -59,7 +71,13 @@ export default async function ArticlePage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const article = await getArticleByHandle('news', handle);
+  let article;
+  try {
+    article = await getArticleByHandle('news', handle);
+  } catch (err) {
+    console.error('Article fetch failed', { handle, error: err });
+    throw err;
+  }
   if (!article) notFound();
 
   return (

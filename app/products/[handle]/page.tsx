@@ -54,7 +54,13 @@ export async function generateMetadata({
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
   const { handle } = await params;
-  const product = await getProductByHandle(handle).catch(() => null);
+  let product;
+  try {
+    product = await getProductByHandle(handle);
+  } catch (err) {
+    console.error('PDP metadata fetch failed', { handle, error: err });
+    return { title: 'Product — Miozuki' };
+  }
   if (!product) return { title: 'Product — Miozuki' };
   const { description: metaDesc } = applyPdpDescriptionCorrections(
     product.descriptionHtml,
@@ -72,7 +78,13 @@ export default async function ProductPage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const product = await getProductByHandle(handle).catch(() => null);
+  let product;
+  try {
+    product = await getProductByHandle(handle);
+  } catch (err) {
+    console.error('PDP fetch failed', { handle, error: err });
+    throw err;
+  }
 
   if (!product) notFound();
 

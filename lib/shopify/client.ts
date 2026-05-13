@@ -28,13 +28,24 @@ async function shopifyFetch<T>(
   });
 
   if (!res.ok) {
+    const handle =
+      typeof variables?.handle === 'string' ? variables.handle : undefined;
+    console.error('Shopify HTTP error', {
+      status: res.status,
+      statusText: res.statusText,
+      handle,
+    });
     throw new Error(`Shopify API error: ${res.status} ${res.statusText}`);
   }
 
   const json: ShopifyResponse<T> = await res.json();
 
   if (json.errors?.length) {
-    throw new Error(json.errors.map((e) => e.message).join(', '));
+    const handle =
+      typeof variables?.handle === 'string' ? variables.handle : undefined;
+    const messages = json.errors.map((e) => e.message);
+    console.error('Shopify GraphQL errors', { messages, handle });
+    throw new Error(messages.join(', '));
   }
 
   return json.data;

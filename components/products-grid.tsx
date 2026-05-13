@@ -59,7 +59,11 @@ export default function ProductsGrid({
         productMatchesCatalogueQuickFilter(p, catalogueQuickFilter),
       );
     }
-    const set = new Set(pool.map((p) => p.productType).filter(Boolean));
+    const set = new Set(
+      pool
+        .map((p) => p.productType)
+        .filter((t): t is string => typeof t === 'string' && t.length > 0),
+    );
     return Array.from(set).sort();
   }, [products, quickFiltersOn, catalogueQuickFilter]);
 

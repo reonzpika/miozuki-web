@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Ring Size Guide — Miozuki',
-  description: 'How to find your ring size — two methods, a size chart, and our $1 ring sizer.',
+  description: 'How to find your ring size: two methods, a size chart, and our ring sizer.',
 };
 
 export default function SizeGuidePage() {
@@ -20,7 +20,7 @@ export default function SizeGuidePage() {
         Ring Size Guide
       </h1>
       <p className="text-sm text-charcoal/55 leading-relaxed mb-10">
-        Not sure of your ring size? We recommend ordering our $1 ring sizer before purchasing a ring.
+        Not sure of your ring size? We recommend ordering our ring sizer before purchasing a ring.
       </p>
 
       <div className="h-px bg-charcoal/8 mb-10" />
@@ -31,13 +31,13 @@ export default function SizeGuidePage() {
         <div className="bg-charcoal/4 px-5 py-5">
           <p className="text-charcoal/70 mb-3">
             <strong className="text-charcoal font-medium">The easiest way:</strong> order our physical
-            ring sizer. It ships within New Zealand for just $1 and takes the guesswork out of sizing.
+            ring sizer. It ships within New Zealand and takes the guesswork out of sizing.
           </p>
           <Link
             href="/products/order-your-ring-sizer-nz"
             className="text-xs tracking-widest uppercase text-burgundy underline underline-offset-4 hover:text-burgundy/70 transition-colors"
           >
-            Order a Ring Sizer — $1
+            Order a ring sizer
           </Link>
         </div>
 
@@ -115,8 +115,8 @@ export default function SizeGuidePage() {
         <div className="bg-charcoal/4 px-5 py-5">
           <h3 className="text-charcoal font-medium mb-3">Ring Sizer Terms</h3>
           <ul className="list-disc pl-5 space-y-2 text-charcoal/60">
-            <li>The $1 ring sizer is a physical product shipped to you via standard NZ Post.</li>
-            <li>The $1 cost covers postage and packaging only.</li>
+            <li>The ring sizer is a physical product shipped to you via standard NZ Post.</li>
+            <li>What you pay covers postage and packaging only.</li>
             <li>The ring sizer is non-refundable.</li>
             <li>Allow 2–5 business days for delivery within New Zealand.</li>
           </ul>

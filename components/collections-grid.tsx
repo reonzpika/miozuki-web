@@ -2,7 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import { useEffect } from 'react';
+import { useHoverCapable } from '@/hooks/use-hover-capable';
 
 interface Collection {
   id: string;
@@ -31,6 +33,7 @@ function CollectionCard({
   className?: string;
   imageClassName?: string;
 }) {
+  const hoverCapable = useHoverCapable();
   return (
     <motion.div variants={item} className={className}>
       <Link href={`/collections/${collection.handle}`} className="group block">
@@ -41,20 +44,23 @@ function CollectionCard({
               alt={collection.image.altText ?? collection.title}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              className={`object-cover transition-transform duration-700 ease-out${hoverCapable ? ' group-hover:scale-105' : ''}`}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center border border-charcoal/8">
               <span className="font-serif text-lg text-charcoal/25 italic">{collection.title}</span>
             </div>
           )}
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/18 transition-colors duration-500" />
-          <div className="absolute inset-x-0 bottom-0 flex items-center justify-center pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span className="text-xs tracking-[0.2em] uppercase text-cream bg-charcoal/50 px-4 py-2 backdrop-blur-sm">
-              View Collection
-            </span>
-          </div>
+          {hoverCapable ? (
+            <>
+              <div className="pointer-events-none absolute inset-0 bg-charcoal/0 transition-colors duration-500 group-hover:bg-charcoal/18" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center pb-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span className="bg-charcoal/50 px-4 py-2 text-xs tracking-[0.2em] uppercase text-cream backdrop-blur-sm">
+                  View Collection
+                </span>
+              </div>
+            </>
+          ) : null}
         </div>
         <h3 className="font-serif text-lg text-charcoal mb-1">{collection.title}</h3>
         {collection.description && (
@@ -68,14 +74,49 @@ function CollectionCard({
 }
 
 export default function CollectionsGrid({ collections }: { collections: Collection[] }) {
+  const reduceMotion = useReducedMotion();
+
+  // #region agent log
+  useEffect(() => {
+    fetch('http://127.0.0.1:7400/ingest/cfd5bf20-a163-4b92-8de1-9c7863644574', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'b033c9' },
+      body: JSON.stringify({
+        sessionId: 'b033c9',
+        location: 'components/collections-grid.tsx',
+        message: 'CollectionsGrid client mount',
+        data: { collectionCount: collections.length, reduceMotion: !!reduceMotion },
+        timestamp: Date.now(),
+        runId: 'post-fix',
+        hypothesisId: 'H6',
+      }),
+    }).catch(() => {});
+  }, [collections.length, reduceMotion]);
+  // #endregion
+
   if (collections.length === 0) return null;
+
+  if (reduceMotion) {
+    return (
+      <motion.div
+        variants={container}
+        initial="show"
+        animate="show"
+        className="grid grid-cols-2 md:grid-cols-4 gap-5"
+      >
+        {collections.map((c) => (
+          <CollectionCard key={c.id} collection={c} />
+        ))}
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
       variants={container}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: '-60px' }}
+      viewport={{ once: true, amount: 0.15 }}
       className="grid grid-cols-2 md:grid-cols-4 gap-5"
     >
       {collections.map((c) => (

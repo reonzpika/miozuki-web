@@ -1,7 +1,17 @@
 import { NextResponse } from 'next/server';
 
+const CONTACT_SOURCES = new Set(['miozuki-contact-form']);
+
 export async function POST(request: Request) {
-  const { name, email, order, message } = await request.json();
+  const body = await request.json();
+  const { name, email, order, message, source, productTitle } = body as {
+    name?: string;
+    email?: string;
+    order?: string;
+    message?: string;
+    source?: string;
+    productTitle?: string;
+  };
 
   if (!email || typeof email !== 'string' || !email.includes('@')) {
     return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
@@ -9,6 +19,15 @@ export async function POST(request: Request) {
   if (!message || typeof message !== 'string' || message.trim().length < 2) {
     return NextResponse.json({ error: 'Message required' }, { status: 400 });
   }
+
+  const eventSource =
+    typeof source === 'string' && CONTACT_SOURCES.has(source)
+      ? source
+      : 'miozuki-contact-form';
+  const product =
+    typeof productTitle === 'string' && productTitle.trim().length > 0
+      ? productTitle.trim()
+      : null;
 
   const apiKey = process.env.KLAVIYO_PRIVATE_KEY;
   if (!apiKey) {
@@ -32,7 +51,8 @@ export async function POST(request: Request) {
             name: name ?? null,
             order: order ?? null,
             message,
-            source: 'miozuki-contact-form',
+            source: eventSource,
+            product_title: product,
           },
           metric: {
             data: {

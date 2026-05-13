@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/header';
@@ -19,6 +19,13 @@ const dmSans = DM_Sans({
   weight: ['300', '400', '500'],
   display: 'swap',
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#f5f3ef',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://miozuki.co.nz'),

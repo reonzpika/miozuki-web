@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import type { Money, ProductVariant } from '@/lib/shopify';
 import RingSizeGuide from '@/components/ring-size-guide';
+import PdpTrustStrip from '@/components/pdp-trust-strip';
+import PdpRingSizeSelect from '@/components/pdp-ring-size-select';
 import { useCart } from './cart-provider';
 
 function formatPrice(amount: string, currencyCode: string) {
@@ -42,14 +44,28 @@ function findVariant(
   );
 }
 
+function sortRingSizeValues(values: string[]): string[] {
+  return [...values].sort((a, b) => {
+    const na = parseFloat(a);
+    const nb = parseFloat(b);
+    const aNum = Number.isFinite(na);
+    const bNum = Number.isFinite(nb);
+    if (aNum && bNum) return na - nb;
+    return a.localeCompare(b, 'en-NZ');
+  });
+}
+
 type ButtonState = 'idle' | 'loading' | 'added' | 'error';
 
 export default function AddToCart({
   variants,
   priceRange,
+  productTitle,
 }: {
   variants: ProductVariant[];
   priceRange: { minVariantPrice: Money; maxVariantPrice: Money };
+  /** Shown on the mobile sticky bar (truncated in CSS). */
+  productTitle: string;
 }) {
   const { addToCart } = useCart();
   const options = buildOptions(variants);
@@ -63,7 +79,6 @@ export default function AddToCart({
     return defaults;
   });
 
-  const [engraving, setEngraving] = useState('');
   const [btnState, setBtnState] = useState<ButtonState>('idle');
 
   const variant = findVariant(variants, selected);
@@ -83,11 +98,7 @@ export default function AddToCart({
     if (!variant || !available) return;
     setBtnState('loading');
     try {
-      const attrs =
-        hasRingSizes && engraving.trim()
-          ? [{ key: 'Engraving', value: engraving.trim() }]
-          : undefined;
-      await addToCart(variant.id, 1, attrs);
+      await addToCart(variant.id, 1);
       setBtnState('added');
       setTimeout(() => setBtnState('idle'), 2000);
     } catch {
@@ -99,50 +110,89 @@ export default function AddToCart({
   return (
     <>
       <p className="text-xl text-burgundy font-medium">{priceLabel}</p>
-      <div className="h-px bg-charcoal/8" />
+      <div className="mt-4">
+        <PdpTrustStrip />
+      </div>
+      <div className="mt-6 h-px bg-charcoal/8" />
       <div className="space-y-6">
         {/* Variant options (hidden for single-variant products) */}
         {showVariantPicker &&
-          options.map((opt) => (
-            <div key={opt.name}>
-              <p className="text-xs tracking-widest uppercase text-charcoal/50 mb-3">
-                {opt.name}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {opt.values.map((val) => {
-                  const isSelected = selected[opt.name] === val;
-                  const testVariant = findVariant(variants, {
-                    ...selected,
-                    [opt.name]: val,
-                  });
-                  const isAvailable = testVariant?.availableForSale ?? false;
-                  return (
-                    <button
-                      key={val}
-                      onClick={() =>
-                        setSelected((s) => ({ ...s, [opt.name]: val }))
-                      }
-                      disabled={!isAvailable}
-                      className={`px-4 py-2 text-xs tracking-wide border transition-colors ${
-                        isSelected
-                          ? 'bg-burgundy text-cream border-burgundy'
-                          : isAvailable
-                            ? 'border-charcoal/20 text-charcoal hover:border-charcoal/50'
-                            : 'border-charcoal/10 text-charcoal/25 cursor-not-allowed line-through'
-                      }`}
-                    >
-                      {val}
-                    </button>
-                  );
-                })}
-              </div>
-              {opt.name === 'Ring size' && (
-                <div className="mt-3">
-                  <RingSizeGuide />
+          options.map((opt) => {
+            const valuesForUi =
+              opt.name === 'Ring size'
+                ? sortRingSizeValues(opt.values)
+                : opt.values;
+
+            if (opt.name === 'Ring size') {
+              return (
+                <div key={opt.name}>
+                  <label
+                    id="pdp-ring-size-label"
+                    htmlFor="pdp-ring-size"
+                    className="mb-3 block text-xs uppercase tracking-widest text-charcoal/50"
+                  >
+                    {opt.name}
+                  </label>
+                  <PdpRingSizeSelect
+                    id="pdp-ring-size"
+                    labelId="pdp-ring-size-label"
+                    values={valuesForUi}
+                    selectedValue={selected[opt.name]}
+                    onChange={(val) =>
+                      setSelected((s) => ({ ...s, [opt.name]: val }))
+                    }
+                    availabilityForValue={(val) => {
+                      const testVariant = findVariant(variants, {
+                        ...selected,
+                        [opt.name]: val,
+                      });
+                      return testVariant?.availableForSale ?? false;
+                    }}
+                  />
+                  <div className="mt-3">
+                    <RingSizeGuide />
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
+              );
+            }
+
+            return (
+              <div key={opt.name}>
+                <p className="mb-3 text-xs uppercase tracking-widest text-charcoal/50">
+                  {opt.name}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {valuesForUi.map((val) => {
+                    const isSelected = selected[opt.name] === val;
+                    const testVariant = findVariant(variants, {
+                      ...selected,
+                      [opt.name]: val,
+                    });
+                    const isAvailable = testVariant?.availableForSale ?? false;
+                    return (
+                      <button
+                        type="button"
+                        key={val}
+                        onClick={() =>
+                          setSelected((s) => ({ ...s, [opt.name]: val }))
+                        }
+                        disabled={!isAvailable}
+                        className={`min-h-11 border px-4 py-2 text-xs tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${
+                          isSelected
+                            ? 'border-burgundy bg-burgundy text-cream'
+                            : isAvailable
+                              ? 'border-charcoal/20 text-charcoal hover:border-charcoal/50'
+                              : 'cursor-not-allowed border-charcoal/10 text-charcoal/25 line-through'
+                        }`}
+                      >
+                        {val}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
 
         {hasRingSizes && !showVariantPicker && (
           <div>
@@ -150,37 +200,19 @@ export default function AddToCart({
           </div>
         )}
 
-        {/* Engraving field — rings only */}
-        {hasRingSizes && (
-          <div>
-            <label className="text-xs tracking-widest uppercase text-charcoal/50 mb-2 block">
-              Add Initials Engraving{' '}
-              <span className="normal-case text-charcoal/35">(optional)</span>
-            </label>
-            <input
-              type="text"
-              value={engraving}
-              onChange={(e) => setEngraving(e.target.value.slice(0, 12))}
-              placeholder="e.g. JR ❤ EM"
-              maxLength={12}
-              className="w-52 border border-charcoal/20 bg-transparent px-3 py-2 text-xs text-charcoal placeholder:text-charcoal/25 focus:outline-none focus:border-charcoal/50 transition-colors"
-            />
-            <p className="text-[10px] text-charcoal/35 mt-1">Max 12 characters</p>
-          </div>
-        )}
-
         {/* Add to cart button */}
         <button
+          type="button"
           onClick={handleAdd}
           disabled={!available || btnState === 'loading' || btnState === 'added'}
-          className={`w-full py-4 text-xs tracking-[0.2em] uppercase transition-colors ${
+          className={`w-full py-4 text-xs tracking-[0.2em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${
             !available
               ? 'bg-charcoal/10 text-charcoal/30 cursor-not-allowed'
               : btnState === 'added'
                 ? 'bg-charcoal text-cream'
                 : btnState === 'error'
                   ? 'bg-red-800 text-cream'
-                  : 'bg-burgundy text-cream hover:bg-burgundy/90'
+                  : 'bg-burgundy text-cream hover:bg-accent-hover'
           }`}
         >
           {!available
@@ -193,6 +225,45 @@ export default function AddToCart({
                   ? 'Something went wrong'
                   : 'Add to Cart'}
         </button>
+      </div>
+
+      {/* Cold-traffic style sticky bar: mirrors main CTA on small viewports */}
+      <div
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-charcoal/10 bg-cream/95 px-4 py-3 backdrop-blur-md md:hidden"
+        style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[10px] uppercase tracking-widest text-charcoal/45 truncate">
+              {productTitle}
+            </p>
+            <p className="truncate font-medium text-burgundy">{priceLabel}</p>
+          </div>
+          <button
+            type="button"
+            onClick={handleAdd}
+            disabled={!available || btnState === 'loading' || btnState === 'added'}
+            className={`shrink-0 px-5 py-3 text-[11px] tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${
+              !available
+                ? 'bg-charcoal/10 text-charcoal/30 cursor-not-allowed'
+                : btnState === 'added'
+                  ? 'bg-charcoal text-cream'
+                  : btnState === 'error'
+                    ? 'bg-red-800 text-cream'
+                    : 'bg-burgundy text-cream hover:bg-accent-hover'
+            }`}
+          >
+            {!available
+              ? 'Sold out'
+              : btnState === 'loading'
+                ? 'Adding…'
+                : btnState === 'added'
+                  ? 'Added'
+                  : btnState === 'error'
+                    ? 'Error'
+                    : 'Add to cart'}
+          </button>
+        </div>
       </div>
     </>
   );

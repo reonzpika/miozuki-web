@@ -1,11 +1,16 @@
 import Link from 'next/link';
+import { MiozukiBrandLogo } from '@/components/miozuki-brand-logo';
 
 const HELP_LINKS = [
-  { label: 'Learn About Moissanite', href: '/pages/moissanite-faq' },
   { label: 'Contact Us', href: '/pages/contact' },
+  { label: 'Shipping Policy', href: '/policies/shipping-policy' },
   { label: 'Returns & Refunds', href: '/pages/returns-refunds-policy' },
   { label: 'Warranty', href: '/pages/warranty-cover' },
   { label: 'Size Guide', href: '/pages/size-guide' },
+  { label: 'Moissanite FAQ', href: '/pages/moissanite-faq' },
+];
+
+const RESOURCES_LINKS = [
   { label: 'Jewellery Care', href: '/pages/jewellery-care-guide' },
 ];
 
@@ -13,7 +18,15 @@ const ABOUT_LINKS = [
   { label: 'About Miozuki', href: '/pages/about-us' },
   { label: 'Our Founder', href: '/pages/our-founder' },
   { label: 'Journal', href: '/blogs/news' },
-  { label: 'Shipping Policy', href: '/policies/shipping-policy' },
+];
+
+const SHOP_LINKS = [
+  { label: 'Best Sellers', href: '/collections/best-sellers' },
+  { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
+  { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings' },
+  { label: 'Moissanite Necklaces', href: '/collections/necklaces' },
+  { label: 'Pearl Earrings', href: '/collections/pearl-earrings' },
+  { label: 'Bridal Jewellery', href: '/collections/bridal-jewellery' },
 ];
 
 const SOCIAL = [
@@ -48,21 +61,78 @@ const SOCIAL = [
   },
 ];
 
+const linkClassName =
+  'block rounded-sm py-1.5 text-sm leading-snug text-charcoal/55 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream min-h-10 sm:min-h-0 md:py-2';
+
+const sectionTitleClassName =
+  'mb-4 font-sans text-sm font-medium text-charcoal';
+
+function LinkColumn({
+  title,
+  links,
+}: {
+  title: string;
+  links: { label: string; href: string }[];
+}) {
+  return (
+    <div>
+      <p className={sectionTitleClassName}>{title}</p>
+      <nav className="flex flex-col gap-0.5" aria-label={title}>
+        {links.map((l) => (
+          <Link key={l.href} href={l.href} className={linkClassName}>
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
 export default function Footer() {
   return (
     <footer className="border-t border-charcoal/8 bg-cream">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
-
-        {/* Brand */}
-        <div className="sm:col-span-2 md:col-span-1">
-          <span className="font-serif text-lg tracking-[0.2em] uppercase text-charcoal block mb-2">
-            Miozuki
-          </span>
-          <p className="text-xs text-charcoal/45 leading-relaxed mb-5">
-            Fine jewellery, designed in New Zealand.<br />
-            Inspired by the moon.
+      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-6 md:px-10 md:py-14 lg:py-16">
+        {/* Brand strip (Mejuri-style band above link columns) */}
+        <div className="border-b border-charcoal/8 pb-8 md:pb-10 lg:pb-12">
+          <Link
+            href="/"
+            className="inline-block rounded-sm transition-opacity duration-normal [transition-timing-function:var(--ease-out)] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+            aria-label="Miozuki home"
+          >
+            <MiozukiBrandLogo
+              variant="dark"
+              className="h-[5rem] w-auto sm:h-[5.5rem] md:h-24 lg:h-28 pointer-events-none select-none"
+            />
+          </Link>
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-charcoal/50 md:mt-5">
+            NZ fine jewellery
           </p>
-          <div className="flex items-center gap-4 mb-5">
+          <p className="mt-4 text-xs text-charcoal/40">
+            Auckland, New Zealand · Proudly NZ-owned &amp; operated
+          </p>
+          <p className="mt-3">
+            <a
+              href="mailto:info@miozuki.co.nz"
+              className="inline-flex min-h-10 items-center text-xs text-charcoal/50 underline underline-offset-4 transition-colors hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+            >
+              info@miozuki.co.nz
+            </a>
+          </p>
+        </div>
+
+        {/* Four link columns */}
+        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 md:mt-10 md:grid-cols-4 md:gap-x-8 lg:gap-x-12">
+          <LinkColumn title="Help" links={HELP_LINKS} />
+          <LinkColumn title="Resources" links={RESOURCES_LINKS} />
+          <LinkColumn title="About" links={ABOUT_LINKS} />
+          <LinkColumn title="Shop" links={SHOP_LINKS} />
+        </div>
+      </div>
+
+      {/* Sub-footer: social + meta (pattern similar to Mejuri bottom strip) */}
+      <div className="border-t border-charcoal/8 px-5 py-6 sm:px-6 md:px-10 md:py-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-8">
+          <div className="flex flex-wrap items-center gap-1">
             {SOCIAL.map((s) => (
               <a
                 key={s.label}
@@ -70,75 +140,20 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="text-charcoal/40 hover:text-charcoal transition-colors"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm text-charcoal/40 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
               >
                 {s.svg}
               </a>
             ))}
           </div>
-          <p className="text-xs text-charcoal/45 leading-relaxed">
-            Auckland, New Zealand
-          </p>
-          <p className="text-xs text-charcoal/45 leading-relaxed">
-            Proudly NZ-owned &amp; operated
-          </p>
-          {/* TODO: NZBN once registered */}
-        </div>
-
-        {/* Help */}
-        <div>
-          <p className="text-xs tracking-widest uppercase text-burgundy/70 mb-4">Help</p>
-          <nav className="flex flex-col gap-2.5">
-            {HELP_LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="text-xs text-charcoal/55 hover:text-charcoal transition-colors"
-              >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-
-        {/* About */}
-        <div>
-          <p className="text-xs tracking-widest uppercase text-burgundy/70 mb-4">About</p>
-          <nav className="flex flex-col gap-2.5">
-            {ABOUT_LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="text-xs text-charcoal/55 hover:text-charcoal transition-colors"
-              >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-
-        {/* Shop */}
-        <div>
-          <p className="text-xs tracking-widest uppercase text-burgundy/70 mb-4">Shop</p>
-          <nav className="flex flex-col gap-2.5">
-            <Link href="/collections/best-sellers" className="text-xs text-charcoal/55 hover:text-charcoal transition-colors">Best Sellers</Link>
-            <Link href="/collections/moissanite-rings" className="text-xs text-charcoal/55 hover:text-charcoal transition-colors">Moissanite Rings</Link>
-            <Link href="/collections/moissanite-ear-rings" className="text-xs text-charcoal/55 hover:text-charcoal transition-colors">Moissanite Earrings</Link>
-            <Link href="/collections/pearl-earrings" className="text-xs text-charcoal/55 hover:text-charcoal transition-colors">Pearl Earrings</Link>
-            <Link href="/collections/bridal-jewellery" className="text-xs text-charcoal/55 hover:text-charcoal transition-colors">Bridal Jewellery</Link>
-          </nav>
-        </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="border-t border-charcoal/8 px-6 md:px-10 py-5">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <p className="text-xs text-charcoal/30">
-            © {new Date().getFullYear()} Miozuki. All rights reserved.
-          </p>
-          <p className="text-xs text-charcoal/25">
-            Visa · Mastercard · Amex · Apple Pay · Google Pay · PayPal · Shop Pay
-          </p>
+          <div className="flex flex-col gap-3 md:items-end md:text-right">
+            <p className="text-xs leading-snug text-charcoal/30">
+              © {new Date().getFullYear()} Miozuki. All rights reserved.
+            </p>
+            <p className="max-w-md text-xs leading-snug text-charcoal/25 md:max-w-lg">
+              Visa · Mastercard · Amex · Apple Pay · Google Pay · PayPal · Shop Pay
+            </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -95,6 +95,13 @@ export function richTextToPlain(json: string): string {
   }
 }
 
+/** Removes the phrase "Need assistance?" and anything after it, with a tidy trailing trim. Case-insensitive. */
+export function clipAfterNeedAssistanceQuestion(text: string): string {
+  const m = /\bneed assistance\?/i.exec(text);
+  if (!m) return text;
+  return text.slice(0, m.index).trimEnd();
+}
+
 /** Render a Shopify rich_text metafield JSON string as styled JSX. */
 export default function RichText({
   value,

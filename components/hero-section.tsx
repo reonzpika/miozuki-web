@@ -26,7 +26,7 @@ const fadeUp = (delay: number) => ({
 
 export default function HeroSection() {
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] text-center overflow-hidden">
+    <section className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center overflow-hidden text-center max-md:min-h-[calc(85svh-4rem)]">
       {/* Background */}
       <Image
         src="https://miozuki.co.nz/cdn/shop/files/hero-image.webp?v=1773198093"
@@ -36,25 +36,30 @@ export default function HeroSection() {
         sizes="100vw"
         className="object-cover object-center"
       />
-      <div className="absolute inset-0 bg-charcoal/42" />
+
+      {/* Vignette: edges to ~40% black for text legibility */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,_transparent_38%,rgb(31_31_31/0.4)_100%)]"
+        aria-hidden
+      />
 
       {/* Content */}
-      <div className="relative z-10 px-6 flex flex-col items-center">
+      <div className="relative z-10 flex flex-col items-center px-6">
         {/* Decorative rule */}
         <motion.div
-          className="flex items-center gap-3 mb-8"
+          className="mb-6 flex items-center gap-3 md:mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.1 }}
         >
           <div className="h-px w-10 bg-cream/35" />
-          <div className="w-1.5 h-1.5 bg-cream/45 rotate-45" />
+          <div className="h-1.5 w-1.5 rotate-45 bg-cream/45" />
           <div className="h-px w-10 bg-cream/35" />
         </motion.div>
 
         {/* Headline — line-by-line reveal */}
         <motion.h1
-          className="font-serif text-5xl md:text-7xl lg:text-8xl text-cream leading-tight tracking-tight mb-4 max-w-3xl"
+          className="mb-4 max-w-3xl font-serif text-4xl leading-tight tracking-tight text-cream sm:text-5xl md:text-7xl lg:text-8xl"
           variants={container}
           initial="hidden"
           animate="show"
@@ -68,19 +73,19 @@ export default function HeroSection() {
 
         {/* Subheading */}
         <motion.p
-          className="text-sm md:text-base text-cream/75 tracking-wide max-w-sm mb-10 leading-relaxed"
+          className="mb-8 max-w-sm text-sm leading-relaxed tracking-wide text-cream/75 md:mb-10 md:text-base"
           variants={fadeUp(0.65)}
           initial="hidden"
           animate="show"
         >
-          Moissanite &amp; Pearl Fine Jewellery, designed in New Zealand
+          Moissanite with brilliance of diamond
         </motion.p>
 
         {/* CTA */}
         <motion.div variants={fadeUp(0.8)} initial="hidden" animate="show">
           <Link
             href="/collections/all-moissanite-pearl-nz"
-            className="inline-block bg-cream text-charcoal text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-cream/90 transition-colors duration-300"
+            className="inline-block rounded-full border border-burgundy bg-burgundy px-10 py-4 text-xs uppercase tracking-[0.04em] text-cream transition-colors duration-300 hover:border-accent-hover hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/50 focus-visible:ring-offset-2 focus-visible:ring-offset-burgundy/80"
           >
             Discover the Collection
           </Link>
@@ -88,13 +93,13 @@ export default function HeroSection() {
 
         {/* Decorative rule */}
         <motion.div
-          className="flex items-center gap-3 mt-10"
+          className="mt-8 flex items-center gap-3 md:mt-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.0 }}
         >
           <div className="h-px w-10 bg-cream/35" />
-          <div className="w-1.5 h-1.5 bg-cream/45 rotate-45" />
+          <div className="h-1.5 w-1.5 rotate-45 bg-cream/45" />
           <div className="h-px w-10 bg-cream/35" />
         </motion.div>
       </div>

@@ -2,13 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getCollections, getCollectionByHandle } from '@/lib/shopify';
 import { getAllRatings } from '@/lib/judgeme/client';
-import type { Product } from '@/lib/shopify';
+import type { Collection, Product } from '@/lib/shopify';
 import HeroSection from '@/components/hero-section';
+import HomeShopShortcuts from '@/components/home-shop-shortcuts';
 import CollectionsGrid from '@/components/collections-grid';
 import BestSellersGrid from '@/components/best-sellers-grid';
 import FounderSection from '@/components/founder-section';
 import FaqAccordion from '@/components/faq-accordion';
-import EmailCapture from '@/components/email-capture';
 import ScrollReveal from '@/components/scroll-reveal';
 
 export const revalidate = 60;
@@ -24,7 +24,7 @@ const HOME_FAQ = [
   },
   {
     q: 'Is moissanite a real gemstone? Does it look like a diamond?',
-    a: 'Yes. Moissanite is a real lab-grown gemstone with exceptional brilliance. Mohs hardness 9.25, refractive index 2.65 — chosen for its own optical properties, not as a substitute.',
+    a: 'Yes. Moissanite is a real lab-grown gemstone known for its exceptional brilliance and diamond-like appearance. With a Mohs hardness of 9.25, it is one of the hardest gemstones available, and its refractive index of 2.65 gives it even more fire and sparkle than diamond.',
   },
   {
     q: 'Will moissanite stay sparkly over time?',
@@ -32,7 +32,7 @@ const HOME_FAQ = [
   },
   {
     q: 'What is your return and exchange policy?',
-    a: 'We offer a 30-day return window on most items returned in original packaging and sellable condition. Earrings, custom-made rings, and sale items are non-refundable. We recommend ordering a ring sizer first — the cost is credited toward your ring order.',
+    a: 'We offer a 14-day return window on most items returned in original packaging and sellable condition. Earrings, custom-made rings, and sale items are non-refundable. We recommend ordering a ring sizer first — the cost is credited toward your ring order.',
   },
   {
     q: 'What if my parcel gets lost or stolen?',
@@ -60,40 +60,74 @@ const DIFFERENTIATORS = [
     ),
   },
   {
-    label: 'Lifetime warranty',
-    sub: 'On every piece',
+    label: 'Signature-only delivery',
+    sub: 'Tracked shipping',
     svg: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-        <path d="m9 12 2 2 4-4" />
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+        <path d="M3.27 6.96 12 12.01l8.73-5.05" />
+        <path d="M12 22.08V12" />
       </svg>
     ),
   },
   {
-    label: 'Mohs 9.25 hardness',
-    sub: 'Exceptional durability',
+    label: 'Gift-ready packaging',
+    sub: 'Beautifully prepared for gifting or keeping.',
     svg: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M4 10.5h16v11H4z" />
+        <path d="M4 14h16" />
+        <path d="M12 10.5V21.5" />
+        <path d="M8.5 10.5V9a3.5 3.5 0 0 1 7 0v1.5" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Exceptional brilliance',
+    sub: 'Known for its fire and clarity',
+    svg: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 3.5 20 12 12 20.5 4 12z" />
+        <path d="M12 3.5v17" />
+        <path d="M4 12h16" />
       </svg>
     ),
   },
 ];
 
-const ALLOWED_COLLECTION_HANDLES = [
+/** Featured on the home grid (order preserved). Best Sellers is only the product rail below, not a grid tile. */
+const HOME_FEATURED_COLLECTION_HANDLES = [
   'moissanite-ear-rings',
   'moissanite-rings',
   'pearl-earrings',
   'bridal-jewellery',
-];
+] as const;
 
 export default async function Home() {
-  const all = await getCollections(20).catch(() => []);
+  let all: Collection[] = [];
+  let getCollectionsThrown: string | null = null;
+  try {
+    all = await getCollections(50);
+  } catch (e) {
+    getCollectionsThrown = e instanceof Error ? e.message : String(e);
+    all = [];
+    // #region agent log
+    fetch('http://127.0.0.1:7400/ingest/cfd5bf20-a163-4b92-8de1-9c7863644574', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'b033c9' },
+      body: JSON.stringify({
+        sessionId: 'b033c9',
+        location: 'app/page.tsx:Home',
+        message: 'getCollections threw',
+        data: { error: getCollectionsThrown },
+        timestamp: Date.now(),
+        runId: 'pre-fix',
+        hypothesisId: 'H2',
+      }),
+    }).catch(() => {});
+    // #endregion
+  }
   const byHandle = new Map(all.map((c) => [c.handle, c]));
-  const collections = ALLOWED_COLLECTION_HANDLES.flatMap((h) => {
-    const c = byHandle.get(h);
-    return c ? [c] : [];
-  });
 
   let products: Product[] = [];
 
@@ -104,6 +138,77 @@ export default async function Home() {
     // best-sellers collection not found
   }
 
+  if (products.length === 0) {
+    try {
+      const fallback = await getCollectionByHandle('all-moissanite-pearl-nz', 8);
+      products = fallback?.products.edges.map((e) => e.node) ?? [];
+    } catch {
+      // catalog fallback failed
+    }
+  }
+
+  const seenHandles = new Set<string>();
+  const curatedCollections: Collection[] = [];
+
+  for (const handle of HOME_FEATURED_COLLECTION_HANDLES) {
+    let c: Collection | null = byHandle.get(handle) ?? null;
+    if (!c) {
+      try {
+        c = await getCollectionByHandle(handle, 1);
+      } catch {
+        c = null;
+      }
+    }
+    if (c && !seenHandles.has(c.handle)) {
+      curatedCollections.push(c);
+      seenHandles.add(c.handle);
+    }
+  }
+
+  let usedAllSliceFallback = false;
+  if (curatedCollections.length === 0) {
+    usedAllSliceFallback = true;
+    curatedCollections.push(
+      ...all.filter((c) => c.handle !== 'best-sellers').slice(0, 4),
+    );
+  } else {
+    for (const c of all) {
+      if (curatedCollections.length >= 4) break;
+      if (c.handle === 'best-sellers') continue;
+      if (!seenHandles.has(c.handle)) {
+        curatedCollections.push(c);
+        seenHandles.add(c.handle);
+      }
+    }
+  }
+
+  // #region agent log
+  fetch('http://127.0.0.1:7400/ingest/cfd5bf20-a163-4b92-8de1-9c7863644574', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'b033c9' },
+    body: JSON.stringify({
+      sessionId: 'b033c9',
+      location: 'app/page.tsx:Home',
+      message: 'curated collections summary',
+      data: {
+        apiCollectionCount: all.length,
+        apiHandlesSample: all.map((c) => c.handle).slice(0, 12),
+        curatedCount: curatedCollections.length,
+        curatedHandles: curatedCollections.map((c) => c.handle),
+        usedAllSliceFallback,
+        sectionWillRender: curatedCollections.length > 0,
+        featuredResolved: HOME_FEATURED_COLLECTION_HANDLES.map((h) => ({
+          h,
+          inList: byHandle.has(h),
+        })),
+      },
+      timestamp: Date.now(),
+      runId: 'pre-fix',
+      hypothesisId: 'H3',
+    }),
+  }).catch(() => {});
+  // #endregion
+
   const ratings = await getAllRatings().catch(() => ({}));
 
   return (
@@ -111,48 +216,42 @@ export default async function Home() {
       {/* ── Hero ─────────────────────────────────────────── */}
       <HeroSection />
 
+      <HomeShopShortcuts />
+
       {/* ── Collections ──────────────────────────────────── */}
-      {collections.length > 0 && (
+      {curatedCollections.length > 0 && (
         <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto w-full">
-          <ScrollReveal className="flex items-end justify-between mb-10">
+          <ScrollReveal className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs tracking-[0.3em] uppercase text-burgundy mb-2">Shop</p>
               <h2 className="font-serif text-3xl md:text-4xl text-charcoal">Our Collections</h2>
             </div>
             <Link
               href="/collections/all-moissanite-pearl-nz"
-              className="text-xs tracking-widest uppercase text-burgundy hover:text-burgundy/70 transition-colors hidden md:block"
+              className="inline-flex min-h-11 shrink-0 items-center text-xs tracking-widest uppercase text-burgundy transition-colors hover:text-burgundy/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               View All
             </Link>
           </ScrollReveal>
 
-          <CollectionsGrid collections={collections} />
+          <CollectionsGrid collections={curatedCollections} />
         </section>
       )}
-
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <SectionDivider />
-      </div>
 
       {/* ── Founder ───────────────────────────────────────── */}
       <FounderSection />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <SectionDivider />
-      </div>
-
       {/* ── Best Sellers ──────────────────────────────────── */}
       {products.length > 0 && (
         <section className="py-24">
-          <ScrollReveal className="flex items-end justify-between mb-10 px-6 md:px-10 max-w-7xl mx-auto">
+          <ScrollReveal className="mb-10 flex max-w-7xl mx-auto flex-col gap-4 px-6 sm:flex-row sm:items-end sm:justify-between md:px-10">
             <div>
               <p className="text-xs tracking-[0.3em] uppercase text-burgundy mb-2">Most loved</p>
               <h2 className="font-serif text-3xl md:text-4xl text-charcoal">Best Sellers</h2>
             </div>
             <Link
               href="/collections/best-sellers"
-              className="text-xs tracking-widest uppercase text-burgundy hover:text-burgundy/70 transition-colors hidden md:block"
+              className="inline-flex min-h-11 shrink-0 items-center text-xs tracking-widest uppercase text-burgundy transition-colors hover:text-burgundy/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               View All
             </Link>
@@ -167,34 +266,36 @@ export default async function Home() {
       </div>
 
       {/* ── Differentiator strip ─────────────────────────── */}
-      <section className="py-16 px-6 md:px-10 max-w-7xl mx-auto w-full">
-        <ScrollReveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
-            {DIFFERENTIATORS.map(({ label, sub, svg }) => (
-              <div key={label} className="flex flex-col items-center text-center gap-3">
-                <div className="text-burgundy/70">{svg}</div>
-                <div>
-                  <p className="text-sm font-medium text-charcoal">{label}</p>
-                  <p className="text-xs text-charcoal/45 mt-0.5">{sub}</p>
+      <section className="w-full bg-burgundy py-16">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <ScrollReveal>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 lg:gap-4">
+              {DIFFERENTIATORS.map(({ label, sub, svg }) => (
+                <div key={label} className="flex flex-col items-center text-center gap-3">
+                  <div className="text-cream">{svg}</div>
+                  <div>
+                    <p className="text-sm font-medium text-cream">{label}</p>
+                    <p className="text-xs text-cream/75 mt-0.5">{sub}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
+              ))}
+            </div>
+          </ScrollReveal>
+        </div>
       </section>
 
       {/* ── Accessible Luxury ─────────────────────────────── */}
       <section className="overflow-hidden">
-        <div className="relative">
+        <div className="relative h-[50vh] min-h-[17.5rem] w-full md:h-[60vh] md:min-h-[22.5rem]">
           <Image
-            src="/generated/accessible-luxury.jpg"
-            alt="Editorial still life — burgundy silk, handmade ceramic vessel and oatmeal linen on cream linen, soft Auckland window light"
-            width={2048}
-            height={1366}
+            src="/generated/accessible-luxury.webp"
+            alt="Woman in profile wearing a large baroque pearl earring, warm neutral studio light"
+            fill
             sizes="100vw"
-            className="w-full h-[50vh] md:h-[60vh] object-cover object-center"
+            quality={82}
+            className="object-cover object-[72%_32%] sm:object-[68%_center] md:object-[56%_center]"
           />
-          <div className="absolute inset-0 bg-charcoal/38 flex flex-col items-center justify-center text-center px-6">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-transparent text-center px-6">
             <ScrollReveal delay={0.1}>
               <p className="text-xs tracking-[0.3em] uppercase text-cream/60 mb-3">
                 Accessible Luxury
@@ -212,38 +313,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* ── Social proof placeholder ─────────────────────── */}
-      {/* TODO: replace with "As Featured In" press logos once first press mention secured.
-          Target: NZ Herald Viva, Denizen, Together Journal, Fashion Quarterly. */}
-      <section className="py-14 px-6 border-t border-charcoal/8">
-        <ScrollReveal>
-          <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-center">
-            <div>
-              <p className="font-serif text-2xl text-charcoal mb-0.5">9.25</p>
-              <p className="text-xs tracking-widest uppercase text-charcoal/45">Mohs hardness</p>
-            </div>
-            <div className="hidden sm:block h-8 w-px bg-charcoal/10" />
-            <div>
-              <p className="font-serif text-2xl text-charcoal mb-0.5">2.65</p>
-              <p className="text-xs tracking-widest uppercase text-charcoal/45">Refractive index</p>
-            </div>
-            <div className="hidden sm:block h-8 w-px bg-charcoal/10" />
-            <div>
-              <p className="font-serif text-2xl text-charcoal mb-0.5">AGS / IGI</p>
-              <p className="text-xs tracking-widest uppercase text-charcoal/45">Certified grading</p>
-            </div>
-            <div className="hidden sm:block h-8 w-px bg-charcoal/10" />
-            <div>
-              <p className="font-serif text-2xl text-charcoal mb-0.5">NZ-owned</p>
-              <p className="text-xs tracking-widest uppercase text-charcoal/45">Ships from Auckland</p>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
-
-      {/* ── Email capture ─────────────────────────────────── */}
-      <EmailCapture />
 
       {/* ── FAQ ───────────────────────────────────────────── */}
       <section className="py-24 px-6 md:px-10 max-w-3xl mx-auto w-full">

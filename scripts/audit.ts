@@ -237,7 +237,9 @@ async function runPageCrawl(
     '/',
     '/collections',
     '/pages/about-us',
+    '/pages/appointment',
     '/pages/contact',
+    '/pages/custom-made',
     '/pages/our-founder',
     '/pages/jewellery-care-guide',
     '/pages/moissanite-faq',
@@ -752,9 +754,9 @@ async function runEmailPopup(
     // Fresh browser context: localStorage empty, shouldShow() returns true, popup fires after 4s
     await page.waitForTimeout(5000)
 
-    // Scope to the dialog — a homepage section also carries "New drops, first."
+    // Scope to the dialog — matches `components/email-popup.tsx` h2 copy.
     const popup = page.getByRole('dialog')
-    const popupHeading = popup.getByRole('heading', { name: 'New drops, first.' })
+    const popupHeading = popup.getByRole('heading', { name: "Be first to discover what's next" })
     if (!(await popupHeading.isVisible({ timeout: 2000 }).catch(() => false))) {
       allFindings.push(makeFinding(counter, {
         severity: 'medium',

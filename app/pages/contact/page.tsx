@@ -7,7 +7,18 @@ export const metadata: Metadata = {
   description: 'Get in touch with Miozuki — questions about orders, ring sizing, or our jewellery.',
 };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ about?: string | string[] }>;
+}) {
+  const resolved = await searchParams;
+  const aboutRaw = resolved.about;
+  const about =
+    typeof aboutRaw === 'string' ? aboutRaw.trim() : undefined;
+  const initialMessage =
+    about && about.length > 0 ? `Question about ${about}:\n\n` : '';
+
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
       <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
@@ -49,7 +60,7 @@ export default function ContactPage() {
               href="/products/order-your-ring-sizer-nz"
               className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors"
             >
-              $1 ring sizer
+              ring sizer
             </Link>{' '}
             before purchasing. You can also visit our{' '}
             <Link
@@ -65,7 +76,7 @@ export default function ContactPage() {
         {/* Contact form */}
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-5">Send a Message</h2>
-          <ContactForm />
+          <ContactForm key={about ?? ''} initialMessage={initialMessage} />
         </div>
       </div>
     </main>

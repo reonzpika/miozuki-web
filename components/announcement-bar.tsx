@@ -1,16 +1,15 @@
 const MESSAGES = [
-  'Free NZ shipping on orders over $150',
+  'Complimentary NZ shipping over $300',
   'NZ-owned & operated · Ships from Auckland',
-  '30-day returns',
-  'Lifetime warranty on all pieces',
-  'Unsure of your ring size? Start with our $1 ring sizer',
+  '6-month warranty on all pieces',
+  'Unsure of your ring size? Start with our ring sizer',
 ];
 
 const SEPARATOR = <span className="mx-6 opacity-20">◇</span>;
 
 function MessageList() {
   return (
-    <span className="flex items-center whitespace-nowrap" aria-hidden>
+    <span className="flex shrink-0 items-center whitespace-nowrap" aria-hidden>
       {MESSAGES.map((msg, i) => (
         <span key={i} className="flex items-center">
           {msg}
@@ -24,10 +23,10 @@ function MessageList() {
 export default function AnnouncementBar() {
   return (
     <div
-      className="bg-charcoal text-cream text-[11px] tracking-[0.12em] py-2.5 overflow-hidden"
+      className="border-b border-charcoal/12 bg-cream text-charcoal text-[12px] tracking-[0.04em] py-2.5 overflow-hidden"
       aria-label="Site announcements"
     >
-      <div className="flex" style={{ animation: 'marquee 38s linear infinite' }}>
+      <div className="announcement-marquee-track">
         <MessageList />
         <MessageList />
       </div>

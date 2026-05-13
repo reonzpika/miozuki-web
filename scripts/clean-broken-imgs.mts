@@ -130,11 +130,25 @@ function stripDeadImgs(html: string, deadSet: Set<string>): { cleaned: string; r
 type CollectionNode = { id: string; handle: string; title: string; descriptionHtml: string }
 type ArticleNode = { id: string; handle: string; title: string; body: string; blog: { handle: string } }
 
+type CollectionsQueryResult = {
+  collections: {
+    edges: { cursor: string; node: CollectionNode }[]
+    pageInfo: { hasNextPage: boolean }
+  }
+}
+
+type ArticlesQueryResult = {
+  articles: {
+    edges: { cursor: string; node: ArticleNode }[]
+    pageInfo: { hasNextPage: boolean }
+  }
+}
+
 async function fetchAllCollections(): Promise<CollectionNode[]> {
   const items: CollectionNode[] = []
   let cursor: string | null = null
   while (true) {
-    const data = await gql<{ collections: { edges: { cursor: string; node: CollectionNode }[]; pageInfo: { hasNextPage: boolean } } }>(
+    const data: CollectionsQueryResult = await gql<CollectionsQueryResult>(
       `query($cursor: String) {
         collections(first: 100, after: $cursor) {
           edges { cursor node { id handle title descriptionHtml } }
@@ -154,7 +168,7 @@ async function fetchAllArticles(): Promise<ArticleNode[]> {
   const items: ArticleNode[] = []
   let cursor: string | null = null
   while (true) {
-    const data = await gql<{ articles: { edges: { cursor: string; node: ArticleNode }[]; pageInfo: { hasNextPage: boolean } } }>(
+    const data: ArticlesQueryResult = await gql<ArticlesQueryResult>(
       `query($cursor: String) {
         articles(first: 50, after: $cursor) {
           edges { cursor node { id handle title body blog { handle } } }

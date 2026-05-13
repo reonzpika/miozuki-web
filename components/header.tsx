@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { MiozukiBrandLogo } from './miozuki-brand-logo';
 import { useCart } from './cart-provider';
 import CartDrawer from './cart-drawer';
 
@@ -12,7 +13,6 @@ const NAV = [
     href: '/collections/moissanite-rings',
     children: [
       { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
-      { label: 'Bridal Rings', href: '/collections/bridal-jewellery' },
     ],
   },
   {
@@ -24,8 +24,8 @@ const NAV = [
     ],
   },
   {
-    label: 'Pearl Jewellery',
-    href: '/collections/pearl-earrings',
+    label: 'Necklaces',
+    href: '/collections/necklaces',
     children: null,
   },
   {
@@ -38,6 +38,16 @@ const NAV = [
     href: '/collections/best-sellers',
     children: null,
   },
+  {
+    label: 'Appointment',
+    href: '/pages/appointment',
+    children: null,
+  },
+  {
+    label: 'Custom Made',
+    href: '/pages/custom-made',
+    children: null,
+  },
 ];
 
 const MOBILE_NAV = [
@@ -45,7 +55,10 @@ const MOBILE_NAV = [
   { label: 'Moissanite Rings', href: '/collections/moissanite-rings', indent: true },
   { label: 'Bridal Rings', href: '/collections/bridal-jewellery', indent: true },
   { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings', indent: true },
-  { label: 'Pearl Jewellery', href: '/collections/pearl-earrings', indent: true },
+  { label: 'Pearl Earrings', href: '/collections/pearl-earrings', indent: true },
+  { label: 'Necklaces', href: '/collections/necklaces', indent: true },
+  { label: 'Appointment', href: '/pages/appointment', indent: false },
+  { label: 'Custom Made', href: '/pages/custom-made', indent: false },
   { label: 'About Miozuki', href: '/pages/about-us', indent: false },
   { label: 'Our Founder', href: '/pages/our-founder', indent: true },
 ];
@@ -81,35 +94,45 @@ export default function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 bg-cream border-b border-charcoal/10 transition-shadow duration-300 ${
+        className={`sticky top-0 z-40 bg-header-bg border-b border-header-fg/20 transition-shadow duration-300 ${
           scrolled ? 'shadow-sm' : ''
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+        <div className="relative mx-auto flex h-20 w-full max-w-7xl items-center gap-3 px-6 md:gap-8 md:px-10">
+          {/* Mobile: menu + wordmark on the left; desktop: wordmark participates in row via md:contents */}
+          <div className="flex min-w-0 flex-1 items-center gap-3 md:contents">
+            {/* Hamburger — mobile only (subdued so the wordmark reads as primary) */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+              className="relative z-10 -ml-2 inline-flex h-11 min-h-[44px] min-w-[44px] shrink-0 flex-col items-center justify-center gap-[5px] text-header-fg/55 transition-colors hover:text-header-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-header-fg/45 focus-visible:ring-offset-2 focus-visible:ring-offset-header-bg md:hidden"
+            >
+              <span className={`block h-px w-[18px] bg-current transition-all duration-300 origin-center ${menuOpen ? 'translate-y-[3px] rotate-45' : ''}`} />
+              <span className={`block h-px w-[18px] bg-current transition-all duration-300 ${menuOpen ? 'w-0 opacity-0' : 'opacity-100'}`} />
+              <span className={`block h-px w-[18px] bg-current transition-all duration-300 origin-center ${menuOpen ? '-translate-y-[3px] -rotate-45' : ''}`} />
+            </button>
 
-          {/* Hamburger — mobile only */}
-          <button
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            className="md:hidden text-charcoal/70 hover:text-charcoal transition-colors w-6 flex flex-col gap-1.5 justify-center"
-          >
-            <span className={`block h-px w-full bg-current transition-all duration-300 origin-center ${menuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
-            <span className={`block h-px bg-current transition-all duration-300 ${menuOpen ? 'w-0 opacity-0' : 'w-full opacity-100'}`} />
-            <span className={`block h-px w-full bg-current transition-all duration-300 origin-center ${menuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
-          </button>
-
-          {/* Wordmark */}
-          <Link
-            href="/"
-            onClick={() => setMenuOpen(false)}
-            className="font-serif text-xl tracking-[0.2em] text-charcoal uppercase absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0"
-          >
-            Miozuki
-          </Link>
+            {/* Full lockup from brand SVG (transparent; matches header ivory) */}
+            <Link
+              href="/"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Miozuki home"
+              className="relative z-10 flex min-h-11 min-w-0 shrink items-center justify-start rounded-sm transition-opacity duration-normal [transition-timing-function:var(--ease-out)] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-header-fg/45 focus-visible:ring-offset-2 focus-visible:ring-offset-header-bg md:max-w-[min(100%,14rem)] md:shrink-0"
+            >
+              <span className="relative flex min-w-0 justify-start">
+                <MiozukiBrandLogo
+                  variant="light"
+                  priority
+                  className="h-[4.35rem] w-auto max-w-full md:h-[4.85rem] pointer-events-none select-none"
+                />
+              </span>
+            </Link>
+          </div>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-8 md:flex">
             {NAV.map((navItem) => (
               <div
                 key={navItem.label}
@@ -119,7 +142,7 @@ export default function Header() {
               >
                 <Link
                   href={navItem.href}
-                  className="flex items-center gap-1 text-xs tracking-widest uppercase text-charcoal/70 hover:text-charcoal transition-colors py-2 nav-underline"
+                  className="flex items-center gap-1 text-xs tracking-widest uppercase text-header-fg/85 hover:text-header-fg transition-colors py-2 nav-underline-header focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-header-fg/45 focus-visible:ring-offset-2 focus-visible:ring-offset-header-bg rounded-sm"
                 >
                   {navItem.label}
                   {navItem.children && (
@@ -145,7 +168,7 @@ export default function Header() {
                             key={child.href}
                             href={child.href}
                             onClick={() => setActiveDropdown(null)}
-                            className="block px-4 py-2.5 text-xs tracking-widest uppercase text-charcoal/60 hover:text-charcoal hover:bg-charcoal/4 transition-colors"
+                            className="block px-4 py-2.5 text-xs tracking-widest uppercase text-charcoal/60 transition-colors hover:bg-charcoal/4 hover:text-charcoal focus-visible:bg-charcoal/4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-burgundy/30"
                           >
                             {child.label}
                           </Link>
@@ -160,9 +183,10 @@ export default function Header() {
 
           {/* Cart */}
           <button
+            type="button"
             onClick={() => { setMenuOpen(false); setCartOpen(true); }}
             aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}
-            className="relative text-charcoal/70 hover:text-charcoal transition-colors"
+            className="relative z-10 -mr-2 inline-flex h-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center text-header-fg/70 transition-colors hover:text-header-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-header-fg/45 focus-visible:ring-offset-2 focus-visible:ring-offset-header-bg md:mr-0 md:text-header-fg/85"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
@@ -172,7 +196,7 @@ export default function Header() {
             {cartCount > 0 && (
               <span
                 suppressHydrationWarning
-                className="absolute -top-1 -right-1.5 w-4 h-4 bg-burgundy text-cream text-[9px] flex items-center justify-center"
+                className="absolute -top-1 -right-1.5 w-4 h-4 bg-header-fg text-header-bg text-[9px] flex items-center justify-center"
               >
                 {cartCount > 9 ? '9+' : cartCount}
               </span>
@@ -182,18 +206,18 @@ export default function Header() {
 
         {/* Mobile menu */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 bg-cream border-t border-charcoal/8 ${
-            menuOpen ? 'max-h-[460px] opacity-100' : 'max-h-0 opacity-0'
+          className={`md:hidden overflow-hidden transition-all duration-300 bg-header-bg border-t border-header-fg/15 ${
+            menuOpen ? 'max-h-[560px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <nav className="px-6 py-5 flex flex-col gap-4">
+          <nav className="px-6 py-5 flex flex-col gap-1">
             {MOBILE_NAV.map((link) => (
               <Link
                 key={link.href + link.label}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`text-sm tracking-widest uppercase hover:text-charcoal transition-colors ${
-                  link.indent ? 'pl-4 text-charcoal/50' : 'text-charcoal/70'
+                className={`block min-h-11 py-3 text-sm tracking-widest uppercase leading-snug hover:text-header-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-header-fg/45 focus-visible:ring-inset rounded-sm ${
+                  link.indent ? 'pl-4 text-header-fg/60' : 'text-header-fg/85'
                 }`}
               >
                 {link.label}

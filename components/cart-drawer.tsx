@@ -76,11 +76,12 @@ export default function CartDrawer({
         <div className="flex items-center justify-between px-6 py-5 border-b border-charcoal/8">
           <h2 className="font-serif text-lg text-charcoal">Your Cart</h2>
           <button
+            type="button"
             onClick={onClose}
             aria-label="Close cart"
-            className="text-charcoal/50 hover:text-charcoal transition-colors"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream -mr-2"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -93,8 +94,9 @@ export default function CartDrawer({
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
               <p className="text-charcoal/40 text-sm">Your cart is empty.</p>
               <button
+                type="button"
                 onClick={onClose}
-                className="text-xs tracking-widest uppercase text-burgundy hover:text-burgundy/70 transition-colors"
+                className="min-h-11 px-4 text-xs tracking-widest uppercase text-burgundy transition-colors hover:text-burgundy/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm"
               >
                 Continue Shopping
               </button>
@@ -141,9 +143,10 @@ export default function CartDrawer({
                       )}
                     </p>
                     <button
+                      type="button"
                       onClick={() => handleRemove(line.id)}
                       disabled={removing === line.id}
-                      className="text-charcoal/30 hover:text-charcoal/60 transition-colors text-xs"
+                      className="inline-flex min-h-11 min-w-[4.5rem] shrink-0 items-center justify-center px-2 text-xs text-charcoal/40 transition-colors hover:text-charcoal/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm disabled:opacity-50"
                       aria-label="Remove item"
                     >
                       {removing === line.id ? '…' : 'Remove'}
@@ -157,7 +160,7 @@ export default function CartDrawer({
 
         {/* Footer */}
         {lines.length > 0 && cart && (
-          <div className="border-t border-charcoal/8 px-6 py-6 space-y-4">
+          <div className="mt-auto border-t border-charcoal/8 bg-cream px-6 pt-6 space-y-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
             <div className="flex justify-between text-sm">
               <span className="text-charcoal/60">Subtotal</span>
               <span className="text-charcoal font-medium">
@@ -169,7 +172,7 @@ export default function CartDrawer({
             </p>
             <a
               href={checkoutUrl ?? '#'}
-              className="block w-full text-center bg-burgundy text-cream py-4 text-xs tracking-[0.2em] uppercase hover:bg-burgundy/90 transition-colors"
+              className="block w-full text-center bg-burgundy text-cream py-4 text-xs tracking-[0.2em] uppercase transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               Checkout
             </a>

@@ -47,14 +47,41 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = useCallback(
     async (variantId: string, quantity = 1, attributes?: CartAttribute[]) => {
-      let cart;
-      if (cartId) {
-        cart = await addCartLines(cartId, variantId, quantity, attributes);
-      } else {
-        cart = await createCart(variantId, quantity, attributes);
-        localStorage.setItem(CART_ID_KEY, cart.id);
-        setCartId(cart.id);
+      let storedId: string | null = null;
+      try {
+        storedId = localStorage.getItem(CART_ID_KEY);
+      } catch {
+        storedId = null;
       }
+      const effectiveCartId = cartId ?? storedId;
+
+      let cart: Awaited<ReturnType<typeof createCart>>;
+      try {
+        if (effectiveCartId) {
+          cart = await addCartLines(effectiveCartId, variantId, quantity, attributes);
+        } else {
+          cart = await createCart(variantId, quantity, attributes);
+        }
+      } catch (firstError) {
+        if (effectiveCartId) {
+          try {
+            localStorage.removeItem(CART_ID_KEY);
+          } catch {
+            /* ignore */
+          }
+          setCartId(null);
+          cart = await createCart(variantId, quantity, attributes);
+        } else {
+          throw firstError;
+        }
+      }
+
+      try {
+        localStorage.setItem(CART_ID_KEY, cart.id);
+      } catch {
+        /* ignore */
+      }
+      setCartId(cart.id);
       setCartCount(cart.totalQuantity);
       setCheckoutUrl(cart.checkoutUrl);
     },

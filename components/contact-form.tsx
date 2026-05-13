@@ -2,11 +2,15 @@
 
 import { useState } from 'react';
 
-export default function ContactForm() {
+export default function ContactForm({
+  initialMessage = '',
+}: {
+  initialMessage?: string;
+}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [order, setOrder] = useState('');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(initialMessage);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +39,7 @@ export default function ContactForm() {
       <div className="border border-charcoal/10 bg-charcoal/3 px-5 py-6 text-center">
         <p className="font-serif text-lg text-charcoal mb-2">Message received.</p>
         <p className="text-sm text-charcoal/55 leading-relaxed">
-          Thank you — we&apos;ll get back to you within 1–2 business days.
+          Thank you; we&apos;ll get back to you within 1–2 business days.
         </p>
       </div>
     );
@@ -113,7 +117,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-charcoal text-cream text-xs tracking-widest uppercase py-4 hover:bg-charcoal/85 transition-colors disabled:opacity-60"
+        className="w-full rounded-full border border-burgundy bg-burgundy text-cream text-xs tracking-[0.04em] uppercase py-4 transition-colors hover:border-accent-hover hover:bg-accent-hover disabled:opacity-60"
       >
         {loading ? 'Sending…' : 'Send Message'}
       </button>

@@ -1,6 +1,6 @@
 const ITEMS = [
   {
-    label: 'Free shipping $150+',
+    label: 'Free shipping $300+',
     sub: 'NZ tracked + signed',
     svg: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
@@ -12,17 +12,17 @@ const ITEMS = [
     ),
   },
   {
-    label: '30-day returns',
-    sub: 'No questions asked',
+    label: 'Made to order',
+    sub: 'Individually made with attention to detail',
     svg: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 12a9 9 0 1 0 3-6.7" />
-        <path d="M3 4v5h5" />
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 6v6l4 2" />
       </svg>
     ),
   },
   {
-    label: 'Lifetime warranty',
+    label: '6-months warranty',
     sub: 'On every piece',
     svg: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">

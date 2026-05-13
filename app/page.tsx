@@ -105,27 +105,10 @@ const HOME_FEATURED_COLLECTION_HANDLES = [
 
 export default async function Home() {
   let all: Collection[] = [];
-  let getCollectionsThrown: string | null = null;
   try {
     all = await getCollections(50);
-  } catch (e) {
-    getCollectionsThrown = e instanceof Error ? e.message : String(e);
+  } catch {
     all = [];
-    // #region agent log
-    fetch('http://127.0.0.1:7400/ingest/cfd5bf20-a163-4b92-8de1-9c7863644574', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'b033c9' },
-      body: JSON.stringify({
-        sessionId: 'b033c9',
-        location: 'app/page.tsx:Home',
-        message: 'getCollections threw',
-        data: { error: getCollectionsThrown },
-        timestamp: Date.now(),
-        runId: 'pre-fix',
-        hypothesisId: 'H2',
-      }),
-    }).catch(() => {});
-    // #endregion
   }
   const byHandle = new Map(all.map((c) => [c.handle, c]));
 
@@ -165,9 +148,7 @@ export default async function Home() {
     }
   }
 
-  let usedAllSliceFallback = false;
   if (curatedCollections.length === 0) {
-    usedAllSliceFallback = true;
     curatedCollections.push(
       ...all.filter((c) => c.handle !== 'best-sellers').slice(0, 4),
     );
@@ -181,33 +162,6 @@ export default async function Home() {
       }
     }
   }
-
-  // #region agent log
-  fetch('http://127.0.0.1:7400/ingest/cfd5bf20-a163-4b92-8de1-9c7863644574', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'b033c9' },
-    body: JSON.stringify({
-      sessionId: 'b033c9',
-      location: 'app/page.tsx:Home',
-      message: 'curated collections summary',
-      data: {
-        apiCollectionCount: all.length,
-        apiHandlesSample: all.map((c) => c.handle).slice(0, 12),
-        curatedCount: curatedCollections.length,
-        curatedHandles: curatedCollections.map((c) => c.handle),
-        usedAllSliceFallback,
-        sectionWillRender: curatedCollections.length > 0,
-        featuredResolved: HOME_FEATURED_COLLECTION_HANDLES.map((h) => ({
-          h,
-          inList: byHandle.has(h),
-        })),
-      },
-      timestamp: Date.now(),
-      runId: 'pre-fix',
-      hypothesisId: 'H3',
-    }),
-  }).catch(() => {});
-  // #endregion
 
   const ratings = await getAllRatings().catch(() => ({}));
 

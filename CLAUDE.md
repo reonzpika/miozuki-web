@@ -190,6 +190,31 @@ The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. Ne
 | `INSTAGRAM_USER_ID` | Instagram feed (server), value: `17841475205382310` |
 | `JUDGE_ME_PRIVATE_TOKEN` | Product reviews (server) |
 
+### Shopify Storefront API tokens: sourcing and rotation
+
+**The confusion.** Shopify has two dashboards that look like they might hold Storefront API credentials:
+1. Partner Dashboard (`dev.shopify.com`) – contains OAuth Client ID and Client Secret for app distribution. NOT used for Storefront API calls.
+2. Store admin (`admin.shopify.com/store/<handle>`) – contains the actual Storefront API tokens in the Sales channels panel.
+
+**Correct location for Storefront tokens:** Store admin, Sales channels > Headless sales channel app (free, auto-installed) > Storefront panel. You will see:
+- Public access token (32-char hex, or prefixed `shpat_`)
+- Private access token (used only on server side for sensitive operations)
+- List of available API permission scopes
+
+**Token format heuristics:**
+- 32-char hex (no prefix) or `shpat_` prefix = Storefront API token (public or private)
+- `shpat_` prefix on Admin API section = Admin API token (different purpose, do not use for Storefront)
+- `shpss_` prefix = OAuth API secret key (app distribution only, never for Storefront API calls)
+
+**Identifying a stale token:** If all Storefront API queries fail with 401 Unauthorized (even `{shop{name}}`), the token is revoked or belongs to an uninstalled/deprecated app. Extract a fresh one from the Headless sales channel's Storefront panel.
+
+**Token rotation (critical for production stability):**
+1. Extract new tokens from Store admin > Sales channels > Headless > Storefront panel
+2. Update `.env.local` locally: `SHOPIFY_STOREFRONT_ACCESS_TOKEN` (server, private token) and `NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN` (client, public token)
+3. Update Vercel environment variables (project settings > Environment Variables) for the same two vars – must be updated in lockstep with local `.env.local`
+4. Verify: run `npm run build` locally to confirm API connectivity before pushing
+5. Commit and deploy. Vercel will pick up the new env vars on the next deployment.
+
 ## Coding standards
 
 **Think before coding**

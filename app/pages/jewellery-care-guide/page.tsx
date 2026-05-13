@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Jewellery Care Guide — Miozuki',
+  title: 'Jewellery Care Guide | Miozuki',
   description:
     'How to care for your Miozuki moissanite and pearl jewellery to keep it looking its best.',
 };
@@ -63,10 +63,10 @@ export default function JewelleryCareGuidePage() {
             <li className="text-sm text-charcoal/65 leading-relaxed">
               <strong className="text-charcoal font-medium">Polishing metal.</strong>{' '}
               Use a non-abrasive jewellery cloth to refresh the shine of rhodium-plated silver.
-              Do not use silver dips or abrasive cleaners — these strip the coating.
+              Do not use silver dips or abrasive cleaners, these strip the coating.
             </li>
             <li className="text-sm text-charcoal/65 leading-relaxed">
-              <strong className="text-charcoal font-medium">Pearls — no ultrasonic cleaners.</strong>{' '}
+              <strong className="text-charcoal font-medium">Pearls, no ultrasonic cleaners.</strong>{' '}
               Never use ultrasonic or steam cleaners on pearl jewellery. Excessive vibration and
               heat can damage the delicate nacre surface.
             </li>
@@ -87,7 +87,7 @@ export default function JewelleryCareGuidePage() {
             <li className="text-sm text-charcoal/65 leading-relaxed">
               <strong className="text-charcoal font-medium">Pearl preservation.</strong>{' '}
               Pearls are delicate organic gems that benefit from being worn. Avoid storing them
-              in airtight plastic bags — they need a little natural moisture to keep their lustre.
+              in airtight plastic bags, they need a little natural moisture to keep their lustre.
               Never store pearls with other jewellery that could scratch them.
             </li>
           </ul>

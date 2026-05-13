@@ -3,8 +3,8 @@ import Link from 'next/link';
 import ContactForm from '@/components/contact-form';
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Miozuki',
-  description: 'Get in touch with Miozuki — questions about orders, ring sizing, or our jewellery.',
+  title: 'Contact Us | Miozuki',
+  description: 'Get in touch with Miozuki, questions about orders, ring sizing, or our jewellery.',
 };
 
 export default async function ContactPage({

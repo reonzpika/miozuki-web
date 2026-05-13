@@ -1,9 +1,9 @@
 // Refresh the Instagram long-lived access token (valid 60 days).
-// Call this every ~50 days — either manually or via Vercel Cron.
+// Call this every ~50 days, either manually or via Vercel Cron.
 //
 // Vercel Cron setup (vercel.json):
 // { "crons": [{ "path": "/api/instagram/refresh-token", "schedule": "0 9 1,15 * *" }] }
-// (runs on the 1st and 15th of each month — well within the 60-day window)
+// (runs on the 1st and 15th of each month, well within the 60-day window)
 //
 // The response includes the new token. Copy it to INSTAGRAM_ACCESS_TOKEN in
 // Vercel env vars, then redeploy (or wait for the next ISR cycle).
@@ -50,7 +50,7 @@ export async function GET(request: Request) {
       action_required:
         data.access_token !== token
           ? 'Update INSTAGRAM_ACCESS_TOKEN in Vercel env vars with new_token, then redeploy.'
-          : 'Token expiry extended — no change needed.',
+          : 'Token expiry extended, no change needed.',
     });
   } catch (err) {
     return NextResponse.json({ error: 'Fetch failed', detail: String(err) }, { status: 500 });

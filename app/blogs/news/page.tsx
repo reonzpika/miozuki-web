@@ -6,7 +6,7 @@ import BlogTagFilter from '@/components/blog-tag-filter';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Journal — Miozuki',
+  title: 'Journal | Miozuki',
   description:
     'Moissanite and pearl jewellery guides, styling tips, and stories from Auckland, New Zealand.',
 };

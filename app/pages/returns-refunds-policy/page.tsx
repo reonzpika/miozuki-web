@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Returns & Refunds Policy — Miozuki',
-  description: 'Miozuki returns and refunds policy — 14-day change of mind return window and how to submit a request.',
+  title: 'Returns & Refunds Policy | Miozuki',
+  description: 'Miozuki returns and refunds policy, 14-day change of mind return window and how to submit a request.',
 };
 
 export default function ReturnsRefundsPolicyPage() {
@@ -47,15 +47,15 @@ export default function ReturnsRefundsPolicyPage() {
           <p className="mb-3">The following items cannot be returned or refunded:</p>
           <ul className="list-disc pl-5 space-y-2">
             <li>
-              <strong className="text-charcoal font-medium">Earrings</strong> — for hygiene reasons,
+              <strong className="text-charcoal font-medium">Earrings</strong>, for hygiene reasons,
               all earring sales are final
             </li>
             <li>
-              <strong className="text-charcoal font-medium">Custom or engraved pieces</strong> — items
+              <strong className="text-charcoal font-medium">Custom or engraved pieces</strong>, items
               personalised with engraving cannot be returned
             </li>
             <li>
-              <strong className="text-charcoal font-medium">Sale items</strong> — all discounted items
+              <strong className="text-charcoal font-medium">Sale items</strong>, all discounted items
               are sold as final sale
             </li>
           </ul>
@@ -67,7 +67,7 @@ export default function ReturnsRefundsPolicyPage() {
             If your item arrives faulty or damaged, please contact us within{' '}
             <strong className="text-charcoal font-medium">48 hours</strong> of delivery with photos
             of the damage. We will arrange a replacement or refund at no cost to you. This is separate
-            from our standard warranty cover — please see our{' '}
+            from our standard warranty cover, please see our{' '}
             <Link href="/pages/warranty-cover" className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors">
               Warranty Cover
             </Link>{' '}

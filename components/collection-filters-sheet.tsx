@@ -44,7 +44,7 @@ export default function CollectionFiltersSheet({
       />
 
       <div
-        className="fixed inset-x-0 bottom-0 z-[51] flex max-h-[min(90vh,40rem)] flex-col border-t border-charcoal/10 bg-cream shadow-2xl md:hidden pb-[max(1rem,env(safe-area-inset-bottom))]"
+        className="fixed inset-x-0 bottom-0 z-[51] flex max-h-[min(90vh,40rem)] flex-col border-t border-charcoal/15 bg-cream md:hidden pb-[max(1rem,env(safe-area-inset-bottom))]"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}

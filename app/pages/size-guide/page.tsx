@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Ring Size Guide — Miozuki',
+  title: 'Ring Size Guide | Miozuki',
   description: 'How to find your ring size: two methods, a size chart, and our ring sizer.',
 };
 
@@ -63,7 +63,7 @@ export default function SizeGuidePage() {
 
         {/* Method 1 */}
         <div>
-          <h2 className="font-serif text-xl text-charcoal mb-4">Method 1 — Measure an Existing Ring</h2>
+          <h2 className="font-serif text-xl text-charcoal mb-4">Method 1: Measure an Existing Ring</h2>
           <p className="mb-3">If you already own a ring that fits the intended finger:</p>
           <ol className="list-decimal pl-5 space-y-2">
             <li>Measure the inner diameter of the ring in millimetres.</li>
@@ -73,12 +73,12 @@ export default function SizeGuidePage() {
 
         {/* Method 2 */}
         <div>
-          <h2 className="font-serif text-xl text-charcoal mb-4">Method 2 — Measure Your Finger</h2>
+          <h2 className="font-serif text-xl text-charcoal mb-4">Method 2: Measure Your Finger</h2>
           <p className="mb-3">Using a strip of paper or a piece of string:</p>
           <ol className="list-decimal pl-5 space-y-2">
-            <li>Wrap the strip snugly around the base of your finger (not too tight — you need to be able to slide a ring over your knuckle).</li>
+            <li>Wrap the strip snugly around the base of your finger (not too tight, you need to be able to slide a ring over your knuckle).</li>
             <li>Mark where the strip overlaps.</li>
-            <li>Measure the length in millimetres — this is your finger circumference.</li>
+            <li>Measure the length in millimetres, this is your finger circumference.</li>
             <li>Use the size chart above to find your US ring size.</li>
           </ol>
         </div>
@@ -97,7 +97,7 @@ export default function SizeGuidePage() {
             <li>
               <strong className="text-charcoal font-medium">Check your knuckle.</strong>{' '}
               If your knuckle is wider than the base of your finger, size for the knuckle so the ring
-              can slide on — then check the fit at the base.
+              can slide on, then check the fit at the base.
             </li>
             <li>
               <strong className="text-charcoal font-medium">When between sizes, size up.</strong>{' '}

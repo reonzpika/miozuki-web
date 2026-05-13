@@ -42,7 +42,7 @@ const { values: args } = parseArgs({
 });
 
 if (args.help) {
-  console.log(`gen-image — Nano Banana Pro via laozhang.ai
+  console.log(`gen-image, Nano Banana Pro via laozhang.ai
 
 Required (one of):
   --prompt        Full prompt text (250-500 words per docs/context/miozuki-nano-banana-image-guide.md §2)

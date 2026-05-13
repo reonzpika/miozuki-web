@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'About Miozuki — Fine Jewellery NZ',
+  title: 'About Miozuki, Fine Jewellery NZ',
   description:
     'Miozuki is a Japanese-inspired fine jewellery brand based in Auckland, New Zealand, specialising in moissanite and pearl pieces.',
 };
@@ -25,10 +25,10 @@ export default function AboutPage() {
 
       <blockquote className="border-l-2 border-burgundy/30 pl-6 mb-10">
         <p className="font-serif text-xl text-charcoal/80 italic leading-relaxed mb-4">
-          Miozuki 澪月 — Waterway to the Moon
+          Miozuki 澪月: Waterway to the Moon
         </p>
         <p className="text-sm text-charcoal/60 leading-relaxed mb-4">
-          &ldquo;The story began with a fortune slip at a shrine in Fukuoka, Japan in 2025 — a small
+          &ldquo;The story began with a fortune slip at a shrine in Fukuoka, Japan in 2025, a small
           piece of paper that quietly changed everything.
         </p>
         <p className="text-sm text-charcoal/60 leading-relaxed mb-4">
@@ -39,20 +39,20 @@ export default function AboutPage() {
           moonlight will always find its way to you.&rdquo;
         </p>
         <p className="text-sm text-charcoal/60 leading-relaxed">
-          Those words stayed with me — and became the story of the brand.&rdquo;
+          Those words stayed with me, and became the story of the brand.&rdquo;
         </p>
       </blockquote>
 
       <div className="space-y-5 text-sm text-charcoal/70 leading-relaxed">
         <p>
           Miozuki is a Japanese-inspired fine jewellery brand based in Auckland, New Zealand.
-          We believe <strong className="text-charcoal font-medium">true beauty lives in contrast</strong> —
+          We believe <strong className="text-charcoal font-medium">true beauty lives in contrast</strong>,
           our mission is to bring the quiet yet powerful strength within every woman. It
           isn&apos;t loud, but softly shines.
         </p>
         <p>
           The Japanese word stands for &ldquo;waterway to the moon,&rdquo; reflecting the journey every
-          woman takes in her own time, in her own way — ever flowing, ever rising. The kind
+          woman takes in her own time, in her own way, ever flowing, ever rising. The kind
           of strength that moves like water: gentle, but capable of shaping everything it
           touches.
         </p>

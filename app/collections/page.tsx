@@ -5,7 +5,7 @@ import { getCollections } from '@/lib/shopify';
 export const revalidate = 60;
 
 export const metadata = {
-  title: 'Collections — Miozuki',
+  title: 'Collections | Miozuki',
   description: 'Browse our collections of moissanite and pearl fine jewellery.',
 };
 

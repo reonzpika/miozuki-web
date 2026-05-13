@@ -57,7 +57,7 @@ export default function HeroSection() {
           <div className="h-px w-10 bg-cream/35" />
         </motion.div>
 
-        {/* Headline — line-by-line reveal */}
+        {/* Headline, line-by-line reveal */}
         <motion.h1
           className="mb-4 max-w-3xl font-serif text-4xl leading-tight tracking-tight text-cream sm:text-5xl md:text-7xl lg:text-8xl"
           variants={container}

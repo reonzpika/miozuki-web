@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Book an Appointment — Miozuki',
+  title: 'Book an Appointment | Miozuki',
   description:
-    'Book a private appointment with Miozuki for moissanite fine jewellery — in person or by arrangement.',
+    'Book a private appointment with Miozuki for moissanite fine jewellery, in person or by arrangement.',
 };
 
 export default function AppointmentPage() {
@@ -58,7 +58,7 @@ export default function AppointmentPage() {
         >
           use our contact form
         </Link>
-        , and we&apos;ll get back to you within 24 hours.
+, and we&apos;ll get back to you within 24 hours.
       </p>
     </main>
   );

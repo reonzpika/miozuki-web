@@ -1,4 +1,4 @@
-// Instagram Graph API via Facebook endpoint — server-side only.
+// Instagram Graph API via Facebook endpoint, server-side only.
 // Uses graph.facebook.com (not graph.instagram.com) with a Facebook User
 // Access Token and the Instagram Business Account user ID.
 //
@@ -8,8 +8,8 @@
 // → exchange for long-lived: GET /api/instagram/refresh-token
 //
 // Env vars required:
-//   INSTAGRAM_ACCESS_TOKEN  — Facebook User Access Token
-//   INSTAGRAM_USER_ID       — Instagram Business Account ID (17841475205382310)
+//   INSTAGRAM_ACCESS_TOKEN, Facebook User Access Token
+//   INSTAGRAM_USER_ID, Instagram Business Account ID (17841475205382310)
 
 import type { InstagramPost } from './types';
 

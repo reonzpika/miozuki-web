@@ -93,7 +93,7 @@ export default function PdpRingSizeSelect({
           id={listboxId}
           role="listbox"
           aria-labelledby={labelId}
-          className="absolute left-0 right-0 top-full z-30 mt-1 max-h-[min(22rem,calc(100vh-12rem))] overflow-y-auto border border-charcoal/20 bg-cream py-1 shadow-[0_12px_36px_rgb(31_31_31/0.12)]"
+          className="absolute left-0 right-0 top-full z-30 mt-1 max-h-[min(22rem,calc(100vh-12rem))] overflow-y-auto border border-charcoal/20 bg-cream py-1 shadow-[0_12px_36px_var(--miozuki-shadow)]"
         >
           {values.map((val) => {
             const available = availabilityForValue(val);

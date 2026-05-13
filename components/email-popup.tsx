@@ -132,7 +132,7 @@ export default function EmailPopup() {
             exit={{ opacity: 0, y: 16, scale: 0.97 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="pointer-events-auto relative w-full max-w-md overflow-hidden rounded-sm bg-burgundy shadow-2xl shadow-black/25">
+            <div className="pointer-events-auto relative w-full max-w-md overflow-hidden rounded-sm bg-burgundy border border-charcoal/15">
               <button
                 type="button"
                 onClick={dismiss}

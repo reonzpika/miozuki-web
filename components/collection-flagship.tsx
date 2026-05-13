@@ -75,7 +75,7 @@ export function CollectionFlagshipAboveGrid({
       >
         {TRUST_PILLS.map((label) => (
           <li key={label}>
-            <span className="inline-block rounded-full border border-charcoal/15 bg-cream px-3 py-1.5 text-xs leading-snug text-charcoal/75 shadow-[0_1px_0_rgba(0,0,0,0.04)] md:px-3.5 md:py-2 md:text-sm">
+            <span className="inline-block rounded-full border border-charcoal/15 bg-cream px-3 py-1.5 text-xs leading-snug text-charcoal/75 shadow-[0_1px_0_var(--miozuki-shadow)] md:px-3.5 md:py-2 md:text-sm">
               {label}
             </span>
           </li>

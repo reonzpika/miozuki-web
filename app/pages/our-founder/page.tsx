@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Our Founder — Miozuki',
+  title: 'Our Founder | Miozuki',
   description:
     'Meet Ting Eguchi, founder of Miozuki fine jewellery, Auckland NZ.',
 };
@@ -26,7 +26,7 @@ export default function OurFounderPage() {
 
       <p className="text-sm text-charcoal/70 leading-relaxed mb-10">
         Kia Ora, I&apos;m Ting Eguchi, the founder of Miozuki. From my studio in Auckland,
-        each piece is carefully prepared and wrapped — with the same intention that goes into
+        each piece is carefully prepared and wrapped, with the same intention that goes into
         choosing every piece. Thank you for finding your way here, and for supporting this
         small, heartfelt brand. Your presence is now part of its story.
       </p>
@@ -50,13 +50,13 @@ export default function OurFounderPage() {
           already existed in me.
         </p>
         <p className="text-sm text-charcoal/70 leading-relaxed italic">
-          It is not loud, but begins with self-belief — the kind that comes when we accept our
+          It is not loud, but begins with self-belief, the kind that comes when we accept our
           imperfections and embrace our contrasting sides: the soft and the strong, the
           vulnerability and the resilience.
         </p>
         <p className="text-sm text-charcoal/70 leading-relaxed italic">
-          I created Miozuki to honour this philosophy — just like our pearl and moissanite
-          jewellery. Miozuki is for the woman who glows like the moon, flows like water —
+          I created Miozuki to honour this philosophy, just like our pearl and moissanite
+          jewellery. Miozuki is for the woman who glows like the moon, flows like water,
           graceful, yet unforgettable.&rdquo;
         </p>
       </blockquote>
@@ -75,7 +75,7 @@ export default function OurFounderPage() {
           essential oils that turn the room into a space for more creative moments.
         </p>
         <p className="text-sm text-charcoal/60 leading-relaxed">
-          It is within these simple rituals that I find joy, beauty, and creativity — a
+          It is within these simple rituals that I find joy, beauty, and creativity, a
           reminder that the quietest glow often shines the longest.
         </p>
       </blockquote>

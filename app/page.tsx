@@ -32,7 +32,7 @@ const HOME_FAQ = [
   },
   {
     q: 'What is your return and exchange policy?',
-    a: 'We offer a 14-day return window on most items returned in original packaging and sellable condition. Earrings, custom-made rings, and sale items are non-refundable. We recommend ordering a ring sizer first — the cost is credited toward your ring order.',
+    a: 'We offer a 14-day return window on most items returned in original packaging and sellable condition. Earrings, custom-made rings, and sale items are non-refundable. We recommend ordering a ring sizer first, the cost is credited toward your ring order.',
   },
   {
     q: 'What if my parcel gets lost or stolen?',

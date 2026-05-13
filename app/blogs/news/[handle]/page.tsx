@@ -32,7 +32,7 @@ export async function generateMetadata({
   }
   if (!article) return {};
   return {
-    title: `${article.title} — Miozuki`,
+    title: `${article.title} | Miozuki`,
     description: article.excerpt ?? undefined,
     openGraph: article.image ? { images: [{ url: article.image.url }] } : undefined,
   };

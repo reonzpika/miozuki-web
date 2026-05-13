@@ -521,7 +521,7 @@ export function PdpCustomerPhotosStrip({
           <li key={img.url} className="relative aspect-[3/4] overflow-hidden bg-cream/60">
             <Image
               src={img.url}
-              alt={img.altText ?? `${title} — photo ${i + 2}`}
+              alt={img.altText ?? `${title}, photo ${i + 2}`}
               fill
               sizes="(max-width: 768px) 33vw, 180px"
               className="object-cover"

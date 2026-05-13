@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
   const metaRes = await fetch(
     `${BASE}/${id}?fields=media_type,media_url,thumbnail_url&access_token=${token}`,
-    // Cache the media_url lookup for 25min — Instagram signed URLs usually
+    // Cache the media_url lookup for 25min, Instagram signed URLs usually
     // live ~1h, so we always refresh before they can expire.
     { next: { revalidate: 1500 } }
   );
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     headers: {
       'Content-Type': imgRes.headers.get('content-type') ?? 'image/jpeg',
       'Content-Length': imgRes.headers.get('content-length') ?? '',
-      // Cache aggressively — the proxied image bytes don't change per-post.
+      // Cache aggressively, the proxied image bytes don't change per-post.
       'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400',
     },
   });

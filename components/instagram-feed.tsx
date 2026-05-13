@@ -26,7 +26,7 @@ export default async function InstagramFeed() {
           </a>
         </div>
 
-        {/* Grid — 2 col mobile, 3 col tablet, 5 col desktop */}
+        {/* Grid, 2 col mobile, 3 col tablet, 5 col desktop */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1.5">
           {posts.map((post) => {
             const src = `/api/instagram/image?id=${encodeURIComponent(post.id)}`;

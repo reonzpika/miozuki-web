@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Shipping Policy — Miozuki',
+  title: 'Shipping Policy | Miozuki',
   description: 'Miozuki NZ shipping rates, delivery times, and made-to-order lead times.',
 };
 
@@ -77,7 +77,7 @@ export default function ShippingPolicyPage() {
             >
               info@miozuki.co.nz
             </a>{' '}
-            as soon as possible — we can only amend the address before dispatch.
+            as soon as possible, we can only amend the address before dispatch.
           </p>
         </div>
 

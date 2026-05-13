@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Warranty Cover — Miozuki',
+  title: 'Warranty Cover | Miozuki',
   description: 'Miozuki jewellery warranty terms and how to submit a claim.',
 };
 

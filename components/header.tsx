@@ -101,7 +101,7 @@ export default function Header() {
         <div className="relative mx-auto flex h-20 w-full max-w-7xl items-center gap-3 px-6 md:gap-8 md:px-10">
           {/* Mobile: menu + wordmark on the left; desktop: wordmark participates in row via md:contents */}
           <div className="flex min-w-0 flex-1 items-center gap-3 md:contents">
-            {/* Hamburger — mobile only (subdued so the wordmark reads as primary) */}
+            {/* Hamburger, mobile only (subdued so the wordmark reads as primary) */}
             <button
               type="button"
               onClick={() => setMenuOpen((o) => !o)}
@@ -162,7 +162,7 @@ export default function Header() {
                       exit="exit"
                       className="absolute top-full left-0 pt-1 min-w-[210px] z-50 origin-top"
                     >
-                      <div className="bg-cream border border-charcoal/10 shadow-md py-1.5">
+                      <div className="bg-cream border border-charcoal/15 py-1.5">
                         {navItem.children.map((child) => (
                           <Link
                             key={child.href}

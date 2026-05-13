@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Moissanite FAQ — Miozuki',
+  title: 'Moissanite FAQ | Miozuki',
   description:
-    'Everything you need to know about moissanite — the ethical, brilliant diamond alternative.',
+    'Everything you need to know about moissanite, the ethical, brilliant diamond alternative.',
 };
 
 const SECTIONS = [
@@ -14,10 +14,10 @@ const SECTIONS = [
 
 Moissanite's popularity comes from a blend of advantages:
 
-• Brilliant fire and sparkle — its refractive index (2.65–2.69) creates rainbow flashes that can outshine a diamond.
-• Exceptional durability — a hardness of 9.25 on the Mohs scale makes moissanite one of the hardest gemstones, second only to diamond.
-• Ethical & sustainable — lab growth avoids land disruption, water consumption, and conflict concerns linked to diamond mining.
-• Affordable luxury — moissanite offers high-end sparkle at a more accessible price.`,
+• Brilliant fire and sparkle, its refractive index (2.65–2.69) creates rainbow flashes that can outshine a diamond.
+• Exceptional durability, a hardness of 9.25 on the Mohs scale makes moissanite one of the hardest gemstones, second only to diamond.
+• Ethical & sustainable, lab growth avoids land disruption, water consumption, and conflict concerns linked to diamond mining.
+• Affordable luxury, moissanite offers high-end sparkle at a more accessible price.`,
   },
   {
     heading: 'Is Moissanite a Real Diamond?',
@@ -29,7 +29,7 @@ Moissanite's popularity comes from a blend of advantages:
   },
   {
     heading: 'Why Does Moissanite Sparkle More Than Diamond?',
-    body: `Sparkle depends on a gemstone's refractive index — its ability to bend light. Moissanite's refractive index of 2.65–2.69 surpasses diamond's 2.42. This means moissanite rings and earrings will always deliver eye-catching brilliance, especially in mixed lighting.`,
+    body: `Sparkle depends on a gemstone's refractive index, its ability to bend light. Moissanite's refractive index of 2.65–2.69 surpasses diamond's 2.42. This means moissanite rings and earrings will always deliver eye-catching brilliance, especially in mixed lighting.`,
   },
   {
     heading: 'Does Moissanite Get Cloudy?',
@@ -43,18 +43,18 @@ Moissanite's popularity comes from a blend of advantages:
     heading: 'Why Choose Moissanite vs Diamond?',
     body: `Shoppers choose moissanite for several reasons:
 
-• Brilliance & fire — its high refractive index creates dazzling sparkle.
-• Durability — 9.25 Mohs hardness and no cleavage plane make it strong for everyday wear.
-• Ethical peace of mind — lab-grown origins eliminate conflict and reduce environmental impact.
-• Affordability — moissanite offers a diamond-like appearance at a fraction of the cost.
+• Brilliance & fire, its high refractive index creates dazzling sparkle.
+• Durability, 9.25 Mohs hardness and no cleavage plane make it strong for everyday wear.
+• Ethical peace of mind, lab-grown origins eliminate conflict and reduce environmental impact.
+• Affordability, moissanite offers a diamond-like appearance at a fraction of the cost.
 
 Choosing moissanite isn't about replacing diamonds; it's about selecting a gemstone that matches your values, budget, and aesthetic.`,
   },
   {
     heading: 'Moissanite Care Tips',
-    body: `• Clean regularly — use warm water, mild dish soap, and a soft brush to remove oils and dirt.
-• Store separately — keep moissanite pieces away from harder stones and rough surfaces to avoid scratches.
-• Avoid harsh chemicals — remove jewellery when using household cleaners or applying lotions to maintain lustre.
+    body: `• Clean regularly, use warm water, mild dish soap, and a soft brush to remove oils and dirt.
+• Store separately, keep moissanite pieces away from harder stones and rough surfaces to avoid scratches.
+• Avoid harsh chemicals, remove jewellery when using household cleaners or applying lotions to maintain lustre.
 
 With proper care, moissanite retains its brilliance and sparkle for generations.`,
   },
@@ -74,7 +74,7 @@ export default function MoissaniteFaqPage() {
         Moissanite FAQ
       </h1>
       <p className="text-sm text-charcoal/55 leading-relaxed mb-10">
-        The ethical diamond alternative — everything you need to know about moissanite
+        The ethical diamond alternative, everything you need to know about moissanite
         composition, durability, sparkle, and sustainability.
       </p>
 

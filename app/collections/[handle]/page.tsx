@@ -29,11 +29,11 @@ export async function generateMetadata({
     collection = await getCollectionByHandle(handle);
   } catch (err) {
     console.error('Collection metadata fetch failed', { handle, error: err });
-    return { title: 'Collection — Miozuki' };
+    return { title: 'Collection | Miozuki' };
   }
-  if (!collection) return { title: 'Collection — Miozuki' };
+  if (!collection) return { title: 'Collection | Miozuki' };
   return {
-    title: `${collection.title} — Miozuki`,
+    title: `${collection.title} | Miozuki`,
     description: collection.description || undefined,
   };
 }

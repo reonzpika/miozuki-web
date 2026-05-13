@@ -59,15 +59,15 @@ export async function generateMetadata({
     product = await getProductByHandle(handle);
   } catch (err) {
     console.error('PDP metadata fetch failed', { handle, error: err });
-    return { title: 'Product — Miozuki' };
+    return { title: 'Product | Miozuki' };
   }
-  if (!product) return { title: 'Product — Miozuki' };
+  if (!product) return { title: 'Product | Miozuki' };
   const { description: metaDesc } = applyPdpDescriptionCorrections(
     product.descriptionHtml,
     product.description
   );
   return {
-    title: `${product.title} — Miozuki`,
+    title: `${product.title} | Miozuki`,
     description: metaDesc || undefined,
   };
 }

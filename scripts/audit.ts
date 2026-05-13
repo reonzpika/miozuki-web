@@ -151,7 +151,7 @@ function attachListeners(
         tier: 1,
         page: route,
         type: 'network-error',
-        message: `HTTP ${status} — ${response.url()}`,
+        message: `HTTP ${status}, ${response.url()}`,
         url,
       }))
     }
@@ -340,7 +340,7 @@ async function runPageCrawl(
       screenshot: screenshotPath,
     })
 
-    console.log(`  [${status}] ${route} — ${pageFindings.length} finding(s)`)
+    console.log(`  [${status}] ${route}, ${pageFindings.length} finding(s)`)
     await page.close()
   }
 
@@ -350,7 +350,7 @@ async function runPageCrawl(
 // ---- Popup suppression helpers ----
 
 /**
- * Call BEFORE page.goto — sets miozuki_popup_v1 so the custom email popup never fires.
+ * Call BEFORE page.goto, sets miozuki_popup_v1 so the custom email popup never fires.
  * Does not suppress the Tier 2d test, which intentionally uses a fresh context.
  */
 async function suppressCustomPopup(page: Page): Promise<void> {
@@ -365,11 +365,11 @@ async function suppressCustomPopup(page: Page): Promise<void> {
 }
 
 /**
- * Call AFTER page.goto — presses Escape to dismiss any 3rd-party modal
+ * Call AFTER page.goto, presses Escape to dismiss any 3rd-party modal
  * (Klaviyo, etc.) that may be intercepting pointer events.
  */
 async function dismissAnyModal(page: Page): Promise<void> {
-  // Press Escape twice with a short gap — handles focus-trapped modals
+  // Press Escape twice with a short gap, handles focus-trapped modals
   await page.keyboard.press('Escape').catch(() => {})
   await page.waitForTimeout(300)
   await page.keyboard.press('Escape').catch(() => {})
@@ -385,7 +385,7 @@ async function runCartFlow(
   productHandle: string
 ): Promise<void> {
   const url = `${CONFIG.baseUrl}/products/${productHandle}`
-  // Isolated context — cart ID is stored in localStorage; a fresh context
+  // Isolated context, cart ID is stored in localStorage; a fresh context
   // guarantees clean cart state, independent of other flows.
   const ctx = await browser.newContext()
   const page = await ctx.newPage()
@@ -433,7 +433,7 @@ async function runCartFlow(
       }))
     }
 
-    // Wait for the header cart badge to show ≥1 — confirms the cart state has
+    // Wait for the header cart badge to show ≥1, confirms the cart state has
     // committed before we open the drawer. Avoids race where Add-to-Cart
     // button shows "Added" but the cart mutation to Shopify hasn't resolved.
     await page.waitForFunction(() => {
@@ -508,7 +508,7 @@ async function runCheckoutFlow(
   productHandle: string
 ): Promise<void> {
   const url = `${CONFIG.baseUrl}/products/${productHandle}`
-  // Isolated context — cart state (in localStorage) must not leak from Tier 2a.
+  // Isolated context, cart state (in localStorage) must not leak from Tier 2a.
   const ctx = await browser.newContext()
   const page = await ctx.newPage()
 
@@ -525,7 +525,7 @@ async function runCheckoutFlow(
         tier: 2,
         page: 'checkout-entry',
         type: 'flow-failure',
-        message: 'Cannot test checkout — Add to Cart button not found',
+        message: 'Cannot test checkout, Add to Cart button not found',
         url,
       }))
       return
@@ -558,7 +558,7 @@ async function runCheckoutFlow(
 
     let checkoutUrl = ''
     try {
-      // Shopify hosts checkout on: the shop's primary domain (most common —
+      // Shopify hosts checkout on: the shop's primary domain (most common,
        // e.g. miozuki.co.nz/checkouts/cn/…), {shop}.myshopify.com/checkouts/,
        // or (rarely) checkout.shopify.com. Match any URL whose path contains
        // /checkouts/ plus the legacy subdomain.
@@ -664,7 +664,7 @@ async function runContactForm(
         tier: 2,
         page: '/pages/contact',
         type: 'missing-element',
-        message: 'Contact form not rendered — page may have returned error (503/404)',
+        message: 'Contact form not rendered, page may have returned error (503/404)',
         url,
         screenshotPath: await takeScreenshot(page, 'flow-contact-missing-form.png'),
       }))
@@ -691,7 +691,7 @@ async function runContactForm(
 
     await nameInput.fill('Audit Test')
     await emailInput.fill('audit-test@example.com')
-    await messageInput.fill('Automated audit test submission — please ignore.')
+    await messageInput.fill('Automated audit test submission, please ignore.')
 
     await takeScreenshot(page, 'flow-contact-filled.png')
 
@@ -754,7 +754,7 @@ async function runEmailPopup(
     // Fresh browser context: localStorage empty, shouldShow() returns true, popup fires after 4s
     await page.waitForTimeout(5000)
 
-    // Scope to the dialog — matches `components/email-popup.tsx` h2 copy.
+    // Scope to the dialog, matches `components/email-popup.tsx` h2 copy.
     const popup = page.getByRole('dialog')
     const popupHeading = popup.getByRole('heading', { name: "Be first to discover what's next" })
     if (!(await popupHeading.isVisible({ timeout: 2000 }).catch(() => false))) {
@@ -869,7 +869,7 @@ async function runAPIChecks(
         name: 'Audit Test',
         email: 'audit-test@example.com',
         order: '',
-        message: 'Automated audit test — please ignore.',
+        message: 'Automated audit test, please ignore.',
       },
     })
     const status = res.status()
@@ -914,7 +914,7 @@ function generateMarkdown(report: AuditReport): string {
   const { meta, summary, findings, pages, api_checks } = report
 
   const findingBlock = (f: Finding) =>
-    `### ${f.id} — ${f.page} [${f.type}]\n` +
+    `### ${f.id}, ${f.page} [${f.type}]\n` +
     `- **Severity:** ${f.severity}\n` +
     `- **Tier:** ${f.tier}\n` +
     `- **URL:** ${f.url}\n` +
@@ -949,7 +949,7 @@ function generateMarkdown(report: AuditReport): string {
   ].join('\n')
 
   return [
-    `# Miozuki Audit — ${meta.date}`,
+    `# Miozuki Audit, ${meta.date}`,
     '',
     '## Summary',
     `- **Target:** ${meta.target}`,
@@ -1019,7 +1019,7 @@ async function writeReport(
 
 async function main() {
   const startTime = Date.now()
-  console.log(`Miozuki audit — target: ${CONFIG.baseUrl}`)
+  console.log(`Miozuki audit, target: ${CONFIG.baseUrl}`)
   console.log(`Headless: ${CONFIG.headless}`)
 
   fs.mkdirSync(CONFIG.screenshotDir, { recursive: true })
@@ -1045,7 +1045,7 @@ async function main() {
         tier: 2,
         page: 'product-discovery',
         type: 'flow-failure',
-        message: 'No products found — Tier 2 flow tests skipped',
+        message: 'No products found, Tier 2 flow tests skipped',
         url: CONFIG.baseUrl,
       }))
     } else {

@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Custom Made — Miozuki',
+  title: 'Custom Made | Miozuki',
   description:
-    'Custom made and bespoke moissanite fine jewellery by Miozuki — designed with you, crafted in sterling silver.',
+    'Custom made and bespoke moissanite fine jewellery by Miozuki, designed with you, crafted in sterling silver.',
 };
 
 export default function CustomMadePage() {

@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   // Save the first_name via the Create Profile endpoint. The
   // profile-subscription-bulk-create-jobs endpoint only accepts email/phone/
   // subscriptions, so the name must be set separately. 409 = profile already
-  // exists, which is fine — we don't overwrite existing names.
+  // exists, which is fine, we don't overwrite existing names.
   if (name && typeof name === 'string' && name.trim().length > 0) {
     const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',

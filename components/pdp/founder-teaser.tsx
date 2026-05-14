@@ -29,7 +29,7 @@ export function PdpFounderTeaser() {
             id="pdp-founder-heading"
             className="text-sm leading-relaxed text-charcoal/80"
           >
-            &ldquo;I created Miozuki to honour the charisma of contrast - the woman who is both soft
+            &ldquo;I created Miozuki to honour the charisma of contrast: the woman who is both soft
             and strong, like pearl and moissanite. It began with a fortune slip in Fukuoka, Japan,
             and became a quiet reminder that true beauty is found in meaning.&rdquo;
           </blockquote>

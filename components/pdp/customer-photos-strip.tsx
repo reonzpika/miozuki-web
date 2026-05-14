@@ -31,7 +31,7 @@ export function PdpCustomerPhotosStrip({
           reviews.
         </p>
       </div>
-      <ul className="grid grid-cols-3 gap-2">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2">
         {strip.map((img, i) => (
           <li key={img.url} className="relative aspect-[3/4] overflow-hidden bg-cream/60">
             <Image

@@ -42,7 +42,7 @@ export default function FounderSection() {
               alt="Ting Eguchi, founder of Miozuki"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1536px) 50vw, 960px"
-              className="border-0 object-cover object-[44%_38%] outline-none ring-0"
+              className="border-0 object-cover object-[50%_25%] outline-none ring-0"
               quality={95}
             />
           </div>

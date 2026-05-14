@@ -35,14 +35,14 @@ export default function FounderSection() {
           </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.1} className="order-1 flex min-h-[18rem] flex-col md:order-2 md:h-full md:min-h-0">
-          <div className="relative h-full min-h-[18rem] w-full flex-1 overflow-hidden border-y-0 border-l-0 border-r border-cream bg-burgundy md:min-h-0">
+        <ScrollReveal delay={0.1} className="order-1 flex justify-center px-6 py-10 md:order-2 md:items-center md:px-10 md:py-24">
+          <div className="relative aspect-square w-full max-w-xs overflow-hidden md:max-w-sm lg:max-w-md">
             <Image
-              src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/PXL_20241230_060931026_3_480x480.jpg?v=1767920670&width=2400"
+              src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/PXL_20241230_060931026_3_480x480.jpg?v=1767920670&width=1200"
               alt="Ting Eguchi, founder of Miozuki"
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1536px) 50vw, 960px"
-              className="border-0 object-cover object-[50%_25%] outline-none ring-0"
+              sizes="(max-width: 768px) 320px, (max-width: 1024px) 384px, 448px"
+              className="object-cover object-[50%_25%]"
               quality={95}
             />
           </div>

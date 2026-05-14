@@ -8,15 +8,13 @@ import AddToCart from '@/components/add-to-cart';
 import ProductReviews from '@/components/product-reviews';
 import ProductRatingSummary from '@/components/product-rating-summary';
 import { ProductDescriptionDisclosure } from '@/components/product-description-disclosure';
-import {
-  PdpSecondaryActions,
-  PdpInfoCardsSection,
-  PdpFounderTeaser,
-  PdpCustomerPhotosStrip,
-  PdpQuickLinksRow,
-  PdpCustomEnquiry,
-  isEarringProduct,
-} from '@/components/pdp-product-story';
+import { PdpSecondaryActions } from '@/components/pdp/secondary-actions';
+import { PdpInfoCardsSection } from '@/components/pdp/info-cards-section';
+import { PdpFounderTeaser } from '@/components/pdp/founder-teaser';
+import { PdpCustomerPhotosStrip } from '@/components/pdp/customer-photos-strip';
+import { PdpQuickLinksRow } from '@/components/pdp/quick-links-row';
+import { PdpCustomEnquiry } from '@/components/pdp/custom-enquiry';
+import { isEarringProduct } from '@/lib/product-helpers';
 
 export const revalidate = 60;
 

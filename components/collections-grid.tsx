@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect } from 'react';
 import { useHoverCapable } from '@/hooks/use-hover-capable';
 
 interface Collection {
@@ -75,24 +74,6 @@ function CollectionCard({
 
 export default function CollectionsGrid({ collections }: { collections: Collection[] }) {
   const reduceMotion = useReducedMotion();
-
-  // #region agent log
-  useEffect(() => {
-    fetch('http://127.0.0.1:7400/ingest/cfd5bf20-a163-4b92-8de1-9c7863644574', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'b033c9' },
-      body: JSON.stringify({
-        sessionId: 'b033c9',
-        location: 'components/collections-grid.tsx',
-        message: 'CollectionsGrid client mount',
-        data: { collectionCount: collections.length, reduceMotion: !!reduceMotion },
-        timestamp: Date.now(),
-        runId: 'post-fix',
-        hypothesisId: 'H6',
-      }),
-    }).catch(() => {});
-  }, [collections.length, reduceMotion]);
-  // #endregion
 
   if (collections.length === 0) return null;
 

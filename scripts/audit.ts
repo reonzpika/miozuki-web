@@ -751,19 +751,20 @@ async function runEmailPopup(
   try {
     await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.pageTimeout })
 
-    // Fresh browser context: localStorage empty, shouldShow() returns true, popup fires after 4s
-    await page.waitForTimeout(5000)
+    // Fresh browser context: localStorage empty, shouldShow() returns true.
+    // Popup uses DELAY_SINGLE_PAGE_MS = 38_000 in components/email-popup.tsx, so wait 40s.
+    await page.waitForTimeout(40_000)
 
     // Scope to the dialog, matches `components/email-popup.tsx` h2 copy.
     const popup = page.getByRole('dialog')
     const popupHeading = popup.getByRole('heading', { name: "Be first to discover what's next" })
-    if (!(await popupHeading.isVisible({ timeout: 2000 }).catch(() => false))) {
+    if (!(await popupHeading.isVisible({ timeout: 3000 }).catch(() => false))) {
       allFindings.push(makeFinding(counter, {
         severity: 'medium',
         tier: 2,
         page: '/',
         type: 'flow-failure',
-        message: 'Email popup did not appear after 5s on fresh session',
+        message: 'Email popup did not appear after 40s on fresh session',
         url,
         screenshotPath: await takeScreenshot(page, 'flow-popup-not-shown.png'),
       }))

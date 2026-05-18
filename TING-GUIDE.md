@@ -22,13 +22,11 @@ That's it. The site is now running locally.
 
 ## Saving and publishing your changes
 
-The **quick publish** shortcut is already set up on this machine. You do not need to configure anything.
+Cursor publishes for you automatically. After a meaningful change, the Agent runs lint and build checks, then commits and pushes to `master` on its own. You will see a short note from the Agent saying it published.
 
-**To publish:** Press `Ctrl+Alt+P` at any time. Cursor runs **Publish Changes**: it commits and pushes everything for you. The commit message is timestamped so you can see when updates went up.
+You do not need to press any shortcut. You do not need to use the Source Control panel.
 
-A terminal panel will briefly show the git output. If it stays open with an error, nothing was published — message Ryo.
-
-Prefer the Source Control panel instead? Use the steps in **Saving and publishing your changes** above..
+If the Agent says lint or build failed, it will not publish. It will show you the error in plain English and try to fix it. If it cannot, message Ryo.
 
 ---
 

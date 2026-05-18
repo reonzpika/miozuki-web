@@ -17,11 +17,11 @@ You do **not** need to create branches, switch branches, or use Git in the termi
 
 ## Publishing your changes
 
-**Fast way (if you added the shortcut):** press **Ctrl+Alt+P**. That runs **Publish Changes** (commit + push). Wait until any terminal output finishes.
+The Agent publishes for you. After a meaningful change, it runs lint and build checks, then commits and pushes on its own. You will see a short note from the Agent confirming it published.
 
-**Or:** use the **Source Control** panel (branch icon on the left), write a short message, then commit. Your workspace may be set up to push after commit; if not, use **Ctrl+Alt+P** or ask Ryo.
+No shortcut to press. No Source Control panel to open.
 
-Only commit files you mean to publish. If something unexpected appears in the list, stop and message Ryo.
+If lint or build fails, the Agent will say so in plain English and try to fix it. If it cannot, message Ryo.
 
 ---
 

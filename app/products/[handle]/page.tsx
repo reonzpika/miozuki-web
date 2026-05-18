@@ -19,29 +19,6 @@ import { getRequestAbsoluteUrl } from '@/lib/absolute-url';
 
 export const revalidate = 60;
 
-/** Local corrections when Shopify copy is updated here before Admin. */
-const PDP_DESCRIPTION_REPLACEMENTS: Array<{ match: string; replacement: string }> = [
-  {
-    match:
-      'Five moissanites trace a soft curve across sterling silver, reflecting a calm, timeless presence.',
-    replacement:
-      'Five moissanites trace a curve across sterling silver band, reflecting a classy and elegant style.',
-  },
-];
-
-function applyPdpDescriptionCorrections(
-  descriptionHtml: string | null | undefined,
-  description: string | null | undefined
-): { descriptionHtml: string | null; description: string | null } {
-  let html = descriptionHtml ?? null;
-  let plain = description ?? null;
-  for (const { match, replacement } of PDP_DESCRIPTION_REPLACEMENTS) {
-    if (plain?.includes(match)) plain = plain.replace(match, replacement);
-    if (html?.includes(match)) html = html.replace(match, replacement);
-  }
-  return { descriptionHtml: html, description: plain };
-}
-
 export async function generateStaticParams() {
   const products = await getProducts(100).catch(() => []);
   return products.map((p) => ({ handle: p.handle }));
@@ -61,13 +38,9 @@ export async function generateMetadata({
     return { title: 'Product | Miozuki' };
   }
   if (!product) return { title: 'Product | Miozuki' };
-  const { description: metaDesc } = applyPdpDescriptionCorrections(
-    product.descriptionHtml,
-    product.description
-  );
   return {
     title: `${product.title} | Miozuki`,
-    description: metaDesc || undefined,
+    description: product.description || undefined,
   };
 }
 
@@ -93,10 +66,8 @@ export default async function ProductPage({
   const getMetafield = (key: string) =>
     product.metafields?.find((m) => m?.key === key)?.value ?? null;
 
-  const { descriptionHtml: descHtml, description: descPlain } = applyPdpDescriptionCorrections(
-    product.descriptionHtml,
-    product.description
-  );
+  const descHtml = product.descriptionHtml ?? null;
+  const descPlain = product.description ?? null;
 
   const shareUrl = await getRequestAbsoluteUrl(`/products/${encodeURIComponent(handle)}`);
 

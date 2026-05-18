@@ -1,0 +1,270 @@
+{
+  "meta": {
+    "date": "2026-05-18",
+    "target": "http://localhost:3000",
+    "duration_seconds": 212,
+    "pages_crawled": 21,
+    "total_findings": 5
+  },
+  "summary": {
+    "critical": 0,
+    "high": 0,
+    "medium": 5,
+    "low": 0
+  },
+  "findings": [
+    {
+      "id": "F001",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-rings",
+      "type": "broken-image",
+      "message": "4 broken image(s) detected",
+      "url": "http://localhost:3000/collections/moissanite-rings"
+    },
+    {
+      "id": "F002",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "broken-image",
+      "message": "17 broken image(s) detected",
+      "url": "http://localhost:3000/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F003",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "broken-image",
+      "message": "9 broken image(s) detected",
+      "url": "http://localhost:3000/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F004",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "broken-image",
+      "message": "25 broken image(s) detected",
+      "url": "http://localhost:3000/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F005",
+      "severity": "medium",
+      "tier": 2,
+      "page": "/",
+      "type": "flow-failure",
+      "message": "Email popup did not appear after 5s on fresh session",
+      "url": "http://localhost:3000",
+      "screenshotPath": "docs/audit/screenshots/flow-popup-not-shown.png"
+    }
+  ],
+  "pages": [
+    {
+      "route": "/",
+      "url": "http://localhost:3000/",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-homepage.png"
+    },
+    {
+      "route": "/collections",
+      "url": "http://localhost:3000/collections",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-collections.png"
+    },
+    {
+      "route": "/pages/about-us",
+      "url": "http://localhost:3000/pages/about-us",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-about-us.png"
+    },
+    {
+      "route": "/pages/appointment",
+      "url": "http://localhost:3000/pages/appointment",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-appointment.png"
+    },
+    {
+      "route": "/pages/contact",
+      "url": "http://localhost:3000/pages/contact",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-contact.png"
+    },
+    {
+      "route": "/pages/custom-made",
+      "url": "http://localhost:3000/pages/custom-made",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-custom-made.png"
+    },
+    {
+      "route": "/pages/our-founder",
+      "url": "http://localhost:3000/pages/our-founder",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-our-founder.png"
+    },
+    {
+      "route": "/pages/jewellery-care-guide",
+      "url": "http://localhost:3000/pages/jewellery-care-guide",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-jewellery-care-guide.png"
+    },
+    {
+      "route": "/pages/moissanite-faq",
+      "url": "http://localhost:3000/pages/moissanite-faq",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-moissanite-faq.png"
+    },
+    {
+      "route": "/pages/returns-refunds-policy",
+      "url": "http://localhost:3000/pages/returns-refunds-policy",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-returns-refunds-policy.png"
+    },
+    {
+      "route": "/pages/size-guide",
+      "url": "http://localhost:3000/pages/size-guide",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-size-guide.png"
+    },
+    {
+      "route": "/pages/warranty-cover",
+      "url": "http://localhost:3000/pages/warranty-cover",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-warranty-cover.png"
+    },
+    {
+      "route": "/policies/shipping-policy",
+      "url": "http://localhost:3000/policies/shipping-policy",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-policies-shipping-policy.png"
+    },
+    {
+      "route": "/blogs/news",
+      "url": "http://localhost:3000/blogs/news",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-blogs-news.png"
+    },
+    {
+      "route": "/products/classic-moissanite-solitaire-ring",
+      "url": "http://localhost:3000/products/classic-moissanite-solitaire-ring",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-products-classic-moissanite-solitaire-ring.png"
+    },
+    {
+      "route": "/products/pear-cut-pave-moissanite-ring-nz",
+      "url": "http://localhost:3000/products/pear-cut-pave-moissanite-ring-nz",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-products-pear-cut-pave-moissanite-ring-nz.png"
+    },
+    {
+      "route": "/products/moissanite-solitaire-studs",
+      "url": "http://localhost:3000/products/moissanite-solitaire-studs",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-products-moissanite-solitaire-studs.png"
+    },
+    {
+      "route": "/collections/moissanite-rings",
+      "url": "http://localhost:3000/collections/moissanite-rings",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 4,
+      "screenshot": "docs/audit/screenshots/page-collections-moissanite-rings.png"
+    },
+    {
+      "route": "/collections/moissanite-ear-rings",
+      "url": "http://localhost:3000/collections/moissanite-ear-rings",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 17,
+      "screenshot": "docs/audit/screenshots/page-collections-moissanite-ear-rings.png"
+    },
+    {
+      "route": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "url": "http://localhost:3000/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 9,
+      "screenshot": "docs/audit/screenshots/page-blogs-news-moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly.png"
+    },
+    {
+      "route": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "url": "http://localhost:3000/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 25,
+      "screenshot": "docs/audit/screenshots/page-blogs-news-engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime.png"
+    }
+  ],
+  "api_checks": [
+    {
+      "endpoint": "/api/subscribe",
+      "method": "POST",
+      "status": 200,
+      "result": "ok",
+      "detail": "Returned 200 ok:true"
+    },
+    {
+      "endpoint": "/api/contact",
+      "method": "POST",
+      "status": 200,
+      "result": "ok",
+      "detail": "Returned 200 ok:true"
+    }
+  ]
+}

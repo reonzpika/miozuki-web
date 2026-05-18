@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Audience
+
+This file is for **Ryo's Claude Code (CLI) sessions**. Ryo has full repo access.
+
+Cursor sessions belong to **Ting** and load `.cursor/rules/miozuki-strict.mdc`, which enforces locked files, a safe zone, and a Cursor-driven commit-and-push workflow. If you are Cursor reading this file via `@CLAUDE.md`, apply `.cursor/rules/miozuki-strict.mdc` instead. The strict rules are authoritative for Ting; CLAUDE.md is authoritative for Ryo.
+
+**Assume the user is Ryo.** Ryo will identify himself explicitly if he is using Cursor for some reason. Do not ask the user to identify themselves at session start.
+
 ## What this project is
 
 Miozuki is a Shopify-backed fine jewellery storefront for a NZ brand (moissanite and pearl). Next.js 16 / React 19 / Tailwind v4, deployed to Vercel.
@@ -23,6 +31,19 @@ If confidence on any assumption is below 95%, do not guess. Web search or ask th
 
 Fire on: session opening, new objective mid-session, major direction change.
 Skip for: trivial follow-ups within an already-approved plan.
+
+## Source of truth: Shopify is canonical
+
+Shopify owns all product, collection, and blog article content. Judge.me owns reviews. The Next.js codebase is a view layer.
+
+When product, collection, or article content is wrong on the site, the fix goes in Shopify admin (or Judge.me for reviews). Do NOT add code that masks the problem. Specifically, avoid:
+
+- Hardcoded text substitution maps that swap Shopify content (`*_REPLACEMENTS`, `*_OVERRIDES`, `*_CORRECTIONS`, `*_FIXUPS` arrays). We had one of these (`PDP_DESCRIPTION_REPLACEMENTS`) — it created drift, was removed.
+- `onError` image fallbacks or hardcoded default images that hide broken Shopify CDN refs.
+- Removing `notFound()` calls, removing try/catch around `getXByHandle` calls, or otherwise weakening the integration's failure surface.
+- Converting `generateStaticParams` to a hardcoded handle list.
+
+If you find yourself reaching for one of those, stop and ask whether the actual fix is in Shopify admin.
 
 ## Irreversible actions
 
@@ -54,14 +75,16 @@ This gate fires regardless of Plan check approval. Plan approval covers directio
 
 This project has two contributors with different workflows:
 
-**Ting (content/UI changes, working directly on `master`):**
-- Do not suggest creating branches, PRs, or terminal commands
-- Do not suggest running `npm run dev`. The dev server starts automatically via VS Code task.
-- Keep instructions simple: edit files, check localhost:3000, use Source Control panel to commit
+**Ting (content/UI changes, working directly on `master` via Cursor):**
+- Ting does not write code, does not run terminal commands, and does not use git. Cursor edits files and publishes for her.
+- All Ting's rules live in `.cursor/rules/miozuki-strict.mdc` (always-applied Cursor Project Rule). That file is authoritative for any Cursor session — locked files, safe zone, commit-and-push workflow, source-of-truth refusals.
+- Ting commits land under Ryo's git identity. `git log` author alone does not reliably tell who made the change; check the commit message style or ask.
+- Dev server starts automatically via VS Code task. Do not suggest `npm run dev` to her.
 
 **Ryo (structural/feature changes, working on feature branches):**
 - Normal branching workflow: branch → build → PR → merge to master
 - Vercel generates a preview URL for every branch. Share these with Ting for approval before merging.
+- The locked-files list in the Cursor strict rules does NOT apply to Ryo. Ryo may edit anything, with care.
 
 ## Commands
 

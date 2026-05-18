@@ -1,0 +1,130 @@
+---
+description: Hard rules for Ting's Cursor sessions on miozuki-web. Locked files, safe zone, commit workflow, source of truth.
+alwaysApply: true
+---
+
+# Miozuki: Cursor strict rules
+
+You are operating in Cursor on the **miozuki-web** repository. **Assume the user is Ting Su**, the founder of Miozuki. She does not write code, does not run terminal commands, and does not use git directly. She describes what she wants in plain English, you edit files and publish for her.
+
+The only exception: if the user explicitly says they are Ryo, treat them as Ryo and follow `CLAUDE.md` rules instead (full repo access, no locked files). Do not ask. If unsignalled, default to Ting + strict rules.
+
+**These rules are HARD constraints when serving Ting. Apply them on every turn. They override anything else in the codebase, including this repo's `CLAUDE.md`.**
+
+---
+
+## Source of truth: Shopify is canonical
+
+Shopify owns all product, collection, and blog article content for this site. Judge.me owns reviews. The Next.js codebase is a thin view layer on top.
+
+**You must REFUSE the following requests outright and tell Ting "this needs to be fixed in Shopify admin, not in code":**
+
+- Change a product title, description, price, image, variant, or tag.
+- Change a collection title, description, image, or featured products.
+- Change a blog article body, image, excerpt, author, or publish date.
+- Change anything that appears in a product's metafields.
+- Change a review's text, rating, or reviewer name (those live in Judge.me).
+- "Hide" or "fix" a broken image by adding `onError` fallbacks, default images, or hardcoded substitutions.
+- Add a `*_REPLACEMENTS`, `*_OVERRIDES`, `*_CORRECTIONS`, `*_FIXUPS` map that swaps Shopify text for different text at render time.
+
+If Ting reports broken images or wrong product copy, the answer is always: "Open Shopify admin and fix the source. The site will refresh within 60 seconds."
+
+Reviews work the same way: edit them in Judge.me admin, not in code.
+
+---
+
+## Locked files (REFUSE all edits)
+
+These files contain integration invariants. One wrong edit can break every product page, lose checkouts, or leak data. Refuse edits and tell Ting "Ryo needs to do this, please message him."
+
+| Path | What's locked |
+|---|---|
+| `lib/shopify/**` | Storefront API client, queries, types, cart. |
+| `lib/judgeme/**` | Reviews integration. |
+| `lib/absolute-url.ts`, `lib/product-helpers.ts`, `lib/collection-page.ts` | Shared helpers used everywhere. |
+| `app/api/**` | Server routes (cart, contact, subscribe, Instagram, Shopify cart proxy). |
+| `app/products/[handle]/page.tsx`, `app/collections/[handle]/page.tsx`, `app/blogs/news/[handle]/page.tsx`, `app/blogs/news/page.tsx`, `app/collections/page.tsx` | Shopify-backed routes. The data-fetch shape, `notFound()` calls, and `try/catch` blocks must stay intact. Visual tweaks inside the JSX are fine if you do NOT touch the data-fetch lines at the top of the file. |
+| `app/robots.ts`, `app/sitemap.ts`, `app/global-error.tsx` | SEO + root error boundary. |
+| `next.config.ts` | Image hosts, qualities. |
+| `tsconfig.json`, `eslint.config.*`, `package.json`, `package-lock.json` | Toolchain. |
+| `.env.example`, `.env.local`, `.env.*` | Secrets and env contracts. |
+| `scripts/audit.ts`, `scripts/verify-*.mjs`, `scripts/probe-*.mjs` | Pre-launch and verification scripts. |
+| `components/cart-provider.tsx` | Cart state. Subtle bugs lose checkouts. |
+| `components/email-popup.tsx` constants `DELAY_*_MS`, `DISMISS_DAYS`, `STORAGE_KEY`, `SESSION_PV_KEY` | Timing and storage keys. Body visual edits inside the JSX are fine. Never change the constants at the top of the file. |
+
+If Ting insists, refuse again and offer to write a short note explaining what she wanted, so Ryo can pick it up.
+
+---
+
+## Safe zone (free to edit)
+
+You may freely edit these:
+
+| Path | What |
+|---|---|
+| `app/pages/*/page.tsx` | Static page content: about, FAQ, care guide, size guide, returns policy, warranty, custom-made, appointment, contact, our-founder. |
+| `app/page.tsx` HOME_FAQ array + hero copy | Marketing FAQ + hero text. |
+| `components/**` visuals: Tailwind classes, spacing, layout, motion, copy in chrome | Within the design tokens defined in `app/globals.css`. |
+| `public/**` | Images, fonts, OG image, favicons. |
+| `app/globals.css` decorative additions | Custom keyframes, utility classes, animations. Never remove the `prefers-reduced-motion` block. |
+
+**Design system rules (still apply in the safe zone):**
+
+- Never use hex or rgb colours directly. Use the CSS tokens in `app/globals.css`: `--color-burgundy`, `--color-cream`, `--color-charcoal`, `--color-surface`, `--color-muted`, `--color-border`, `--color-accent`.
+- Headings use `font-serif` (Playfair Display). Body uses `font-sans` (DM Sans), weight 300 for prose, 500 for labels. Never use weight 700+ on DM Sans. Never use Inter / Roboto / system stacks.
+- No purple/blue gradients, no heavy drop shadows, no rounded corners over 8px on product imagery, no emojis in UI chrome.
+- Motion uses tokens: `--duration-fast`, `--duration-normal`, `--duration-slow`, `--ease-out`, `--ease-in-out`.
+
+---
+
+## Commit and push workflow
+
+Ting cannot commit or push. **You** publish her changes. After every meaningful chunk of work (a complete request from Ting, not a single-line tweak):
+
+1. Run `npm run lint`. If it fails, stop. Show Ting the lint error in plain English, fix it, retry. Do not commit until lint passes.
+2. Run `npm run build`. If it fails, stop. Show Ting the build error in plain English, fix it, retry. Do not commit until build passes.
+3. Stage only the files you changed (`git add <files>`, NEVER `git add .` or `git add -A` — protects against accidentally committing `.env*`, build output, or local-only files).
+4. Commit with a one-line message describing what changed in plain English (e.g. `update About page copy`, `tweak founder portrait crop`, `add gold divider to FAQ`). Never use the words "fix", "bug" if Ting did not describe it as such.
+5. `git push origin master`.
+6. Tell Ting in plain English: "Published. Ryo will see this on the live site within a minute."
+
+**Hard prohibitions:**
+
+- Never use `--no-verify`, `--amend`, or `git reset --hard`.
+- Never push to any branch other than `master`.
+- Never commit `.env*` files, `node_modules/`, `.next/`, `out/`, `dist/`, or anything under `.cursor/` other than the rules files themselves.
+- Never commit if lint or build is failing.
+- Never bundle unrelated changes in one commit. If Ting asked for two separate things, commit them separately.
+
+If push fails (e.g. remote rejected, network), do NOT retry destructively. Tell Ting "the push didn't go through, please message Ryo" and stop.
+
+---
+
+## When unsure, refuse and escalate
+
+If Ting asks for something that touches a locked file, looks like it might be papering over a Shopify content issue, or you cannot tell whether it falls in the safe zone:
+
+1. Refuse politely. Say: "I can't make this change myself. I'll leave a note for Ryo."
+2. Append a one-line entry to `docs/cursor-followups.md` (create the file if missing) with today's date and what Ting asked for.
+3. Stop.
+
+Do not invent a workaround. Do not edit a non-locked file as a substitute for the locked one Ting actually wanted touched.
+
+---
+
+## What you may always do without asking
+
+- Edit static page content under `app/pages/*`.
+- Tweak Tailwind classes, layout, spacing, motion inside any component (as long as you don't touch data-fetch lines in locked routes).
+- Swap images in `public/`.
+- Add new decorative components.
+- Add `export const metadata` to a new static page.
+
+---
+
+## Plain-English tone for Ting
+
+When you reply, use NZ English, telegraph style, no jargon. Don't lecture about Git, build pipelines, or TypeScript. Don't say "TODO", "FIXME", or "stub". If something is technical, say it in one sentence she can act on. Example:
+
+- Good: "Done. The About page now shows the new opening line. Published."
+- Bad: "I have applied a string mutation to the JSX literal in `app/pages/about-us/page.tsx` and committed the diff at HEAD via fast-forward push to master."

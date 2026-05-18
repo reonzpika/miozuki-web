@@ -2,20 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Open Ting guide",
-      "type": "process",
-      "command": "${execPath}",
-      "args": ["-r", "${workspaceFolder}/TING-GUIDE.md"],
-      "runOptions": {
-        "runOn": "folderOpen"
-      },
-      "presentation": {
-        "reveal": "never",
-        "panel": "shared"
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Start Dev Server",
       "type": "shell",
       "command": "npm run dev",
@@ -40,23 +26,6 @@
           "endsPattern": "Ready in"
         }
       }
-    },
-    {
-      "label": "Publish Changes",
-      "type": "shell",
-      "command": "git pull; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; git add -A; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; git commit -m ('site update ' + (Get-Date -Format 'yyyy-MM-dd HH:mm')); if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; git push; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }",
-      "options": {
-        "shell": {
-          "executable": "powershell.exe",
-          "args": ["-NoProfile", "-Command"]
-        }
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "clear": false
-      },
-      "problemMatcher": []
     }
   ]
 }

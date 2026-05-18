@@ -5,6 +5,16 @@ import type { JudgeMeReview } from '@/lib/judgeme/types';
 import { ProductReviewWriteDisclosure } from './product-review-write-disclosure';
 import StarRating from './star-rating';
 
+/** Display overrides for Judge.me reviewer names (source data unchanged in Judge.me). */
+const REVIEWER_DISPLAY_NAME: Record<string, string> = {
+  'Ting Chou': 'Casey',
+};
+
+function reviewerNameForDisplay(name: string): string {
+  const trimmed = name.trim();
+  return REVIEWER_DISPLAY_NAME[trimmed] ?? name;
+}
+
 function ReviewCard({ review }: { review: JudgeMeReview }) {
   const date = new Date(review.created_at).toLocaleDateString('en-NZ', {
     year: 'numeric',
@@ -28,7 +38,7 @@ function ReviewCard({ review }: { review: JudgeMeReview }) {
       )}
       <div className="flex items-center gap-2">
         <span className="text-sm font-medium text-charcoal/80">
-          {review.reviewer.name}
+          {reviewerNameForDisplay(review.reviewer.name)}
         </span>
         {review.verified === 'verified_buyer' && (
           <span className="text-[10px] tracking-wide bg-burgundy/10 text-burgundy px-2 py-0.5">

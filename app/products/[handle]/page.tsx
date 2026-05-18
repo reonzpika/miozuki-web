@@ -15,6 +15,7 @@ import { PdpCustomerPhotosStrip } from '@/components/pdp/customer-photos-strip';
 import { PdpQuickLinksRow } from '@/components/pdp/quick-links-row';
 import { PdpCustomEnquiry } from '@/components/pdp/custom-enquiry';
 import { isEarringProduct } from '@/lib/product-helpers';
+import { getRequestAbsoluteUrl } from '@/lib/absolute-url';
 
 export const revalidate = 60;
 
@@ -97,6 +98,8 @@ export default async function ProductPage({
     product.description
   );
 
+  const shareUrl = await getRequestAbsoluteUrl(`/products/${encodeURIComponent(handle)}`);
+
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-10 md:px-10">
       <nav
@@ -164,6 +167,8 @@ export default async function ProductPage({
             materialsRichText={getMetafield('product_material')}
             productDetailsRichText={getMetafield('product_details')}
             whatsIncludedRichText={getMetafield('what_is_included')}
+            shareUrl={shareUrl}
+            productTitle={product.title}
           />
 
           <PdpFounderTeaser />

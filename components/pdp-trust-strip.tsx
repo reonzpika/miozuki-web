@@ -12,12 +12,12 @@ const ITEMS = [
     ),
   },
   {
-    label: 'Made to order',
-    sub: 'Individually made with attention to detail',
+    label: 'NZ-owned',
+    sub: 'Ships from Auckland',
     svg: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 6v6l4 2" />
+        <path d="M12 21s-7-4.35-7-11a7 7 0 1 1 14 0c0 6.65-7 11-7 11Z" />
+        <circle cx="12" cy="10" r="2.5" />
       </svg>
     ),
   },

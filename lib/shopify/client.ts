@@ -7,7 +7,7 @@ import {
   GET_BLOG_ARTICLES,
   GET_ARTICLE_BY_HANDLE,
 } from './queries';
-import { getStorefrontCredentials } from './credentials';
+import { getStorefrontBlogHandle, getStorefrontCredentials } from './credentials';
 
 /** When unset (e.g. CI without secrets), returns null so callers can skip work; production should always set env. */
 async function shopifyFetch<T>(
@@ -96,7 +96,10 @@ export async function getCollectionByHandle(
 
 // Blog
 
-export async function getBlogArticles(blogHandle = 'news', first = 50): Promise<Article[]> {
+export async function getBlogArticles(
+  blogHandle = getStorefrontBlogHandle(),
+  first = 50,
+): Promise<Article[]> {
   const data = await shopifyFetch<{
     blog: { articles: { edges: { node: Article }[] } } | null;
   }>(GET_BLOG_ARTICLES, { blogHandle, first }, 3600);

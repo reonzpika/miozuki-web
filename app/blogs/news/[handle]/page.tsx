@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getBlogArticles, getArticleByHandle } from '@/lib/shopify';
+import { getBlogArticles, getArticleByHandle, getStorefrontBlogHandle } from '@/lib/shopify';
 
 export const revalidate = 86400;
 
 export async function generateStaticParams() {
   let articles;
   try {
-    articles = await getBlogArticles('news', 50);
+    articles = await getBlogArticles(getStorefrontBlogHandle(), 50);
   } catch (err) {
     console.error('Blog generateStaticParams fetch failed', { error: err });
     return [];
@@ -25,7 +25,7 @@ export async function generateMetadata({
   const { handle } = await params;
   let article;
   try {
-    article = await getArticleByHandle('news', handle);
+    article = await getArticleByHandle(getStorefrontBlogHandle(), handle);
   } catch (err) {
     console.error('Article metadata fetch failed', { handle, error: err });
     return {};
@@ -73,7 +73,7 @@ export default async function ArticlePage({
   const { handle } = await params;
   let article;
   try {
-    article = await getArticleByHandle('news', handle);
+    article = await getArticleByHandle(getStorefrontBlogHandle(), handle);
   } catch (err) {
     console.error('Article fetch failed', { handle, error: err });
     throw err;

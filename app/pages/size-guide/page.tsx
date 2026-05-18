@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
+import { RingSizeChartExpandable } from '@/components/ring-size-chart-expandable';
 
 export const metadata: Metadata = {
   title: 'Ring Size Guide | Miozuki',
@@ -27,33 +27,62 @@ export default function SizeGuidePage() {
 
       <div className="space-y-10 text-sm text-charcoal/65 leading-relaxed">
 
-        {/* Ring Sizer CTA */}
-        <div className="bg-charcoal/4 px-5 py-5">
-          <p className="text-charcoal/70 mb-3">
-            <strong className="text-charcoal font-medium">The easiest way:</strong> order our physical
-            ring sizer. It ships within New Zealand and takes the guesswork out of sizing.
-          </p>
-          <Link
-            href="/products/order-your-ring-sizer-nz"
-            className="text-xs tracking-widest uppercase text-burgundy underline underline-offset-4 hover:text-burgundy/70 transition-colors"
-          >
-            Order a ring sizer
-          </Link>
+        {/* Ring Sizer CTA + policy copy */}
+        <div className="space-y-6">
+          <div className="bg-charcoal/4 px-5 py-5">
+            <p className="text-charcoal/70 mb-3">
+              <strong className="text-charcoal font-medium">The easiest way:</strong> order our physical
+              ring sizer. The cost of the ring sizer is fully credited toward your ring purchase. Credit
+              applies to rings only.
+            </p>
+            <Link
+              href="/products/order-your-ring-sizer-nz"
+              className="text-xs tracking-widest uppercase text-burgundy underline underline-offset-4 hover:text-burgundy/70 transition-colors"
+            >
+              Order a ring sizer
+            </Link>
+          </div>
+          <div>
+            <p className="mb-4 text-charcoal/70">
+              Each Miozuki ring is made just for you, so we recommend ordering our ring sizer first to
+              ensure the perfect fit. Please allow approximately 4 - 6 weeks lead time.
+            </p>
+            <ul className="list-disc space-y-2 pl-5 text-charcoal/70">
+              <li>Measure your ring size at home: easy and accurate.</li>
+              <li>
+                All{' '}
+                <strong className="text-charcoal font-medium">
+                  custom and made-to-order rings
+                </strong>{' '}
+                are final sale and{' '}
+                <strong className="text-charcoal font-medium">non-refundable</strong>. We{' '}
+                <strong className="text-charcoal font-medium">
+                  cannot accept returns or exchanges
+                </strong>{' '}
+                once the item has gone into production.
+              </li>
+              <li>
+                We don&apos;t offer resizing; each ring is crafted to your selected size.
+              </li>
+            </ul>
+            <p className="mt-3 text-charcoal/70">
+              Please choose your size and ring carefully before purchasing.
+            </p>
+          </div>
         </div>
 
         {/* Size chart */}
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-5">Size Chart</h2>
-          <div className="relative w-full aspect-[4/3] overflow-hidden mb-4">
-            <Image
-              src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/Ring_Sizer_Chart_-_Miozuki_Cropped.jpg?v=1769656662"
-              alt="Miozuki ring size chart"
-              fill
-              priority
-              sizes="(min-width: 768px) 672px, 100vw"
-              className="object-contain object-left"
-            />
-          </div>
+          <p className="mb-3 text-xs text-charcoal/45">
+            Tap the chart to open a larger view you can scroll on small screens.
+          </p>
+          <RingSizeChartExpandable
+            sizes="(min-width: 768px) 672px, 100vw"
+            objectPosition="left"
+            priority
+            className="mb-4"
+          />
           <p className="text-xs text-charcoal/40">
             All Miozuki rings are sized in standard US ring sizes.
           </p>
@@ -63,24 +92,44 @@ export default function SizeGuidePage() {
 
         {/* Method 1 */}
         <div>
-          <h2 className="font-serif text-xl text-charcoal mb-4">Method 1: Measure an Existing Ring</h2>
-          <p className="mb-3">If you already own a ring that fits the intended finger:</p>
-          <ol className="list-decimal pl-5 space-y-2">
-            <li>Measure the inner diameter of the ring in millimetres.</li>
-            <li>Use the size chart above to find your US ring size.</li>
+          <h2 className="font-serif text-xl text-charcoal mb-4">
+            Method 1: Measure an Existing Ring (Most Accurate)
+          </h2>
+          <ol className="list-decimal space-y-2 pl-5">
+            <li>Choose a ring that fits the finger you want to size.</li>
+            <li>Place the ring flat on a table.</li>
+            <li>
+              Measure the inside diameter of the ring (straight across the centre) using a ruler or
+              caliper.
+            </li>
+            <li>Record the measurement in millimetres (mm).</li>
+            <li>
+              Match this number to the Inner Diameter (mm) column on the size chart above.
+            </li>
           </ol>
+          <p className="mt-3 text-charcoal/70">
+            Tip: Measure twice to ensure accuracy (morning and night).
+          </p>
         </div>
 
         {/* Method 2 */}
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-4">Method 2: Measure Your Finger</h2>
           <p className="mb-3">Using a strip of paper or a piece of string:</p>
-          <ol className="list-decimal pl-5 space-y-2">
+          <ol className="list-decimal space-y-2 pl-5">
             <li>Wrap the strip snugly around the base of your finger (not too tight, you need to be able to slide a ring over your knuckle).</li>
             <li>Mark where the strip overlaps.</li>
-            <li>Measure the length in millimetres, this is your finger circumference.</li>
-            <li>Use the size chart above to find your US ring size.</li>
+            <li>
+              Lay it flat and measure the length in millimetres (mm) - this is your finger circumference.
+            </li>
+            <li>
+              Match this number to the Circumference (mm) column on the size chart above.
+            </li>
           </ol>
+          <p className="mt-3 text-charcoal/70">
+            Tip: The paper should sit comfortably - tight enough not to slip, loose enough to remove
+            easily.
+          </p>
         </div>
 
         <div className="h-px bg-charcoal/8" />
@@ -104,21 +153,11 @@ export default function SizeGuidePage() {
               A slightly larger ring is easier to adjust than one that is too small.
             </li>
             <li>
-              <strong className="text-charcoal font-medium">Dominant hand runs larger.</strong>{' '}
-              If ordering for your dominant hand, you may need to go half a size up compared to your
-              non-dominant hand.
+              <strong className="text-charcoal font-medium">
+                Wider bands (2.5 mm and above)
+              </strong>{' '}
+              may feel tighter - consider sizing up by ½ size.
             </li>
-          </ul>
-        </div>
-
-        {/* T&Cs */}
-        <div className="bg-charcoal/4 px-5 py-5">
-          <h3 className="text-charcoal font-medium mb-3">Ring Sizer Terms</h3>
-          <ul className="list-disc pl-5 space-y-2 text-charcoal/60">
-            <li>The ring sizer is a physical product shipped to you via standard NZ Post.</li>
-            <li>What you pay covers postage and packaging only.</li>
-            <li>The ring sizer is non-refundable.</li>
-            <li>Allow 2–5 business days for delivery within New Zealand.</li>
           </ul>
         </div>
       </div>

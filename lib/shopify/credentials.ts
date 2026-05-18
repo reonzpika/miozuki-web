@@ -19,3 +19,9 @@ export function getStorefrontCredentials(): StorefrontCredentials | null {
     token,
   };
 }
+
+/** Shopify Online Store blog handle for Storefront `blog(handle:)` queries. URL paths stay `/blogs/news`; this is API only. */
+export function getStorefrontBlogHandle(): string {
+  const h = process.env.SHOPIFY_BLOG_HANDLE?.trim();
+  return h || 'news';
+}

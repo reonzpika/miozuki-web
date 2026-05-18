@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import RichText from '@/components/rich-text';
 import { PdpFaqDisclosureChevron } from '@/components/pdp-faq-disclosure-parts';
+import { PdpShare } from '@/components/pdp/share';
 
 function InfoCard({
   icon,
@@ -73,6 +74,8 @@ export function PdpInfoCardsSection({
   productDetailsRichText,
   whatsIncludedRichText,
   showMadeToOrderBanner = true,
+  shareUrl,
+  productTitle,
 }: {
   /** Shopify product story: sits under the heading, before the info cards. */
   description?: ReactNode;
@@ -84,6 +87,10 @@ export function PdpInfoCardsSection({
   whatsIncludedRichText?: string | null;
   /** When false, the made-to-order callout above Craft & materials is omitted (used for earrings). */
   showMadeToOrderBanner?: boolean;
+  /** Absolute product URL for the share menu. */
+  shareUrl: string;
+  /** Product title for shared messages and email subjects. */
+  productTitle: string;
 }) {
   return (
     <section className="space-y-6" aria-labelledby="pdp-craft-heading">
@@ -174,6 +181,9 @@ export function PdpInfoCardsSection({
           richTextJson={whatsIncludedRichText}
           body="Gift-ready packaging and optional complimentary initials engraving on eligible rings."
         />
+        <div className="flex justify-start pt-1">
+          <PdpShare shareUrl={shareUrl} productTitle={productTitle} />
+        </div>
       </div>
     </section>
   );

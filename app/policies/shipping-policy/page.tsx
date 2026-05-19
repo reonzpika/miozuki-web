@@ -42,8 +42,7 @@ export default function ShippingPolicyPage() {
           <p>
             Some Miozuki pieces are made to order. If this applies to your item, the product page
             will state the lead time clearly. Typical made-to-order lead times are{' '}
-            <strong className="text-charcoal font-medium">5–10 business days</strong> before dispatch.
-            Lead times do not include transit time.
+            <strong className="text-charcoal font-medium">4–6 weeks</strong> from production to local NZ delivery.
           </p>
         </div>
 

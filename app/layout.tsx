@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/header';
@@ -70,6 +71,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
+        <Script
+          src="https://outgoing-oyster-428.convex.site/api/harbor-seo.js?siteId=nd7623d8rea452t96p9atqn9x5810g3w"
+          data-harbor-site="nd7623d8rea452t96p9atqn9x5810g3w"
+          strategy="afterInteractive"
+        />
         <CartProvider>
           <AnnouncementBar />
           <Header />

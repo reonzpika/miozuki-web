@@ -40,14 +40,6 @@ const HOME_FAQ = [
   },
 ];
 
-function SectionDivider() {
-  return (
-    <div className="section-divider py-0">
-      <span />
-    </div>
-  );
-}
-
 const DIFFERENTIATORS = [
   {
     label: 'NZ-owned & operated',
@@ -214,10 +206,6 @@ export default async function Home() {
           <BestSellersGrid products={products} ratings={ratings} />
         </section>
       )}
-
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <SectionDivider />
-      </div>
 
       {/* ── Differentiator strip ─────────────────────────── */}
       <section className="w-full bg-burgundy py-16">

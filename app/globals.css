@@ -174,29 +174,6 @@
   .rail-bleed::after { width: 2.5rem; }
 }
 
-/* Section diamond divider */
-.section-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-}
-.section-divider::before,
-.section-divider::after {
-  content: '';
-  display: block;
-  height: 1px;
-  width: 3rem;
-  background: color-mix(in srgb, var(--miozuki-crimson) 35%, transparent);
-}
-.section-divider > span {
-  display: block;
-  width: 6px;
-  height: 6px;
-  background: var(--miozuki-gold);
-  transform: rotate(45deg);
-}
-
 .nav-underline {
   text-decoration: underline 1px transparent;
   text-underline-offset: 2px;

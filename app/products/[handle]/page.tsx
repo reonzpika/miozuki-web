@@ -61,6 +61,12 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const images = product.images.edges.map((e) => e.node);
+  const media = product.media.edges.map((e) => e.node);
+  const firstVideoItem = media.find((m) => m.mediaContentType === 'VIDEO');
+  const firstVideo =
+    firstVideoItem && firstVideoItem.mediaContentType === 'VIDEO'
+      ? { sources: firstVideoItem.sources, previewImage: firstVideoItem.previewImage }
+      : null;
   const variants = product.variants.edges.map((e) => e.node);
 
   const getMetafield = (key: string) =>
@@ -102,7 +108,7 @@ export default async function ProductPage({
 
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-20">
         <div className="md:sticky md:top-24 md:self-start">
-          <ProductGallery images={images} title={product.title} />
+          <ProductGallery media={media} title={product.title} />
         </div>
 
         <div className="flex flex-col gap-8 pb-24 md:pb-0">
@@ -131,7 +137,7 @@ export default async function ProductPage({
             />
           </div>
 
-          <PdpSecondaryActions />
+          <PdpSecondaryActions firstVideo={firstVideo} />
 
           <PdpInfoCardsSection
             showMadeToOrderBanner={!isEarringProduct(product.productType, product.tags)}

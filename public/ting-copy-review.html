@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miozuki — Copy Review</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #F5F0E8;
+      color: #2C2C2C;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    .card { background: #fff; border: 1px solid rgba(44,44,44,0.1); }
+    .label-cursor { background: rgba(44,44,44,0.04); border-left: 3px solid #2C2C2C; }
+    .label-shopify { background: rgba(123,45,58,0.04); border-left: 3px solid #7B2D3A; }
+    .quote { font-size: 0.9rem; line-height: 1.7; padding: 0.75rem 1rem; border-radius: 2px; }
+    .quote-empty { color: #999; font-style: italic; font-size: 0.85rem; }
+    .btn-burgundy {
+      background: #7B2D3A;
+      color: #F5F0E8;
+      font-family: Georgia, serif;
+      letter-spacing: 0.05em;
+      transition: background 0.15s;
+    }
+    .btn-burgundy:hover { background: #5e2230; }
+    input[type="radio"] { accent-color: #7B2D3A; }
+    textarea {
+      border: 1px solid rgba(44,44,44,0.2);
+      background: #fff;
+      font-family: Georgia, serif;
+      font-size: 0.875rem;
+      resize: vertical;
+    }
+    textarea:focus { outline: none; border-color: #7B2D3A; }
+    .section-title {
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7B2D3A;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 500;
+    }
+    .item-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(44,44,44,0.5);
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .col-header {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .note-box {
+      background: rgba(123,45,58,0.06);
+      border: 1px solid rgba(123,45,58,0.2);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #5e2230;
+      line-height: 1.6;
+    }
+    .radio-label {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .progress-bar { background: rgba(123,45,58,0.15); height: 4px; border-radius: 2px; }
+    .progress-fill { background: #7B2D3A; height: 4px; border-radius: 2px; transition: width 0.3s; }
+  </style>
+</head>
+<body class="min-h-screen px-4 py-10">
+
+  <div class="max-w-2xl mx-auto">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <p class="text-xs tracking-widest uppercase mb-3" style="color:rgba(44,44,44,0.4); font-family: sans-serif;">Miozuki</p>
+      <h1 class="text-2xl mb-4" style="color:#7B2D3A;">Copy Review</h1>
+      <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size:0.9rem; line-height:1.7; color:rgba(44,44,44,0.75);">
+        Hi Ting! Below are the text differences between the live website and the Shopify admin.
+        For each one, please choose which version you prefer. When you are done, click the button
+        at the bottom to send your choices to Ryo.
+      </p>
+      <div class="mt-5">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <p class="text-xs mt-2" id="progressText" style="font-family:sans-serif; color:rgba(44,44,44,0.45);">0 of 18 answered</p>
+      </div>
+    </div>
+
+    <!-- ── SECTION: About Us ── -->
+    <div class="mb-2">
+      <p class="section-title mb-4">About Us</p>
+    </div>
+
+    <!-- au-1: Closing paragraph -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Closing paragraph</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor quote-empty">This paragraph is not on the current website.</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"Whether you are building your dreams, riding the waves or finding peace in stillness — we see you. You are not either/or. You are both. soft yet unbreakable."</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-1" value="cursor"> Keep current website (don't add this paragraph)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-1" value="shopify"> Use Shopify version (add this paragraph)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-1" value="custom"> I'll write something different</label>
+        <textarea id="au-1-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- au-2: Closing line -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Closing line</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor quote-empty">This line is not on the current website.</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"Welcome to Miozuki."</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-2" value="cursor"> Keep current website (don't add this line)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-2" value="shopify"> Use Shopify version (add "Welcome to Miozuki.")</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-2" value="custom"> I'll write something different</label>
+        <textarea id="au-2-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- au-3: Mission line -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Mission line — punctuation</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"our mission is to bring the quiet yet powerful strength within every woman. It isn't loud, but softly shines."</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"our mission is to bring the quiet yet powerful strength within every woman - it isn't loud, but softly shines"</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-3" value="cursor"> Keep current website version</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-3" value="shopify"> Use Shopify version</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-3" value="custom"> I'll write something different</label>
+        <textarea id="au-3-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- au-4: Journey metaphor -->
+    <div class="card p-5 mb-8 rounded-sm">
+      <p class="item-label mb-3">Journey metaphor</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"reflecting the journey every woman takes in her own time, in her own way, ever flowing, ever rising."</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"reflects the journey every woman takes in her own time, in her own way - ever flowing, ever rising."</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-4" value="cursor"> Keep current website version</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-4" value="shopify"> Use Shopify version</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="au-4" value="custom"> I'll write something different</label>
+        <textarea id="au-4-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- ── SECTION: Our Founder ── -->
+    <div class="mb-2">
+      <p class="section-title mb-3">Our Founder</p>
+      <div class="note-box p-4 mb-4">
+        <strong>Note:</strong> The Shopify version of this page has some formatting that needs cleaning before we can use it.
+        Please choose the direction you prefer below — Ryo will use your choices as a guide when writing the final version.
+      </div>
+    </div>
+
+    <!-- of-1: Opening paragraph -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Opening paragraph — tone and direction</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"Kia Ora, I'm Ting Eguchi, the founder of Miozuki. From my studio in Auckland, each piece is carefully prepared and wrapped, with the same intention that goes into choosing every piece. Thank you for finding your way here, and for supporting this small, heartfelt brand. Your presence is now part of its story."</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"Kia Ora, I'm Ting Eguchi, the founder of Miozuki, based in Auckland. For the longest time, I have always wondered: Can an introvert be the face of a brand in a world that seems to only celebrate the loudest voices?"</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-1" value="cursor"> Keep current website version (warm, welcoming tone)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-1" value="shopify"> Use Shopify direction (introvert / authentic voice angle)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-1" value="custom"> I'll write something different</label>
+        <textarea id="of-1-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="4" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- of-2: Origin story -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Origin story — how Miozuki was born</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"Miozuki was born during a trip to Japan, after I picked a fortune slip at a shrine. The words stayed with me, gently guiding me toward finding a quiet confidence that already existed in me."</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"Miozuki was born during a trip to Japan, after I picked a fortune slip at a shrine in 2025 before I got married. While I struggled to look for meaningful bridal jewellery on my wedding. The words from the fortune slip stayed with me, gently guiding me toward finding a quiet confidence that I didn't know already existed in me."</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-2" value="cursor"> Keep current website version (simpler, no wedding context)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-2" value="shopify"> Use Shopify direction (include the wedding and bridal jewellery context)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-2" value="custom"> I'll write something different</label>
+        <textarea id="of-2-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="4" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- of-3: Lifestyle detail -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Personal lifestyle section — how much detail</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">Includes: journaling, meditation, Sunday market flowers, French-pressed black coffee, rose tea, essential oils, and morning/afternoon routine detail.</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">Includes: journaling, meditation, Sunday market flowers only. No mention of coffee, tea, or essential oils.</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-3" value="cursor"> Keep current website version (more personal detail)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-3" value="shopify"> Use Shopify direction (shorter, fewer specifics)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-3" value="custom"> I'll write something different</label>
+        <textarea id="of-3-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="4" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- of-4: Sign-off -->
+    <div class="card p-5 mb-8 rounded-sm">
+      <p class="item-label mb-3">Sign-off — with or without kanji</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"With All My Heart, Ting Eguchi"</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"With All My Heart, Ting Eguchi (江口)"</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-4" value="cursor"> Keep current website version (English only)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-4" value="shopify"> Use Shopify version (include the kanji 江口)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="of-4" value="custom"> I'll write something different</label>
+        <textarea id="of-4-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="2" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- ── SECTION: Shipping Policy ── -->
+    <div class="mb-2">
+      <p class="section-title mb-4">Shipping Policy</p>
+    </div>
+
+    <!-- sp-1: Australia shipping -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Australia shipping</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"We currently ship within New Zealand only. International shipping is not available."</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">Includes Australia shipping at $12 NZD flat rate.</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-1" value="cursor"> Keep current website (NZ only, no international)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-1" value="shopify"> Use Shopify version (add Australia at $12 NZD)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-1" value="custom"> I'll write something different</label>
+        <textarea id="sp-1-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- sp-2: Lead time -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Made-to-order lead time</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"4–6 weeks from production to local NZ delivery"</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"within 4 weeks once received"</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-2" value="cursor"> Keep current website version (4–6 weeks)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-2" value="shopify"> Use Shopify version (4 weeks)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-2" value="custom"> I'll write something different</label>
+        <textarea id="sp-2-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- sp-3: Lost parcels -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Lost or missing parcels — who is responsible</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"contact us within 48 hours... we will lodge an investigation with NZ Post"</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"not responsible for lost, stolen, or missing parcels once marked successfully as delivered"</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-3" value="cursor"> Keep current website version (Miozuki helps investigate)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-3" value="shopify"> Use Shopify version (not responsible once delivered)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-3" value="custom"> I'll write something different</label>
+        <textarea id="sp-3-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- sp-4: Order processing cutoff -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Order processing cutoff time</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"Orders placed after 12pm NZST may be processed the following business day"</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify quote-empty">Not mentioned in Shopify.</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-4" value="cursor"> Keep current website version (include the 12pm cutoff)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-4" value="shopify"> Use Shopify direction (remove this line)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-4" value="custom"> I'll write something different</label>
+        <textarea id="sp-4-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- sp-5: Re-delivery fees -->
+    <div class="card p-5 mb-8 rounded-sm">
+      <p class="item-label mb-3">Re-delivery fees</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor quote-empty">Not mentioned on the current website.</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"re-delivery fees may apply if order falls under the free shipping threshold"</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-5" value="cursor"> Keep current website (don't mention re-delivery fees)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-5" value="shopify"> Use Shopify version (add the re-delivery fees note)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="sp-5" value="custom"> I'll write something different</label>
+        <textarea id="sp-5-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- ── SECTION: Returns & Refunds ── -->
+    <div class="mb-2">
+      <p class="section-title mb-4">Returns &amp; Refunds</p>
+    </div>
+
+    <!-- rr-1: Faulty item window -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Faulty item — how long to contact us</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"within 48 hours of delivery"</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"within 3 days of receiving your order"</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-1" value="cursor"> Keep current website version (48 hours)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-1" value="shopify"> Use Shopify version (3 days)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-1" value="custom"> I'll write something different</label>
+        <textarea id="rr-1-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="2" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- rr-2: End of season -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Non-returnable items — end of season</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor quote-empty">End of season items are not listed as non-returnable on the current website.</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"End of the season" items are listed as non-returnable.</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-2" value="cursor"> Keep current website (don't add end of season exclusion)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-2" value="shopify"> Use Shopify version (add end of season as non-returnable)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-2" value="custom"> I'll write something different</label>
+        <textarea id="rr-2-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- rr-3: Return process steps -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Return process — step-by-step or simple</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">Lists a 4-step process: (1) email us, (2) wait for approval, (3) pack and send, (4) refund within 5 business days.</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">No step-by-step — just contact us to start the process.</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-3" value="cursor"> Keep current website version (4-step process)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-3" value="shopify"> Use Shopify direction (simpler — just contact us)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-3" value="custom"> I'll write something different</label>
+        <textarea id="rr-3-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- rr-4: Refund time -->
+    <div class="card p-5 mb-4 rounded-sm">
+      <p class="item-label mb-3">Refund processing time</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"within 5 business days"</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify quote-empty">Not mentioned in Shopify.</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-4" value="cursor"> Keep current website version (state 5 business days)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-4" value="shopify"> Use Shopify direction (don't commit to a timeframe)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-4" value="custom"> I'll write something different</label>
+        <textarea id="rr-4-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="2" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- rr-5: Change of mind scope -->
+    <div class="card p-5 mb-10 rounded-sm">
+      <p class="item-label mb-3">Change of mind returns — which items qualify</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div>
+          <p class="col-header" style="color:#2C2C2C;">Current website</p>
+          <div class="quote label-cursor">"We accept change of mind returns within 14 days" — applies to all items.</div>
+        </div>
+        <div>
+          <p class="col-header" style="color:#7B2D3A;">Shopify version</p>
+          <div class="quote label-shopify">"Only some items are subject to our standard 14-day refund policy" — narrower, not all items qualify.</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-5" value="cursor"> Keep current website version (14-day returns for all items)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-5" value="shopify"> Use Shopify version (only some items qualify — narrower policy)</label>
+        <label class="flex items-center gap-2 radio-label"><input type="radio" name="rr-5" value="custom"> I'll write something different</label>
+        <textarea id="rr-5-custom" class="hidden w-full mt-1 p-2 rounded-sm" rows="3" placeholder="Write your version here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Send button -->
+    <div class="text-center pb-16">
+      <p class="mb-3 text-sm" id="incompletMsg" style="color:#7B2D3A; font-family:sans-serif; display:none;">Please answer all 18 questions before sending.</p>
+      <button onclick="sendChoices()" class="btn-burgundy px-8 py-4 text-sm tracking-widest uppercase rounded-sm">
+        Send my choices to Ryo
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const ITEMS = [
+      { id: 'au-1', label: 'About Us — Closing paragraph' },
+      { id: 'au-2', label: 'About Us — Closing line' },
+      { id: 'au-3', label: 'About Us — Mission line punctuation' },
+      { id: 'au-4', label: 'About Us — Journey metaphor' },
+      { id: 'of-1', label: 'Our Founder — Opening paragraph' },
+      { id: 'of-2', label: 'Our Founder — Origin story' },
+      { id: 'of-3', label: 'Our Founder — Personal lifestyle detail' },
+      { id: 'of-4', label: 'Our Founder — Sign-off' },
+      { id: 'sp-1', label: 'Shipping — Australia shipping' },
+      { id: 'sp-2', label: 'Shipping — Made-to-order lead time' },
+      { id: 'sp-3', label: 'Shipping — Lost or missing parcels' },
+      { id: 'sp-4', label: 'Shipping — Order processing cutoff' },
+      { id: 'sp-5', label: 'Shipping — Re-delivery fees' },
+      { id: 'rr-1', label: 'Returns — Faulty item contact window' },
+      { id: 'rr-2', label: 'Returns — End of season non-returnable' },
+      { id: 'rr-3', label: 'Returns — Return process steps' },
+      { id: 'rr-4', label: 'Returns — Refund processing time' },
+      { id: 'rr-5', label: 'Returns — Change of mind scope' },
+    ];
+
+    // Show/hide custom textarea
+    document.querySelectorAll('input[type="radio"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        var name = this.name;
+        var textarea = document.getElementById(name + '-custom');
+        if (textarea) {
+          textarea.classList.toggle('hidden', this.value !== 'custom');
+        }
+        updateProgress();
+      });
+    });
+
+    function updateProgress() {
+      var answered = ITEMS.filter(function(item) {
+        return document.querySelector('input[name="' + item.id + '"]:checked');
+      }).length;
+      var pct = Math.round((answered / ITEMS.length) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent = answered + ' of ' + ITEMS.length + ' answered';
+    }
+
+    function getChoiceLabel(value) {
+      if (value === 'cursor') return 'Keep current website version';
+      if (value === 'shopify') return 'Use Shopify version';
+      if (value === 'custom') return 'Custom text';
+      return value;
+    }
+
+    function sendChoices() {
+      var missing = ITEMS.filter(function(item) {
+        return !document.querySelector('input[name="' + item.id + '"]:checked');
+      });
+
+      if (missing.length > 0) {
+        document.getElementById('incompletMsg').style.display = 'block';
+        var firstMissing = document.querySelector('input[name="' + missing[0].id + '"]');
+        if (firstMissing) firstMissing.closest('.card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      document.getElementById('incompletMsg').style.display = 'none';
+
+      var today = new Date().toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric' });
+      var lines = ['Miozuki copy review — ' + today, '', 'Hi Ryo, here are my choices:', ''];
+
+      ITEMS.forEach(function(item) {
+        var selected = document.querySelector('input[name="' + item.id + '"]:checked');
+        var value = selected ? selected.value : '(no answer)';
+        var line = item.label + ': ' + getChoiceLabel(value);
+        if (value === 'custom') {
+          var customText = (document.getElementById(item.id + '-custom') || {}).value || '';
+          if (customText.trim()) line += '\n  Custom text: ' + customText.trim();
+        }
+        lines.push(line);
+      });
+
+      lines.push('', '— Ting');
+
+      var body = lines.join('\n');
+      var mailto = 'mailto:ryo@clinicpro.co.nz'
+        + '?subject=' + encodeURIComponent('Miozuki copy review — ' + today)
+        + '&body=' + encodeURIComponent(body);
+
+      window.location.href = mailto;
+    }
+  </script>
+</body>
+</html>

@@ -71,6 +71,22 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
+        {/*
+          Harbor SEO (Metadata Autopilot): injects AI-optimised titles, descriptions,
+          and schema on each page. Do not remove unless you cancel Harbor.
+
+          After any deploy, verify the script is detected:
+          https://www.harborseo.ai/dashboard/connect
+          (select miozuki.co.nz, then click Check Connection)
+
+          Day-to-day SEO work lives in Harbor, not in this file:
+          - Dashboard: https://www.harborseo.ai/dashboard
+          - Results / rankings: https://www.harborseo.ai/dashboard/results
+          - Install guide (if you ever reinstall): https://www.harborseo.ai/dashboard/tutorials?lesson=install-harbor-ai
+
+          If Harbor gives you a new site ID or script URL, replace src and
+          data-harbor-site below, then ask Cursor to publish again.
+        */}
         <Script
           src="https://outgoing-oyster-428.convex.site/api/harbor-seo.js?siteId=nd7623d8rea452t96p9atqn9x5810g3w"
           data-harbor-site="nd7623d8rea452t96p9atqn9x5810g3w"

@@ -59,6 +59,20 @@ export const GET_PRODUCT_BY_HANDLE = `
       images(first: 10) {
         edges { node { ...ImageFragment } }
       }
+      media(first: 10) {
+        edges {
+          node {
+            mediaContentType
+            ... on Video {
+              sources { url mimeType format height width }
+              previewImage { url altText width height }
+            }
+            ... on MediaImage {
+              image { ...ImageFragment }
+            }
+          }
+        }
+      }
       priceRange {
         minVariantPrice { ...MoneyFragment }
         maxVariantPrice { ...MoneyFragment }

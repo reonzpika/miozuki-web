@@ -26,6 +26,18 @@ export interface ProductVariant {
   selectedOptions: { name: string; value: string }[];
 }
 
+export interface ShopifyVideoSource {
+  url: string;
+  mimeType: string;
+  format: string;
+  height: number;
+  width: number;
+}
+
+export type ShopifyMediaItem =
+  | { mediaContentType: 'IMAGE'; image: ShopifyImage }
+  | { mediaContentType: 'VIDEO'; sources: ShopifyVideoSource[]; previewImage: ShopifyImage | null };
+
 export interface Product {
   id: string;
   handle: string;
@@ -34,6 +46,7 @@ export interface Product {
   descriptionHtml: string | null;
   featuredImage: ShopifyImage | null;
   images: { edges: { node: ShopifyImage }[] };
+  media: { edges: { node: ShopifyMediaItem }[] };
   priceRange: {
     minVariantPrice: Money;
     maxVariantPrice: Money;

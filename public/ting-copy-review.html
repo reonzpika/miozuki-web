@@ -500,7 +500,9 @@
     <!-- Send button -->
     <div class="text-center pb-16">
       <p class="mb-3 text-sm" id="incompletMsg" style="color:#7B2D3A; font-family:sans-serif; display:none;">Please answer all 18 questions before sending.</p>
-      <button onclick="sendChoices()" class="btn-burgundy px-8 py-4 text-sm tracking-widest uppercase rounded-sm">
+      <p class="mb-3 text-sm" id="successMsg" style="color:#2a6e3f; font-family:sans-serif; display:none;">Sent! Ryo will be in touch shortly.</p>
+      <p class="mb-3 text-sm" id="errorMsg" style="color:#7B2D3A; font-family:sans-serif; display:none;">Something went wrong. Please copy your choices below and email them to ryo@clinicpro.co.nz.</p>
+      <button id="sendBtn" onclick="sendChoices()" class="btn-burgundy px-8 py-4 text-sm tracking-widest uppercase rounded-sm">
         Send my choices to Ryo
       </button>
     </div>
@@ -569,6 +571,7 @@
         return;
       }
       document.getElementById('incompletMsg').style.display = 'none';
+      document.getElementById('errorMsg').style.display = 'none';
 
       var today = new Date().toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric' });
       var lines = ['Miozuki copy review — ' + today, '', 'Hi Ryo, here are my choices:', ''];
@@ -586,12 +589,30 @@
 
       lines.push('', '— Ting');
 
-      var body = lines.join('\n');
-      var mailto = 'mailto:ryo@clinicpro.co.nz'
-        + '?subject=' + encodeURIComponent('Miozuki copy review — ' + today)
-        + '&body=' + encodeURIComponent(body);
+      var summary = lines.join('\n');
+      var btn = document.getElementById('sendBtn');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
 
-      window.location.href = mailto;
+      fetch('/api/copy-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ summary: summary }),
+      })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.ok) {
+            document.getElementById('successMsg').style.display = 'block';
+            btn.style.display = 'none';
+          } else {
+            throw new Error(data.error || 'unknown');
+          }
+        })
+        .catch(function() {
+          document.getElementById('errorMsg').style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Send my choices to Ryo';
+        });
     }
   </script>
 </body>

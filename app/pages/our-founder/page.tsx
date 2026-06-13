@@ -25,10 +25,12 @@ export default function OurFounderPage() {
       <div className="h-px bg-charcoal/8 mb-10" />
 
       <p className="text-sm text-charcoal/70 leading-relaxed mb-10">
-        Kia Ora, I&apos;m Ting Eguchi, the founder of Miozuki. From my studio in Auckland,
-        each piece is carefully prepared and wrapped, with the same intention that goes into
-        choosing every piece. Thank you for finding your way here, and for supporting this
-        small, heartfelt brand. Your presence is now part of its story.
+        Kia Ora, I&apos;m Ting Eguchi, the founder of Miozuki, based in Auckland. For the longest
+        time I have wondered: can an introvert be the face of a brand, in a world that seems to
+        celebrate only the loudest voices? Miozuki is my quiet answer. From my studio, each piece
+        is carefully prepared and wrapped, with the same intention that goes into choosing it.
+        Thank you for finding your way here, and for supporting this small, heartfelt brand. Your
+        presence is now part of its story.
       </p>
 
       {/* Founder image */}
@@ -45,9 +47,12 @@ export default function OurFounderPage() {
 
       <blockquote className="border-l-2 border-burgundy/30 pl-6 mb-10 space-y-4">
         <p className="text-sm text-charcoal/70 leading-relaxed italic">
-          &ldquo;Miozuki was born during a trip to Japan, after I picked a fortune slip at a shrine.
-          The words stayed with me, gently guiding me toward finding a quiet confidence that
-          already existed in me.
+          &ldquo;Miozuki was born during a trip to Japan in 2025, in the months before I got
+          married. I was searching for meaningful bridal jewellery for my own wedding and
+          struggling to find it, when I picked a fortune slip at a shrine. It read: &lsquo;Even at
+          the deepest part of the sea, if the water remains clear and still, the moonlight will
+          always find its way to you.&rsquo; The words stayed with me, gently guiding me toward a
+          quiet confidence I did not know I already had.
         </p>
         <p className="text-sm text-charcoal/70 leading-relaxed italic">
           It is not loud, but begins with self-belief, the kind that comes when we accept our
@@ -70,11 +75,6 @@ export default function OurFounderPage() {
           decorate the house with colourful flowers from the Sunday market.
         </p>
         <p className="text-sm text-charcoal/60 leading-relaxed">
-          My mornings usually begin with a French-pressed black coffee, brewed from freshly
-          ground local beans. Afternoons are for rose tea, mingling the scent with diffused
-          essential oils that turn the room into a space for more creative moments.
-        </p>
-        <p className="text-sm text-charcoal/60 leading-relaxed">
           It is within these simple rituals that I find joy, beauty, and creativity, a
           reminder that the quietest glow often shines the longest.
         </p>
@@ -82,7 +82,7 @@ export default function OurFounderPage() {
 
       <p className="text-sm text-charcoal/70 italic font-serif text-lg">
         With All My Heart,<br />
-        <span className="not-italic font-normal">Ting Eguchi</span>
+        <span className="not-italic font-normal">Ting Eguchi (江口)</span>
       </p>
     </main>
   );

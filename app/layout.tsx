@@ -7,6 +7,23 @@ import Footer from '@/components/footer';
 import AnnouncementBar from '@/components/announcement-bar';
 import { CartProvider } from '@/components/cart-provider';
 import EmailPopup from '@/components/email-popup';
+import JsonLd from '@/components/json-ld';
+
+const ORGANIZATION_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Miozuki',
+  url: 'https://miozuki.co.nz',
+  logo: 'https://miozuki.co.nz/miozuki-logo-full-light.svg',
+  description:
+    'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand.',
+  email: 'info@miozuki.co.nz',
+  sameAs: [
+    'https://www.instagram.com/miozukijewellery',
+    'https://www.tiktok.com/@miozuki.nz',
+    'https://www.facebook.com/profile.php?id=61578033779488',
+  ],
+};
 
 const playfair = Playfair_Display({
   variable: '--font-playfair',
@@ -71,6 +88,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
+        <JsonLd data={ORGANIZATION_SCHEMA} />
         {/*
           Harbor SEO (Metadata Autopilot): injects AI-optimised titles, descriptions,
           and schema on each page. Do not remove unless you cancel Harbor.

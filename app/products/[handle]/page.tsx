@@ -16,6 +16,8 @@ import { PdpQuickLinksRow } from '@/components/pdp/quick-links-row';
 import { PdpCustomEnquiry } from '@/components/pdp/custom-enquiry';
 import { isEarringProduct } from '@/lib/product-helpers';
 import { getRequestAbsoluteUrl } from '@/lib/absolute-url';
+import { getProductReviews } from '@/lib/judgeme/client';
+import JsonLd from '@/components/json-ld';
 
 export const revalidate = 60;
 
@@ -38,9 +40,19 @@ export async function generateMetadata({
     return { title: 'Product | Miozuki' };
   }
   if (!product) return { title: 'Product | Miozuki' };
+  const ogImage =
+    product.featuredImage?.url ?? product.images.edges[0]?.node.url;
+  const title = `${product.title} | Miozuki`;
+  const description = product.description || undefined;
   return {
-    title: `${product.title} | Miozuki`,
-    description: product.description || undefined,
+    title,
+    description,
+    openGraph: ogImage
+      ? { title, description, images: [{ url: ogImage, alt: product.title }] }
+      : undefined,
+    twitter: ogImage
+      ? { card: 'summary_large_image', title, images: [ogImage] }
+      : undefined,
   };
 }
 
@@ -77,8 +89,56 @@ export default async function ProductPage({
 
   const shareUrl = await getRequestAbsoluteUrl(`/products/${encodeURIComponent(handle)}`);
 
+  const reviewData = await getProductReviews(product.id).catch(() => null);
+  const minPrice = product.priceRange.minVariantPrice;
+  const productUrl = `https://miozuki.co.nz/products/${handle}`;
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: descPlain || undefined,
+    image: product.featuredImage?.url
+      ? [product.featuredImage.url]
+      : images.map((i) => i.url),
+    brand: { '@type': 'Brand', name: 'Miozuki' },
+    ...(reviewData?.product && reviewData.product.reviews_count > 0
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: reviewData.product.rating.toFixed(1),
+            reviewCount: reviewData.product.reviews_count,
+          },
+        }
+      : {}),
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: minPrice.currencyCode,
+      price: minPrice.amount,
+      availability: variants.some((v) => v.availableForSale)
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+      url: productUrl,
+    },
+  };
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://miozuki.co.nz/' },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Collections',
+        item: 'https://miozuki.co.nz/collections',
+      },
+      { '@type': 'ListItem', position: 3, name: product.title },
+    ],
+  };
+
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-10 md:px-10">
+      <JsonLd data={productSchema} />
+      <JsonLd data={breadcrumbSchema} />
       <nav
         aria-label="Breadcrumb"
         className="mb-6 flex flex-wrap items-center gap-x-1 gap-y-1 text-sm uppercase tracking-widest text-charcoal/40 md:mb-8 md:gap-2 md:text-xs"

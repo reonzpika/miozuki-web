@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import JsonLd from '@/components/json-ld';
 
 export const metadata: Metadata = {
   title: 'Moissanite FAQ | Miozuki',
@@ -60,9 +61,20 @@ With proper care, moissanite retains its brilliance and sparkle for generations.
   },
 ];
 
+const FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: SECTIONS.map((s) => ({
+    '@type': 'Question',
+    name: s.heading,
+    acceptedAnswer: { '@type': 'Answer', text: s.body },
+  })),
+};
+
 export default function MoissaniteFaqPage() {
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
+      <JsonLd data={FAQ_SCHEMA} />
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>

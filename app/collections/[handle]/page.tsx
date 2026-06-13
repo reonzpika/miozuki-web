@@ -5,6 +5,7 @@ import { getCollections, getCollectionByHandle } from '@/lib/shopify';
 import { getCollectionEducationThemes, isFlagshipCollection } from '@/lib/collection-page';
 import ProductsGrid from '@/components/products-grid';
 import CollectionHeroBanner from '@/components/collection-hero-banner';
+import JsonLd from '@/components/json-ld';
 import {
   CollectionFlagshipAboveGrid,
   CollectionFlagshipEducation,
@@ -32,9 +33,18 @@ export async function generateMetadata({
     return { title: 'Collection | Miozuki' };
   }
   if (!collection) return { title: 'Collection | Miozuki' };
+  const ogImage = collection.image?.url;
+  const title = `${collection.title} | Miozuki`;
+  const description = collection.description || undefined;
   return {
-    title: `${collection.title} | Miozuki`,
-    description: collection.description || undefined,
+    title,
+    description,
+    openGraph: ogImage
+      ? { title, description, images: [{ url: ogImage, alt: collection.title }] }
+      : undefined,
+    twitter: ogImage
+      ? { card: 'summary_large_image', title, images: [ogImage] }
+      : undefined,
   };
 }
 
@@ -58,8 +68,24 @@ export default async function CollectionPage({
   const ratings = await getAllRatings().catch(() => ({}));
   const flagship = isFlagshipCollection(handle);
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://miozuki.co.nz/' },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Collections',
+        item: 'https://miozuki.co.nz/collections',
+      },
+      { '@type': 'ListItem', position: 3, name: collection.title },
+    ],
+  };
+
   return (
     <main>
+      <JsonLd data={breadcrumbSchema} />
       <CollectionHeroBanner collection={collection} />
 
       <div className="border-b border-charcoal/8 bg-cream">

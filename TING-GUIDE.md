@@ -20,6 +20,17 @@ That's it. The site is now running locally.
 
 ---
 
+## Where each thing is edited (important)
+
+To avoid the same text getting out of sync in two places, each kind of content has ONE home:
+
+- **Products, collections, blog/news posts** → edit in **Shopify admin**. The website pulls these in automatically.
+- **Pages** (About, Our Founder, Shipping, Returns, size guide, FAQ, contact, etc.) → these live in the **code**. Change them by asking the AI in Cursor, the same way you make any other change. **Do NOT edit these pages in Shopify.** The Shopify versions of these pages are not used by the website and are being deleted, so any edit you make there will not show up and will only cause confusion.
+
+Quick test: if it is a product, a collection, or a blog post, use Shopify. If it is a page of writing (about us, policies, guides), ask the AI in Cursor.
+
+---
+
 ## Saving and publishing your changes
 
 Cursor publishes for you automatically. After a meaningful change, the Agent runs lint and build checks, then commits and pushes to `master` on its own. You will see a short note from the Agent saying it published.

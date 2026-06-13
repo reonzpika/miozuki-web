@@ -32,9 +32,23 @@ If confidence on any assumption is below 95%, do not guess. Web search or ask th
 Fire on: session opening, new objective mid-session, major direction change.
 Skip for: trivial follow-ups within an already-approved plan.
 
-## Source of truth: Shopify is canonical
+## Source of truth: Shopify for catalog, code for pages
 
-Shopify owns all product, collection, and blog article content. Judge.me owns reviews. The Next.js codebase is a view layer.
+The rule, by content type. One source per piece of content. Never maintain the same content in two places.
+
+| Content type | Source of truth | Edited by | Mechanism |
+|---|---|---|---|
+| Products | Shopify | Ting | Storefront API, dynamic |
+| Collections | Shopify | Ting | Storefront API, dynamic |
+| Blog / news articles | Shopify | Ting | Storefront API, dynamic |
+| Reviews | Judge.me | — | Judge.me |
+| Pages — editorial (About, Our Founder) | **Code** (`app/pages/*`) | Ryo | Hardcoded JSX, bespoke layout |
+| Pages — policies (shipping, returns, privacy, terms) | **Code** (`app/pages/*`, `app/policies/*`) | Ryo | Hardcoded JSX |
+| Pages — marketing/structured (size guide, FAQ, custom-made, appointment, contact, care, warranty) | **Code** | Ryo | Hardcoded JSX |
+
+Shopify owns all product, collection, and blog article content. Judge.me owns reviews. For catalog and blog content, the Next.js codebase is a pure view layer.
+
+**Pages are the exception: code is canonical, not Shopify.** Every page lives in `app/pages/*` (or `app/policies/*`) as hardcoded JSX with a bespoke layout that a Shopify page-body HTML blob cannot reproduce. The matching Shopify Pages and Shopify Settings > Policies entries are DEAD copies. They must be deleted in Shopify admin so they cannot drift. Decision made 13 Jun 2026 (Ryo). Do NOT wire pages up to a Shopify `pages()` fetch, and do NOT edit page copy in Shopify admin. To change page copy, edit the JSX and deploy.
 
 When product, collection, or article content is wrong on the site, the fix goes in Shopify admin (or Judge.me for reviews). Do NOT add code that masks the problem. Specifically, avoid:
 

@@ -22,10 +22,10 @@ That's it. The site is now running locally.
 
 ## Where each thing is edited (important)
 
-To avoid the same text getting out of sync in two places, each kind of content has ONE home:
+We are building a new version of the site (this is the one you open in Cursor). It is not live on miozuki.co.nz yet, so for now your changes show on the preview address, not the main site. Each kind of content has ONE home:
 
-- **Products, collections, blog/news posts** → edit in **Shopify admin**. The website pulls these in automatically.
-- **Pages** (About, Our Founder, Shipping, Returns, size guide, FAQ, contact, etc.) → these live in the **code**. Change them by asking the AI in Cursor, the same way you make any other change. **Do NOT edit these pages in Shopify.** The Shopify versions of these pages are not used by the website and are being deleted, so any edit you make there will not show up and will only cause confusion.
+- **Products, collections, blog/news posts** → edit in **Shopify admin**. The new site pulls these in automatically.
+- **Pages** (About, Our Founder, Shipping, Returns, size guide, FAQ, contact, etc.) → these live in the **code**. Change them by asking the AI in Cursor, the same way you make any other change. For the new site, do NOT edit these pages in Shopify, the page versions in Shopify belong to the old site and are being replaced.
 
 Quick test: if it is a product, a collection, or a blog post, use Shopify. If it is a page of writing (about us, policies, guides), ask the AI in Cursor.
 

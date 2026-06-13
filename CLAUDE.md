@@ -48,7 +48,9 @@ The rule, by content type. One source per piece of content. Never maintain the s
 
 Shopify owns all product, collection, and blog article content. Judge.me owns reviews. For catalog and blog content, the Next.js codebase is a pure view layer.
 
-**Pages are the exception: code is canonical, not Shopify.** Every page lives in `app/pages/*` (or `app/policies/*`) as hardcoded JSX with a bespoke layout that a Shopify page-body HTML blob cannot reproduce. The matching Shopify Pages and Shopify Settings > Policies entries are DEAD copies. They must be deleted in Shopify admin so they cannot drift. Decision made 13 Jun 2026 (Ryo). Do NOT wire pages up to a Shopify `pages()` fetch, and do NOT edit page copy in Shopify admin. To change page copy, edit the JSX and deploy.
+**Pages are the exception: code is canonical, not Shopify.** Every page lives in `app/pages/*` (or `app/policies/*`) as hardcoded JSX with a bespoke layout that a Shopify page-body HTML blob cannot reproduce. To change page copy, edit the JSX and deploy. Do NOT wire pages up to a Shopify `pages()` fetch, and do NOT edit page copy in Shopify admin.
+
+**Transition state (as of 13 Jun 2026, Ryo):** this Next.js site is the in-development replacement for the current live Shopify storefront at `miozuki.co.nz`. The custom domain is intentionally still on Shopify; this app is served only on `*.vercel.app` until cutover. Strategy is **freeze Shopify, race to launch**: the Shopify Online Store pages are legacy, not maintained, and are accepted as-is (typos included) until launch. Do NOT delete the Shopify Pages or Settings > Policies entries during the transition, they still serve the live store. They are retired at cutover, when `miozuki.co.nz` is pointed at this Vercel project. Products, collections and blog content stay in Shopify throughout (shared backend, both storefronts read it).
 
 When product, collection, or article content is wrong on the site, the fix goes in Shopify admin (or Judge.me for reviews). Do NOT add code that masks the problem. Specifically, avoid:
 

@@ -58,7 +58,7 @@ export default function AppointmentPage() {
         >
           use our contact form
         </Link>
-, and we&apos;ll get back to you within 24 hours.
+, and we&apos;ll get back to you within 1–2 business days.
       </p>
     </main>
   );

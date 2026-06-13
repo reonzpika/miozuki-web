@@ -57,7 +57,7 @@ export default async function ContactPage({
             <strong className="text-charcoal font-medium">Not sure about your ring size?</strong>{' '}
             We recommend ordering our{' '}
             <Link
-              href="/products/order-your-ring-sizer-nz"
+              href="/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring"
               className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors"
             >
               ring sizer

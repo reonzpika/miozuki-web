@@ -114,7 +114,7 @@ No test suite exists yet.
 
 ## Key architecture
 
-### Data layer: three external APIs
+### Data layer: four external APIs
 
 **Shopify Storefront API** (`lib/shopify/`)
 - `client.ts`: server-only RSC fetches with ISR (`next: { revalidate }`). Uses `SHOPIFY_STORE_DOMAIN` (no `NEXT_PUBLIC_` prefix).
@@ -133,6 +133,10 @@ The two Shopify clients are intentionally split: RSC reads go through `client.ts
 **Judge.me Reviews** (`lib/judgeme/client.ts`)
 - Server-only. Shop domain is hardcoded: `nassuu-px.myshopify.com`.
 - Requires `JUDGE_ME_PRIVATE_TOKEN`.
+
+**Resend** (`app/api/copy-review/route.ts`)
+- Server-only. Sends the Ting copy-review submission email. Requires `RESEND_API_KEY` (set in Vercel Preview + Production).
+- Sends from `noreply@clinicpro.co.nz` (a shared, verified ClinicPro Resend domain) to `ryo@clinicpro.co.nz`. Instantiate the client inside the handler, not at module scope, so a missing key never fails the build.
 
 ### Cart state
 

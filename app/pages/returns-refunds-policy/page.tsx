@@ -29,8 +29,10 @@ export default function ReturnsRefundsPolicyPage() {
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-4">Change of Mind Returns</h2>
           <p className="mb-4">
-            We accept change of mind returns within <strong className="text-charcoal font-medium">14 days</strong> of
-            receiving your order, provided the item is:
+            Only some items are eligible for our standard{' '}
+            <strong className="text-charcoal font-medium">14-day</strong> change of mind returns.
+            Where an item qualifies, we accept the return within 14 days of receiving your order,
+            provided the item is:
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>Unworn and in original condition</li>
@@ -38,7 +40,9 @@ export default function ReturnsRefundsPolicyPage() {
             <li>Accompanied by proof of purchase</li>
           </ul>
           <p className="mt-4">
-            Return shipping costs are the customer&apos;s responsibility for change of mind returns.
+            Some items are not eligible for change of mind returns, please see Non-Returnable Items
+            below. Return shipping costs are the customer&apos;s responsibility for change of mind
+            returns.
           </p>
         </div>
 
@@ -57,6 +61,10 @@ export default function ReturnsRefundsPolicyPage() {
             <li>
               <strong className="text-charcoal font-medium">Sale items</strong>, all discounted items
               are sold as final sale
+            </li>
+            <li>
+              <strong className="text-charcoal font-medium">End of season items</strong>, end of
+              season pieces are final sale and cannot be returned
             </li>
           </ul>
         </div>
@@ -77,24 +85,19 @@ export default function ReturnsRefundsPolicyPage() {
 
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-4">How to Submit a Return Request</h2>
-          <ol className="list-decimal pl-5 space-y-3">
-            <li>
-              Email us at{' '}
-              <a
-                href="mailto:info@miozuki.co.nz"
-                className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors"
-              >
-                info@miozuki.co.nz
-              </a>{' '}
-              with your order number and reason for return.
-            </li>
-            <li>Wait for approval and return instructions before sending your item.</li>
-            <li>Pack the item securely and send it to the address provided.</li>
-            <li>
-              Once received and inspected, your refund or store credit will be processed within{' '}
-              <strong className="text-charcoal font-medium">5 business days</strong>.
-            </li>
-          </ol>
+          <p>
+            To start a return, email us at{' '}
+            <a
+              href="mailto:info@miozuki.co.nz"
+              className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors"
+            >
+              info@miozuki.co.nz
+            </a>{' '}
+            with your order number and the reason for your return, and we will guide you through the
+            next steps. Please wait for our approval before sending anything back. Once we receive
+            and inspect your item, your refund or store credit will be processed within{' '}
+            <strong className="text-charcoal font-medium">5 business days</strong>.
+          </p>
         </div>
 
         <div className="bg-charcoal/4 px-5 py-4">

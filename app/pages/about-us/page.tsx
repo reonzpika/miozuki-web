@@ -47,12 +47,12 @@ export default function AboutPage() {
         <p>
           Miozuki is a Japanese-inspired fine jewellery brand based in Auckland, New Zealand.
           We believe <strong className="text-charcoal font-medium">true beauty lives in contrast</strong>,
-          our mission is to bring the quiet yet powerful strength within every woman. It
+          our mission is to bring the quiet yet powerful strength within every woman - it
           isn&apos;t loud, but softly shines.
         </p>
         <p>
-          The Japanese word stands for &ldquo;waterway to the moon,&rdquo; reflecting the journey every
-          woman takes in her own time, in her own way, ever flowing, ever rising. The kind
+          The Japanese word stands for &ldquo;waterway to the moon.&rdquo; It reflects the journey every
+          woman takes in her own time, in her own way - ever flowing, ever rising. The kind
           of strength that moves like water: gentle, but capable of shaping everything it
           touches.
         </p>
@@ -60,6 +60,13 @@ export default function AboutPage() {
           Each piece in our collection is timeless and thoughtfully crafted with a touch of
           feminism and minimalism. We specialise in moissanite and pearls with the intention
           of <em>accessible luxury</em>.
+        </p>
+        <p>
+          Whether you are building your dreams, riding the waves or finding peace in
+          stillness — we see you. You are not either/or. You are both. soft yet unbreakable.
+        </p>
+        <p className="font-serif text-base text-charcoal/80 italic">
+          Welcome to Miozuki.
         </p>
       </div>
 

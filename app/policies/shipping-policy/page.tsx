@@ -56,11 +56,20 @@ export default function ShippingPolicyPage() {
         </div>
 
         <div>
-          <h2 className="font-serif text-xl text-charcoal mb-4">International Shipping</h2>
+          <h2 className="font-serif text-xl text-charcoal mb-4">Australia Shipping</h2>
+          <div className="bg-charcoal/4 px-5 py-4 mb-4">
+            <p className="text-charcoal/70">
+              <strong className="text-charcoal font-medium">Flat rate $12 NZD</strong> on all orders
+              shipped to Australia.
+            </p>
+          </div>
+          <p className="mb-4">
+            Delivery times to Australia vary by destination. A tracking number will be emailed to you
+            once your order is dispatched.
+          </p>
           <p>
-            We currently ship within New Zealand only. International shipping is not available at
-            this time. Sign up to our newsletter or follow us on Instagram to be notified when
-            international shipping launches.
+            We do not currently ship to other international destinations. Sign up to our newsletter
+            or follow us on Instagram to be notified when more destinations launch.
           </p>
         </div>
 
@@ -76,16 +85,21 @@ export default function ShippingPolicyPage() {
             >
               info@miozuki.co.nz
             </a>{' '}
-            as soon as possible, we can only amend the address before dispatch.
+            as soon as possible, we can only amend the address before dispatch. If a parcel is
+            returned to us because of an incorrect or incomplete address, a re-delivery fee may apply.
           </p>
         </div>
 
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-4">Lost or Damaged in Transit</h2>
           <p>
-            If your parcel is lost or arrives damaged, please contact us within{' '}
-            <strong className="text-charcoal font-medium">48 hours</strong> of the expected
-            delivery date. We will lodge an investigation with NZ Post on your behalf.
+            If your parcel arrives damaged, please contact us within{' '}
+            <strong className="text-charcoal font-medium">48 hours</strong> of delivery with photos
+            of the damage, and we will make it right.
+          </p>
+          <p className="mt-3">
+            Once a parcel is marked as successfully delivered by NZ Post, Miozuki is not responsible
+            for items that are lost, stolen, or missing after delivery.
           </p>
         </div>
       </div>

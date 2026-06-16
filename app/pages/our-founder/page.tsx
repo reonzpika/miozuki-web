@@ -26,7 +26,7 @@ export default function OurFounderPage() {
 
       <p className="text-sm text-charcoal/70 leading-relaxed mb-10">
         Kia Ora, I&apos;m Ting Eguchi, the founder of Miozuki, based in Auckland. For the longest
-        time I have wondered: can an introvert be the face of a brand, in a world that seems to
+        time I have wondered: Can an introvert be the face of a brand, in a world that seems to
         celebrate only the loudest voices? Miozuki is my quiet answer. From my studio, each piece
         is carefully prepared and wrapped, with the same intention that goes into choosing it.
         Thank you for finding your way here, and for supporting this small, heartfelt brand. Your

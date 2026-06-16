@@ -26,8 +26,9 @@ export default function ShippingPolicyPage() {
           <h2 className="font-serif text-xl text-charcoal mb-4">New Zealand Shipping</h2>
           <div className="bg-charcoal/4 px-5 py-4 mb-4">
             <p className="text-charcoal/70">
-              <strong className="text-charcoal font-medium">Flat rate $8</strong> on all NZ orders,
-              shipped via NZ Post tracked courier.
+              <strong className="text-charcoal font-medium">Free shipping over $300.</strong> Flat rate{' '}
+              <strong className="text-charcoal font-medium">$8</strong> on all NZ orders, shipped via NZ
+              Post tracked courier.
             </p>
           </div>
           <ul className="list-disc pl-5 space-y-2">
@@ -40,9 +41,10 @@ export default function ShippingPolicyPage() {
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-4">Made-to-Order Lead Time</h2>
           <p>
-            Some Miozuki pieces are made to order. If this applies to your item, the product page
-            will state the lead time clearly. Typical made-to-order lead times are{' '}
-            <strong className="text-charcoal font-medium">4–6 weeks</strong> from production to local NZ delivery.
+            Items will be shipped within{' '}
+            <strong className="text-charcoal font-medium">4–6 weeks</strong> once received. If your order
+            includes both in-stock and made-to-order items, it will be shipped once all items are available
+            in a single shipment. Shipping fees apply if you would like split shipping.
           </p>
         </div>
 
@@ -100,6 +102,27 @@ export default function ShippingPolicyPage() {
           <p className="mt-3">
             Once a parcel is marked as successfully delivered by NZ Post, Miozuki is not responsible
             for items that are lost, stolen, or missing after delivery.
+          </p>
+        </div>
+
+        <div>
+          <h2 className="font-serif text-xl text-charcoal mb-4">Customs &amp; Taxes</h2>
+          <p>
+            International orders may incur extra duties or taxes, which are the customer&apos;s
+            responsibility.
+          </p>
+        </div>
+
+        <div>
+          <h2 className="font-serif text-xl text-charcoal mb-4">Return &amp; Redeliver</h2>
+          <p>
+            <strong className="text-charcoal font-medium">Re-delivery:</strong> For any returned items,
+            once received, a re-delivery fee may apply if the order falls under the free shipping threshold.
+          </p>
+          <p className="mt-3">
+            <strong className="text-charcoal font-medium">Redirection:</strong> If you have entered an
+            incorrect address, we can assist with redirection, or you can redirect it yourself on NZ
+            Post&apos;s website.
           </p>
         </div>
       </div>

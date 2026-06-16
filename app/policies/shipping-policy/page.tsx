@@ -96,7 +96,7 @@ export default function ShippingPolicyPage() {
           <h2 className="font-serif text-xl text-charcoal mb-4">Lost or Damaged in Transit</h2>
           <p>
             If your parcel arrives damaged, please contact us within{' '}
-            <strong className="text-charcoal font-medium">48 hours</strong> of delivery with photos
+            <strong className="text-charcoal font-medium">3 days</strong> of delivery with photos
             of the damage, and we will make it right.
           </p>
           <p className="mt-3">

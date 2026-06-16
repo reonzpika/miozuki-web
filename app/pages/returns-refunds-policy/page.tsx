@@ -73,7 +73,7 @@ export default function ReturnsRefundsPolicyPage() {
           <h2 className="font-serif text-xl text-charcoal mb-4">Faulty or Damaged Items</h2>
           <p>
             If your item arrives faulty or damaged, please contact us within{' '}
-            <strong className="text-charcoal font-medium">48 hours</strong> of delivery with photos
+            <strong className="text-charcoal font-medium">3 days</strong> of delivery with photos
             of the damage. We will arrange a replacement or refund at no cost to you. This is separate
             from our standard warranty cover, please see our{' '}
             <Link href="/pages/warranty-cover" className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors">

@@ -38,7 +38,7 @@ Moissanite's popularity comes from a blend of advantages:
   },
   {
     heading: 'Is Moissanite Ethical & Sustainable?',
-    body: `Yes. Lab-grown moissanite avoids the environmental damage and human rights issues often linked to diamond mining. Diamond extraction can destroy ecosystems, cause deforestation, and consume large amounts of water and energy. Moissanite's lab origin means transparent supply chains and a clear conscience.`,
+    body: `Yes. Lab-grown moissanite avoids the environmental damage and human rights issues often linked to diamond mining. Diamond extraction can destroy ecosystems, cause deforestation, and consume large amounts of water and energy. Because it is created in a lab rather than mined, moissanite is conflict-free. Moissanite's lab origin means transparent supply chains and a clear conscience.`,
   },
   {
     heading: 'Why Choose Moissanite vs Diamond?',

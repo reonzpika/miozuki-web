@@ -29,6 +29,11 @@ const SHOP_LINKS = [
   { label: 'Bridal Jewellery', href: '/collections/bridal-jewellery' },
 ];
 
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', href: '/policies/privacy-policy' },
+  { label: 'Terms of Service', href: '/policies/terms-of-service' },
+];
+
 const SOCIAL = [
   {
     label: 'Instagram',
@@ -147,6 +152,17 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex flex-col gap-3 md:items-end md:text-right">
+            <nav className="flex flex-wrap items-center gap-x-4 gap-y-1" aria-label="Legal">
+              {LEGAL_LINKS.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="text-xs text-charcoal/40 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
             <p className="text-xs leading-snug text-charcoal/30">
               © {new Date().getFullYear()} Miozuki. All rights reserved.
             </p>

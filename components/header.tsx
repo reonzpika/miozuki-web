@@ -40,12 +40,12 @@ const NAV = [
   },
   {
     label: 'Appointment',
-    href: '/pages/appointment',
+    href: '/pages/appointment-online',
     children: null,
   },
   {
     label: 'Custom Made',
-    href: '/pages/custom-made',
+    href: '/pages/bespoke-order',
     children: null,
   },
 ];
@@ -57,8 +57,8 @@ const MOBILE_NAV = [
   { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings', indent: true },
   { label: 'Pearl Earrings', href: '/collections/pearl-earrings', indent: true },
   { label: 'Necklaces', href: '/collections/necklaces', indent: true },
-  { label: 'Appointment', href: '/pages/appointment', indent: false },
-  { label: 'Custom Made', href: '/pages/custom-made', indent: false },
+  { label: 'Appointment', href: '/pages/appointment-online', indent: false },
+  { label: 'Custom Made', href: '/pages/bespoke-order', indent: false },
   { label: 'About Miozuki', href: '/pages/about-us', indent: false },
   { label: 'Our Founder', href: '/pages/our-founder', indent: true },
 ];

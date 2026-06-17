@@ -20,7 +20,7 @@ export function PdpCustomEnquiry() {
         Tell us what you have in mind, and we&apos;ll come back with custom options.
       </p>
       <Link
-        href="/pages/custom-made"
+        href="/pages/bespoke-order"
         className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
       >
         Enquire about a custom piece

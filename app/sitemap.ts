@@ -9,15 +9,21 @@ const STATIC_PATHS: Array<{ path: string; changeFrequency: MetadataRoute.Sitemap
   { path: '/blogs/news', changeFrequency: 'weekly', priority: 0.6 },
   { path: '/pages/about-us', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/pages/our-founder', changeFrequency: 'monthly', priority: 0.5 },
-  { path: '/pages/appointment', changeFrequency: 'monthly', priority: 0.5 },
+  { path: '/pages/appointment-online', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/pages/contact', changeFrequency: 'monthly', priority: 0.5 },
-  { path: '/pages/custom-made', changeFrequency: 'monthly', priority: 0.5 },
+  { path: '/pages/bespoke-order', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/pages/jewellery-care-guide', changeFrequency: 'monthly', priority: 0.4 },
   { path: '/pages/moissanite-faq', changeFrequency: 'monthly', priority: 0.4 },
+  { path: '/pages/nz-au-to-us-ring-size-converter', changeFrequency: 'monthly', priority: 0.4 },
+  { path: '/pages/the-master-moissanite-conversion-chart-mm-dew-nz-ring-sizes-explained', changeFrequency: 'monthly', priority: 0.4 },
+  { path: '/pages/miozuki-in-auckland-northshore', changeFrequency: 'monthly', priority: 0.4 },
+  { path: '/pages/custom-bridal-jewellery-nz', changeFrequency: 'monthly', priority: 0.4 },
   { path: '/pages/returns-refunds-policy', changeFrequency: 'monthly', priority: 0.3 },
   { path: '/pages/size-guide', changeFrequency: 'monthly', priority: 0.4 },
   { path: '/pages/warranty-cover', changeFrequency: 'monthly', priority: 0.3 },
   { path: '/policies/shipping-policy', changeFrequency: 'monthly', priority: 0.3 },
+  { path: '/policies/privacy-policy', changeFrequency: 'monthly', priority: 0.3 },
+  { path: '/policies/terms-of-service', changeFrequency: 'monthly', priority: 0.3 },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

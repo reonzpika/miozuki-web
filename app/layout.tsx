@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/header';
@@ -8,6 +9,9 @@ import AnnouncementBar from '@/components/announcement-bar';
 import { CartProvider } from '@/components/cart-provider';
 import EmailPopup from '@/components/email-popup';
 import JsonLd from '@/components/json-ld';
+import MetaPixel from '@/components/meta-pixel';
+
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 
 const ORGANIZATION_SCHEMA = {
   '@context': 'https://schema.org',
@@ -110,6 +114,7 @@ export default function RootLayout({
           data-harbor-site="nd7623d8rea452t96p9atqn9x5810g3w"
           strategy="afterInteractive"
         />
+        <MetaPixel />
         <CartProvider>
           <AnnouncementBar />
           <Header />
@@ -117,6 +122,7 @@ export default function RootLayout({
           <Footer />
           <EmailPopup />
         </CartProvider>
+        {GA4_ID ? <GoogleAnalytics gaId={GA4_ID} /> : null}
       </body>
     </html>
   );

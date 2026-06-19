@@ -10,9 +10,9 @@ import CartDrawer from './cart-drawer';
 const NAV = [
   {
     label: 'Rings',
-    href: '/collections/moissanite-rings',
+    href: '/collections/moissanite-rings-nz',
     children: [
-      { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
+      { label: 'Moissanite Rings', href: '/collections/moissanite-rings-nz' },
     ],
   },
   {
@@ -25,7 +25,7 @@ const NAV = [
   },
   {
     label: 'Necklaces',
-    href: '/collections/necklaces',
+    href: '/collections/moissanite-necklace-nz',
     children: null,
   },
   {
@@ -52,11 +52,11 @@ const NAV = [
 
 const MOBILE_NAV = [
   { label: 'Best Sellers', href: '/collections/best-sellers', indent: false },
-  { label: 'Moissanite Rings', href: '/collections/moissanite-rings', indent: true },
+  { label: 'Moissanite Rings', href: '/collections/moissanite-rings-nz', indent: true },
   { label: 'Bridal Rings', href: '/collections/bridal-jewellery', indent: true },
   { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings', indent: true },
   { label: 'Pearl Earrings', href: '/collections/pearl-earrings', indent: true },
-  { label: 'Necklaces', href: '/collections/necklaces', indent: true },
+  { label: 'Necklaces', href: '/collections/moissanite-necklace-nz', indent: true },
   { label: 'Appointment', href: '/pages/appointment-online', indent: false },
   { label: 'Custom Made', href: '/pages/bespoke-order', indent: false },
   { label: 'About Miozuki', href: '/pages/about-us', indent: false },

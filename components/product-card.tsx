@@ -57,10 +57,13 @@ export default function ProductCard({
   product,
   rating,
   layout = 'default',
+  priority = false,
 }: {
   product: Product;
   rating?: RatingSummary;
   layout?: 'default' | 'flagship';
+  /** Eager-load + prioritise this card's primary image (use for the first visible row). */
+  priority?: boolean;
 }) {
   const hoverCapable = useHoverCapable();
   const { handle, title, featuredImage, images, priceRange, tags } = product;
@@ -93,6 +96,7 @@ export default function ProductCard({
               src={primary.url}
               alt={primary.altText ?? title}
               fill
+              priority={priority}
               sizes="(max-width: 767px) 70vw, (max-width: 1023px) 33vw, 25vw"
               quality={85}
               className={`object-cover transition-opacity duration-500 ease-out${secondary ? ' group-hover:opacity-0' : ''}`}

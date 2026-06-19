@@ -38,7 +38,7 @@ function formatDiameterMm(mm: number): string {
 export function ringInnerDiametrePhrase(sizeLabel: string): string | null {
   const mm = ringInnerDiameterMm(sizeLabel);
   if (mm === undefined) return null;
-  return `inner diametre ${formatDiameterMm(mm)} mm`;
+  return `inner diameter ${formatDiameterMm(mm)} mm`;
 }
 
 /**

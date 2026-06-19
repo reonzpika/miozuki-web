@@ -68,7 +68,10 @@ export default function CollectionHeroBanner({ collection }: Props) {
         bannerImage
       )}
       {!usePearlHero ? (
-        <div className="absolute inset-0 bg-charcoal/28" aria-hidden />
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-charcoal/65 via-charcoal/45 to-charcoal/30"
+          aria-hidden
+        />
       ) : null}
 
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center px-5 py-6 md:items-start md:px-10 md:py-7">

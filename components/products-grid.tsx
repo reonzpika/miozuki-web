@@ -370,11 +370,12 @@ export default function ProductsGrid({
         </p>
       ) : (
         <div className={gridClassName}>
-          {displayed.map((product) => (
+          {displayed.map((product, index) => (
             <ProductCard
               key={product.id}
               product={product}
               layout={layout}
+              priority={index < 4}
               rating={ratings[product.id.split('/').pop() ?? '']}
             />
           ))}

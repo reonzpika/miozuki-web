@@ -10,7 +10,8 @@
     "spellcheck": "cspell lint \"{app,components,lib}/**/*.{ts,tsx,css}\" \"README.md\" \"CLAUDE.md\" \"AGENTS.md\" --no-progress",
     "gen-image": "node --env-file=.env.local scripts/gen-image.mjs",
     "audit": "tsx scripts/audit.ts",
-    "audit:headless": "tsx scripts/audit.ts --headless"
+    "audit:headless": "tsx scripts/audit.ts --headless",
+    "audit:images": "node --env-file=.env.local scripts/check-description-images.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.9",

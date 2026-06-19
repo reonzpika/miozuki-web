@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getAllRatings } from '@/lib/judgeme/client';
 import { getCollections, getCollectionByHandle } from '@/lib/shopify';
+import { cleanDescriptionHtml } from '@/lib/description-html';
 import { getCollectionEducationThemes, isFlagshipCollection } from '@/lib/collection-page';
 import ProductsGrid from '@/components/products-grid';
 import CollectionHeroBanner from '@/components/collection-hero-banner';
@@ -111,7 +112,7 @@ export default async function CollectionPage({
         <div className="mx-auto max-w-4xl px-6 py-16 md:px-10">
           <div
             className="text-sm text-charcoal/70 leading-relaxed [&_h1]:font-serif [&_h1]:text-2xl [&_h1]:text-charcoal [&_h1]:mb-6 [&_h1]:mt-10 [&_h1]:first:mt-0 [&_h2]:font-serif [&_h2]:text-xl [&_h2]:text-charcoal [&_h2]:mb-4 [&_h2]:mt-8 [&_h3]:font-medium [&_h3]:text-charcoal [&_h3]:mb-3 [&_h3]:mt-6 [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4 [&_ol]:space-y-1 [&_strong]:font-medium [&_strong]:text-charcoal [&_a]:text-burgundy [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-burgundy/70 [&_table]:w-full [&_table]:border-collapse [&_table]:mb-6 [&_th]:text-left [&_th]:text-xs [&_th]:tracking-widest [&_th]:uppercase [&_th]:text-charcoal [&_th]:border-b [&_th]:border-charcoal/15 [&_th]:py-2 [&_th]:pr-4 [&_td]:border-b [&_td]:border-charcoal/8 [&_td]:py-2 [&_td]:pr-4 [&_td]:align-top [&_img]:max-w-full [&_img]:h-auto [&_img]:my-6"
-            dangerouslySetInnerHTML={{ __html: collection.descriptionHtml }}
+            dangerouslySetInnerHTML={{ __html: cleanDescriptionHtml(collection.descriptionHtml) }}
           />
         </div>
       )}

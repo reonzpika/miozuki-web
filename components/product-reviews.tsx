@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import { getProductReviews } from '@/lib/judgeme/client';
-import { storefrontProductJudgeMeReviewsUrl } from '@/lib/judgeme/storefront-origin';
 import type { JudgeMeReview } from '@/lib/judgeme/types';
-import { ProductReviewWriteDisclosure } from './product-review-write-disclosure';
 import StarRating from './star-rating';
 
 /** Display overrides for Judge.me reviewer names (source data unchanged in Judge.me). */
@@ -52,27 +50,22 @@ function ReviewCard({ review }: { review: JudgeMeReview }) {
 
 export default async function ProductReviews({
   productId,
-  productHandle,
-  productTitle,
 }: {
   productId: string;
-  productHandle: string;
-  productTitle: string;
 }) {
   const { product, reviews } = await getProductReviews(productId);
   const count = product?.reviews_count ?? 0;
   const avgRating = product?.rating ?? 0;
 
-  const reviewFormHref = storefrontProductJudgeMeReviewsUrl(productHandle);
-  const shopifyProductNumericId = productId.split('/').pop() ?? '';
   return (
     <section>
       <h2 className="font-serif text-2xl text-charcoal mb-6">Reviews</h2>
 
-      <div className="mb-8 rounded-sm border border-charcoal/10 bg-charcoal/3 p-5 md:flex md:flex-row md:flex-wrap md:items-start md:justify-between md:gap-8">
-        <p className="mb-5 max-w-xl min-w-0 text-sm leading-relaxed text-charcoal/65 md:mb-0">
-          Purchased this piece? Open &quot;Write a review&quot; to show the Judge.me form here on
-          this page. Questions about sizing, lead times, or customisation?{' '}
+      <div className="mb-8 rounded-sm border border-charcoal/10 bg-charcoal/3 p-5">
+        <p className="max-w-2xl text-sm leading-relaxed text-charcoal/65">
+          Purchased this piece? After your order arrives we email you a link to leave a
+          review, so it is tied to your verified purchase. Questions about sizing, lead
+          times, or customisation?{' '}
           <Link
             href="/pages/contact"
             className="font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
@@ -88,13 +81,6 @@ export default async function ProductReviews({
           </a>{' '}
           below.
         </p>
-        <div className="relative z-10 flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap md:shrink-0">
-          <ProductReviewWriteDisclosure
-            productNumericId={shopifyProductNumericId}
-            productTitle={productTitle}
-            reviewPageFallbackHref={reviewFormHref}
-          />
-        </div>
       </div>
 
       <div className="flex items-center gap-3 mb-8">

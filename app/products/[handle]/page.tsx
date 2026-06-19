@@ -233,11 +233,7 @@ export default async function ProductPage({
 
       <div id="reviews" className="mt-16 border-t border-charcoal/8 pt-12">
         <Suspense fallback={<div className="h-24 animate-pulse bg-charcoal/5" />}>
-          <ProductReviews
-            productId={product.id}
-            productHandle={product.handle}
-            productTitle={product.title}
-          />
+          <ProductReviews productId={product.id} />
         </Suspense>
       </div>
 

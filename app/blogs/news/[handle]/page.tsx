@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getBlogArticles, getArticleByHandle, getStorefrontBlogHandle } from '@/lib/shopify';
+import { cleanDescriptionHtml } from '@/lib/description-html';
 
 export const revalidate = 86400;
 
@@ -136,7 +137,7 @@ export default async function ArticlePage({
       {/* Article body */}
       <div
         className="article-prose"
-        dangerouslySetInnerHTML={{ __html: article.contentHtml ?? '' }}
+        dangerouslySetInnerHTML={{ __html: cleanDescriptionHtml(article.contentHtml) }}
       />
 
       {/* Back link */}

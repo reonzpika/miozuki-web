@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { getProducts, getProductByHandle } from '@/lib/shopify';
 import ProductGallery from '@/components/product-gallery';
@@ -80,6 +81,22 @@ export default async function ProductPage({
       ? { sources: firstVideoItem.sources, previewImage: firstVideoItem.previewImage }
       : null;
   const variants = product.variants.edges.map((e) => e.node);
+
+  // LCP fix: render media[0] server-side with priority so its preload ships in the
+  // initial HTML. The gallery is a client component and cannot emit a priority preload
+  // on its own (it only lands after hydration). Passed into the gallery as firstImage.
+  const firstMedia = media[0];
+  const galleryFirstImage =
+    firstMedia && firstMedia.mediaContentType === 'IMAGE' ? (
+      <Image
+        src={firstMedia.image.url}
+        alt={firstMedia.image.altText ?? product.title}
+        fill
+        priority
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover"
+      />
+    ) : null;
 
   const getMetafield = (key: string) =>
     product.metafields?.find((m) => m?.key === key)?.value ?? null;
@@ -168,7 +185,7 @@ export default async function ProductPage({
 
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-20">
         <div className="md:sticky md:top-24 md:self-start">
-          <ProductGallery media={media} title={product.title} />
+          <ProductGallery media={media} title={product.title} firstImage={galleryFirstImage} />
         </div>
 
         <div className="flex flex-col gap-8 pb-24 md:pb-0">

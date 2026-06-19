@@ -1,16 +1,24 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { ShopifyMediaItem } from '@/lib/shopify';
 import { MiozukiBrandLogo } from '@/components/miozuki-brand-logo';
 
 export default function ProductGallery({
   media,
   title,
+  firstImage,
 }: {
   media: ShopifyMediaItem[];
   title: string;
+  /**
+   * Server-rendered <Image priority> for media[0] when it is an image. Rendered at rest
+   * (activeIdx 0) so its preload link ships in the initial HTML, this client component
+   * cannot emit a priority preload on its own (it only lands after hydration). The client
+   * <Image> below handles idx > 0 after the user interacts.
+   */
+  firstImage?: ReactNode;
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
   const active = media[activeIdx];
@@ -40,12 +48,13 @@ export default function ProductGallery({
               <source key={src.url} src={src.url} type={src.mimeType} />
             ))}
           </video>
+        ) : activeIdx === 0 && firstImage ? (
+          firstImage
         ) : (
           <Image
             src={active.image.url}
             alt={active.image.altText ?? title}
             fill
-            priority={activeIdx === 0}
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />

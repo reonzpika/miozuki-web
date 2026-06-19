@@ -143,6 +143,28 @@ async function storefrontRequest<T>(
   return json.data;
 }
 
+// ── Checkout domain rewrite ────────────────────────────────────────────
+// In a headless setup the Storefront API returns checkoutUrl on the store's
+// primary domain (miozuki.co.nz). After cutover that domain points at Vercel,
+// which cannot serve Shopify checkout, so the checkout link must go to the
+// Shopify-served checkout subdomain instead. Configuring the subdomain alone
+// does NOT change the host the API returns (verified 20 Jun), so we rewrite it
+// here. Inert when SHOPIFY_CHECKOUT_DOMAIN is unset.
+const CHECKOUT_DOMAIN = process.env.SHOPIFY_CHECKOUT_DOMAIN?.trim();
+
+function finalizeCheckoutUrl(cart: Cart): Cart {
+  if (CHECKOUT_DOMAIN && cart.checkoutUrl) {
+    try {
+      const u = new URL(cart.checkoutUrl);
+      u.host = CHECKOUT_DOMAIN;
+      cart.checkoutUrl = u.toString();
+    } catch {
+      // leave checkoutUrl untouched if it is not a parseable URL
+    }
+  }
+  return cart;
+}
+
 // ── Operations (server-only callers: Route Handler) ────────────────────
 
 export async function storefrontCreateCart(
@@ -158,7 +180,7 @@ export async function storefrontCreateCart(
   }>(credentials, CREATE_CART, { lines: [line] });
 
   const { cart, userErrors } = data.cartCreate;
-  if (cart) return cart;
+  if (cart) return finalizeCheckoutUrl(cart);
   throwOnUserErrors(userErrors, 'Could not create cart');
 }
 
@@ -176,7 +198,7 @@ export async function storefrontAddCartLines(
   }>(credentials, ADD_CART_LINES, { cartId, lines: [line] });
 
   const { cart, userErrors } = data.cartLinesAdd;
-  if (cart) return cart;
+  if (cart) return finalizeCheckoutUrl(cart);
   throwOnUserErrors(userErrors, 'Could not update cart');
 }
 
@@ -190,7 +212,7 @@ export async function storefrontRemoveCartLines(
   }>(credentials, REMOVE_CART_LINES, { cartId, lineIds });
 
   const { cart, userErrors } = data.cartLinesRemove;
-  if (cart) return cart;
+  if (cart) return finalizeCheckoutUrl(cart);
   throwOnUserErrors(userErrors, 'Could not remove line');
 }
 
@@ -201,5 +223,5 @@ export async function storefrontGetCart(
   const data = await storefrontRequest<{ cart: Cart | null }>(credentials, GET_CART, {
     cartId,
   });
-  return data.cart;
+  return data.cart ? finalizeCheckoutUrl(data.cart) : null;
 }

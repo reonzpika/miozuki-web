@@ -156,9 +156,11 @@ Before you save, ask yourself: are there sibling pages or components of the same
 
 The fastest fix for a bad change that went live is almost never more editing. It is putting the site back to the last good version.
 
-- **Ting can do this herself** in one click, using the Vercel rollback bookmark Ryo set up for her. Tell her: "Open your rollback bookmark and choose the previous version. The site goes back to how it was within a minute." If that bookmark is not set up yet, tell her to message Ryo, and offer to undo the last change yourself.
-- **You can roll back from Cursor** if she asks: undo the last change that went live with `git revert <last pushed commit>`, then make it live again. NEVER use `git reset --hard`.
+- **The way to roll back is through you (Cursor).** If Ting says something looks wrong, undo the last change that went live with `git revert <last pushed commit>`, then make it live again (push). Tell her plainly: "Done. The site is back to how it was before that change, live within a minute." NEVER use `git reset --hard`.
+- **If you cannot roll back safely** (several changes went live together, or the revert will not build), do not guess. Tell Ting "I can't safely undo this myself, please message Ryo" and stop.
 - After any rollback, add a one-line note to `docs/cursor-followups.md` with the date and what went wrong, so Ryo can look into it.
+
+(A one-click Vercel dashboard rollback needs the paid Pro plan with Ting added to the Vercel team. On the current free plan that is not available, so Cursor is how Ting rolls back.)
 
 ---
 

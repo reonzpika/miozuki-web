@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import DeferredAnalytics from '@/components/deferred-analytics';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/header';
@@ -116,7 +116,7 @@ export default function RootLayout({
         <Script
           src="https://outgoing-oyster-428.convex.site/api/harbor-seo.js?siteId=nd7623d8rea452t96p9atqn9x5810g3w"
           data-harbor-site="nd7623d8rea452t96p9atqn9x5810g3w"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <MetaPixel />
         <CartProvider>
@@ -130,7 +130,7 @@ export default function RootLayout({
             <EmailPopup />
           </StorefrontChrome>
         </CartProvider>
-        {GA4_ID ? <GoogleAnalytics gaId={GA4_ID} /> : null}
+        {GA4_ID ? <DeferredAnalytics gaId={GA4_ID} /> : null}
       </body>
     </html>
   );

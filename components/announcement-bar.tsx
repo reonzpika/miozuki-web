@@ -24,7 +24,6 @@ export default function AnnouncementBar() {
   return (
     <div
       className="border-b border-charcoal/12 bg-cream text-charcoal text-[12px] tracking-[0.04em] py-2.5 overflow-hidden"
-      aria-label="Site announcements"
     >
       <div className="announcement-marquee-track">
         <MessageList />

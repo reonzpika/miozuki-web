@@ -67,7 +67,7 @@ const SOCIAL = [
 ];
 
 const linkClassName =
-  'block rounded-sm py-1.5 text-sm leading-snug text-charcoal/55 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream min-h-10 sm:min-h-0 md:py-2';
+  'block rounded-sm py-1.5 text-sm leading-snug text-charcoal/70 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream min-h-10 sm:min-h-0 md:py-2';
 
 const sectionTitleClassName =
   'mb-4 font-sans text-sm font-medium text-charcoal';
@@ -109,16 +109,16 @@ export default function Footer() {
               className="h-[5rem] w-auto sm:h-[5.5rem] md:h-24 lg:h-28 pointer-events-none select-none"
             />
           </Link>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-charcoal/50 md:mt-5">
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-charcoal/70 md:mt-5">
             NZ fine jewellery
           </p>
-          <p className="mt-4 text-xs text-charcoal/40">
+          <p className="mt-4 text-xs text-charcoal/70">
             Auckland, New Zealand · Proudly NZ-owned &amp; operated
           </p>
           <p className="mt-3">
             <a
               href="mailto:info@miozuki.co.nz"
-              className="inline-flex min-h-10 items-center text-xs text-charcoal/50 underline underline-offset-4 transition-colors hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+              className="inline-flex min-h-10 items-center text-xs text-charcoal/70 underline underline-offset-4 transition-colors hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               info@miozuki.co.nz
             </a>
@@ -145,7 +145,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm text-charcoal/40 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
               >
                 {s.svg}
               </a>
@@ -157,16 +157,16 @@ export default function Footer() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-xs text-charcoal/40 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                  className="text-xs text-charcoal/70 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
                 >
                   {l.label}
                 </Link>
               ))}
             </nav>
-            <p className="text-xs leading-snug text-charcoal/30">
+            <p className="text-xs leading-snug text-charcoal/65">
               © {new Date().getFullYear()} Miozuki. All rights reserved.
             </p>
-            <p className="max-w-md text-xs leading-snug text-charcoal/25 md:max-w-lg">
+            <p className="max-w-md text-xs leading-snug text-charcoal/65 md:max-w-lg">
               Visa · Mastercard · Amex · Apple Pay · Google Pay · PayPal · Shop Pay
             </p>
           </div>

@@ -13,8 +13,8 @@ export default async function AdminLogin({
     <main className="min-h-screen flex items-center justify-center bg-cream px-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="font-serif text-3xl text-burgundy">Miozuki</div>
-          <div className="text-[11px] tracking-[0.2em] uppercase text-graphite mt-1">
+          <div className="font-serif text-4xl text-burgundy">Miozuki</div>
+          <div className="text-[13px] tracking-[0.2em] uppercase text-graphite mt-1">
             admin
           </div>
         </div>
@@ -26,7 +26,7 @@ export default async function AdminLogin({
           {from ? <input type="hidden" name="from" value={from} /> : null}
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-charcoal mb-2"
+            className="block text-base font-medium text-charcoal mb-2"
           >
             Password
           </label>
@@ -39,7 +39,7 @@ export default async function AdminLogin({
             className="w-full border border-border rounded-lg px-3 py-2.5 bg-cream text-charcoal outline-none focus:border-burgundy"
           />
           {error ? (
-            <p className="text-sm text-burgundy mt-3">
+            <p className="text-base text-burgundy mt-3">
               That password did not work. Try again.
             </p>
           ) : null}

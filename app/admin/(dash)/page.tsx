@@ -60,7 +60,7 @@ export default async function AdminHome() {
         }`}
       >
         <div
-          className={`flex-none w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl ${
+          className={`flex-none w-12 h-12 rounded-full flex items-center justify-center text-white text-3xl ${
             healthy ? 'bg-[#3f7d52]' : 'bg-[#b8860b]'
           }`}
           aria-hidden
@@ -68,10 +68,10 @@ export default async function AdminHome() {
           {healthy ? '✓' : '!'}
         </div>
         <div>
-          <h1 className="font-serif text-2xl sm:text-[26px] text-charcoal">
+          <h1 className="font-serif text-3xl sm:text-[30px] text-charcoal">
             {healthy ? 'Your site is live and healthy' : 'Worth a look'}
           </h1>
-          <p className="text-graphite text-sm sm:text-[15px] mt-0.5">
+          <p className="text-graphite text-base sm:text-[17px] mt-0.5">
             {last
               ? `Last change ${timeAgo(last.created)}.`
               : 'Connect Vercel to see your latest change here.'}{' '}
@@ -100,12 +100,12 @@ export default async function AdminHome() {
 
       {/* Recent changes */}
       <section className="bg-white-soft border border-border rounded-xl p-6 mb-6">
-        <h2 className="font-serif text-lg text-charcoal">Your recent changes</h2>
-        <p className="text-sm text-graphite mb-4">
+        <h2 className="font-serif text-xl text-charcoal">Your recent changes</h2>
+        <p className="text-base text-graphite mb-4">
           Everything you have published, newest first.
         </p>
         {!vercelConnected ? (
-          <p className="text-sm text-graphite">
+          <p className="text-base text-graphite">
             Not connected yet. Add a Vercel read token (<code>VERCEL_API_TOKEN</code>)
             to show your publish history here.
           </p>
@@ -123,10 +123,10 @@ export default async function AdminHome() {
                   >
                     {s.label}
                   </span>
-                  <span className="flex-1 text-sm text-charcoal">
+                  <span className="flex-1 text-base text-charcoal">
                     {d.commitMessage ?? 'Update'}
                   </span>
-                  <span className="text-sm text-graphite">
+                  <span className="text-base text-graphite">
                     {timeAgo(d.created)}
                   </span>
                 </li>
@@ -134,14 +134,14 @@ export default async function AdminHome() {
             })}
           </ul>
         ) : (
-          <p className="text-sm text-graphite">No deployments found yet.</p>
+          <p className="text-base text-graphite">No deployments found yet.</p>
         )}
       </section>
 
       {/* Quick actions */}
       <section className="bg-white-soft border border-border rounded-xl p-6 mb-6">
-        <h2 className="font-serif text-lg text-charcoal">Quick actions</h2>
-        <p className="text-sm text-graphite mb-4">
+        <h2 className="font-serif text-xl text-charcoal">Quick actions</h2>
+        <p className="text-base text-graphite mb-4">
           If a change looks wrong, open Cursor and say &ldquo;put the site
           back&rdquo;. It undoes your last change and the site returns to how it
           was, live within a minute.
@@ -151,7 +151,7 @@ export default async function AdminHome() {
             href="https://admin.shopify.com"
             target="_blank"
             rel="noreferrer"
-            className="text-sm font-medium px-5 py-2.5 rounded-lg border border-burgundy text-burgundy hover:bg-blush transition-colors"
+            className="text-base font-medium px-5 py-2.5 rounded-lg border border-burgundy text-burgundy hover:bg-blush transition-colors"
           >
             Open Shopify admin
           </a>
@@ -159,7 +159,7 @@ export default async function AdminHome() {
             href="https://www.miozuki.co.nz"
             target="_blank"
             rel="noreferrer"
-            className="text-sm font-medium px-5 py-2.5 rounded-lg border border-border text-charcoal hover:bg-cream transition-colors"
+            className="text-base font-medium px-5 py-2.5 rounded-lg border border-border text-charcoal hover:bg-cream transition-colors"
           >
             View live site
           </a>
@@ -168,11 +168,11 @@ export default async function AdminHome() {
 
       {/* Deferred */}
       <section className="rounded-xl border border-dashed border-border bg-cream/60 p-6 opacity-70">
-        <span className="inline-block text-[11px] font-medium tracking-wide uppercase text-graphite border border-border rounded-full px-2.5 py-0.5 mb-2">
+        <span className="inline-block text-[13px] font-medium tracking-wide uppercase text-graphite border border-border rounded-full px-2.5 py-0.5 mb-2">
           Later
         </span>
-        <h2 className="font-serif text-lg text-charcoal">Sales &amp; reviews</h2>
-        <p className="text-sm text-graphite">
+        <h2 className="font-serif text-xl text-charcoal">Sales &amp; reviews</h2>
+        <p className="text-base text-graphite">
           Orders, revenue and new reviews can live here once Shopify and Judge.me
           are wired up. Not part of this first version.
         </p>
@@ -194,11 +194,11 @@ function Tile({
 }) {
   return (
     <div className="bg-white-soft border border-border rounded-xl p-5">
-      <div className="text-[11px] font-medium tracking-wide uppercase text-graphite mb-2">
+      <div className="text-[13px] font-medium tracking-wide uppercase text-graphite mb-2">
         {label}
       </div>
-      <div className={`font-serif text-2xl ${toneText[tone]}`}>{value}</div>
-      <div className="text-[13px] text-graphite mt-1">{sub}</div>
+      <div className={`font-serif text-3xl ${toneText[tone]}`}>{value}</div>
+      <div className="text-[15px] text-graphite mt-1">{sub}</div>
     </div>
   );
 }

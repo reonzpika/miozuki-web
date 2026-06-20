@@ -59,11 +59,16 @@ export type HubProgress = {
 
 const LIVE_BASE = 'https://www.miozuki.co.nz';
 
+/** The path each guide page should live at. Pillar sits at the hub root. */
+export function hubPath(slug: string): string {
+  return slug === 'moissanite-guide'
+    ? '/moissanite-guide'
+    : `/moissanite-guide/${slug}`;
+}
+
 /** A hub article counts as live only when its real page is published and reachable. */
 function hubUrl(slug: string): string {
-  return slug === 'moissanite-guide'
-    ? `${LIVE_BASE}/moissanite-guide`
-    : `${LIVE_BASE}/moissanite-guide/${slug}`;
+  return `${LIVE_BASE}${hubPath(slug)}`;
 }
 
 async function isPublished(slug: string): Promise<boolean> {

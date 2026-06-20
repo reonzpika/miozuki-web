@@ -19,7 +19,7 @@ export default function AdminTabs() {
           <Link
             key={t.href}
             href={t.href}
-            className={`py-4 text-sm font-medium border-b-2 transition-colors ${
+            className={`py-4 text-base font-medium border-b-2 transition-colors ${
               active
                 ? 'text-burgundy border-burgundy'
                 : 'text-graphite border-transparent hover:text-charcoal'

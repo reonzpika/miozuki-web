@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getProductReviews } from '@/lib/judgeme/client';
 import type { JudgeMeReview } from '@/lib/judgeme/types';
 import StarRating from './star-rating';
+import { formatNzDate } from '@/lib/format-date';
 
 /** Display overrides for Judge.me reviewer names (source data unchanged in Judge.me). */
 const REVIEWER_DISPLAY_NAME: Record<string, string> = {
@@ -14,11 +15,7 @@ function reviewerNameForDisplay(name: string): string {
 }
 
 function ReviewCard({ review }: { review: JudgeMeReview }) {
-  const date = new Date(review.created_at).toLocaleDateString('en-NZ', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const date = formatNzDate(review.created_at);
 
   return (
     <article className="py-6 border-t border-charcoal/8">

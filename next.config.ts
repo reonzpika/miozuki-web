@@ -44,6 +44,17 @@ const nextConfig: NextConfig = {
           '/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly',
         permanent: true,
       },
+      // Renamed Shopify pages (old slugs were indexed; new build renamed them).
+      {
+        source: '/pages/appointment',
+        destination: '/pages/appointment-online',
+        permanent: true,
+      },
+      {
+        source: '/pages/custom-made',
+        destination: '/pages/bespoke-order',
+        permanent: true,
+      },
       // Renamed collections (Shopify drifted the handles; old handles were indexed).
       {
         source: '/collections/moissanite-rings',

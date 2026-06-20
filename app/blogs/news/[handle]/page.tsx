@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getBlogArticles, getArticleByHandle, getStorefrontBlogHandle } from '@/lib/shopify';
 import { cleanDescriptionHtml } from '@/lib/description-html';
+import { formatNzDate } from '@/lib/format-date';
 
 export const revalidate = 86400;
 
@@ -58,14 +59,6 @@ const TAG_LABELS: Record<string, string> = {
   'pearl-studs': 'Pearl Studs',
 };
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-NZ', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
-
 export default async function ArticlePage({
   params,
 }: {
@@ -114,7 +107,7 @@ export default async function ArticlePage({
 
       {/* Meta */}
       <p className="text-[10px] tracking-widest uppercase text-charcoal/35 mb-10">
-        {formatDate(article.publishedAt)}
+        {formatNzDate(article.publishedAt)}
         {article.author?.name ? ` · ${article.author.name}` : ''}
       </p>
 

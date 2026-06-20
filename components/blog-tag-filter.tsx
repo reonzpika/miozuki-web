@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Article } from '@/lib/shopify/types';
+import { formatNzDate } from '@/lib/format-date';
 
 const TAG_LABELS: Record<string, string> = {
   'affordable-engagement-ring': 'Affordable Engagement Ring',
@@ -23,14 +24,6 @@ const TAG_LABELS: Record<string, string> = {
   'pearl-earrings-silver': 'Pearl Earrings Silver',
   'pearl-studs': 'Pearl Studs',
 };
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-NZ', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
 
 export default function BlogTagFilter({ articles }: { articles: Article[] }) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -107,7 +100,7 @@ export default function BlogTagFilter({ articles }: { articles: Article[] }) {
               </p>
             )}
             <p className="text-[10px] tracking-widest uppercase text-charcoal/35 mt-auto">
-              {formatDate(article.publishedAt)}
+              {formatNzDate(article.publishedAt)}
             </p>
           </Link>
         ))}

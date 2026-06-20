@@ -1,5 +1,5 @@
 import { getRecentDeployments } from '@/lib/admin/vercel';
-import { checkSiteUp, getBrokenImageCount } from '@/lib/admin/health';
+import { checkSiteUp } from '@/lib/admin/health';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,10 +38,9 @@ const toneText: Record<'ok' | 'warn' | 'bad', string> = {
 };
 
 export default async function AdminHome() {
-  const [deploys, siteUp, broken] = await Promise.all([
+  const [deploys, siteUp] = await Promise.all([
     getRecentDeployments(),
     checkSiteUp(),
-    getBrokenImageCount(),
   ]);
 
   const last = deploys?.[0];
@@ -84,24 +83,12 @@ export default async function AdminHome() {
       </section>
 
       {/* Tiles */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-7">
+      <div className="grid grid-cols-2 gap-4 mb-7">
         <Tile
           label="Site status"
           value={siteUp === null ? 'Unknown' : siteUp ? 'Up' : 'Down'}
           tone={siteUp === false ? 'bad' : siteUp ? 'ok' : 'warn'}
           sub={siteUp ? 'Responding normally' : 'Could not reach the site'}
-        />
-        <Tile
-          label="Broken images"
-          value={broken === null ? '—' : String(broken)}
-          tone={broken && broken > 0 ? 'warn' : 'ok'}
-          sub={
-            broken === null
-              ? 'No recent check on hand'
-              : broken > 0
-                ? 'Fix in Shopify'
-                : 'None found'
-          }
         />
         <Tile
           label="Last publish"

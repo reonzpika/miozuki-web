@@ -17,8 +17,8 @@ const ORGANIZATION_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Miozuki',
-  url: 'https://miozuki.co.nz',
-  logo: 'https://miozuki.co.nz/miozuki-logo-full-light.svg',
+  url: 'https://www.miozuki.co.nz',
+  logo: 'https://www.miozuki.co.nz/miozuki-logo-full-light.svg',
   description:
     'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand.',
   email: 'info@miozuki.co.nz',
@@ -50,7 +50,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://miozuki.co.nz'),
+  // www is the canonical/production host; the apex 308-redirects to it. Point all
+  // OG/canonical URLs at www so scrapers and search engines hit the 200 host, not
+  // the redirecting apex.
+  metadataBase: new URL('https://www.miozuki.co.nz'),
   title: 'Miozuki, Fine Jewellery',
   description:
     'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand. Discover pieces that last a lifetime.',
@@ -58,7 +61,7 @@ export const metadata: Metadata = {
     title: 'Miozuki, Fine Jewellery',
     description:
       'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand.',
-    url: 'https://miozuki.co.nz',
+    url: 'https://www.miozuki.co.nz',
     siteName: 'Miozuki',
     type: 'website',
     locale: 'en_NZ',

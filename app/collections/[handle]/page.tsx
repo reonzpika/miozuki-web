@@ -40,6 +40,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: { canonical: `/collections/${handle}` },
     openGraph: ogImage
       ? { title, description, images: [{ url: ogImage, alt: collection.title }] }
       : undefined,
@@ -73,12 +74,12 @@ export default async function CollectionPage({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://miozuki.co.nz/' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.miozuki.co.nz/' },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Collections',
-        item: 'https://miozuki.co.nz/collections',
+        item: 'https://www.miozuki.co.nz/collections',
       },
       { '@type': 'ListItem', position: 3, name: collection.title },
     ],

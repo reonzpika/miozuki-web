@@ -24,5 +24,5 @@ export async function getRequestAbsoluteUrl(
   if (host && proto) {
     return `${proto}://${host}${path}`;
   }
-  return `https://miozuki.co.nz${path}`;
+  return `https://www.miozuki.co.nz${path}`;
 }

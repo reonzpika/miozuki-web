@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/'],
       },
     ],
-    sitemap: 'https://miozuki.co.nz/sitemap.xml',
+    sitemap: 'https://www.miozuki.co.nz/sitemap.xml',
   };
 }

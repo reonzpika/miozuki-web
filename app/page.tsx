@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCollections, getCollectionByHandle } from '@/lib/shopify';
@@ -12,6 +13,10 @@ import FaqAccordion from '@/components/faq-accordion';
 import ScrollReveal from '@/components/scroll-reveal';
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
 
 const HOME_FAQ = [
   {

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getProducts, getCollections, getBlogArticles } from '@/lib/shopify';
 
-const BASE = 'https://miozuki.co.nz';
+const BASE = 'https://www.miozuki.co.nz';
 
 const STATIC_PATHS: Array<{ path: string; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; priority: number }> = [
   { path: '/', changeFrequency: 'weekly', priority: 1.0 },

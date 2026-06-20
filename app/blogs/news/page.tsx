@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'Journal | Miozuki',
   description:
     'Moissanite and pearl jewellery guides, styling tips, and stories from Auckland, New Zealand.',
+  alternates: { canonical: '/blogs/news' },
 };
 
 export default async function BlogListingPage() {

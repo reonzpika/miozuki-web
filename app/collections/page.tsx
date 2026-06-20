@@ -7,6 +7,7 @@ export const revalidate = 60;
 export const metadata = {
   title: 'Collections | Miozuki',
   description: 'Browse our collections of moissanite and pearl fine jewellery.',
+  alternates: { canonical: '/collections' },
 };
 
 export default async function CollectionsPage() {

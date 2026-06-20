@@ -36,6 +36,7 @@ export async function generateMetadata({
   return {
     title: `${article.title} | Miozuki`,
     description: article.excerpt ?? undefined,
+    alternates: { canonical: `/blogs/news/${handle}` },
     openGraph: article.image ? { images: [{ url: article.image.url }] } : undefined,
   };
 }

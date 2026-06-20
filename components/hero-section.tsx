@@ -29,7 +29,7 @@ export default function HeroSection() {
     <section className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center overflow-hidden text-center max-md:min-h-[calc(85svh-4rem)]">
       {/* Background */}
       <Image
-        src="https://miozuki.co.nz/cdn/shop/files/hero-image.webp?v=1773198093"
+        src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/hero-image.webp?v=1773198093"
         alt="Miozuki fine jewellery"
         fill
         priority

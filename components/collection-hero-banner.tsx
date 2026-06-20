@@ -6,7 +6,7 @@ import { resolvePearlBannerImageSrc } from '@/lib/pearl-banner-image';
 import { richTextToPlain, clipAfterNeedAssistanceQuestion } from '@/components/rich-text';
 
 const FALLBACK_HERO_IMAGE =
-  'https://miozuki.co.nz/cdn/shop/files/hero-image.webp?v=1773198093';
+  'https://cdn.shopify.com/s/files/1/0797/0819/3023/files/hero-image.webp?v=1773198093';
 
 const PEARL_HERO_ALT =
   'Profile portrait baroque pearl stud earring, soft studio light, warm neutral backdrop';

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { ShopifyVideoSource } from '@/lib/shopify';
+import { selectVideoSources } from '@/lib/video-sources';
 
 type FirstVideo = {
   sources: ShopifyVideoSource[];
@@ -114,13 +115,14 @@ export function PdpSecondaryActions({ firstVideo }: { firstVideo: FirstVideo | n
                 loop
                 playsInline
                 controls
+                preload="auto"
                 poster={firstVideo.previewImage?.url}
                 width={firstVideo.sources[0]?.width}
                 height={firstVideo.sources[0]?.height}
                 style={{ maxWidth: '100%', maxHeight: '77vh', display: 'block' }}
                 onError={() => setVideoError(true)}
               >
-                {firstVideo.sources.map((src) => (
+                {selectVideoSources(firstVideo.sources).map((src) => (
                   <source key={src.url} src={src.url} type={src.mimeType} />
                 ))}
               </video>

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState, type ReactNode } from 'react';
 import type { ShopifyMediaItem } from '@/lib/shopify';
+import { selectVideoSources } from '@/lib/video-sources';
 import { MiozukiBrandLogo } from '@/components/miozuki-brand-logo';
 
 export default function ProductGallery({
@@ -53,11 +54,12 @@ export default function ProductGallery({
               muted
               loop
               playsInline
+              preload="auto"
               className="absolute inset-0 h-full w-full object-contain"
               poster={active.previewImage?.url}
               onError={() => setVideoErrorIdx(activeIdx)}
             >
-              {active.sources.map((src) => (
+              {selectVideoSources(active.sources).map((src) => (
                 <source key={src.url} src={src.url} type={src.mimeType} />
               ))}
             </video>

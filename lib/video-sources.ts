@@ -7,25 +7,22 @@ function isMp4(s: ShopifyVideoSource): boolean {
 }
 
 /**
- * Order video sources for fast, consistent-quality progressive playback.
+ * Order video sources for high-quality, consistent progressive playback.
  *
  * Shopify lists an HLS .m3u8 first. HLS makes the player fetch a manifest chain
  * before any frame (slow start) and start at the lowest rung before ramping up
  * (a blurry first 1-2s). For short product loops a single progressive MP4 is
- * better: one request, instant and consistent quality. We lead with the ~720p
- * MP4 (good quality, small file) and keep the other MP4s as fallbacks; the HLS
- * source is dropped because every target browser plays MP4. If no MP4 exists we
- * return the input unchanged so playback still works.
+ * better: one request, instant and consistent quality. We lead with the highest
+ * available MP4 (1080p when present) so the clip is sharp from the first frame,
+ * with the lower MP4s as fallbacks; the HLS source is dropped because every
+ * target browser plays MP4. If no MP4 exists we return the input unchanged so
+ * playback still works.
  */
 export function selectVideoSources(
   sources: ShopifyVideoSource[],
 ): ShopifyVideoSource[] {
   const mp4s = sources.filter(isMp4);
   if (mp4s.length === 0) return sources;
-  const byHeightAsc = [...mp4s].sort((a, b) => (a.height || 0) - (b.height || 0));
-  // Smallest rendition that is at least 720p; if none reach 720p, the largest.
-  const primary =
-    byHeightAsc.find((s) => (s.height || 0) >= 720) ??
-    byHeightAsc[byHeightAsc.length - 1];
-  return [primary, ...mp4s.filter((s) => s !== primary)];
+  // Highest resolution first (1080p when present), then the rest as fallbacks.
+  return [...mp4s].sort((a, b) => (b.height || 0) - (a.height || 0));
 }

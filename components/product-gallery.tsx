@@ -21,6 +21,9 @@ export default function ProductGallery({
   firstImage?: ReactNode;
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
+  // Index whose video failed to load: fall back to its poster image instead of a
+  // dead black box. Guards against a future bad/redirected video source.
+  const [videoErrorIdx, setVideoErrorIdx] = useState<number | null>(null);
   const active = media[activeIdx];
 
   if (media.length === 0) {
@@ -36,18 +39,29 @@ export default function ProductGallery({
       {/* Main viewer */}
       <div className="relative aspect-square overflow-hidden bg-cream/60">
         {active.mediaContentType === 'VIDEO' ? (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 h-full w-full object-contain"
-            poster={active.previewImage?.url}
-          >
-            {active.sources.map((src) => (
-              <source key={src.url} src={src.url} type={src.mimeType} />
-            ))}
-          </video>
+          videoErrorIdx === activeIdx && active.previewImage ? (
+            <Image
+              src={active.previewImage.url}
+              alt={active.previewImage.altText ?? title}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-contain"
+            />
+          ) : (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 h-full w-full object-contain"
+              poster={active.previewImage?.url}
+              onError={() => setVideoErrorIdx(activeIdx)}
+            >
+              {active.sources.map((src) => (
+                <source key={src.url} src={src.url} type={src.mimeType} />
+              ))}
+            </video>
+          )
         ) : activeIdx === 0 && firstImage ? (
           firstImage
         ) : (

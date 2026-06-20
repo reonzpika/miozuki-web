@@ -11,6 +11,9 @@ type FirstVideo = {
 
 export function PdpSecondaryActions({ firstVideo }: { firstVideo: FirstVideo | null }) {
   const [open, setOpen] = useState(false);
+  // Fall back to the poster image if the video source fails to load, rather than
+  // showing an empty player. Guards against a future bad/redirected source.
+  const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -97,20 +100,31 @@ export function PdpSecondaryActions({ firstVideo }: { firstVideo: FirstVideo | n
               </svg>
             </button>
 
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={firstVideo.previewImage?.url}
-              width={firstVideo.sources[0]?.width}
-              height={firstVideo.sources[0]?.height}
-              style={{ maxWidth: '100%', maxHeight: '77vh', display: 'block' }}
-            >
-              {firstVideo.sources.map((src) => (
-                <source key={src.url} src={src.url} type={src.mimeType} />
-              ))}
-            </video>
+            {videoError && firstVideo.previewImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={firstVideo.previewImage.url}
+                alt=""
+                style={{ maxWidth: '100%', maxHeight: '77vh', display: 'block' }}
+              />
+            ) : (
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                poster={firstVideo.previewImage?.url}
+                width={firstVideo.sources[0]?.width}
+                height={firstVideo.sources[0]?.height}
+                style={{ maxWidth: '100%', maxHeight: '77vh', display: 'block' }}
+                onError={() => setVideoError(true)}
+              >
+                {firstVideo.sources.map((src) => (
+                  <source key={src.url} src={src.url} type={src.mimeType} />
+                ))}
+              </video>
+            )}
           </div>
         </div>
       )}

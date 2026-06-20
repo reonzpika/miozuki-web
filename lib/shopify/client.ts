@@ -62,13 +62,39 @@ export async function getProducts(first = 24): Promise<Product[]> {
   return data.products.edges.map((e) => e.node);
 }
 
+/**
+ * Pin a Shopify hosted-video source URL to cdn.shopify.com.
+ *
+ * Shopify returns video `sources[].url` on the shop's PRIMARY domain
+ * (e.g. https://miozuki.co.nz/cdn/shop/videos/...), not on cdn.shopify.com the
+ * way images are. After the storefront cutover that domain serves Vercel, which
+ * has no /cdn/shop route and returns a 404 HTML page, so the <video> receives
+ * HTML instead of MP4 and never plays. cdn.shopify.com serves the identical
+ * asset at /videos/... independent of the shop domain, so rewrite to it.
+ * Image URLs (already on cdn.shopify.com) and any non /cdn/shop/ URL are untouched.
+ */
+export function normalizeShopifyVideoUrl(url: string): string {
+  return url.replace(/^https?:\/\/[^/]+\/cdn\/shop\//i, 'https://cdn.shopify.com/');
+}
+
 export async function getProductByHandle(handle: string): Promise<Product | null> {
   const data = await shopifyFetch<{ productByHandle: Product | null }>(
     GET_PRODUCT_BY_HANDLE,
     { handle },
   );
   if (!data) return null;
-  return data.productByHandle;
+  const product = data.productByHandle;
+  if (product) {
+    for (const { node } of product.media.edges) {
+      if (node.mediaContentType === 'VIDEO') {
+        node.sources = node.sources.map((s) => ({
+          ...s,
+          url: normalizeShopifyVideoUrl(s.url),
+        }));
+      }
+    }
+  }
+  return product;
 }
 
 // Collections

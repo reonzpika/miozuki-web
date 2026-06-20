@@ -10,6 +10,7 @@ import { CartProvider } from '@/components/cart-provider';
 import EmailPopup from '@/components/email-popup';
 import JsonLd from '@/components/json-ld';
 import MetaPixel from '@/components/meta-pixel';
+import StorefrontChrome from '@/components/storefront-chrome';
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 
@@ -119,11 +120,15 @@ export default function RootLayout({
         />
         <MetaPixel />
         <CartProvider>
-          <AnnouncementBar />
-          <Header />
+          <StorefrontChrome>
+            <AnnouncementBar />
+            <Header />
+          </StorefrontChrome>
           <div className="flex flex-col flex-1">{children}</div>
-          <Footer />
-          <EmailPopup />
+          <StorefrontChrome>
+            <Footer />
+            <EmailPopup />
+          </StorefrontChrome>
         </CartProvider>
         {GA4_ID ? <GoogleAnalytics gaId={GA4_ID} /> : null}
       </body>

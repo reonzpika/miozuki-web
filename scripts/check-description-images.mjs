@@ -73,14 +73,37 @@ const ARTICLES = `
     }
   }`;
 
-/** Pull every cdn.shopify.com image src out of an HTML blob. */
+// Mirror of lib/description-html.ts normalizeCdnSrc (kept in sync by hand; this is
+// a plain .mjs build script and cannot import the .ts render helper).
+const SHOPIFY_FILES_PREFIX = '/s/files/1/0797/0819/3023/';
+const MIOZUKI_CDN_HOST = /^(www\.)?miozuki\.co\.nz$/i;
+function normalizeCdnSrc(src) {
+  try {
+    const url = new URL(src);
+    if (MIOZUKI_CDN_HOST.test(url.hostname) && url.pathname.startsWith('/cdn/shop/')) {
+      url.protocol = 'https:';
+      url.hostname = 'cdn.shopify.com';
+      url.pathname = url.pathname.replace('/cdn/shop/', SHOPIFY_FILES_PREFIX);
+      return url.toString();
+    }
+    return src;
+  } catch {
+    return src;
+  }
+}
+
+/**
+ * Pull every Shopify CDN image src out of an HTML blob. Shopify embeds images on
+ * the shop's primary domain (miozuki.co.nz/cdn/shop/...), so normalize to
+ * cdn.shopify.com first, matching the render layer, before filtering.
+ */
 function extractCdnImages(html) {
   if (!html) return [];
   const out = [];
   const re = /<img\b[^>]*\bsrc="([^"]+)"[^>]*>/gi;
   let m;
   while ((m = re.exec(html)) !== null) {
-    const src = m[1];
+    const src = normalizeCdnSrc(m[1]);
     try {
       if (new URL(src).hostname === 'cdn.shopify.com') out.push(src);
     } catch {

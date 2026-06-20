@@ -21,6 +21,35 @@ import deadImagePaths from './generated/dead-description-images.json';
 
 const SHOPIFY_CDN_HOST = 'cdn.shopify.com';
 
+/** The shop's numeric Files path on cdn.shopify.com (constant for this store). */
+const SHOPIFY_FILES_PREFIX = '/s/files/1/0797/0819/3023/';
+const MIOZUKI_CDN_HOST = /^(www\.)?miozuki\.co\.nz$/i;
+
+/**
+ * Pin an embedded image URL to cdn.shopify.com.
+ *
+ * Shopify embeds images on the shop's PRIMARY domain
+ * (miozuki.co.nz/cdn/shop/files/...). After the cutover that domain is Vercel and
+ * /cdn/shop 404s, so every embedded image breaks, including any Ting re-uploads,
+ * since Shopify keeps embedding them on the primary domain. cdn.shopify.com serves
+ * the same asset at /s/files/<shop>/files/... regardless of the shop domain, so
+ * rewrite host + path to it. Already-cdn and non-Shopify URLs are returned as-is.
+ */
+function normalizeCdnSrc(src: string): string {
+  try {
+    const url = new URL(src);
+    if (MIOZUKI_CDN_HOST.test(url.hostname) && url.pathname.startsWith('/cdn/shop/')) {
+      url.protocol = 'https:';
+      url.hostname = SHOPIFY_CDN_HOST;
+      url.pathname = url.pathname.replace('/cdn/shop/', SHOPIFY_FILES_PREFIX);
+      return url.toString();
+    }
+    return src;
+  } catch {
+    return src;
+  }
+}
+
 /**
  * Render width for embedded Shopify CDN images. The description/article column is
  * max-w-4xl (~896px); 1024 keeps quality on higher-density screens while trimming
@@ -71,8 +100,9 @@ export function cleanDescriptionHtml(
   const cleaned = html.replace(IMG_TAG, (tag) => {
     const match = tag.match(SRC_ATTR);
     if (!match) return tag;
-    const src = match[1];
-    if (!isShopifyCdn(src)) return tag;
+    // Pin primary-domain /cdn/shop URLs to cdn.shopify.com so they survive cutover.
+    const src = normalizeCdnSrc(match[1]);
+    if (!isShopifyCdn(src)) return src === match[1] ? tag : tag.replace(SRC_ATTR, `src="${src}"`);
     const path = pathOf(src);
     if (path && DEAD_IMAGE_PATHS.has(path)) return ''; // strip dead image
     return tag.replace(SRC_ATTR, `src="${withWidth(src, width)}"`);

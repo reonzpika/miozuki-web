@@ -102,6 +102,25 @@ export function clipAfterNeedAssistanceQuestion(text: string): string {
   return text.slice(0, m.index).trimEnd();
 }
 
+const COLLECTION_BLURB_MAX = 180;
+
+/**
+ * Clamp a collection intro to a short excerpt. The curated intro is the
+ * `custom.intro` metafield; when a collection lacks it the code falls back to the
+ * full `description`, which can be a long SEO guide. Without clamping, that whole
+ * wall renders under the title (the moissanite-necklace-nz case). Returns the
+ * first sentence when short enough, else a word-boundary clamp with an ellipsis.
+ */
+export function clampCollectionBlurb(text: string): string {
+  const t = text.trim();
+  if (t.length <= COLLECTION_BLURB_MAX) return t;
+  const firstSentence = /^.*?[.!?](?:\s|$)/.exec(t)?.[0]?.trim();
+  if (firstSentence && firstSentence.length <= COLLECTION_BLURB_MAX) return firstSentence;
+  const clipped = t.slice(0, COLLECTION_BLURB_MAX);
+  const lastSpace = clipped.lastIndexOf(' ');
+  return `${(lastSpace > 0 ? clipped.slice(0, lastSpace) : clipped).trimEnd()}…`;
+}
+
 /** Render a Shopify rich_text metafield JSON string as styled JSX. */
 export default function RichText({
   value,

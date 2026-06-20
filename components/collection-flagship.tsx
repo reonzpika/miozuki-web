@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Collection } from '@/lib/shopify';
 import type { CollectionEducationTheme } from '@/lib/collection-page';
-import { richTextToPlain, clipAfterNeedAssistanceQuestion } from '@/components/rich-text';
+import { richTextToPlain, clipAfterNeedAssistanceQuestion, clampCollectionBlurb } from '@/components/rich-text';
 
 const TRUST_PILLS = [
   'S925 sterling silver',
@@ -25,7 +25,7 @@ export function CollectionFlagshipAboveGrid({
   const introRaw =
     collection.metafield?.value != null
       ? richTextToPlain(collection.metafield.value)
-      : (collection.description ?? '');
+      : clampCollectionBlurb(collection.description ?? '');
   const intro =
     afterHeroBanner ? null : introRaw.trim()
       ? clipAfterNeedAssistanceQuestion(introRaw.trim())

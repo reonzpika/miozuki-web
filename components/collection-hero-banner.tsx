@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Collection } from '@/lib/shopify';
 import { usesPearlHeroArt } from '@/lib/collection-hero-art';
 import { resolvePearlBannerImageSrc } from '@/lib/pearl-banner-image';
-import { richTextToPlain, clipAfterNeedAssistanceQuestion } from '@/components/rich-text';
+import { richTextToPlain, clipAfterNeedAssistanceQuestion, clampCollectionBlurb } from '@/components/rich-text';
 
 const FALLBACK_HERO_IMAGE =
   'https://cdn.shopify.com/s/files/1/0797/0819/3023/files/hero-image.webp?v=1773198093';
@@ -46,7 +46,7 @@ export default function CollectionHeroBanner({ collection }: Props) {
   const blurbRaw =
     collection.metafield?.value != null
       ? richTextToPlain(collection.metafield.value)
-      : (collection.description ?? '');
+      : clampCollectionBlurb(collection.description ?? '');
   const blurb = blurbRaw.trim() ? clipAfterNeedAssistanceQuestion(blurbRaw.trim()) : '';
 
   const bannerImage = (

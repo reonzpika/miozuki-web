@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Collection } from '@/lib/shopify';
 import { usesPearlHeroArt } from '@/lib/collection-hero-art';
 import { resolvePearlBannerImageSrc } from '@/lib/pearl-banner-image';
-import { richTextToPlain, clipAfterNeedAssistanceQuestion, clampCollectionBlurb } from '@/components/rich-text';
+import { richTextToPlain, clipAfterNeedAssistanceQuestion } from '@/components/rich-text';
 
 const FALLBACK_HERO_IMAGE =
   'https://cdn.shopify.com/s/files/1/0797/0819/3023/files/hero-image.webp?v=1773198093';
@@ -43,10 +43,10 @@ export default function CollectionHeroBanner({ collection }: Props) {
   const headlineColor = usePearlHero ? 'text-charcoal' : 'text-cream';
   const blurbTone = usePearlHero ? 'text-charcoal/65' : 'text-cream/68';
 
+  // Only show the curated intro metafield; if a collection has none, show nothing
+  // (no fallback to the long SEO description, which would render as a wall of text).
   const blurbRaw =
-    collection.metafield?.value != null
-      ? richTextToPlain(collection.metafield.value)
-      : clampCollectionBlurb(collection.description ?? '');
+    collection.metafield?.value != null ? richTextToPlain(collection.metafield.value) : '';
   const blurb = blurbRaw.trim() ? clipAfterNeedAssistanceQuestion(blurbRaw.trim()) : '';
 
   const bannerImage = (

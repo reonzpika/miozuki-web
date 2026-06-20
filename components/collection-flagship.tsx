@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Collection } from '@/lib/shopify';
 import type { CollectionEducationTheme } from '@/lib/collection-page';
-import { richTextToPlain, clipAfterNeedAssistanceQuestion, clampCollectionBlurb } from '@/components/rich-text';
+import { richTextToPlain, clipAfterNeedAssistanceQuestion } from '@/components/rich-text';
 
 const TRUST_PILLS = [
   'S925 sterling silver',
@@ -22,10 +22,9 @@ export function CollectionFlagshipAboveGrid({
   /** When true, breadcrumb, title, and intro are omitted (shown on the collection hero banner above). */
   afterHeroBanner?: boolean;
 }) {
+  // Only show the curated intro metafield; no fallback to the full description.
   const introRaw =
-    collection.metafield?.value != null
-      ? richTextToPlain(collection.metafield.value)
-      : clampCollectionBlurb(collection.description ?? '');
+    collection.metafield?.value != null ? richTextToPlain(collection.metafield.value) : '';
   const intro =
     afterHeroBanner ? null : introRaw.trim()
       ? clipAfterNeedAssistanceQuestion(introRaw.trim())

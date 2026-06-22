@@ -19,6 +19,11 @@ export interface JudgeMeReview {
   created_at: string;
   pictures: JudgeMeReviewPicture[];
   verified: 'unverified' | 'verified_review' | 'verified_buyer' | 'nothing' | string;
+  // Visibility flags from the private-token API. It returns hidden, unpublished,
+  // and spam-curated reviews too, so we filter on these before display.
+  published?: boolean;
+  hidden?: boolean;
+  curated?: string;
 }
 
 export interface JudgeMeProductData {

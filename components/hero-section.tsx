@@ -35,7 +35,10 @@ export default function HeroSection() {
         priority
         fetchPriority="high"
         sizes="100vw"
-        className="object-cover object-center"
+        // Mobile crop is tall and narrow: object-center slices off the right edge
+        // where the earring sits. Shift the focal point right on small screens so
+        // the earring stays in frame; desktop is wide enough to keep centre.
+        className="object-cover object-[72%_center] md:object-center"
       />
 
       {/* Vignette: edges to ~40% black for text legibility */}

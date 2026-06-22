@@ -8,6 +8,18 @@ import type {
 const BASE = 'https://judge.me/api/v1';
 const SHOP_DOMAIN = 'nassuu-px.myshopify.com';
 
+// The private-token API returns every review, including ones Judge.me has
+// hidden, left unpublished, or curated as spam. Only show reviews that are
+// genuinely public, so flagged/test reviews never leak onto the storefront
+// or inflate counts and ratings.
+function isPublicReview(r: {
+  published?: boolean;
+  hidden?: boolean;
+  curated?: string;
+}): boolean {
+  return r.published !== false && r.hidden !== true && r.curated !== 'spam';
+}
+
 export async function getProductReviews(
   shopifyGid: string
 ): Promise<JudgeMeReviewsData> {
@@ -34,7 +46,9 @@ export async function getProductReviews(
     if (!reviewsRes.ok) return { product: null, reviews: [] };
 
     const reviewsJson = await reviewsRes.json();
-    const reviews: JudgeMeReview[] = reviewsJson.reviews ?? [];
+    const reviews: JudgeMeReview[] = (reviewsJson.reviews ?? []).filter(
+      isPublicReview
+    );
 
     const reviews_count = reviews.length;
     const rating =
@@ -66,8 +80,13 @@ export async function getAllRatings(): Promise<Record<string, RatingSummary>> {
     if (!res.ok) return {};
 
     const json = await res.json();
-    const reviews: Array<{ rating: number; product_external_id: number }> =
-      json.reviews ?? [];
+    const reviews: Array<{
+      rating: number;
+      product_external_id: number;
+      published?: boolean;
+      hidden?: boolean;
+      curated?: string;
+    }> = (json.reviews ?? []).filter(isPublicReview);
 
     const acc: Record<string, { sum: number; count: number }> = {};
     for (const r of reviews) {

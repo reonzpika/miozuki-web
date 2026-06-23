@@ -43,12 +43,6 @@ function ymd(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
-function daysAgoDate(n: number): string {
-  const d = new Date();
-  d.setDate(d.getDate() - n);
-  return ymd(d);
-}
-
 let cachedClient: BetaAnalyticsDataClient | null = null;
 
 function getClient(): BetaAnalyticsDataClient | null {
@@ -77,10 +71,16 @@ export type VisitorSummary = {
   pageViews: Metric;
 };
 
-export type SalesSnapshot = {
-  purchases: Metric;
-  revenue: Metric;
+export type SalesTotals = {
+  purchases: number;
+  revenue: number;
 };
+
+// Two real orders placed before GA tracking was trusted, hardcoded as the
+// all-time baseline: Shopify #1001 (5 Mar 2026, $466) and #1002 (1 May 2026,
+// $443). GA counts orders from SALES_START_DATE onward, which is after these,
+// so adding the baseline does not double-count. Update here if older orders surface.
+const SALES_BASELINE: SalesTotals = { purchases: 2, revenue: 909 };
 
 export type TrendPoint = { date: string; visitors: number };
 export type Slice = { label: string; value: number };
@@ -157,67 +157,36 @@ export async function getVisitorSummary(
   )();
 }
 
-// Sales tiles ignore everything before SALES_START_DATE (YYYY-MM-DD) so historical
-// test-mode checkouts do not show. Unset => no clamping (counts everything). The
-// purchase event count can't be deleted from GA4, only its parameters, so this
-// date clamp is what actually keeps test orders off the dashboard.
-export async function getSalesSnapshot(
-  period: Period,
-): Promise<SalesSnapshot | null> {
+// All-time sales: the hardcoded baseline (the two pre-tracking real orders) plus
+// every order GA records from SALES_START_DATE (YYYY-MM-DD) onward. The clamp keeps
+// the historical test-mode checkouts out, and because the baseline orders predate
+// the clamp they are not double-counted.
+export async function getSalesTotals(): Promise<SalesTotals | null> {
   const salesStart = process.env.SALES_START_DATE || '';
   return unstable_cache(
     async () => {
       const client = getClient();
       const property = propertyPath();
       if (!client || !property) return null;
-      const days = PERIOD_DAYS[period];
-      const today = ymd(new Date());
-      let curStart = daysAgoDate(days - 1);
-      let prevStart = daysAgoDate(days * 2 - 1);
-      const prevEnd = daysAgoDate(days);
-      let usePrev = true;
-      if (salesStart) {
-        if (salesStart > today) {
-          return {
-            purchases: { current: 0, previous: 0 },
-            revenue: { current: 0, previous: 0 },
-          };
-        }
-        if (salesStart > curStart) curStart = salesStart;
-        if (salesStart > prevEnd) usePrev = false;
-        else if (salesStart > prevStart) prevStart = salesStart;
-      }
       try {
-        const dateRanges = usePrev
-          ? [
-              { startDate: curStart, endDate: today },
-              { startDate: prevStart, endDate: prevEnd },
-            ]
-          : [{ startDate: curStart, endDate: today }];
+        const start = salesStart || '2020-01-01';
         const [res] = await client.runReport({
           property,
-          dateRanges,
+          dateRanges: [{ startDate: start, endDate: ymd(new Date()) }],
           metrics: [{ name: 'ecommercePurchases' }, { name: 'totalRevenue' }],
         });
-        const cur = [0, 0];
-        const prev = [0, 0];
-        for (const row of res.rows ?? []) {
-          // With a single date range GA4 omits the dateRange dimension; treat as current.
-          const which = usePrev ? row.dimensionValues?.[0]?.value : 'date_range_0';
-          const target = which === 'date_range_1' ? prev : cur;
-          (row.metricValues ?? []).forEach((m, i) => {
-            target[i] = Number(m.value ?? 0);
-          });
-        }
+        const row = res.rows?.[0];
+        const gaPurchases = Number(row?.metricValues?.[0]?.value ?? 0);
+        const gaRevenue = Number(row?.metricValues?.[1]?.value ?? 0);
         return {
-          purchases: { current: cur[0], previous: prev[0] },
-          revenue: { current: cur[1], previous: prev[1] },
+          purchases: SALES_BASELINE.purchases + gaPurchases,
+          revenue: SALES_BASELINE.revenue + gaRevenue,
         };
       } catch {
         return null;
       }
     },
-    ['ga-sales-snapshot', period, salesStart],
+    ['ga-sales-totals', salesStart],
     { revalidate: 300 },
   )();
 }

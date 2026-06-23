@@ -7,8 +7,81 @@ import {
   type JourneyStage,
   type HubArticleStatus,
 } from '@/lib/admin/seo';
+import {
+  getSearchPerformance,
+  getTopQueries,
+  getTopPages,
+  type SearchTotals,
+} from '@/lib/admin/gsc';
+import type { ReactNode } from 'react';
 
 export const dynamic = 'force-dynamic';
+
+const nf = new Intl.NumberFormat('en-NZ');
+
+// A clicks/impressions-style delta vs the previous 28 days. Up is good.
+function Delta({ now, prev }: { now: number; prev: number }) {
+  if (!prev) return null;
+  const pct = Math.round(((now - prev) / prev) * 100);
+  if (pct === 0) return <span className="text-[14px] text-graphite">no change</span>;
+  const up = pct > 0;
+  return (
+    <span className={`text-[14px] font-medium ${up ? 'text-[#3f7d52]' : 'text-burgundy'}`}>
+      {up ? '▲' : '▼'} {Math.abs(pct)}%
+    </span>
+  );
+}
+
+// Average position: lower is better, so the colour logic is reversed.
+function PositionDelta({ now, prev }: { now: number; prev: number }) {
+  if (!prev) return null;
+  const diff = +(now - prev).toFixed(1);
+  if (diff === 0) return <span className="text-[14px] text-graphite">no change</span>;
+  const better = diff < 0; // moved up the page
+  return (
+    <span className={`text-[14px] font-medium ${better ? 'text-[#3f7d52]' : 'text-burgundy'}`}>
+      {better ? '▲' : '▼'} {Math.abs(diff)}
+    </span>
+  );
+}
+
+function PerfTile({
+  label,
+  value,
+  delta,
+  sub,
+}: {
+  label: string;
+  value: string;
+  delta: ReactNode;
+  sub: string;
+}) {
+  return (
+    <div className="bg-white-soft border border-border rounded-xl p-5">
+      <div className="text-[13px] font-medium tracking-wide uppercase text-graphite mb-2">
+        {label}
+      </div>
+      <div className="flex items-baseline gap-2">
+        <span className="font-serif text-3xl text-charcoal">{value}</span>
+        {delta}
+      </div>
+      <div className="text-[15px] text-graphite mt-1">{sub}</div>
+    </div>
+  );
+}
+
+// Trim the property prefix so a page reads as a tidy path.
+function shortPath(url: string): string {
+  try {
+    return new URL(url).pathname || url;
+  } catch {
+    return url.replace(/^sc-domain:/, '');
+  }
+}
+
+function ctrPct(t: SearchTotals): string {
+  return `${(t.ctr * 100).toFixed(1)}%`;
+}
 
 const STAGE_ORDER: JourneyStage[] = ['awareness', 'consideration', 'decision', 'own'];
 // Taper the bands so the journey reads as a funnel narrowing toward a purchase.
@@ -32,7 +105,13 @@ function StatusChip({ live }: { live: boolean }) {
 }
 
 export default async function AdminSeo() {
-  const progress = await getMoissaniteHubProgress();
+  const [progress, perf, queries, pages] = await Promise.all([
+    getMoissaniteHubProgress(),
+    getSearchPerformance(),
+    getTopQueries(),
+    getTopPages(),
+  ]);
+  const gscConnected = perf !== null;
   const byStage = (s: JourneyStage): HubArticleStatus[] =>
     progress.articles.filter((a) => a.stage === s);
   const pillar = progress.articles.find((a) => a.tier === 'pillar');
@@ -55,6 +134,118 @@ export default async function AdminSeo() {
           adds up to something instead of being one-off posts.
         </p>
       </section>
+
+      {/* How we're doing in Google (live from Search Console) */}
+      <div className="flex items-baseline justify-between mb-1">
+        <h2 className="font-serif text-2xl text-charcoal">How we&rsquo;re doing in Google</h2>
+        <span className="text-base text-graphite">Last 28 days, vs the 28 before</span>
+      </div>
+      <p className="text-base text-graphite mb-4 max-w-2xl">
+        Real numbers from Google Search. <span className="font-medium text-charcoal">Shown</span> is
+        how many times we appeared in search results, <span className="font-medium text-charcoal">clicks</span> is
+        how many people came through, and <span className="font-medium text-charcoal">average spot</span> is
+        roughly where we sit on the results page (1 is the top).
+      </p>
+
+      {gscConnected && perf ? (
+        <>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+            <PerfTile
+              label="Clicks"
+              value={nf.format(perf.current.clicks)}
+              delta={<Delta now={perf.current.clicks} prev={perf.previous.clicks} />}
+              sub="people who came through"
+            />
+            <PerfTile
+              label="Shown"
+              value={nf.format(perf.current.impressions)}
+              delta={<Delta now={perf.current.impressions} prev={perf.previous.impressions} />}
+              sub="times we appeared"
+            />
+            <PerfTile
+              label="Click rate"
+              value={ctrPct(perf.current)}
+              delta={
+                <Delta
+                  now={perf.current.ctr * 1e6}
+                  prev={perf.previous.ctr * 1e6}
+                />
+              }
+              sub="of views that clicked"
+            />
+            <PerfTile
+              label="Average spot"
+              value={perf.current.position.toFixed(1)}
+              delta={
+                <PositionDelta now={perf.current.position} prev={perf.previous.position} />
+              }
+              sub="where we sit (1 = top)"
+            />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-9">
+            <section className="bg-white-soft border border-border rounded-xl p-6">
+              <h3 className="font-serif text-xl text-charcoal">What people search to find us</h3>
+              <p className="text-base text-graphite mb-3">Top searches, last 28 days.</p>
+              {queries && queries.length > 0 ? (
+                <ul>
+                  {queries.map((q) => (
+                    <li
+                      key={q.query}
+                      className="flex items-center gap-3 py-2.5 border-b border-border last:border-b-0"
+                    >
+                      <span className="flex-1 text-base text-charcoal truncate">{q.query}</span>
+                      <span className="flex-none text-base text-graphite">
+                        {nf.format(q.clicks)} clicks
+                      </span>
+                      <span className="flex-none text-[14px] text-graphite/70 w-16 text-right">
+                        spot {q.position.toFixed(0)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-base text-graphite">No searches recorded yet.</p>
+              )}
+            </section>
+
+            <section className="bg-white-soft border border-border rounded-xl p-6">
+              <h3 className="font-serif text-xl text-charcoal">Pages people land on</h3>
+              <p className="text-base text-graphite mb-3">Top pages from search, last 28 days.</p>
+              {pages && pages.length > 0 ? (
+                <ul>
+                  {pages.map((p) => (
+                    <li
+                      key={p.page}
+                      className="flex items-center gap-3 py-2.5 border-b border-border last:border-b-0"
+                    >
+                      <span className="flex-1 font-mono text-[14px] text-charcoal truncate">
+                        {shortPath(p.page)}
+                      </span>
+                      <span className="flex-none text-base text-graphite">
+                        {nf.format(p.clicks)} clicks
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-base text-graphite">No pages recorded yet.</p>
+              )}
+            </section>
+          </div>
+        </>
+      ) : (
+        <section className="rounded-xl border border-dashed border-border bg-cream/60 p-6 mb-9">
+          <span className="inline-block text-[13px] font-medium tracking-wide uppercase text-graphite border border-border rounded-full px-2.5 py-0.5 mb-2">
+            Almost ready
+          </span>
+          <h3 className="font-serif text-xl text-charcoal">Search numbers not switched on yet</h3>
+          <p className="text-base text-graphite">
+            The live Google Search figures will appear here once the connection is finished.
+            Nothing for you to do.
+          </p>
+        </section>
+      )}
 
       {/* The two rules */}
       <h2 className="font-serif text-2xl text-charcoal mb-1">Two rules that keep this tidy</h2>

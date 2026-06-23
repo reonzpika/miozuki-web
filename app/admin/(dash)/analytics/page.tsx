@@ -211,26 +211,6 @@ export default async function AdminAnalytics({
         </section>
       ) : (
         <>
-          {/* Sales to date (all time: baseline + tracked since launch) */}
-          <section className="mb-7">
-            <h2 className="font-serif text-xl text-charcoal mb-1">Sales to date</h2>
-            <p className="text-base text-graphite mb-3">
-              All orders so far. New orders are counted automatically from here on.
-            </p>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <StatTile
-                label="Total orders"
-                value={sales ? num.format(sales.purchases) : '—'}
-                sub="since launch"
-              />
-              <StatTile
-                label="Total revenue"
-                value={sales ? money.format(sales.revenue) : '—'}
-                sub="since launch"
-              />
-            </div>
-          </section>
-
           {/* Period toggle */}
           <div className="flex items-center gap-2 mb-5">
             <span className="text-[15px] text-graphite mr-1">Showing:</span>
@@ -253,7 +233,7 @@ export default async function AdminAnalytics({
           </div>
 
           {/* Headline tiles */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
             <StatTile
               label="Visitors"
               value={summary ? num.format(summary.visitors.current) : '—'}
@@ -265,6 +245,16 @@ export default async function AdminAnalytics({
               value={summary ? num.format(summary.pageViews.current) : '—'}
               m={summary?.pageViews}
               sub="pages opened"
+            />
+            <StatTile
+              label="Total orders"
+              value={sales ? num.format(sales.purchases) : '—'}
+              sub="all time"
+            />
+            <StatTile
+              label="Total revenue"
+              value={sales ? money.format(sales.revenue) : '—'}
+              sub="all time"
             />
           </div>
 

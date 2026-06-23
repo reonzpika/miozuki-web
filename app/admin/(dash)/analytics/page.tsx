@@ -171,7 +171,6 @@ export default async function AdminAnalytics({
     ]);
 
   const connected = live !== null || summary !== null;
-  const hasSales = !!sales && (sales.purchases.current > 0 || sales.revenue.current > 0);
 
   return (
     <div>
@@ -249,15 +248,15 @@ export default async function AdminAnalytics({
             />
             <StatTile
               label="Purchases"
-              value={hasSales ? num.format(sales!.purchases.current) : '—'}
-              m={hasSales ? sales!.purchases : undefined}
-              sub={hasSales ? 'orders via Google Analytics' : 'none recorded'}
+              value={sales ? num.format(sales.purchases.current) : '—'}
+              m={sales?.purchases}
+              sub="orders via Google Analytics"
             />
             <StatTile
               label="Revenue"
-              value={hasSales ? money.format(sales!.revenue.current) : '—'}
-              m={hasSales ? sales!.revenue : undefined}
-              sub={hasSales ? 'sales via Google Analytics' : 'none recorded'}
+              value={sales ? money.format(sales.revenue.current) : '—'}
+              m={sales?.revenue}
+              sub="sales via Google Analytics"
             />
           </div>
 

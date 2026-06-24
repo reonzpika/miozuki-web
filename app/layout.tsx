@@ -10,6 +10,7 @@ import EmailPopup from '@/components/email-popup';
 import EnquiryWidget from '@/components/enquiry-widget';
 import JsonLd from '@/components/json-ld';
 import MetaPixel from '@/components/meta-pixel';
+import Clarity from '@/components/clarity';
 import StorefrontChrome from '@/components/storefront-chrome';
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
@@ -98,6 +99,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col antialiased">
         <JsonLd data={ORGANIZATION_SCHEMA} />
         <MetaPixel />
+        <Clarity />
         <CartProvider>
           <StorefrontChrome>
             <AnnouncementBar />

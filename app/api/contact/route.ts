@@ -18,19 +18,20 @@ function escapeHtml(value: string): string {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { name, email, order, message, source, productTitle, company } = body as {
+  const { name, email, order, message, source, productTitle, mz_hp } = body as {
     name?: string;
     email?: string;
     order?: string;
     message?: string;
     source?: string;
     productTitle?: string;
-    company?: string; // honeypot — real users never fill this
+    mz_hp?: string; // anti-spam trap — real users never fill this
   };
 
-  // Honeypot: the hidden "company" field is invisible to people but bots fill
-  // it. Pretend success so the bot does not retry, but send nothing.
-  if (typeof company === 'string' && company.trim().length > 0) {
+  // Anti-spam trap: the hidden mz_hp field is invisible to people but naive
+  // bots fill it. Pretend success so the bot does not retry, but send nothing.
+  if (typeof mz_hp === 'string' && mz_hp.trim().length > 0) {
+    console.warn('[enquiry] honeypot tripped, dropping submission silently');
     return NextResponse.json({ ok: true });
   }
 
@@ -78,6 +79,7 @@ export async function POST(request: Request) {
     console.error('Resend enquiry email error', emailError);
     return NextResponse.json({ error: 'Submission failed' }, { status: 500 });
   }
+  console.log('[enquiry] email accepted by Resend for', ENQUIRY_TO);
 
   // 2. Best-effort: log the profile to Klaviyo for the marketing list. The
   //    enquiry has already reached Ting, so never fail the request on a

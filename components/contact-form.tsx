@@ -11,7 +11,7 @@ export default function ContactForm({
   const [email, setEmail] = useState('');
   const [order, setOrder] = useState('');
   const [message, setMessage] = useState(initialMessage);
-  const [company, setCompany] = useState(''); // honeypot — stays empty for real users
+  const [honeypot, setHoneypot] = useState(''); // anti-spam trap, stays empty for real users
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export default function ContactForm({
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, order, message, company }),
+        body: JSON.stringify({ name, email, order, message, mz_hp: honeypot }),
       });
       if (!res.ok) throw new Error('Failed');
       setSubmitted(true);
@@ -48,17 +48,21 @@ export default function ContactForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Honeypot: hidden from people, bots fill it. Do not remove or expose. */}
+      {/* Anti-spam trap: hidden from people, naive bots fill it. The field name is
+          deliberately non-standard so browser autofill never targets it (a field
+          named "company"/"email" gets autofilled and would drop real enquiries). */}
       <div aria-hidden="true" className="absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden">
-        <label htmlFor="company">Company</label>
+        <label htmlFor="mz_hp">Leave this field blank</label>
         <input
-          id="company"
-          name="company"
+          id="mz_hp"
+          name="mz_hp"
           type="text"
           tabIndex={-1}
           autoComplete="off"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
+          autoCapitalize="off"
+          spellCheck={false}
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
         />
       </div>
 

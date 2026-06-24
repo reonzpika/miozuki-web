@@ -9,6 +9,19 @@ import {
 } from './queries';
 import { getStorefrontBlogHandle, getStorefrontCredentials } from './credentials';
 
+// Shopify's Storefront API has occasional brief wobbles (a 502 Bad Gateway, or a
+// connect timeout), seen in Sentry as transient failures seconds apart. A single
+// attempt surfaces those straight to the visitor as a 500. So we give transient
+// failures a bounded retry, and cap each attempt with an explicit timeout so a
+// hung connection cannot stall a server render. Non-transient failures (HTTP 4xx,
+// GraphQL errors) fail fast: retrying them only wastes the render budget.
+const MAX_RETRIES = 2; // 3 attempts total
+const PER_ATTEMPT_TIMEOUT_MS = 8000; // below Shopify's own ~10s connect timeout
+const BACKOFF_MS = [300, 800]; // wait before attempt 2, then attempt 3
+
+const isTransientStatus = (status: number): boolean => status >= 500 && status <= 599;
+const delay = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+
 /** When unset (e.g. CI without secrets), returns null so callers can skip work; production should always set env. */
 async function shopifyFetch<T>(
   query: string,
@@ -17,38 +30,73 @@ async function shopifyFetch<T>(
 ): Promise<T | null> {
   const cfg = getStorefrontCredentials();
   if (!cfg) return null;
-  const res = await fetch(cfg.graphqlUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': cfg.token,
-    },
-    body: JSON.stringify({ query, variables }),
-    next: { revalidate },
-  });
 
-  if (!res.ok) {
-    const handle =
-      typeof variables?.handle === 'string' ? variables.handle : undefined;
-    console.error('Shopify HTTP error', {
-      status: res.status,
-      statusText: res.statusText,
-      handle,
-    });
-    throw new Error(`Shopify API error: ${res.status} ${res.statusText}`);
+  const handle =
+    typeof variables?.handle === 'string' ? variables.handle : undefined;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    if (attempt > 0) await delay(BACKOFF_MS[attempt - 1] ?? 800);
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), PER_ATTEMPT_TIMEOUT_MS);
+    let res: Response;
+    try {
+      res = await fetch(cfg.graphqlUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': cfg.token,
+        },
+        body: JSON.stringify({ query, variables }),
+        next: { revalidate },
+        signal: controller.signal,
+      });
+    } catch (err) {
+      // Network drop or our own abort/timeout: transient, retry if attempts remain.
+      if (attempt < MAX_RETRIES) {
+        console.warn('Shopify fetch network error, retrying', {
+          attempt: attempt + 1,
+          handle,
+        });
+        continue;
+      }
+      console.error('Shopify fetch failed', { handle, error: err });
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
+
+    if (!res.ok) {
+      // Upstream 5xx is transient; retry. 4xx is a real client error; fail fast.
+      if (isTransientStatus(res.status) && attempt < MAX_RETRIES) {
+        console.warn('Shopify HTTP transient, retrying', {
+          status: res.status,
+          attempt: attempt + 1,
+          handle,
+        });
+        continue;
+      }
+      console.error('Shopify HTTP error', {
+        status: res.status,
+        statusText: res.statusText,
+        handle,
+      });
+      throw new Error(`Shopify API error: ${res.status} ${res.statusText}`);
+    }
+
+    const json: ShopifyResponse<T> = await res.json();
+
+    if (json.errors?.length) {
+      const messages = json.errors.map((e) => e.message);
+      console.error('Shopify GraphQL errors', { messages, handle });
+      throw new Error(messages.join(', '));
+    }
+
+    return json.data;
   }
 
-  const json: ShopifyResponse<T> = await res.json();
-
-  if (json.errors?.length) {
-    const handle =
-      typeof variables?.handle === 'string' ? variables.handle : undefined;
-    const messages = json.errors.map((e) => e.message);
-    console.error('Shopify GraphQL errors', { messages, handle });
-    throw new Error(messages.join(', '));
-  }
-
-  return json.data;
+  // Unreachable: the final attempt either returns or throws above. Satisfies the type checker.
+  throw new Error('Shopify API: retries exhausted');
 }
 
 // Products

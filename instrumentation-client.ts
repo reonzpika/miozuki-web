@@ -12,6 +12,13 @@ if (dsn) {
     // 10% of transactions sampled for performance. Errors are always captured.
     tracesSampleRate: 0.1,
     // No Sentry session replay: Microsoft Clarity already records sessions.
+    ignoreErrors: [
+      // Meta's in-app browser (Facebook/Instagram) injects its own perf script that
+      // calls window.webkit.messageHandlers, which is absent outside an iOS WKWebView.
+      // It throws on fbclid ad traffic. Not our code and not actionable, so drop it.
+      'sendDataToNative',
+      /webkit\.messageHandlers/,
+    ],
   });
 }
 

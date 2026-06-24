@@ -36,6 +36,4 @@ export default withSentryConfig(nextConfig, {
   widenClientFileUpload: true,
   // Proxy Sentry requests through this route so ad-blockers do not drop events.
   tunnelRoute: "/monitoring",
-  // Strip Sentry SDK logger statements from the client bundle.
-  disableLogger: true,
 });

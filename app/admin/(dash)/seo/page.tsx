@@ -9,10 +9,13 @@ import {
 } from '@/lib/admin/seo';
 import {
   getSearchPerformance,
+  getSearchDailyTrend,
   getTopQueries,
   getTopPages,
   type SearchTotals,
 } from '@/lib/admin/gsc';
+import { SearchTrendChart } from '@/components/admin/charts/search-trend-chart';
+import { SearchPagesTable, SearchQueriesTable } from '@/components/admin/tables';
 import type { ReactNode } from 'react';
 
 export const dynamic = 'force-dynamic';
@@ -70,15 +73,6 @@ function PerfTile({
   );
 }
 
-// Trim the property prefix so a page reads as a tidy path.
-function shortPath(url: string): string {
-  try {
-    return new URL(url).pathname || url;
-  } catch {
-    return url.replace(/^sc-domain:/, '');
-  }
-}
-
 function ctrPct(t: SearchTotals): string {
   return `${(t.ctr * 100).toFixed(1)}%`;
 }
@@ -105,9 +99,10 @@ function StatusChip({ live }: { live: boolean }) {
 }
 
 export default async function AdminSeo() {
-  const [progress, perf, queries, pages] = await Promise.all([
+  const [progress, perf, dailyTrend, queries, pages] = await Promise.all([
     getMoissaniteHubProgress(),
     getSearchPerformance(),
+    getSearchDailyTrend(),
     getTopQueries(),
     getTopPages(),
   ]);
@@ -183,27 +178,25 @@ export default async function AdminSeo() {
             />
           </div>
 
+          {/* Daily clicks + impressions trend */}
+          {dailyTrend && dailyTrend.length > 1 ? (
+            <section className="bg-white-soft border border-border rounded-xl p-6 mb-6">
+              <div className="flex items-baseline justify-between mb-1">
+                <h3 className="font-serif text-xl text-charcoal">Clicks &amp; views over time</h3>
+                <span className="text-[15px] text-graphite">Last 28 days</span>
+              </div>
+              <div className="mt-3">
+                <SearchTrendChart data={dailyTrend} />
+              </div>
+            </section>
+          ) : null}
+
           <div className="grid md:grid-cols-2 gap-4 mb-9">
             <section className="bg-white-soft border border-border rounded-xl p-6">
               <h3 className="font-serif text-xl text-charcoal">What people search to find us</h3>
               <p className="text-base text-graphite mb-3">Top searches, last 28 days.</p>
               {queries && queries.length > 0 ? (
-                <ul>
-                  {queries.map((q) => (
-                    <li
-                      key={q.query}
-                      className="flex items-center gap-3 py-2.5 border-b border-border last:border-b-0"
-                    >
-                      <span className="flex-1 text-base text-charcoal truncate">{q.query}</span>
-                      <span className="flex-none text-base text-graphite">
-                        {nf.format(q.clicks)} clicks
-                      </span>
-                      <span className="flex-none text-[14px] text-graphite/70 w-16 text-right">
-                        spot {q.position.toFixed(0)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <SearchQueriesTable data={queries} />
               ) : (
                 <p className="text-base text-graphite">No searches recorded yet.</p>
               )}
@@ -213,21 +206,7 @@ export default async function AdminSeo() {
               <h3 className="font-serif text-xl text-charcoal">Pages people land on</h3>
               <p className="text-base text-graphite mb-3">Top pages from search, last 28 days.</p>
               {pages && pages.length > 0 ? (
-                <ul>
-                  {pages.map((p) => (
-                    <li
-                      key={p.page}
-                      className="flex items-center gap-3 py-2.5 border-b border-border last:border-b-0"
-                    >
-                      <span className="flex-1 font-mono text-[14px] text-charcoal truncate">
-                        {shortPath(p.page)}
-                      </span>
-                      <span className="flex-none text-base text-graphite">
-                        {nf.format(p.clicks)} clicks
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <SearchPagesTable data={pages} />
               ) : (
                 <p className="text-base text-graphite">No pages recorded yet.</p>
               )}

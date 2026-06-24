@@ -12,9 +12,10 @@ import {
   PERIODS,
   type Period,
   type Metric,
-  type TrendPoint,
-  type Slice,
 } from '@/lib/admin/analytics';
+import { VisitorTrendChart } from '@/components/admin/charts/visitor-trend-chart';
+import { DonutChart } from '@/components/admin/charts/donut-chart';
+import { ChannelsTable, TopPagesTable } from '@/components/admin/tables';
 
 export const dynamic = 'force-dynamic';
 
@@ -72,75 +73,6 @@ function StatTile({
       </div>
       <div className="text-[15px] text-graphite mt-1">{sub}</div>
     </div>
-  );
-}
-
-// Server-rendered SVG area chart, no client JS, themed to the brand burgundy.
-function TrendChart({ data }: { data: TrendPoint[] }) {
-  if (data.length < 2) {
-    return <p className="text-base text-graphite">Not enough days yet to draw a trend.</p>;
-  }
-  const W = 820;
-  const H = 200;
-  const pad = 8;
-  const max = Math.max(...data.map((d) => d.visitors), 1);
-  const stepX = (W - pad * 2) / (data.length - 1);
-  const x = (i: number) => pad + i * stepX;
-  const y = (v: number) => H - pad - (v / max) * (H - pad * 2);
-  const line = data.map((d, i) => `${x(i).toFixed(1)},${y(d.visitors).toFixed(1)}`).join(' ');
-  const area = `${pad},${H - pad} ${line} ${(W - pad).toFixed(1)},${H - pad}`;
-  const peak = data.reduce((a, b) => (b.visitors > a.visitors ? b : a), data[0]);
-  const peakIdx = data.indexOf(peak);
-  return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      preserveAspectRatio="none"
-      className="w-full h-40"
-      role="img"
-      aria-label="Visitors per day"
-    >
-      <defs>
-        <linearGradient id="vfill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#7B1E22" stopOpacity="0.18" />
-          <stop offset="100%" stopColor="#7B1E22" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <polygon points={area} fill="url(#vfill)" />
-      <polyline
-        points={line}
-        fill="none"
-        stroke="#7B1E22"
-        strokeWidth="2"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        vectorEffect="non-scaling-stroke"
-      />
-      <circle cx={x(peakIdx)} cy={y(peak.visitors)} r="3.5" fill="#7B1E22" />
-    </svg>
-  );
-}
-
-function BarList({ slices, unit }: { slices: Slice[]; unit: string }) {
-  const total = slices.reduce((s, x) => s + x.value, 0) || 1;
-  return (
-    <ul className="space-y-3">
-      {slices.map((s) => {
-        const pct = Math.round((s.value / total) * 100);
-        return (
-          <li key={s.label}>
-            <div className="flex items-baseline justify-between mb-1">
-              <span className="text-base text-charcoal capitalize">{s.label}</span>
-              <span className="text-[15px] text-graphite">
-                {num.format(s.value)} {unit} ({pct}%)
-              </span>
-            </div>
-            <div className="h-2 rounded-full bg-cream overflow-hidden">
-              <div className="h-full rounded-full bg-burgundy" style={{ width: `${pct}%` }} />
-            </div>
-          </li>
-        );
-      })}
-    </ul>
   );
 }
 
@@ -266,7 +198,7 @@ export default async function AdminAnalytics({
             </div>
             {trend ? (
               <div className="mt-3">
-                <TrendChart data={trend} />
+                <VisitorTrendChart data={trend} />
               </div>
             ) : (
               <p className="text-base text-graphite">Not connected yet.</p>
@@ -278,7 +210,7 @@ export default async function AdminAnalytics({
             <section className="bg-white-soft border border-border rounded-xl p-6">
               <h2 className="font-serif text-xl text-charcoal mb-4">What they browse on</h2>
               {devices && devices.length > 0 ? (
-                <BarList slices={devices} unit="visitors" />
+                <DonutChart data={devices} unit="visitors" />
               ) : (
                 <p className="text-base text-graphite">No data yet.</p>
               )}
@@ -286,7 +218,7 @@ export default async function AdminAnalytics({
             <section className="bg-white-soft border border-border rounded-xl p-6">
               <h2 className="font-serif text-xl text-charcoal mb-4">New vs returning</h2>
               {newReturning && newReturning.length > 0 ? (
-                <BarList slices={newReturning} unit="visitors" />
+                <DonutChart data={newReturning} unit="visitors" />
               ) : (
                 <p className="text-base text-graphite">No data yet.</p>
               )}
@@ -298,21 +230,7 @@ export default async function AdminAnalytics({
             <h2 className="font-serif text-xl text-charcoal">Most viewed pages</h2>
             <p className="text-base text-graphite mb-4">Over the {periodLabel}.</p>
             {topPages && topPages.length > 0 ? (
-              <ul>
-                {topPages.map((p) => (
-                  <li
-                    key={p.path}
-                    className="flex items-center gap-4 py-3 border-b border-border last:border-b-0"
-                  >
-                    <span className="flex-1 text-base text-charcoal truncate">
-                      {p.title || p.path}
-                    </span>
-                    <span className="flex-none text-base text-graphite">
-                      {num.format(p.views)} views
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <TopPagesTable data={topPages} />
             ) : (
               <p className="text-base text-graphite">No page views recorded yet.</p>
             )}
@@ -323,19 +241,7 @@ export default async function AdminAnalytics({
             <section className="bg-white-soft border border-border rounded-xl p-6">
               <h2 className="font-serif text-xl text-charcoal mb-4">Where visitors come from</h2>
               {channels && channels.length > 0 ? (
-                <ul>
-                  {channels.map((c) => (
-                    <li
-                      key={c.name}
-                      className="flex items-center gap-4 py-2.5 border-b border-border last:border-b-0"
-                    >
-                      <span className="flex-1 text-base text-charcoal">{c.name}</span>
-                      <span className="flex-none text-base text-graphite">
-                        {num.format(c.sessions)} visits
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <ChannelsTable data={channels} />
               ) : (
                 <p className="text-base text-graphite">No data yet.</p>
               )}

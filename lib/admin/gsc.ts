@@ -86,6 +86,8 @@ export type PageRow = {
   position: number;
 };
 
+export type DailyPoint = { date: string; clicks: number; impressions: number };
+
 async function totals(
   client: SearchConsoleClient,
   siteUrl: string,
@@ -171,6 +173,34 @@ export async function getTopPages(limit = 8): Promise<PageRow[] | null> {
       impressions: r.impressions ?? 0,
       position: r.position ?? 0,
     }));
+  } catch {
+    return null;
+  }
+}
+
+/** Daily clicks + impressions over the last 28 days (ascending by date), for the SEO trend chart. */
+export async function getSearchDailyTrend(): Promise<DailyPoint[] | null> {
+  const client = getClient();
+  const siteUrl = site();
+  if (!client || !siteUrl) return null;
+  try {
+    const { start, end } = windows();
+    const res = await client.searchanalytics.query({
+      siteUrl,
+      requestBody: {
+        startDate: ymd(start),
+        endDate: ymd(end),
+        dimensions: ['date'],
+        rowLimit: 100,
+      },
+    });
+    return (res.data.rows ?? [])
+      .map((r) => ({
+        date: r.keys?.[0] ?? '',
+        clicks: r.clicks ?? 0,
+        impressions: r.impressions ?? 0,
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date));
   } catch {
     return null;
   }

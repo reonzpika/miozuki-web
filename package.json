@@ -24,6 +24,7 @@
     "@google-analytics/data": "^6.1.0",
     "@googleapis/searchconsole": "^6.0.1",
     "@next/third-parties": "^16.2.9",
+    "@sentry/nextjs": "^10.60.0",
     "framer-motion": "^12.38.0",
     "google-auth-library": "^10.7.0",
     "next": "16.2.2",

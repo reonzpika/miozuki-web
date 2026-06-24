@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import * as Sentry from '@sentry/nextjs';
 
 export default function ProductError({
   error,
@@ -11,6 +12,7 @@ export default function ProductError({
   reset: () => void;
 }) {
   useEffect(() => {
+    Sentry.captureException(error);
     console.error('PDP error boundary caught', error);
   }, [error]);
 

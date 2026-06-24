@@ -155,6 +155,13 @@ Three client-side trackers, each an env-gated component rendered in `app/layout.
 - The Clarity Data Export API is wired into Ryo's Claude Code as the `clarity` MCP server (user scope), so Claude can pull aggregated stats on request. Limits: aggregated metrics only (no recordings), last 3 days per request, 10 requests/day.
 - The Clarity API token lives only in Ryo's `~/.claude.json`, never in this repo.
 
+### Error & uptime monitoring
+
+Distinct from the trackers above (those are marketing analytics; these tell you when the store breaks).
+
+- **Sentry** (errors + performance). Config lives in four root files: `instrumentation-client.ts` (browser), `sentry.server.config.ts`, `sentry.edge.config.ts`, and `instrumentation.ts` (registers the server/edge config per runtime and exports `onRequestError`). `next.config.ts` is wrapped with `withSentryConfig`. Every `Sentry.init` is env-gated on the DSN and is a **no-op when unset**, so local/preview builds without keys never send or break. `Sentry.captureException(error)` is wired into all five React error boundaries (`app/global-error.tsx` and the four route `error.tsx` files) alongside the existing `console.error`. Events are proxied through `tunnelRoute: '/monitoring'` to dodge ad-blockers. Env: `NEXT_PUBLIC_SENTRY_DSN` (publishable, client + server), optional `SENTRY_DSN` server override, and `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` at build time for source-map upload (build still succeeds without them, just minified traces). Dashboard: `sentry.io`.
+- **OpenStatus** (external uptime). Monitors `www.miozuki.co.nz` and `checkout.miozuki.co.nz` from outside, emails on downtime. Monitors, alert channel, and the public status page are all configured in the OpenStatus dashboard, not in this repo. The admin Home tab shows an "Uptime status" link when `NEXT_PUBLIC_STATUS_PAGE_URL` is set. The in-app `checkSiteUp()` tile stays as the live glance; OpenStatus is the always-on alerting the in-app check cannot do (if the site is down, so is the admin).
+
 ### Cart state
 
 `CartProvider` in `components/cart-provider.tsx` is a React Context wrapping the entire app (mounted in `app/layout.tsx`). Cart ID is persisted in `localStorage` under the key `miozuki-cart-id`. On mount it rehydrates from Shopify via `getCart()`.
@@ -252,6 +259,9 @@ The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. Ne
 | `NEXT_PUBLIC_GA4_ID` | Google Analytics 4 (client) |
 | `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel (client) |
 | `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Microsoft Clarity heatmaps/recordings (client) |
+| `NEXT_PUBLIC_SENTRY_DSN` | Sentry error monitoring (client + server) |
+| `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Sentry source-map upload (build time) |
+| `NEXT_PUBLIC_STATUS_PAGE_URL` | OpenStatus public status-page link in admin |
 
 ### Shopify Storefront API tokens: sourcing and rotation
 

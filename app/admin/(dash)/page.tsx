@@ -163,6 +163,16 @@ export default async function AdminHome() {
           >
             View live site
           </a>
+          {process.env.NEXT_PUBLIC_STATUS_PAGE_URL ? (
+            <a
+              href={process.env.NEXT_PUBLIC_STATUS_PAGE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="text-base font-medium px-5 py-2.5 rounded-lg border border-border text-charcoal hover:bg-cream transition-colors"
+            >
+              Uptime status
+            </a>
+          ) : null}
         </div>
       </section>
 

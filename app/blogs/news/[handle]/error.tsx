@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import * as Sentry from '@sentry/nextjs';
 
 export default function ArticleError({
   error,
@@ -11,6 +12,7 @@ export default function ArticleError({
   reset: () => void;
 }) {
   useEffect(() => {
+    Sentry.captureException(error);
     console.error('Article error boundary caught', error);
   }, [error]);
 

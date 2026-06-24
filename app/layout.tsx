@@ -7,6 +7,7 @@ import Footer from '@/components/footer';
 import AnnouncementBar from '@/components/announcement-bar';
 import { CartProvider } from '@/components/cart-provider';
 import EmailPopup from '@/components/email-popup';
+import EnquiryWidget from '@/components/enquiry-widget';
 import JsonLd from '@/components/json-ld';
 import MetaPixel from '@/components/meta-pixel';
 import Clarity from '@/components/clarity';
@@ -108,6 +109,7 @@ export default function RootLayout({
           <StorefrontChrome>
             <Footer />
             <EmailPopup />
+            <EnquiryWidget />
           </StorefrontChrome>
         </CartProvider>
         {GA4_ID ? <DeferredAnalytics gaId={GA4_ID} /> : null}

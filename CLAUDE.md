@@ -138,6 +138,23 @@ The two Shopify clients are intentionally split: RSC reads go through `client.ts
 - Server-only. Sends the Ting copy-review submission email. Requires `RESEND_API_KEY` (set in Vercel Preview + Production).
 - Sends from `noreply@clinicpro.co.nz` (a shared, verified ClinicPro Resend domain) to `ryo@clinicpro.co.nz`. Instantiate the client inside the handler, not at module scope, so a missing key never fails the build.
 
+### Analytics & tracking
+
+Three client-side trackers, each an env-gated component rendered in `app/layout.tsx`. Each returns `null` when its env var is unset, so a missing key never breaks the build. All three cover the **Next.js storefront only**: Shopify's hosted checkout is a separate domain (`checkout.miozuki.co.nz`) and is not tracked by these.
+
+| Tool | Component | Env var | Purpose |
+|---|---|---|---|
+| Google Analytics 4 | `components/deferred-analytics.tsx` (via `@next/third-parties`, deferred) | `NEXT_PUBLIC_GA4_ID` | Traffic and behaviour stats |
+| Meta (Facebook) Pixel | `components/meta-pixel.tsx` (`next/script`, `lazyOnload`) | `NEXT_PUBLIC_META_PIXEL_ID` | Ad attribution and conversion events for Meta ads |
+| Microsoft Clarity | `components/clarity.tsx` (`next/script`, `lazyOnload`) | `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Heatmaps and session recordings |
+
+**Keep this list current.** When adding a new tracker: create an env-gated client component mirroring `meta-pixel.tsx`, render it in `app/layout.tsx`, add the env var to Vercel (Production at minimum), and add a row above. `NEXT_PUBLIC_*` vars are inlined at build time, so a production redeploy is required before any change takes effect on the live site.
+
+**Clarity specifics:**
+- Dashboard: `clarity.microsoft.com`, Miozuki project. Recordings and heatmaps live there only.
+- The Clarity Data Export API is wired into Ryo's Claude Code as the `clarity` MCP server (user scope), so Claude can pull aggregated stats on request. Limits: aggregated metrics only (no recordings), last 3 days per request, 10 requests/day.
+- The Clarity API token lives only in Ryo's `~/.claude.json`, never in this repo.
+
 ### Cart state
 
 `CartProvider` in `components/cart-provider.tsx` is a React Context wrapping the entire app (mounted in `app/layout.tsx`). Cart ID is persisted in `localStorage` under the key `miozuki-cart-id`. On mount it rehydrates from Shopify via `getCart()`.
@@ -232,6 +249,9 @@ The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. Ne
 | `INSTAGRAM_ACCESS_TOKEN` | Instagram feed (server) |
 | `INSTAGRAM_USER_ID` | Instagram feed (server), value: `17841475205382310` |
 | `JUDGE_ME_PRIVATE_TOKEN` | Product reviews (server) |
+| `NEXT_PUBLIC_GA4_ID` | Google Analytics 4 (client) |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel (client) |
+| `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Microsoft Clarity heatmaps/recordings (client) |
 
 ### Shopify Storefront API tokens: sourcing and rotation
 

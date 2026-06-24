@@ -1,51 +1,33 @@
-const IMAGE_FRAGMENT = `
-  fragment ImageFragment on Image {
-    url
-    altText
-    width
-    height
-  }
-`;
+// Storefront GraphQL operations. Fragments are inlined (not interpolated) so the
+// `/* GraphQL */` literals are statically parseable by graphql-codegen, which
+// validates every field against the 2026-04 schema. See codegen.ts and the repo
+// CLAUDE.md "GraphQL codegen" section. Keep each query a self-contained string.
 
-const MONEY_FRAGMENT = `
-  fragment MoneyFragment on MoneyV2 {
-    amount
-    currencyCode
-  }
-`;
-
-const PRODUCT_CARD_FRAGMENT = `
-  fragment ProductCard on Product {
-    id
-    handle
-    title
-    featuredImage { ...ImageFragment }
-    images(first: 2) {
-      edges { node { ...ImageFragment } }
-    }
-    priceRange {
-      minVariantPrice { ...MoneyFragment }
-      maxVariantPrice { ...MoneyFragment }
-    }
-    tags
-    productType
-  }
-  ${IMAGE_FRAGMENT}
-  ${MONEY_FRAGMENT}
-`;
-
-export const GET_PRODUCTS = `
+export const GET_PRODUCTS = /* GraphQL */ `
   query GetProducts($first: Int!) {
     products(first: $first) {
       edges {
-        node { ...ProductCard }
+        node {
+          id
+          handle
+          title
+          featuredImage { url altText width height }
+          images(first: 2) {
+            edges { node { url altText width height } }
+          }
+          priceRange {
+            minVariantPrice { amount currencyCode }
+            maxVariantPrice { amount currencyCode }
+          }
+          tags
+          productType
+        }
       }
     }
   }
-  ${PRODUCT_CARD_FRAGMENT}
 `;
 
-export const GET_PRODUCT_BY_HANDLE = `
+export const GET_PRODUCT_BY_HANDLE = /* GraphQL */ `
   query GetProductByHandle($handle: String!) {
     productByHandle(handle: $handle) {
       id
@@ -55,9 +37,9 @@ export const GET_PRODUCT_BY_HANDLE = `
       descriptionHtml
       tags
       productType
-      featuredImage { ...ImageFragment }
+      featuredImage { url altText width height }
       images(first: 10) {
-        edges { node { ...ImageFragment } }
+        edges { node { url altText width height } }
       }
       media(first: 10) {
         edges {
@@ -68,14 +50,14 @@ export const GET_PRODUCT_BY_HANDLE = `
               previewImage { url altText width height }
             }
             ... on MediaImage {
-              image { ...ImageFragment }
+              image { url altText width height }
             }
           }
         }
       }
       priceRange {
-        minVariantPrice { ...MoneyFragment }
-        maxVariantPrice { ...MoneyFragment }
+        minVariantPrice { amount currencyCode }
+        maxVariantPrice { amount currencyCode }
       }
       variants(first: 50) {
         edges {
@@ -83,8 +65,8 @@ export const GET_PRODUCT_BY_HANDLE = `
             id
             title
             availableForSale
-            price { ...MoneyFragment }
-            compareAtPrice { ...MoneyFragment }
+            price { amount currencyCode }
+            compareAtPrice { amount currencyCode }
             selectedOptions { name value }
           }
         }
@@ -101,11 +83,9 @@ export const GET_PRODUCT_BY_HANDLE = `
       }
     }
   }
-  ${IMAGE_FRAGMENT}
-  ${MONEY_FRAGMENT}
 `;
 
-export const GET_COLLECTIONS = `
+export const GET_COLLECTIONS = /* GraphQL */ `
   query GetCollections($first: Int!) {
     collections(first: $first) {
       edges {
@@ -114,16 +94,15 @@ export const GET_COLLECTIONS = `
           handle
           title
           description
-          image { ...ImageFragment }
+          image { url altText width height }
           metafield(namespace: "custom", key: "intro") { value }
         }
       }
     }
   }
-  ${IMAGE_FRAGMENT}
 `;
 
-export const GET_BLOG_ARTICLES = `
+export const GET_BLOG_ARTICLES = /* GraphQL */ `
   query GetBlogArticles($blogHandle: String!, $first: Int!) {
     blog(handle: $blogHandle) {
       articles(first: $first) {
@@ -133,7 +112,7 @@ export const GET_BLOG_ARTICLES = `
             title
             publishedAt
             excerpt
-            image { ...ImageFragment }
+            image { url altText width height }
             tags
             author { name }
           }
@@ -141,10 +120,9 @@ export const GET_BLOG_ARTICLES = `
       }
     }
   }
-  ${IMAGE_FRAGMENT}
 `;
 
-export const GET_ARTICLE_BY_HANDLE = `
+export const GET_ARTICLE_BY_HANDLE = /* GraphQL */ `
   query GetArticleByHandle($blogHandle: String!, $articleHandle: String!) {
     blog(handle: $blogHandle) {
       articleByHandle(handle: $articleHandle) {
@@ -152,16 +130,15 @@ export const GET_ARTICLE_BY_HANDLE = `
         publishedAt
         contentHtml
         excerpt
-        image { ...ImageFragment }
+        image { url altText width height }
         tags
         author { name }
       }
     }
   }
-  ${IMAGE_FRAGMENT}
 `;
 
-export const GET_COLLECTION_BY_HANDLE = `
+export const GET_COLLECTION_BY_HANDLE = /* GraphQL */ `
   query GetCollectionByHandle($handle: String!, $productsFirst: Int!) {
     collectionByHandle(handle: $handle) {
       id
@@ -169,14 +146,27 @@ export const GET_COLLECTION_BY_HANDLE = `
       title
       description
       descriptionHtml
-      image { ...ImageFragment }
+      image { url altText width height }
       metafield(namespace: "custom", key: "intro") { value }
       products(first: $productsFirst) {
         edges {
-          node { ...ProductCard }
+          node {
+            id
+            handle
+            title
+            featuredImage { url altText width height }
+            images(first: 2) {
+              edges { node { url altText width height } }
+            }
+            priceRange {
+              minVariantPrice { amount currencyCode }
+              maxVariantPrice { amount currencyCode }
+            }
+            tags
+            productType
+          }
         }
       }
     }
   }
-  ${PRODUCT_CARD_FRAGMENT}
 `;

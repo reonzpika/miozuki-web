@@ -263,6 +263,16 @@ The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. Ne
 | `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Sentry source-map upload (build time) |
 | `NEXT_PUBLIC_STATUS_PAGE_URL` | OpenStatus public status-page link in admin |
 
+### GraphQL codegen (Storefront type-safety)
+
+Every Storefront query in `lib/shopify/` is validated against Shopify's published `2026-04` schema at build time, so a typo'd, renamed, or removed field **fails the build** instead of silently returning `undefined` on the live site.
+
+- **Queries** live in `lib/shopify/queries.ts` and `lib/shopify/cart-backend.ts` as `/* GraphQL */`-tagged template literals. Fragments are **inlined** (no `${}` interpolation) so codegen can statically parse them. Keep that style: tag new queries with `/* GraphQL */` and inline any shared selections.
+- **`npm run codegen`** (offline, also runs automatically via the `prebuild` script before `next build`): reads the committed schema SDL `lib/shopify/generated/storefront-schema.graphql`, validates all queries, and regenerates `lib/shopify/generated/storefront-types.ts` (operation result + variable types). Run it after editing any query; an invalid field aborts it (and the build).
+- **`npm run codegen:schema`** (needs the Storefront token from `.env.local`, network): re-introspects the live API and rewrites the schema SDL. Run **only** when bumping `STOREFRONT_API_VERSION` in `lib/shopify/credentials.ts`.
+- `lib/shopify/generated/**` is generated and committed; never hand-edit it (eslint-ignored). Config: `codegen.ts` + `codegen-schema.ts`.
+- Scope note: this is Lean (validate + generate). Call sites still use the hand-written `lib/shopify/types.ts` shapes; adopting the generated types and covering the Admin API (`2024-10` scripts) are future passes.
+
 ### Shopify Storefront API tokens: sourcing and rotation
 
 **The confusion.** Shopify has two dashboards that look like they might hold Storefront API credentials:

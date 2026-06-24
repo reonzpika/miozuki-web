@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Codegen output (generated; not hand-edited).
+    "lib/shopify/generated/**",
   ]),
 ]);
 

@@ -40,73 +40,153 @@ type ShopifyUserError = { field?: string[] | null; message: string };
 
 // ── GraphQL ────────────────────────────────────────────────────────────
 
-const CART_FRAGMENT = `
-  fragment CartFragment on Cart {
-    id
-    checkoutUrl
-    totalQuantity
-    lines(first: 100) {
-      edges {
-        node {
-          id
-          quantity
-          merchandise {
-            ... on ProductVariant {
+// The cart selection is inlined in full into each operation below (not
+// interpolated) so the `/* GraphQL */` literals are statically parseable by
+// graphql-codegen, which validates every field against the 2026-04 schema.
+
+const CREATE_CART = /* GraphQL */ `
+  mutation CartCreate($lines: [CartLineInput!]) {
+    cartCreate(input: { lines: $lines }) {
+      cart {
+        id
+        checkoutUrl
+        totalQuantity
+        lines(first: 100) {
+          edges {
+            node {
               id
-              title
-              price { amount currencyCode }
-              product {
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  price { amount currencyCode }
+                  product {
+                    title
+                    handle
+                    featuredImage { url altText width height }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cost {
+          totalAmount { amount currencyCode }
+          subtotalAmount { amount currencyCode }
+        }
+      }
+      userErrors { field message }
+    }
+  }
+`;
+
+const ADD_CART_LINES = /* GraphQL */ `
+  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        id
+        checkoutUrl
+        totalQuantity
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  price { amount currencyCode }
+                  product {
+                    title
+                    handle
+                    featuredImage { url altText width height }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cost {
+          totalAmount { amount currencyCode }
+          subtotalAmount { amount currencyCode }
+        }
+      }
+      userErrors { field message }
+    }
+  }
+`;
+
+const REMOVE_CART_LINES = /* GraphQL */ `
+  mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+      cart {
+        id
+        checkoutUrl
+        totalQuantity
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  price { amount currencyCode }
+                  product {
+                    title
+                    handle
+                    featuredImage { url altText width height }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cost {
+          totalAmount { amount currencyCode }
+          subtotalAmount { amount currencyCode }
+        }
+      }
+      userErrors { field message }
+    }
+  }
+`;
+
+const GET_CART = /* GraphQL */ `
+  query GetCart($cartId: ID!) {
+    cart(id: $cartId) {
+      id
+      checkoutUrl
+      totalQuantity
+      lines(first: 100) {
+        edges {
+          node {
+            id
+            quantity
+            merchandise {
+              ... on ProductVariant {
+                id
                 title
-                handle
-                featuredImage { url altText width height }
+                price { amount currencyCode }
+                product {
+                  title
+                  handle
+                  featuredImage { url altText width height }
+                }
               }
             }
           }
         }
       }
-    }
-    cost {
-      totalAmount { amount currencyCode }
-      subtotalAmount { amount currencyCode }
-    }
-  }
-`;
-
-const CREATE_CART = `
-  mutation CartCreate($lines: [CartLineInput!]) {
-    cartCreate(input: { lines: $lines }) {
-      cart { ...CartFragment }
-      userErrors { field message }
+      cost {
+        totalAmount { amount currencyCode }
+        subtotalAmount { amount currencyCode }
+      }
     }
   }
-  ${CART_FRAGMENT}
-`;
-
-const ADD_CART_LINES = `
-  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
-    cartLinesAdd(cartId: $cartId, lines: $lines) {
-      cart { ...CartFragment }
-      userErrors { field message }
-    }
-  }
-  ${CART_FRAGMENT}
-`;
-
-const REMOVE_CART_LINES = `
-  mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
-    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-      cart { ...CartFragment }
-      userErrors { field message }
-    }
-  }
-  ${CART_FRAGMENT}
-`;
-
-const GET_CART = `
-  query GetCart($cartId: ID!) {
-    cart(id: $cartId) { ...CartFragment }
-  }
-  ${CART_FRAGMENT}
 `;
 
 function throwOnUserErrors(userErrors: ShopifyUserError[] | undefined, fallback: string): never {

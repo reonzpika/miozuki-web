@@ -21,7 +21,8 @@
     "gen-image": "node --env-file=.env.local scripts/gen-image.mjs",
     "audit": "tsx scripts/audit.ts",
     "audit:headless": "tsx scripts/audit.ts --headless",
-    "audit:images": "node --env-file=.env.local scripts/check-description-images.mjs"
+    "audit:images": "node --env-file=.env.local scripts/check-description-images.mjs",
+    "audit:lighthouse": "unlighthouse"
   },
   "dependencies": {
     "@google-analytics/data": "^6.1.0",
@@ -52,6 +53,7 @@
     "graphql": "^16.14.2",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "unlighthouse": "^0.17.10"
   }
 }

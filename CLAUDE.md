@@ -105,12 +105,16 @@ This project has two contributors with different workflows:
 ## Commands
 
 ```bash
-npm run dev      # local dev server
-npm run build    # production build
-npm run lint     # ESLint
+npm run dev              # local dev server
+npm run build            # production build
+npm run lint             # ESLint
+npm run audit            # Playwright crawl: cart/checkout flows + broken images (docs/audit/)
+npm run audit:lighthouse # Unlighthouse: site-wide Lighthouse (perf/a11y/SEO/best-practices)
 ```
 
 No test suite exists yet.
+
+**`npm run audit:lighthouse`** crawls the live site's sitemap and opens an interactive Lighthouse dashboard (config: `unlighthouse.config.ts`, mobile profile, `/admin` excluded). Override the target to audit a Vercel preview before shipping: `LIGHTHOUSE_SITE=<preview-url> npm run audit:lighthouse`. Concurrency is capped at 1 (higher crashes Chrome sessions on Windows; the full run is slower but stable). Reports write to `docs/audit/lighthouse/` (gitignored).
 
 ## Key architecture
 

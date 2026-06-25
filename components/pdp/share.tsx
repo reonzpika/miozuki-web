@@ -9,6 +9,21 @@ type PdpShareProps = {
 
 type ShareHint = 'instagram' | 'messenger' | null;
 
+const LIVE_ORIGIN = 'https://www.miozuki.co.nz';
+
+/** Shared links must always use the live storefront URL, not preview or local hosts. */
+function canonicalShareUrl(shareUrl: string): string {
+  try {
+    const { pathname } = new URL(shareUrl);
+    return `${LIVE_ORIGIN}${pathname}`;
+  } catch {
+    if (shareUrl.startsWith('/')) {
+      return `${LIVE_ORIGIN}${shareUrl}`;
+    }
+    return shareUrl;
+  }
+}
+
 function isMobileUserAgent(): boolean {
   if (typeof navigator === 'undefined') return false;
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -69,7 +84,8 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
   const menuId = useId();
   const hintResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const shareBody = `${productTitle}\n\n${shareUrl}`;
+  const shareLink = canonicalShareUrl(shareUrl);
+  const shareBody = `${productTitle}\n\n${shareLink}`;
   const whatsappHref = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareBody)}`;
   const emailHref = `mailto:?subject=${encodeURIComponent(`${productTitle} · Miozuki`)}&body=${encodeURIComponent(shareBody)}`;
 
@@ -87,54 +103,54 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
     typeof navigator !== 'undefined' &&
     typeof navigator.share === 'function' &&
     (typeof navigator.canShare !== 'function' ||
-      navigator.canShare({ url: shareUrl, title: productTitle }));
+      navigator.canShare({ url: shareLink, title: productTitle }));
 
   const handleNativeShare = useCallback(async () => {
     try {
       await navigator.share({
         title: productTitle,
         text: productTitle,
-        url: shareUrl,
+        url: shareLink,
       });
       setOpen(false);
     } catch {
       /* user cancelled or share failed */
     }
-  }, [productTitle, shareUrl]);
+  }, [productTitle, shareLink]);
 
   const handleMessengerShare = useCallback(() => {
     setOpen(false);
     showShareHint('messenger');
 
-    const encodedLink = encodeURIComponent(shareUrl);
+    const encodedLink = encodeURIComponent(shareLink);
     const isMobile = isMobileUserAgent();
 
     if (isMobile) {
-      void writeShareBody(shareBody);
+      void writeShareBody(shareLink);
       window.location.href = `fb-messenger://share/?link=${encodedLink}`;
       return;
     }
 
     openDesktopTab('https://www.messenger.com/');
-    void writeShareBody(shareBody);
-  }, [shareBody, shareUrl, showShareHint]);
+    void writeShareBody(shareLink);
+  }, [shareLink, showShareHint]);
 
   const handleInstagramDm = useCallback(() => {
     setOpen(false);
     showShareHint('instagram');
 
     const isMobile = isMobileUserAgent();
-    const encodedBody = encodeURIComponent(shareBody);
+    const encodedLink = encodeURIComponent(shareLink);
 
     if (isMobile) {
-      void writeShareBody(shareBody);
-      window.location.href = `instagram://sharesheet?text=${encodedBody}`;
+      void writeShareBody(shareLink);
+      window.location.href = `instagram://sharesheet?text=${encodedLink}`;
       return;
     }
 
     openDesktopTab('https://www.instagram.com/direct/inbox/');
-    void writeShareBody(shareBody);
-  }, [shareBody, showShareHint]);
+    void writeShareBody(shareLink);
+  }, [shareLink, showShareHint]);
 
   useEffect(() => {
     if (!open) return;
@@ -194,7 +210,7 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
           role="status"
           aria-hidden
         >
-          Link copied. Paste into your Instagram DM if it is not already there.
+          Link copied. Paste the link into your Instagram DM if needed.
         </p>
       ) : shareHint === 'messenger' ? (
         <p

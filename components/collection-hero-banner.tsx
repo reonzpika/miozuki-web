@@ -28,7 +28,7 @@ export default function CollectionHeroBanner({ collection }: Props) {
    * so favour a slightly taller strip (section min-heights) and focal points that bias the jewel into view on all widths.
    */
   const pearlBannerImageClass =
-    'object-cover object-[52%_18%] md:object-[50%_26%] lg:object-[48%_26%] xl:object-[49%_25%]';
+    'object-cover object-[50%_8%] md:object-[50%_26%] lg:object-[48%_26%] xl:object-[49%_25%]';
 
   const imagePositionClass = usePearlHero
     ? pearlBannerImageClass
@@ -61,11 +61,11 @@ export default function CollectionHeroBanner({ collection }: Props) {
   );
 
   const sectionHeightClass = usePearlHero
-    ? 'h-[33svh] md:h-auto md:min-h-[18.25rem]'
+    ? 'h-[24svh] md:h-auto md:min-h-[18.25rem]'
     : 'min-h-[16rem] md:min-h-[18.25rem]';
 
   const contentPaddingClass = usePearlHero
-    ? 'px-5 py-2.5 md:px-10 md:py-7'
+    ? 'px-5 py-2 md:px-10 md:py-7'
     : 'px-5 py-6 md:px-10 md:py-7';
 
   return (
@@ -94,7 +94,7 @@ export default function CollectionHeroBanner({ collection }: Props) {
       >
         <nav
           aria-label="Breadcrumb"
-          className={`mb-1 flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 text-[10px] uppercase tracking-[0.22em] md:mb-2 md:justify-start md:text-[11px] ${crumbBand}`}
+          className={`mb-0.5 flex flex-wrap items-center justify-center gap-x-1 gap-y-0 text-[9px] uppercase tracking-[0.2em] md:mb-2 md:justify-start md:text-[11px] ${crumbBand}`}
         >
           <Link href="/" className={crumbLink}>
             Home
@@ -112,7 +112,7 @@ export default function CollectionHeroBanner({ collection }: Props) {
         </nav>
 
         <h1
-          className={`max-w-3xl font-serif leading-snug tracking-tight md:text-2xl lg:text-[1.65rem] lg:leading-snug ${usePearlHero ? 'line-clamp-2 text-base md:line-clamp-none md:text-2xl' : 'text-xl'} ${headlineColor}`}
+          className={`max-w-3xl font-serif leading-snug tracking-tight md:text-2xl lg:text-[1.65rem] lg:leading-snug ${usePearlHero ? 'line-clamp-2 text-sm md:line-clamp-none md:text-2xl' : 'text-xl'} ${headlineColor}`}
         >
           {collection.title}
         </h1>

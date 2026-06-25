@@ -28,15 +28,16 @@ export default function CollectionHeroBanner({ collection }: Props) {
    * so favour a slightly taller strip (section min-heights) and focal points that bias the jewel into view on all widths.
    */
   const pearlBannerImageClass =
-    'object-cover object-[52%_18%] sm:object-[46%_29%] md:object-[50%_26%] lg:object-[48%_26%] xl:object-[49%_25%]';
+    'object-cover object-[52%_18%] md:object-[50%_26%] lg:object-[48%_26%] xl:object-[49%_25%]';
 
   const imagePositionClass = usePearlHero
     ? pearlBannerImageClass
     : 'object-cover object-center';
 
   const crumbBand = 'text-cream/50';
-  const crumbLink =
-    'inline-flex min-h-10 items-center rounded-sm px-0.5 text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/45 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal/50 md:min-h-0 md:py-0.5';
+  const crumbLink = usePearlHero
+    ? 'inline-flex min-h-8 items-center rounded-sm px-0.5 text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/45 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal/50 md:min-h-0 md:py-0.5'
+    : 'inline-flex min-h-10 items-center rounded-sm px-0.5 text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/45 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal/50 md:min-h-0 md:py-0.5';
   const crumbDivider = 'text-cream/35';
   const crumbCurrent = 'text-cream/85';
   const headlineColor = 'text-cream';
@@ -60,11 +61,11 @@ export default function CollectionHeroBanner({ collection }: Props) {
   );
 
   const sectionHeightClass = usePearlHero
-    ? 'min-h-[33svh] max-h-[33svh] sm:min-h-[16.75rem] sm:max-h-none md:min-h-[18.25rem]'
-    : 'min-h-[16rem] sm:min-h-[16.75rem] md:min-h-[18.25rem]';
+    ? 'h-[33svh] md:h-auto md:min-h-[18.25rem]'
+    : 'min-h-[16rem] md:min-h-[18.25rem]';
 
   const contentPaddingClass = usePearlHero
-    ? 'px-5 py-3 sm:py-6 md:px-10 md:py-7'
+    ? 'px-5 py-2.5 md:px-10 md:py-7'
     : 'px-5 py-6 md:px-10 md:py-7';
 
   return (
@@ -93,7 +94,7 @@ export default function CollectionHeroBanner({ collection }: Props) {
       >
         <nav
           aria-label="Breadcrumb"
-          className={`mb-1 flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 text-[10px] uppercase tracking-[0.22em] sm:mb-2 md:justify-start md:text-[11px] ${crumbBand}`}
+          className={`mb-1 flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 text-[10px] uppercase tracking-[0.22em] md:mb-2 md:justify-start md:text-[11px] ${crumbBand}`}
         >
           <Link href="/" className={crumbLink}>
             Home
@@ -111,14 +112,14 @@ export default function CollectionHeroBanner({ collection }: Props) {
         </nav>
 
         <h1
-          className={`max-w-3xl font-serif leading-snug tracking-tight sm:text-xl md:text-2xl lg:text-[1.65rem] lg:leading-snug ${usePearlHero ? 'text-lg' : 'text-xl'} ${headlineColor}`}
+          className={`max-w-3xl font-serif leading-snug tracking-tight md:text-2xl lg:text-[1.65rem] lg:leading-snug ${usePearlHero ? 'line-clamp-2 text-base md:line-clamp-none md:text-2xl' : 'text-xl'} ${headlineColor}`}
         >
           {collection.title}
         </h1>
 
         {blurb ? (
           <p
-            className={`mt-1 max-w-3xl text-xs leading-snug sm:mt-1.5 sm:text-sm ${usePearlHero ? 'line-clamp-2 sm:line-clamp-none' : ''} ${blurbTone}`}
+            className={`mt-1 max-w-3xl text-xs leading-snug md:mt-1.5 md:text-sm ${usePearlHero ? 'hidden md:block' : ''} ${blurbTone}`}
           >
             {blurb}
           </p>

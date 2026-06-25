@@ -85,7 +85,7 @@ def apply_fix() -> int:
     # The loop has done its part (fix proposed + Ryo-approved -> PR open). Ledger
     # the issue DONE so it is never re-fixed; Ryo merges the PR himself.
     repair_state.accept(issue_id)
-    print(f"[apply] pushed {branch}; draft PR: {pr_url or '(no url returned)'}")
+    print(f"[apply] pushed {branch}; draft PR: {pr_url}")
     _schedule_self_reap(state.get("approval_pid"))
     return 0
 
@@ -105,8 +105,9 @@ def _open_draft_pr(branch: str, base: str, issue_id: str, proposal: dict) -> str
         cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8",
     )
     if res.returncode != 0:
-        print(f"[apply] gh pr create failed: {res.stderr[:300]}", file=sys.stderr)
-        return ""
+        # A push-but-no-PR must NOT read as success. Raise so apply_fix records
+        # FAILED and surfaces it (the branch stays on origin for a manual PR).
+        raise RuntimeError(f"gh pr create failed: {res.stderr.strip()[:300]}")
     return res.stdout.strip()
 
 

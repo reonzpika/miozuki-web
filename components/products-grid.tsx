@@ -47,7 +47,7 @@ export default function ProductsGrid({
   const [filterType, setFilterType] = useState('all');
   const [mobileSheet, setMobileSheet] = useState<'sort' | 'filter' | null>(null);
   const [catalogueQuickFilter, setCatalogueQuickFilter] = useState<CatalogueQuickFilterId>(() =>
-    layout === 'flagship' ? pickDefaultCatalogueQuickFilter(products) : 'rings',
+    layout === 'flagship' ? pickDefaultCatalogueQuickFilter() : 'rings',
   );
 
   const catalogueQuickTabs = quickFiltersOn ? CATALOGUE_QUICK_FILTERS : [];

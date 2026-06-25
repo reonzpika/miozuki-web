@@ -1,6 +1,7 @@
 import type { Product } from '@/lib/shopify';
 
 export type CatalogueQuickFilterId =
+  | 'all'
   | 'rings'
   | 'earrings'
   | 'necklace'
@@ -9,6 +10,7 @@ export type CatalogueQuickFilterId =
 
 /** Row shown on the flagship catalogue; labels match storefront language. */
 export const CATALOGUE_QUICK_FILTERS: { id: CatalogueQuickFilterId; label: string }[] = [
+  { id: 'all', label: 'All' },
   { id: 'rings', label: 'Rings' },
   { id: 'earrings', label: 'Earrings' },
   { id: 'necklace', label: 'Necklaces' },
@@ -35,6 +37,9 @@ export function productMatchesCatalogueQuickFilter(
   const minPrice = parseFloat(product.priceRange.minVariantPrice.amount);
 
   switch (id) {
+    case 'all':
+      return true;
+
     case 'rings': {
       if (blob.includes('earring')) return false;
       return /\bring(s)?\b/.test(blob);
@@ -59,16 +64,6 @@ export function productMatchesCatalogueQuickFilter(
   }
 }
 
-export function pickDefaultCatalogueQuickFilter(products: Product[]): CatalogueQuickFilterId {
-  const prefers: CatalogueQuickFilterId[] = [
-    'rings',
-    'earrings',
-    'necklace',
-    'best-sellers',
-    'under-300',
-  ];
-  for (const id of prefers) {
-    if (products.some((p) => productMatchesCatalogueQuickFilter(p, id))) return id;
-  }
-  return 'rings';
+export function pickDefaultCatalogueQuickFilter(): CatalogueQuickFilterId {
+  return 'all';
 }

@@ -58,7 +58,7 @@ export default async function CollectionPage({
   const { handle } = await params;
   let collection;
   try {
-    collection = await getCollectionByHandle(handle, 48);
+    collection = await getCollectionByHandle(handle);
   } catch (err) {
     console.error('Collection fetch failed', { handle, error: err });
     throw err;

@@ -147,6 +147,22 @@ export async function getProductByHandle(handle: string): Promise<Product | null
 
 // Collections
 
+type CollectionByHandleFetch = {
+  collectionByHandle: {
+    id: string;
+    handle: string;
+    title: string;
+    description: string | null;
+    descriptionHtml: string | null;
+    image: Collection['image'];
+    metafield: Collection['metafield'];
+    products: {
+      edges: { node: Product }[];
+      pageInfo: { hasNextPage: boolean; endCursor: string | null };
+    };
+  } | null;
+};
+
 export async function getCollections(first = 20): Promise<Collection[]> {
   const data = await shopifyFetch<{ collections: { edges: { node: Collection }[] } }>(
     GET_COLLECTIONS,
@@ -156,16 +172,63 @@ export async function getCollections(first = 20): Promise<Collection[]> {
   return data.collections.edges.map((e) => e.node);
 }
 
+async function fetchCollectionProductsPage(
+  handle: string,
+  productsFirst: number,
+  after: string | null,
+): Promise<NonNullable<CollectionByHandleFetch['collectionByHandle']> | null> {
+  const data = await shopifyFetch<CollectionByHandleFetch>(GET_COLLECTION_BY_HANDLE, {
+    handle,
+    productsFirst,
+    after,
+  });
+  return data?.collectionByHandle ?? null;
+}
+
 export async function getCollectionByHandle(
   handle: string,
-  productsFirst = 24,
+  limit?: number,
 ): Promise<Collection | null> {
-  const data = await shopifyFetch<{ collectionByHandle: Collection | null }>(
-    GET_COLLECTION_BY_HANDLE,
-    { handle, productsFirst },
-  );
-  if (!data) return null;
-  return data.collectionByHandle;
+  const PAGE_SIZE = 250;
+  const maxProducts = limit ?? 500;
+  let after: string | null = null;
+  let collection: Collection | null = null;
+  const allEdges: { node: Product }[] = [];
+
+  while (allEdges.length < maxProducts) {
+    const batchSize =
+      limit != null
+        ? Math.min(PAGE_SIZE, maxProducts - allEdges.length)
+        : PAGE_SIZE;
+    if (batchSize <= 0) break;
+
+    const page = await fetchCollectionProductsPage(handle, batchSize, after);
+    if (!page) return collection;
+
+    if (!collection) {
+      collection = {
+        id: page.id,
+        handle: page.handle,
+        title: page.title,
+        description: page.description,
+        descriptionHtml: page.descriptionHtml,
+        image: page.image,
+        metafield: page.metafield,
+        products: { edges: [] },
+      };
+    }
+
+    allEdges.push(...page.products.edges);
+
+    if (limit != null || !page.products.pageInfo.hasNextPage || !page.products.pageInfo.endCursor) {
+      break;
+    }
+    after = page.products.pageInfo.endCursor;
+  }
+
+  if (!collection) return null;
+  collection.products = { edges: allEdges };
+  return collection;
 }
 
 // Blog

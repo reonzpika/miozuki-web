@@ -139,7 +139,7 @@ export const GET_ARTICLE_BY_HANDLE = /* GraphQL */ `
 `;
 
 export const GET_COLLECTION_BY_HANDLE = /* GraphQL */ `
-  query GetCollectionByHandle($handle: String!, $productsFirst: Int!) {
+  query GetCollectionByHandle($handle: String!, $productsFirst: Int!, $after: String) {
     collectionByHandle(handle: $handle) {
       id
       handle
@@ -148,7 +148,11 @@ export const GET_COLLECTION_BY_HANDLE = /* GraphQL */ `
       descriptionHtml
       image { url altText width height }
       metafield(namespace: "custom", key: "intro") { value }
-      products(first: $productsFirst) {
+      products(first: $productsFirst, after: $after, sortKey: COLLECTION_DEFAULT) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
         edges {
           node {
             id

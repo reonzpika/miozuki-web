@@ -41,6 +41,20 @@ export function ringInnerDiametrePhrase(sizeLabel: string): string | null {
   return `inner diameter ${formatDiameterMm(mm)} mm`;
 }
 
+/** True when every value maps to a known US ring size (excludes carat "Size" options). */
+export function looksLikeUsRingSizeValues(values: string[]): boolean {
+  if (values.length === 0) return false;
+  return values.every((v) => ringInnerDiameterMm(v) !== undefined);
+}
+
+/** Shopify option name may be "Ring size" or "Size" depending on the product. */
+export function isRingSizeOption(name: string, values: string[]): boolean {
+  const n = name.trim().toLowerCase();
+  if (n === 'ring size') return true;
+  if (n === 'size' && looksLikeUsRingSizeValues(values)) return true;
+  return false;
+}
+
 /**
  * Single-line label (fallback for plain selects).
  */

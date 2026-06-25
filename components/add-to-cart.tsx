@@ -5,6 +5,7 @@ import type { Money, ProductVariant } from '@/lib/shopify';
 import RingSizeGuide from '@/components/ring-size-guide';
 import PdpTrustStrip from '@/components/pdp-trust-strip';
 import PdpRingSizeSelect from '@/components/pdp-ring-size-select';
+import { isRingSizeOption } from '@/lib/ring-size-chart';
 import { useCart } from './cart-provider';
 
 function formatPrice(amount: string, currencyCode: string) {
@@ -71,7 +72,7 @@ export default function AddToCart({
   const options = buildOptions(variants);
   /** Single-variant products still carry Shopify's Title/Default Title option; no picker needed. */
   const showVariantPicker = variants.length > 1;
-  const hasRingSizes = options.some((o) => o.name === 'Ring size');
+  const hasRingSizes = options.some((o) => isRingSizeOption(o.name, o.values));
 
   const [selected, setSelected] = useState<Record<string, string>>(() => {
     const defaults: Record<string, string> = {};
@@ -118,24 +119,26 @@ export default function AddToCart({
         {/* Variant options (hidden for single-variant products) */}
         {showVariantPicker &&
           options.map((opt) => {
-            const valuesForUi =
-              opt.name === 'Ring size'
-                ? sortRingSizeValues(opt.values)
-                : opt.values;
+            const ringSize = isRingSizeOption(opt.name, opt.values);
+            const valuesForUi = ringSize
+              ? sortRingSizeValues(opt.values)
+              : opt.values;
 
-            if (opt.name === 'Ring size') {
+            if (ringSize) {
+              const fieldId = `pdp-ring-size-${opt.name.replace(/\s+/g, '-').toLowerCase()}`;
+              const labelId = `${fieldId}-label`;
               return (
                 <div key={opt.name}>
                   <label
-                    id="pdp-ring-size-label"
-                    htmlFor="pdp-ring-size"
+                    id={labelId}
+                    htmlFor={fieldId}
                     className="mb-3 block text-xs uppercase tracking-widest text-charcoal/50"
                   >
-                    {opt.name}
+                    Ring size
                   </label>
                   <PdpRingSizeSelect
-                    id="pdp-ring-size"
-                    labelId="pdp-ring-size-label"
+                    id={fieldId}
+                    labelId={labelId}
                     values={valuesForUi}
                     selectedValue={selected[opt.name]}
                     onChange={(val) =>

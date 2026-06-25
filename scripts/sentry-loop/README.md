@@ -1,90 +1,101 @@
-# Sentry auto-fix loop (Stage 1 scaffold)
+# Sentry auto-fix loop (Stage 1 + phone approval)
 
-A self-running loop that takes a qualifying Sentry error in miozuki-web, proposes
-a fix on a branch, verifies it compiles and builds, and opens a draft PR for Ryo
-to merge. Ported from the LinkedIn grow self-healing loop. **This is the Stage 1
-scaffold: it is dry-runnable and has no live side effects yet.**
+A self-running loop that takes a qualifying Sentry error in miozuki-web, fixes it
+on a branch, verifies it builds, then asks Ryo for a one-tap **approve/reject on
+his phone** (via Claude Code Remote Control) before pushing the branch and opening
+a draft PR. Ported from the LinkedIn grow self-healing loop and the pattern guide
+`~/.claude/guides/remote-control-approval-loop.md`.
 
 Design doc: Obsidian vault `areas/founder-os/context/sentry-fix-loop-DESIGN.md`.
 
-## The three layers (ported from grow)
+## Architecture (ported from the grow Stage-2 pattern)
 
-| Layer | File | Job |
+| Component | File | Job |
 |---|---|---|
 | Detector (Trigger) | `sentry_detect.py` | Fetch Sentry issues, classify, queue the first auto-fixable one |
-| State / memory (Output+Memory) | `repair_state.py` | JSON state machine, attempt cap, dedupe ledger |
-| Repairer (Execution+Verification) | `sentry_repair_triage.py` | Branch, run a boxed `claude -p`, re-run the gate, open a draft PR |
+| State / memory | `repair_state.py` | JSON state machine, attempt cap, dedupe ledger |
+| Worker | `sentry_repair_triage.py` | Branch, boxed `claude -p`, re-verify, **park** the fix, launch the approval session (does NOT push) |
+| Approval session | (launched by the worker) | A Remote Control `claude` session: pings Ryo's phone, shows the fix, waits for approve/reject |
+| Apply / reject helper | `sentry_repair_apply.py` | Deterministic: on approve, push branch + open draft PR; on reject, discard. The LLM only *calls* this |
 
-Supporting: `failure_classes.py` (the whitelist classifier, the key safety
-control), `hooks/repair_deny.py` + `repair_settings.json` (hook-enforced safety),
-`fixtures/` (real + synthetic issues), `tests/`.
+Safety control: `failure_classes.py` (the whitelist classifier, defaults to "do
+not touch"). Secondary layer kept for reference: `hooks/repair_deny.py` +
+`repair_settings.json` implement the tighter allow-list alternative; the worker
+currently uses the guide's verified `--disallowedTools` deny-list instead.
+
+## The chain
+
+```
+[scheduler] -> detector queues a fixable issue (NEEDS_TRIAGE)
+[scheduler] -> worker: branch, boxed claude -p (bypassPermissions + deny-list),
+               re-run tsc/build/lint OURSELVES, park the fix (AWAITING_APPROVAL),
+               launch the RC approval session, exit
+[RC session] -> PushNotification to Ryo's phone, show the fix, wait
+[Ryo, phone] -> reply "approve" or "reject"
+[apply helper] -> approve: push branch + gh pr create --draft  |  reject: discard
+                  (Ryo still merges the PR himself)
+```
+
+Watchdog: an approval left undecided from a previous day is expired at the worker's
+start (lingering session killed, issue ledgered, branch kept for manual review).
 
 ## Run the scaffold (no network, no side effects)
 
 ```bash
 cd scripts/sentry-loop
 
-# Unit tests (no dependencies beyond Python 3.11+)
-python tests/test_failure_classes.py
-python tests/test_repair_state.py
+# Unit tests (Python 3.11+, no extra deps)
+for t in tests/test_*.py; do python "$t"; done
 
-# Detector dry-run against fixtures: classifies all issues, queues the fixable one
+# Detector dry-run against fixtures: queues the one genuine code bug
 SENTRY_LOOP_FIXTURE=fixtures/sample_issues.json SENTRY_LOOP_STATE_FILE=state/dev.json \
   python sentry_detect.py
 
-# Triage dry-run: prints the branch, gate, and repair prompt it WOULD use
+# Triage dry-run: prints the plan; SENTRY_LOOP_LIVE unset => no branch/claude/push/RC
 SENTRY_LOOP_STATE_FILE=state/dev.json python sentry_repair_triage.py
 ```
 
-## What the classifier does (and refuses)
-
-Only `fixable_candidate` issues are ever attempted, and a human still approves the
-PR. The classifier defaults to "do not touch".
-
-- **Attempted:** a recognised runtime bug (null/undefined access, bad type/import)
-  in our own code (`app/`, `components/`, `lib/`).
-- **Never attempted (sensitive):** anything touching checkout, cart, payments,
-  auth, account, server API route handlers, env, or secrets.
-- **Never attempted (noise):** third-party / injected scripts (Meta in-app
-  browser, extensions). These belong in Sentry's ignore rules.
-- **Never attempted (transient):** `fetch failed`, connect timeouts, 5xx. These
-  are upstream blips handled by retry, not code bugs, even when typed `TypeError`.
-
 ## Guardrails
 
-1. **Hook-enforced safety.** The repair `claude -p` session loads
-   `repair_settings.json`, which wires `hooks/repair_deny.py` as a PreToolUse
-   hook that hard-blocks push, force-push, branch switching, deploy, recursive
-   delete, and writes to `.env`/secrets, regardless of what the agent decides.
-2. **The agent never pushes.** The orchestrator pushes the branch and opens the
-   draft PR after the gate re-runs green, outside the agent session.
-3. **The loop re-runs the gate itself** (`tsc --noEmit`, `npm run build`,
-   `npm run lint`); it does not trust the agent's self-report.
-4. **Attempt cap of 1** per issue; a second failure escalates to a human.
-5. **Dedupe ledger** so an issue is never re-fixed.
-6. **One repair at a time** so PRs do not pile up.
-7. **Dirty-repo refusal** (live path) so uncommitted work is never clobbered.
+1. **The whitelist classifier** only attempts genuine runtime bugs in our own
+   code; it permanently excludes payments/auth/api/secrets, third-party noise,
+   and transient infra errors. A human still approves the PR.
+2. **The irreversible step is deterministic, gated by approval.** The push + PR
+   live in `sentry_repair_apply.py`; the LLM only calls it after Ryo approves.
+3. **The boxed agent runs `bypassPermissions` + `--disallowedTools`** (verified to
+   override bypass): push, deploy, `gh pr`, and the apply helper are hard-blocked
+   inside the worker agent.
+4. **The loop re-runs the gate itself** (`tsc/build/lint`), never trusting the
+   agent's self-report.
+5. **Attempt cap of 1**; **dedupe ledger**; **one repair at a time**;
+   **dirty-repo refusal**; **watchdog** for stale approvals.
+
+## Enable flags (both off by default)
+
+- `SENTRY_LOOP_LIVE=1` — enable the live triage path (branch + `claude -p` + park).
+- `SENTRY_LOOP_RC_ENABLED=1` — enable launching the RC approval session.
+- Live detection also needs `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`.
 
 ## Go-live checklist
 
 Built and verified (deterministic, no network):
-- [x] `sentry_detect._fetch_live_issues()` against the Sentry REST API
-      (`GET /api/0/projects/{org}/{project}/issues/`, Bearer `event:read`). Needs
-      `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` in the environment.
-- [x] `sentry_repair_triage._run_live()`: dirty-check, branch, boxed `claude -p`
-      with `--permission-mode dontAsk --allowedTools <whitelist> --settings
-      repair_settings.json`, re-run the gate ourselves, push the branch, draft PR.
-      Gated behind `SENTRY_LOOP_LIVE=1`.
+- [x] Detector + classifier + state machine + live Sentry fetch.
+- [x] Worker `_run_live`: branch, boxed agent, re-verify, park, launch RC approval.
+- [x] `sentry_repair_apply.py`: deterministic push + draft PR / discard, self-reaper.
+- [x] Watchdog for stale approvals.
 
-Still to do before it can actually run:
-- [ ] Decide and wire the notifier channel (`_notify_proposal` is a stub). See the
-      design doc; the chosen channel is a remote-control-style phone push.
-- [ ] First live run: a manual, supervised run with a real `SENTRY_AUTH_TOKEN`
-      against one issue, watching it open the draft PR (Layer-3 spot check). Also
-      confirm `gh` is authed and the exact `--settings` flag on the installed
-      Claude Code version.
-- [ ] Install the Task Scheduler job (detector, then triage shortly after).
-- [ ] Optional Stage 0 first (detect + notify only) before enabling fixes.
+Still to do before it can run for real:
+- [ ] **One-time folder trust:** launch an interactive `claude` once in
+      `miozuki-web` and approve the "trust this folder" dialog (Remote Control
+      needs it before unattended launches).
+- [ ] **Supervised end-to-end validation** (the important one): simulate a queued
+      issue with `SENTRY_LOOP_LIVE=1 SENTRY_LOOP_RC_ENABLED=1`, confirm the phone
+      ping arrives, approve from the phone, confirm the branch pushed + draft PR
+      opened, and that master was never touched. Catch real setup bugs here.
+- [ ] Confirm `gh` is authed locally for `gh pr create`.
+- [ ] Install the Task Scheduler job (detector, then worker shortly after) with
+      "run only when user is logged on" (Remote Control needs a console).
+- [ ] First live `SENTRY_AUTH_TOKEN` detection run (Layer-3 spot check).
 
-Nothing runs against production Sentry, pushes, or calls Claude until
-`SENTRY_LOOP_LIVE=1` plus the tokens are set and the first run is done by hand.
+Nothing runs against production Sentry, pushes, calls Claude, or pings the phone
+until those flags + tokens are set and the supervised run passes.

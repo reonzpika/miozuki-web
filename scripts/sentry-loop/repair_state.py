@@ -217,6 +217,12 @@ def give_up(issue_id: str) -> dict[str, Any]:
     return _ledger_and_idle(issue_id, "FAILED")
 
 
+def reject(issue_id: str) -> dict[str, Any]:
+    """Ryo rejected the proposed fix: ledger it REJECTED (so the loop does not
+    re-propose the same fix) and go IDLE. He can clear the ledger to retry."""
+    return _ledger_and_idle(issue_id, "REJECTED")
+
+
 def clear() -> None:
     """Reset status to IDLE, preserving the ledger. Used to abandon an in-flight
     repair without ledgering the issue (so it could be re-picked later)."""

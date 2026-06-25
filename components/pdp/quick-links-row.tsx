@@ -9,7 +9,7 @@ import {
 function PdpShippingGlanceBody() {
   return (
     <>
-      <ul className="list-none space-y-2.5 text-xs leading-relaxed text-charcoal/70">
+      <ul className="list-none space-y-2.5 text-sm leading-relaxed text-charcoal/70">
         <li className="flex gap-2.5">
           <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy/45" aria-hidden />
           <span>
@@ -31,7 +31,7 @@ function PdpShippingGlanceBody() {
       </ul>
       <Link
         href="/policies/shipping-policy"
-        className="mt-4 inline-flex min-h-11 items-center text-xs font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+        className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
       >
         Full shipping policy
       </Link>
@@ -43,7 +43,7 @@ function PdpShippingGlanceBody() {
 function PdpReturnsGlanceBody() {
   return (
     <>
-      <ul className="list-none space-y-2.5 text-xs leading-relaxed text-charcoal/70">
+      <ul className="list-none space-y-2.5 text-sm leading-relaxed text-charcoal/70">
         <li className="flex gap-2.5">
           <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy/45" aria-hidden />
           <span>
@@ -86,7 +86,7 @@ function PdpReturnsGlanceBody() {
       </ul>
       <Link
         href="/pages/returns-refunds-policy"
-        className="mt-4 inline-flex min-h-11 items-center text-xs font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+        className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
       >
         Full returns &amp; refunds policy
       </Link>
@@ -98,7 +98,7 @@ function PdpReturnsGlanceBody() {
 function PdpMaterialsCareGlanceBody() {
   return (
     <>
-      <ul className="list-none space-y-2.5 text-xs leading-relaxed text-charcoal/70">
+      <ul className="list-none space-y-2.5 text-sm leading-relaxed text-charcoal/70">
         <li className="flex gap-2.5">
           <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy/45" aria-hidden />
           <span>
@@ -127,7 +127,7 @@ function PdpMaterialsCareGlanceBody() {
       </ul>
       <Link
         href="/pages/jewellery-care-guide"
-        className="mt-4 inline-flex min-h-11 items-center text-xs font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+        className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
       >
         Full jewellery care guide
       </Link>
@@ -139,7 +139,7 @@ function PdpMaterialsCareGlanceBody() {
 function PdpWarrantyGlanceBody() {
   return (
     <>
-      <ul className="list-none space-y-2.5 text-xs leading-relaxed text-charcoal/70">
+      <ul className="list-none space-y-2.5 text-sm leading-relaxed text-charcoal/70">
         <li className="flex gap-2.5">
           <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy/45" aria-hidden />
           <span>
@@ -171,7 +171,7 @@ function PdpWarrantyGlanceBody() {
       </ul>
       <Link
         href="/pages/warranty-cover"
-        className="mt-4 inline-flex min-h-11 items-center text-xs font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+        className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
       >
         Full warranty cover
       </Link>

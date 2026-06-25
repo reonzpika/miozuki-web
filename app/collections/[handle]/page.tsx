@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getAllRatings } from '@/lib/judgeme/client';
 import { getCollections, getCollectionByHandle } from '@/lib/shopify';
 import { cleanDescriptionHtml } from '@/lib/description-html';
-import { getCollectionEducationThemes, isFlagshipCollection } from '@/lib/collection-page';
+import { getCollectionEducationThemes } from '@/lib/collection-page';
 import ProductsGrid from '@/components/products-grid';
 import CollectionHeroBanner from '@/components/collection-hero-banner';
 import JsonLd from '@/components/json-ld';
@@ -68,7 +68,6 @@ export default async function CollectionPage({
 
   const products = collection.products.edges.map((e) => e.node);
   const ratings = await getAllRatings().catch(() => ({}));
-  const flagship = isFlagshipCollection(handle);
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -100,7 +99,7 @@ export default async function CollectionPage({
         <ProductsGrid
           products={products}
           layout="flagship"
-          catalogueQuickFilters={flagship}
+          catalogueQuickFilters={false}
           ratings={ratings}
         />
       </div>

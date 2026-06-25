@@ -56,7 +56,7 @@ function sortRingSizeValues(values: string[]): string[] {
   });
 }
 
-type ButtonState = 'idle' | 'loading' | 'added' | 'error';
+type ButtonState = 'idle' | 'loading' | 'added' | 'error' | 'select-size';
 
 export default function AddToCart({
   variants,
@@ -76,11 +76,19 @@ export default function AddToCart({
 
   const [selected, setSelected] = useState<Record<string, string>>(() => {
     const defaults: Record<string, string> = {};
-    for (const opt of options) defaults[opt.name] = opt.values[0];
+    for (const opt of options) {
+      defaults[opt.name] = isRingSizeOption(opt.name, opt.values)
+        ? ''
+        : opt.values[0];
+    }
     return defaults;
   });
 
   const [btnState, setBtnState] = useState<ButtonState>('idle');
+
+  const needsRingSize = options.some(
+    (o) => isRingSizeOption(o.name, o.values) && !selected[o.name]
+  );
 
   const variant = findVariant(variants, selected);
   const available = variant?.availableForSale ?? false;
@@ -96,6 +104,11 @@ export default function AddToCart({
       : formatPrice(minP.amount, minP.currencyCode);
 
   const handleAdd = async () => {
+    if (needsRingSize) {
+      setBtnState('select-size');
+      setTimeout(() => setBtnState('idle'), 2500);
+      return;
+    }
     if (!variant || !available) return;
     setBtnState('loading');
     try {
@@ -107,6 +120,41 @@ export default function AddToCart({
       setTimeout(() => setBtnState('idle'), 2500);
     }
   };
+
+  const soldOut = !needsRingSize && Boolean(variant) && !available;
+  const addDisabled =
+    soldOut || btnState === 'loading' || btnState === 'added';
+
+  function addButtonLabel(short = false): string {
+    if (needsRingSize && btnState === 'select-size') {
+      return 'Please select size';
+    }
+    if (soldOut) return short ? 'Sold out' : 'Sold Out';
+    if (btnState === 'loading') return 'Adding…';
+    if (btnState === 'added') return short ? 'Added' : 'Added to Cart';
+    if (btnState === 'error') return short ? 'Error' : 'Something went wrong';
+    return short ? 'Add to cart' : 'Add to Cart';
+  }
+
+  function addButtonClassName(compact = false): string {
+    const base = compact
+      ? 'shrink-0 px-5 py-3 text-[11px] tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream'
+      : 'w-full py-4 text-xs tracking-[0.2em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream';
+
+    if (soldOut) {
+      return `${base} bg-charcoal/10 text-charcoal/30 cursor-not-allowed`;
+    }
+    if (btnState === 'added') {
+      return `${base} bg-charcoal text-cream`;
+    }
+    if (btnState === 'error') {
+      return `${base} bg-red-800 text-cream`;
+    }
+    if (btnState === 'select-size') {
+      return `${base} bg-burgundy text-cream`;
+    }
+    return `${base} bg-burgundy text-cream hover:bg-accent-hover`;
+  }
 
   return (
     <>
@@ -141,9 +189,11 @@ export default function AddToCart({
                     labelId={labelId}
                     values={valuesForUi}
                     selectedValue={selected[opt.name]}
-                    onChange={(val) =>
-                      setSelected((s) => ({ ...s, [opt.name]: val }))
-                    }
+                    showRequired={btnState === 'select-size'}
+                    onChange={(val) => {
+                      setSelected((s) => ({ ...s, [opt.name]: val }));
+                      if (btnState === 'select-size') setBtnState('idle');
+                    }}
                     availabilityForValue={(val) => {
                       const testVariant = findVariant(variants, {
                         ...selected,
@@ -207,26 +257,10 @@ export default function AddToCart({
         <button
           type="button"
           onClick={handleAdd}
-          disabled={!available || btnState === 'loading' || btnState === 'added'}
-          className={`w-full py-4 text-xs tracking-[0.2em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${
-            !available
-              ? 'bg-charcoal/10 text-charcoal/30 cursor-not-allowed'
-              : btnState === 'added'
-                ? 'bg-charcoal text-cream'
-                : btnState === 'error'
-                  ? 'bg-red-800 text-cream'
-                  : 'bg-burgundy text-cream hover:bg-accent-hover'
-          }`}
+          disabled={addDisabled}
+          className={addButtonClassName()}
         >
-          {!available
-            ? 'Sold Out'
-            : btnState === 'loading'
-              ? 'Adding…'
-              : btnState === 'added'
-                ? 'Added to Cart'
-                : btnState === 'error'
-                  ? 'Something went wrong'
-                  : 'Add to Cart'}
+          {addButtonLabel()}
         </button>
       </div>
 
@@ -245,26 +279,10 @@ export default function AddToCart({
           <button
             type="button"
             onClick={handleAdd}
-            disabled={!available || btnState === 'loading' || btnState === 'added'}
-            className={`shrink-0 px-5 py-3 text-[11px] tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${
-              !available
-                ? 'bg-charcoal/10 text-charcoal/30 cursor-not-allowed'
-                : btnState === 'added'
-                  ? 'bg-charcoal text-cream'
-                  : btnState === 'error'
-                    ? 'bg-red-800 text-cream'
-                    : 'bg-burgundy text-cream hover:bg-accent-hover'
-            }`}
+            disabled={addDisabled}
+            className={addButtonClassName(true)}
           >
-            {!available
-              ? 'Sold out'
-              : btnState === 'loading'
-                ? 'Adding…'
-                : btnState === 'added'
-                  ? 'Added'
-                  : btnState === 'error'
-                    ? 'Error'
-                    : 'Add to cart'}
+            {addButtonLabel(true)}
           </button>
         </div>
       </div>

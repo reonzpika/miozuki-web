@@ -10,6 +10,8 @@ type Props = {
   selectedValue: string;
   onChange: (value: string) => void;
   availabilityForValue: (value: string) => boolean;
+  /** Highlights the field after add-to-cart without a selection. */
+  showRequired?: boolean;
 };
 
 export default function PdpRingSizeSelect({
@@ -19,6 +21,7 @@ export default function PdpRingSizeSelect({
   selectedValue,
   onChange,
   availabilityForValue,
+  showRequired = false,
 }: Props) {
   const listboxId = useId();
   const [open, setOpen] = useState(false);
@@ -41,17 +44,23 @@ export default function PdpRingSizeSelect({
     };
   }, [open]);
 
-  const phrase = ringInnerDiametrePhrase(selectedValue);
+  const phrase = selectedValue ? ringInnerDiametrePhrase(selectedValue) : null;
 
   const triggerClasses =
-    'flex w-full min-h-[3.125rem] cursor-pointer items-center border border-charcoal/20 bg-cream px-3.5 py-2.5 pr-11 text-left text-xs leading-normal text-charcoal transition-colors focus:border-charcoal/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream';
+    'flex w-full min-h-[3.125rem] cursor-pointer items-center border bg-cream px-3.5 py-2.5 pr-11 text-left text-xs leading-normal text-charcoal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream';
+
+  const borderClass = showRequired
+    ? 'border-burgundy focus:border-burgundy'
+    : open
+      ? 'border-charcoal/50 focus:border-charcoal/50'
+      : 'border-charcoal/20 focus:border-charcoal/50';
 
   return (
     <div ref={containerRef} className="relative max-w-md">
       <button
         type="button"
         id={id}
-        className={`${triggerClasses}${open ? ' border-charcoal/50' : ''}`}
+        className={`${triggerClasses} ${borderClass}`}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listboxId}
@@ -59,14 +68,20 @@ export default function PdpRingSizeSelect({
         onClick={() => setOpen((o) => !o)}
       >
         <span className="flex min-w-0 flex-1 items-baseline justify-between gap-4">
-          <span className="shrink-0 text-sm font-medium tabular-nums tracking-tight">
-            {selectedValue}
-          </span>
-          {phrase ? (
-            <span className="min-w-0 flex-1 text-right text-xs leading-snug text-charcoal/65">
-              {phrase}
-            </span>
-          ) : null}
+          {selectedValue ? (
+            <>
+              <span className="shrink-0 text-sm font-medium tabular-nums tracking-tight">
+                {selectedValue}
+              </span>
+              {phrase ? (
+                <span className="min-w-0 flex-1 text-right text-xs leading-snug text-charcoal/65">
+                  {phrase}
+                </span>
+              ) : null}
+            </>
+          ) : (
+            <span className="text-sm text-charcoal/45">Select size</span>
+          )}
         </span>
       </button>
       <span

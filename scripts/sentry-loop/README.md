@@ -65,19 +65,26 @@ PR. The classifier defaults to "do not touch".
 6. **One repair at a time** so PRs do not pile up.
 7. **Dirty-repo refusal** (live path) so uncommitted work is never clobbered.
 
-## Not wired yet (the go-live checklist)
+## Go-live checklist
 
-The scaffold deliberately stops short of any live effect. To go live later:
+Built and verified (deterministic, no network):
+- [x] `sentry_detect._fetch_live_issues()` against the Sentry REST API
+      (`GET /api/0/projects/{org}/{project}/issues/`, Bearer `event:read`). Needs
+      `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` in the environment.
+- [x] `sentry_repair_triage._run_live()`: dirty-check, branch, boxed `claude -p`
+      with `--permission-mode dontAsk --allowedTools <whitelist> --settings
+      repair_settings.json`, re-run the gate ourselves, push the branch, draft PR.
+      Gated behind `SENTRY_LOOP_LIVE=1`.
 
-- [ ] Implement `sentry_detect._fetch_live_issues()` against the Sentry REST API
-      (needs `SENTRY_AUTH_TOKEN` + org/project slugs), or wire the Sentry MCP.
-- [ ] Build `sentry_repair_triage._run_live()`: dirty-check, branch off master,
-      `claude -p --settings repair_settings.json` (verify the exact `--settings`
-      flag against the installed Claude Code version), re-run the gate, commit on
-      the branch, push, `gh pr create --draft`, set `AWAITING_APPROVAL`, notify.
-- [ ] Add a notifier (email/Telegram) mirroring grow's `tools/alerts`.
+Still to do before it can actually run:
+- [ ] Decide and wire the notifier channel (`_notify_proposal` is a stub). See the
+      design doc; the chosen channel is a remote-control-style phone push.
+- [ ] First live run: a manual, supervised run with a real `SENTRY_AUTH_TOKEN`
+      against one issue, watching it open the draft PR (Layer-3 spot check). Also
+      confirm `gh` is authed and the exact `--settings` flag on the installed
+      Claude Code version.
 - [ ] Install the Task Scheduler job (detector, then triage shortly after).
-- [ ] Decide Stage 0 (detect + notify only) vs Stage 1 (propose PRs) for first run.
+- [ ] Optional Stage 0 first (detect + notify only) before enabling fixes.
 
-Nothing here runs against production Sentry, pushes, or calls Claude until those
-boxes are ticked and reviewed.
+Nothing runs against production Sentry, pushes, or calls Claude until
+`SENTRY_LOOP_LIVE=1` plus the tokens are set and the first run is done by hand.

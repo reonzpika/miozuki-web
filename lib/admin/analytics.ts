@@ -191,6 +191,38 @@ export async function getSalesTotals(): Promise<SalesTotals | null> {
   )();
 }
 
+export type WeeklySales = { orders: number; revenue: number };
+
+/** Orders + revenue GA4 recorded in the last 7 days (the digest's "this week").
+ *  No baseline: this is strictly the current week, which reads 0 while the store
+ *  is pre-sales and Shopify-checkout purchase events are not reaching GA4. */
+export async function getWeeklySales(): Promise<WeeklySales | null> {
+  return unstable_cache(
+    async () => {
+      const client = getClient();
+      const property = propertyPath();
+      if (!client || !property) return null;
+      try {
+        const { current } = ranges('7d');
+        const [res] = await client.runReport({
+          property,
+          dateRanges: [current],
+          metrics: [{ name: 'ecommercePurchases' }, { name: 'totalRevenue' }],
+        });
+        const row = res.rows?.[0];
+        return {
+          orders: Number(row?.metricValues?.[0]?.value ?? 0),
+          revenue: Number(row?.metricValues?.[1]?.value ?? 0),
+        };
+      } catch {
+        return null;
+      }
+    },
+    ['ga-weekly-sales'],
+    { revalidate: 300 },
+  )();
+}
+
 export async function getDailyTrend(period: Period): Promise<TrendPoint[] | null> {
   return unstable_cache(
     async () => {

@@ -174,6 +174,14 @@ The `/admin` Analytics and SEO tabs use **Recharts** for charts and a **TanStack
 - **Tables:** `components/admin/tables.tsx` (typed `TopPagesTable` / `ChannelsTable` / `SearchQueriesTable` / `SearchPagesTable` wrapping a generic sortable `DataTable`), primitive in `components/ui/table.tsx`, `cn()` in `lib/utils.ts`.
 - **shadcn note:** the table primitive follows the shadcn pattern but **`shadcn init` was deliberately NOT run** (it rewrites `globals.css` and clashes with the brand `@theme inline` tokens). The primitive uses the existing brand tokens (`border-border`, `text-graphite`, `bg-cream`, ...). Keep any future shadcn-style components on the brand tokens, not a parallel `--primary`/`--muted` system.
 
+### Weekly digest (cron)
+
+`app/api/cron/weekly-digest` emails Ting a plain-English weekly store recap (visitors + change, traffic sources, top pieces, orders this week + total, Google clicks, busiest day, a top search term), built from the admin metrics functions via `lib/admin/weekly-digest.ts`. Runs on **Vercel Cron, Mondays ~8am NZ** (`vercel.json`, `0 20 * * 0` in UTC). Recipients are constants in the route: `info@miozuki.co.nz`, cc `ryo@clinicpro.co.nz`.
+
+- **Preview without sending:** GET `/api/cron/weekly-digest?secret=$DIGEST_SECRET&preview=1` returns the rendered HTML (falls back to sample data when analytics isn't connected in that environment).
+- Auth mirrors the Instagram-refresh route: the `x-vercel-cron` header, or `?secret=$DIGEST_SECRET`.
+- Needs `DIGEST_SECRET` + `RESEND_API_KEY_MIOZUKI` set in Vercel. Vercel Hobby allows max 2 cron jobs and at most daily cadence, so this weekly job fits.
+
 ### Cart state
 
 `CartProvider` in `components/cart-provider.tsx` is a React Context wrapping the entire app (mounted in `app/layout.tsx`). Cart ID is persisted in `localStorage` under the key `miozuki-cart-id`. On mount it rehydrates from Shopify via `getCart()`.

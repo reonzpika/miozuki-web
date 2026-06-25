@@ -24,6 +24,8 @@ from __future__ import annotations
 import json
 import os
 import sys
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -33,6 +35,12 @@ if str(ROOT) not in sys.path:
 import repair_state  # noqa: E402
 from failure_classes import Category, classify_issue  # noqa: E402
 
+# Sentry REST API. Endpoints verified against docs.sentry.io 2026-06-25:
+#   list issues:  GET /api/0/projects/{org}/{project}/issues/
+#   issue events: GET /api/0/organizations/{org}/issues/{id}/events/?full=true
+# Auth is a Bearer token with event:read scope.
+SENTRY_API_BASE = os.environ.get("SENTRY_API_BASE", "https://sentry.io/api/0")
+
 
 def _load_fixture(path: str) -> list[dict]:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
@@ -41,18 +49,90 @@ def _load_fixture(path: str) -> list[dict]:
     return data if isinstance(data, list) else []
 
 
-def _fetch_live_issues() -> list[dict]:
-    """Live Sentry fetch. Deliberately unimplemented in the scaffold so the loop
-    cannot touch production Sentry until this is built and reviewed.
+def _sentry_get(path: str, params: dict | None = None) -> object:
+    token = os.environ.get("SENTRY_AUTH_TOKEN", "").strip()
+    if not token:
+        raise RuntimeError("SENTRY_AUTH_TOKEN not set; cannot do a live Sentry fetch")
+    url = f"{SENTRY_API_BASE}{path}"
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})
+    with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310 (trusted host)
+        return json.loads(resp.read().decode("utf-8"))
 
-    To implement: GET the Sentry issues endpoint for the project, filtered to
-    unresolved + environment:production + level:error, and normalise each into
-    {id, title, culprit, transaction, metadata{type,value}, frames[{filename}],
-    permalink}. Keep this function deterministic (no LLM)."""
-    raise NotImplementedError(
-        "Live Sentry fetch is not wired in the scaffold. "
-        "Set SENTRY_LOOP_FIXTURE to a fixtures JSON to dry-run the detector."
-    )
+
+def normalise_issue(raw: dict) -> dict:
+    """Map a raw Sentry issue object to the shape the classifier expects. The
+    issue-list endpoint does not return stack frames, so we seed `frames` from
+    the culprit (which carries the file/function); the repair step enriches the
+    error excerpt with the full stack trace for the one issue we queue."""
+    meta = raw.get("metadata") or {}
+    culprit = str(raw.get("culprit") or "")
+    return {
+        "id": str(raw.get("id", "")),
+        "title": str(raw.get("title", "")),
+        "culprit": culprit,
+        "transaction": culprit,
+        "level": str(raw.get("level", "")),
+        "metadata": {"type": str(meta.get("type", "")), "value": str(meta.get("value", ""))},
+        "frames": [{"filename": culprit}] if culprit else [],
+        "permalink": str(raw.get("permalink", "")),
+        "shortId": str(raw.get("shortId", "")),
+    }
+
+
+def _extract_stacktrace(event: dict) -> str:
+    """Pull a compact stack-trace string from a Sentry event body. Defensive: the
+    exact entry shape should be spot-checked against a real response at go-live."""
+    lines: list[str] = []
+    for entry in event.get("entries", []) or []:
+        if entry.get("type") not in ("exception", "stacktrace"):
+            continue
+        data = entry.get("data") or {}
+        values = data.get("values") or ([data] if data.get("stacktrace") else [])
+        for val in values:
+            st = val.get("stacktrace") or {}
+            for frame in st.get("frames", []) or []:
+                fn = frame.get("filename") or frame.get("absPath") or ""
+                func = frame.get("function") or ""
+                line = frame.get("lineNo") or frame.get("lineno") or ""
+                lines.append(f"  at {func} ({fn}:{line})")
+    return "\n".join(lines[-20:])  # innermost frames
+
+
+def _fetch_issue_stacktrace(issue_id: str) -> str:
+    org = os.environ.get("SENTRY_ORG", "").strip()
+    try:
+        events = _sentry_get(f"/organizations/{org}/issues/{issue_id}/events/",
+                             {"full": "true", "per_page": "1"})
+        if isinstance(events, list) and events:
+            return _extract_stacktrace(events[0])
+    except Exception as e:  # enrichment is best-effort, never fatal
+        print(f"[detect] stacktrace fetch failed for {issue_id}: {e}", file=sys.stderr)
+    return ""
+
+
+def _fetch_live_issues() -> list[dict]:
+    """Live Sentry fetch: unresolved production errors for the project, newest
+    high-frequency first. Deterministic (no LLM). Requires SENTRY_AUTH_TOKEN,
+    SENTRY_ORG, SENTRY_PROJECT in the environment."""
+    org = os.environ.get("SENTRY_ORG", "").strip()
+    project = os.environ.get("SENTRY_PROJECT", "").strip()
+    if not org or not project:
+        raise RuntimeError("SENTRY_ORG and SENTRY_PROJECT must be set for a live fetch")
+    params = {
+        "query": "is:unresolved level:error",
+        "statsPeriod": "14d",
+        "sort": "freq",
+        "limit": "25",
+    }
+    env = os.environ.get("SENTRY_ENVIRONMENT", "production").strip()
+    if env:
+        params["environment"] = env
+    raw = _sentry_get(f"/projects/{org}/{project}/issues/", params)
+    if not isinstance(raw, list):
+        return []
+    return [normalise_issue(r) for r in raw]
 
 
 def get_issues() -> list[dict]:

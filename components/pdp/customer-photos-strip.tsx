@@ -11,7 +11,7 @@ export function PdpCustomerPhotosStrip({
   images: ShopifyImage[];
   title: string;
 }) {
-  const strip = images.slice(1, 4);
+  const strip = images.slice(1, 5);
   if (strip.length === 0) return null;
 
   return (
@@ -31,14 +31,17 @@ export function PdpCustomerPhotosStrip({
           reviews.
         </p>
       </div>
-      <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {strip.map((img, i) => (
-          <li key={img.url} className="relative aspect-[3/4] overflow-hidden bg-cream/60">
+          <li
+            key={img.url}
+            className={`relative aspect-[3/4] overflow-hidden bg-cream/60${i >= 3 ? ' sm:hidden' : ''}`}
+          >
             <Image
               src={img.url}
               alt={img.altText ?? `${title}, photo ${i + 2}`}
               fill
-              sizes="(max-width: 768px) 33vw, 180px"
+              sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 180px"
               className="object-cover"
             />
           </li>

@@ -7,6 +7,38 @@ type PdpShareProps = {
   productTitle: string;
 };
 
+type ShareHint = 'instagram' | 'messenger' | null;
+
+function isMobileUserAgent(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
+}
+
+async function writeShareBody(shareBody: string): Promise<boolean> {
+  try {
+    if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) {
+      return false;
+    }
+    await navigator.clipboard.writeText(shareBody);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function openDesktopTab(url: string): Window | null {
+  const popup = window.open('about:blank', '_blank');
+  if (popup && !popup.closed) {
+    popup.location.replace(url);
+    popup.focus();
+    return popup;
+  }
+  window.open(url, '_blank', 'noopener,noreferrer');
+  return null;
+}
+
 function ShareGlyph({ className }: { className?: string }) {
   return (
     <svg
@@ -32,15 +64,24 @@ function ShareGlyph({ className }: { className?: string }) {
 
 export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
   const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [shareHint, setShareHint] = useState<ShareHint>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
-  const copyResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hintResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const shareBody = `${productTitle}\n\n${shareUrl}`;
   const whatsappHref = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareBody)}`;
   const emailHref = `mailto:?subject=${encodeURIComponent(`${productTitle} · Miozuki`)}&body=${encodeURIComponent(shareBody)}`;
-  const facebookHref = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+
+  const showShareHint = useCallback((hint: ShareHint) => {
+    setShareHint(hint);
+    if (hintResetRef.current) clearTimeout(hintResetRef.current);
+    if (hint) {
+      hintResetRef.current = setTimeout(() => {
+        setShareHint(null);
+      }, 5000);
+    }
+  }, []);
 
   const canNativeShare =
     typeof navigator !== 'undefined' &&
@@ -61,21 +102,39 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
     }
   }, [productTitle, shareUrl]);
 
-  const copyForInstagram = useCallback(async () => {
-    try {
-      if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) {
-        throw new Error('clipboard unavailable');
-      }
-      await navigator.clipboard.writeText(shareBody);
-      if (copyResetRef.current) clearTimeout(copyResetRef.current);
-      setCopied(true);
-      copyResetRef.current = setTimeout(() => {
-        setCopied(false);
-      }, 2500);
-    } catch {
-      setCopied(false);
+  const handleMessengerShare = useCallback(() => {
+    setOpen(false);
+    showShareHint('messenger');
+
+    const encodedLink = encodeURIComponent(shareUrl);
+    const isMobile = isMobileUserAgent();
+
+    if (isMobile) {
+      void writeShareBody(shareBody);
+      window.location.href = `fb-messenger://share/?link=${encodedLink}`;
+      return;
     }
-  }, [shareBody]);
+
+    openDesktopTab('https://www.messenger.com/');
+    void writeShareBody(shareBody);
+  }, [shareBody, shareUrl, showShareHint]);
+
+  const handleInstagramDm = useCallback(() => {
+    setOpen(false);
+    showShareHint('instagram');
+
+    const isMobile = isMobileUserAgent();
+    const encodedBody = encodeURIComponent(shareBody);
+
+    if (isMobile) {
+      void writeShareBody(shareBody);
+      window.location.href = `instagram://sharesheet?text=${encodedBody}`;
+      return;
+    }
+
+    openDesktopTab('https://www.instagram.com/direct/inbox/');
+    void writeShareBody(shareBody);
+  }, [shareBody, showShareHint]);
 
   useEffect(() => {
     if (!open) return;
@@ -98,7 +157,7 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
 
   useEffect(() => {
     return () => {
-      if (copyResetRef.current) clearTimeout(copyResetRef.current);
+      if (hintResetRef.current) clearTimeout(hintResetRef.current);
     };
   }, []);
 
@@ -106,7 +165,7 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
     'flex min-h-11 w-full items-center px-4 py-2.5 text-left text-xs tracking-wide text-charcoal transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-burgundy/35';
 
   return (
-    <div ref={wrapRef} className="relative flex justify-start">
+    <div ref={wrapRef} className="relative flex flex-col items-start">
       <button
         type="button"
         aria-expanded={open}
@@ -118,8 +177,34 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
         <span className="text-burgundy" aria-hidden>
           <ShareGlyph />
         </span>
-        Share product
+        Share this piece
       </button>
+
+      <span className="sr-only" aria-live="polite">
+        {shareHint === 'instagram'
+          ? 'Copied. Opening Instagram DMs. Paste to send if needed.'
+          : shareHint === 'messenger'
+            ? 'Copied. Opening Facebook chat. Pick a conversation to send this link.'
+            : ''}
+      </span>
+
+      {shareHint === 'instagram' ? (
+        <p
+          className="mt-2 max-w-xs text-[10px] tracking-wide text-charcoal/50"
+          role="status"
+          aria-hidden
+        >
+          Link copied. Paste into your Instagram DM if it is not already there.
+        </p>
+      ) : shareHint === 'messenger' ? (
+        <p
+          className="mt-2 max-w-xs text-[10px] tracking-wide text-charcoal/50"
+          role="status"
+          aria-hidden
+        >
+          Link copied. Choose a chat in Facebook and paste to send this piece.
+        </p>
+      ) : null}
 
       {open && (
         <div
@@ -128,10 +213,6 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
           aria-label="Share this product"
           className="absolute left-0 top-full z-50 mt-2 w-[min(100vw-3rem,20rem)] border border-charcoal/10 bg-cream py-2 rounded-sm"
         >
-          <span id={`${menuId}-status`} className="sr-only" aria-live="polite">
-            {copied ? 'Copied. Ready to paste in Instagram.' : ''}
-          </span>
-
           {canNativeShare && (
             <button
               type="button"
@@ -157,36 +238,33 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
           >
             WhatsApp message
           </a>
-          <a
-            href={facebookHref}
-            role="menuitem"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-            onClick={() => setOpen(false)}
-          >
-            Facebook
-            <span className="sr-only">
-              Opens Facebook in a new tab where you can post this link or open
-              Messenger.
-            </span>
-          </a>
-          <a href={emailHref} role="menuitem" className={linkClass} onClick={() => setOpen(false)}>
-            Email
-          </a>
           <button
             type="button"
             role="menuitem"
-            className={`${linkClass} ${copied ? 'text-burgundy' : ''}`}
-            onClick={() => void copyForInstagram()}
+            className={`${linkClass} ${shareHint === 'instagram' ? 'text-burgundy' : ''}`}
+            onClick={handleInstagramDm}
           >
-            Instagram (copy link)
+            Instagram DM
+            <span className="sr-only">
+              Copies the link and opens Instagram DMs so you can send it in a
+              chat.
+            </span>
           </button>
-          {copied ? (
-            <p className="px-4 pb-2 text-[10px] tracking-wide text-charcoal/50" aria-hidden>
-              Copied to clipboard. Paste it into Instagram messages.
-            </p>
-          ) : null}
+          <button
+            type="button"
+            role="menuitem"
+            className={`${linkClass} ${shareHint === 'messenger' ? 'text-burgundy' : ''}`}
+            onClick={handleMessengerShare}
+          >
+            Facebook chat
+            <span className="sr-only">
+              Copies the link and opens Facebook chat so you can send it in a
+              conversation.
+            </span>
+          </button>
+          <a href={emailHref} role="menuitem" className={linkClass} onClick={() => setOpen(false)}>
+            Email
+          </a>
         </div>
       )}
     </div>

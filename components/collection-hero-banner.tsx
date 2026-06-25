@@ -28,20 +28,19 @@ export default function CollectionHeroBanner({ collection }: Props) {
    * so favour a slightly taller strip (section min-heights) and focal points that bias the jewel into view on all widths.
    */
   const pearlBannerImageClass =
-    'object-cover object-[48%_30%] sm:object-[46%_29%] md:object-[50%_26%] lg:object-[48%_26%] xl:object-[49%_25%]';
+    'object-cover object-[52%_18%] sm:object-[46%_29%] md:object-[50%_26%] lg:object-[48%_26%] xl:object-[49%_25%]';
 
   const imagePositionClass = usePearlHero
     ? pearlBannerImageClass
     : 'object-cover object-center';
 
-  const crumbBand = usePearlHero ? 'text-charcoal/45' : 'text-cream/50';
-  const crumbLink = usePearlHero
-    ? 'inline-flex min-h-10 items-center rounded-sm px-0.5 text-charcoal/60 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-charcoal/35 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-0.5'
-    : 'inline-flex min-h-10 items-center rounded-sm px-0.5 text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/45 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal/50 md:min-h-0 md:py-0.5';
-  const crumbDivider = usePearlHero ? 'text-charcoal/30' : 'text-cream/35';
-  const crumbCurrent = usePearlHero ? 'text-charcoal' : 'text-cream/85';
-  const headlineColor = usePearlHero ? 'text-charcoal' : 'text-cream';
-  const blurbTone = usePearlHero ? 'text-charcoal/65' : 'text-cream/68';
+  const crumbBand = 'text-cream/50';
+  const crumbLink =
+    'inline-flex min-h-10 items-center rounded-sm px-0.5 text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/45 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal/50 md:min-h-0 md:py-0.5';
+  const crumbDivider = 'text-cream/35';
+  const crumbCurrent = 'text-cream/85';
+  const headlineColor = 'text-cream';
+  const blurbTone = 'text-cream/75';
 
   // Only show the curated intro metafield; if a collection has none, show nothing
   // (no fallback to the long SEO description, which would render as a wall of text).
@@ -60,8 +59,18 @@ export default function CollectionHeroBanner({ collection }: Props) {
     />
   );
 
+  const sectionHeightClass = usePearlHero
+    ? 'min-h-[33svh] max-h-[33svh] sm:min-h-[16.75rem] sm:max-h-none md:min-h-[18.25rem]'
+    : 'min-h-[16rem] sm:min-h-[16.75rem] md:min-h-[18.25rem]';
+
+  const contentPaddingClass = usePearlHero
+    ? 'px-5 py-3 sm:py-6 md:px-10 md:py-7'
+    : 'px-5 py-6 md:px-10 md:py-7';
+
   return (
-    <section className="relative flex min-h-[16rem] flex-col justify-center overflow-hidden text-center sm:min-h-[16.75rem] md:min-h-[18.25rem] md:text-left">
+    <section
+      className={`relative flex flex-col justify-center overflow-hidden text-center md:text-left ${sectionHeightClass}`}
+    >
       {usePearlHero ? (
         <div className="absolute inset-0 overflow-hidden bg-cream">{bannerImage}</div>
       ) : (
@@ -69,15 +78,22 @@ export default function CollectionHeroBanner({ collection }: Props) {
       )}
       {!usePearlHero ? (
         <div
-          className="absolute inset-0 bg-gradient-to-r from-charcoal/65 via-charcoal/45 to-charcoal/30"
+          className="absolute inset-0 z-[1] bg-gradient-to-r from-charcoal/65 via-charcoal/45 to-charcoal/30"
           aria-hidden
         />
-      ) : null}
+      ) : (
+        <div
+          className="absolute inset-0 z-[1] bg-gradient-to-r from-charcoal/55 via-charcoal/35 to-charcoal/15"
+          aria-hidden
+        />
+      )}
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center px-5 py-6 md:items-start md:px-10 md:py-7">
+      <div
+        className={`relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center md:items-start md:text-left ${contentPaddingClass}`}
+      >
         <nav
           aria-label="Breadcrumb"
-          className={`mb-2 flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-[10px] uppercase tracking-[0.22em] md:justify-start md:text-[11px] ${crumbBand}`}
+          className={`mb-1 flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 text-[10px] uppercase tracking-[0.22em] sm:mb-2 md:justify-start md:text-[11px] ${crumbBand}`}
         >
           <Link href="/" className={crumbLink}>
             Home
@@ -91,18 +107,18 @@ export default function CollectionHeroBanner({ collection }: Props) {
           <span className={crumbDivider} aria-hidden>
             /
           </span>
-          <span className={`min-h-10 py-1.5 md:min-h-0 md:py-0.5 ${crumbCurrent}`}>{collection.title}</span>
+          <span className={`py-0.5 md:min-h-0 md:py-0.5 ${usePearlHero ? 'min-h-0' : 'min-h-10 py-1.5'} ${crumbCurrent}`}>{collection.title}</span>
         </nav>
 
         <h1
-          className={`max-w-3xl font-serif text-xl leading-snug tracking-tight md:text-2xl lg:text-[1.65rem] lg:leading-snug ${headlineColor}`}
+          className={`max-w-3xl font-serif leading-snug tracking-tight sm:text-xl md:text-2xl lg:text-[1.65rem] lg:leading-snug ${usePearlHero ? 'text-lg' : 'text-xl'} ${headlineColor}`}
         >
           {collection.title}
         </h1>
 
         {blurb ? (
           <p
-            className={`mt-1.5 max-w-3xl text-xs leading-snug sm:text-sm ${blurbTone}`}
+            className={`mt-1 max-w-3xl text-xs leading-snug sm:mt-1.5 sm:text-sm ${usePearlHero ? 'line-clamp-2 sm:line-clamp-none' : ''} ${blurbTone}`}
           >
             {blurb}
           </p>

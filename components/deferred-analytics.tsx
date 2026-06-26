@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { isProductionHost } from '@/lib/analytics-host';
 
 /**
  * Loads GA4 only after the page has settled or the user first interacts, so the
@@ -13,6 +14,9 @@ export default function DeferredAnalytics({ gaId }: { gaId: string }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    // Only load GA4 for real customers on the production host. This keeps
+    // localhost dev and Vercel preview review sessions out of the data.
+    if (!isProductionHost()) return;
     let fired = false;
     const trigger = () => {
       if (fired) return;

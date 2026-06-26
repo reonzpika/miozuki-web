@@ -146,13 +146,15 @@ The two Shopify clients are intentionally split: RSC reads go through `client.ts
 
 Three client-side trackers, each an env-gated component rendered in `app/layout.tsx`. Each returns `null` when its env var is unset, so a missing key never breaks the build. All three cover the **Next.js storefront only**: Shopify's hosted checkout is a separate domain (`checkout.miozuki.co.nz`) and is not tracked by these.
 
+**Production-host gate (added 2026-06-26).** All three trackers also fire only when the live hostname is the production host, via `lib/analytics-host.ts` (`isProductionHost()` / `useIsProductionHost()`, host = `www.miozuki.co.nz`). This stops `localhost` development and Vercel preview (`*.vercel.app`) review sessions from polluting GA4 engagement, sending fake Meta Pixel PageViews, or being recorded as user sessions in Clarity. Before the gate, dev/review traffic was being counted (found via the GA4 `hostName` dimension: ~17 `localhost` sessions in the post-cutover week, which inflated average time-on-page). The env vars are present in `.env.local`, so without the host gate the trackers fire in dev too. `NODE_ENV` / `VERCEL_ENV` alone is insufficient because preview builds also run as production, so the gate is on hostname.
+
 | Tool | Component | Env var | Purpose |
 |---|---|---|---|
 | Google Analytics 4 | `components/deferred-analytics.tsx` (via `@next/third-parties`, deferred) | `NEXT_PUBLIC_GA4_ID` | Traffic and behaviour stats |
 | Meta (Facebook) Pixel | `components/meta-pixel.tsx` (`next/script`, `lazyOnload`) | `NEXT_PUBLIC_META_PIXEL_ID` | Ad attribution and conversion events for Meta ads |
 | Microsoft Clarity | `components/clarity.tsx` (`next/script`, `lazyOnload`) | `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Heatmaps and session recordings |
 
-**Keep this list current.** When adding a new tracker: create an env-gated client component mirroring `meta-pixel.tsx`, render it in `app/layout.tsx`, add the env var to Vercel (Production at minimum), and add a row above. `NEXT_PUBLIC_*` vars are inlined at build time, so a production redeploy is required before any change takes effect on the live site.
+**Keep this list current.** When adding a new tracker: create an env-gated client component mirroring `meta-pixel.tsx`, gate it on `useIsProductionHost()` (or `isProductionHost()` inside an effect) so it never fires in dev or preview, render it in `app/layout.tsx`, add the env var to Vercel (Production at minimum), and add a row above. `NEXT_PUBLIC_*` vars are inlined at build time, so a production redeploy is required before any change takes effect on the live site.
 
 **Clarity specifics:**
 - Dashboard: `clarity.microsoft.com`, Miozuki project. Recordings and heatmaps live there only.

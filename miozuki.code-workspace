@@ -1,0 +1,7 @@
+{
+  "folders": [
+    { "name": "miozuki-web", "path": "." },
+    { "name": "miozuki-brain", "path": "../miozuki-brain" }
+  ],
+  "settings": {}
+}

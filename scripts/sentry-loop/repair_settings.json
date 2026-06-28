@@ -1,0 +1,16 @@
+{
+  "_comment": "Scoped settings loaded ONLY by the headless repair session via `claude -p --settings scripts/sentry-loop/repair_settings.json`. Wires the PreToolUse deny-hook so push/force-push/deploy/secret-writes are hard-blocked inside the repair agent, without affecting Ryo's normal interactive Claude Code. Verify the exact `--settings` flag name against the installed Claude Code version before go-live.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python scripts/sentry-loop/hooks/repair_deny.py"
+          }
+        ]
+      }
+    ]
+  }
+}

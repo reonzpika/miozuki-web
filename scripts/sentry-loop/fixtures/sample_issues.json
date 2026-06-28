@@ -1,0 +1,65 @@
+{
+  "_comment": "Fixture Sentry issues for dry-running the loop with no network. The first three are the real miozuki-web issues from 2026-06-24/25; the last two are synthetic to exercise the FIXABLE and SENSITIVE paths.",
+  "issues": [
+    {
+      "id": "miozuki-502",
+      "title": "Error GET /collections/[handle]",
+      "culprit": "GET /collections/[handle]",
+      "transaction": "GET /collections/[handle]",
+      "level": "error",
+      "environment": "vercel-production",
+      "metadata": { "type": "Error", "value": "Shopify API error: 502 Bad Gateway" },
+      "frames": [{ "filename": "lib/shopify/client.ts" }],
+      "permalink": "https://sentry.io/issues/0c8af99d40c04dd6a138df2ca89fbbb3/",
+      "_expected": "UNKNOWN (transient 502; handled by retry, not a code fix)"
+    },
+    {
+      "id": "miozuki-fetch-failed",
+      "title": "TypeError GET /collections/[handle]",
+      "culprit": "GET /collections/[handle]",
+      "transaction": "GET /collections/[handle]",
+      "level": "error",
+      "environment": "vercel-production",
+      "metadata": { "type": "TypeError", "value": "fetch failed (ConnectTimeout nassuu-px.myshopify.com:443)" },
+      "frames": [{ "filename": "lib/shopify/client.ts" }],
+      "permalink": "https://sentry.io/issues/b074572084ad48e787bf4ca79a9017ae/",
+      "_expected": "UNKNOWN (transient network timeout, even though type is TypeError)"
+    },
+    {
+      "id": "miozuki-webkit",
+      "title": "TypeError /products/:handle",
+      "culprit": "sendDataToNative",
+      "transaction": "/products/:handle",
+      "level": "error",
+      "environment": "vercel-production",
+      "metadata": { "type": "TypeError", "value": "undefined is not an object (evaluating 'window.webkit.messageHandlers')" },
+      "frames": [{ "filename": "products/moissanite-baguette-ring" }],
+      "permalink": "https://sentry.io/issues/74498d3a12584d50b5cc7e5ddcafec93/",
+      "_expected": "NOISE (Meta in-app browser injected script; filter in Sentry)"
+    },
+    {
+      "id": "miozuki-grid-bug",
+      "title": "TypeError /collections/[handle]",
+      "culprit": "components/products-grid.tsx in ProductsGrid",
+      "transaction": "/collections/[handle]",
+      "level": "error",
+      "environment": "vercel-production",
+      "metadata": { "type": "TypeError", "value": "Cannot read properties of undefined (reading 'map')" },
+      "frames": [{ "filename": "components/products-grid.tsx" }, { "filename": "app/collections/[handle]/page.tsx" }],
+      "permalink": "https://sentry.io/issues/synthetic-grid-bug/",
+      "_expected": "FIXABLE_CANDIDATE (real runtime bug in our own component)"
+    },
+    {
+      "id": "miozuki-cart-bug",
+      "title": "TypeError POST /api/shopify/cart",
+      "culprit": "app/api/shopify/cart/route.ts in POST",
+      "transaction": "POST /api/shopify/cart",
+      "level": "error",
+      "environment": "vercel-production",
+      "metadata": { "type": "TypeError", "value": "Cannot read properties of undefined (reading 'id')" },
+      "frames": [{ "filename": "app/api/shopify/cart/route.ts" }],
+      "permalink": "https://sentry.io/issues/synthetic-cart-bug/",
+      "_expected": "EXCLUDED_SENSITIVE (cart + /api/ route handler; never auto-fix)"
+    }
+  ]
+}

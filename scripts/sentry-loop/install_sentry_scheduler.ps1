@@ -94,7 +94,7 @@ function Register-SentryTask {
     $principal = New-ScheduledTaskPrincipal `
         -UserId $env:USERNAME `
         -LogonType Interactive `
-        -RunLevel Highest
+        -RunLevel Limited
 
     $settings = New-ScheduledTaskSettingsSet `
         -AllowStartIfOnBatteries `

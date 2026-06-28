@@ -41,6 +41,24 @@ REPO_ROOT = ROOT.parent.parent  # miozuki-web repo root
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+
+def _load_dotenv() -> None:
+    env_file = ROOT / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        key = key.strip()
+        val = val.strip()
+        if key and key not in os.environ:
+            os.environ[key] = val
+
+
+_load_dotenv()
+
 import repair_state  # noqa: E402
 from failure_classes import classify_issue  # noqa: E402
 

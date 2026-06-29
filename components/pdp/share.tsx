@@ -126,31 +126,31 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
     const isMobile = isMobileUserAgent();
 
     if (isMobile) {
-      void writeShareBody(shareLink);
+      void writeShareBody(shareBody);
       window.location.href = `fb-messenger://share/?link=${encodedLink}`;
       return;
     }
 
     openDesktopTab('https://www.messenger.com/');
-    void writeShareBody(shareLink);
-  }, [shareLink, showShareHint]);
+    void writeShareBody(shareBody);
+  }, [shareBody, shareLink, showShareHint]);
 
   const handleInstagramDm = useCallback(() => {
     setOpen(false);
     showShareHint('instagram');
 
     const isMobile = isMobileUserAgent();
-    const encodedLink = encodeURIComponent(shareLink);
+    const encodedBody = encodeURIComponent(shareBody);
 
     if (isMobile) {
-      void writeShareBody(shareLink);
-      window.location.href = `instagram://sharesheet?text=${encodedLink}`;
+      void writeShareBody(shareBody);
+      window.location.href = `instagram://sharesheet?text=${encodedBody}`;
       return;
     }
 
     openDesktopTab('https://www.instagram.com/direct/inbox/');
-    void writeShareBody(shareLink);
-  }, [shareLink, showShareHint]);
+    void writeShareBody(shareBody);
+  }, [shareBody, showShareHint]);
 
   useEffect(() => {
     if (!open) return;
@@ -198,9 +198,9 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
 
       <span className="sr-only" aria-live="polite">
         {shareHint === 'instagram'
-          ? 'Copied. Opening Instagram DMs. Paste to send if needed.'
+          ? 'Copied product name and link. Opening Instagram DMs. Paste to send if needed.'
           : shareHint === 'messenger'
-            ? 'Copied. Opening Facebook chat. Pick a conversation to send this link.'
+            ? 'Copied product name and link. Opening Facebook chat. Pick a conversation to send this piece.'
             : ''}
       </span>
 
@@ -210,7 +210,8 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
           role="status"
           aria-hidden
         >
-          Link copied. Paste the link into your Instagram DM if needed.
+          Product name and link copied. Paste into your Instagram DM if needed.
+          The link should show the product photo and title.
         </p>
       ) : shareHint === 'messenger' ? (
         <p

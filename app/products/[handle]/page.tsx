@@ -41,19 +41,45 @@ export async function generateMetadata({
     return { title: 'Product | Miozuki' };
   }
   if (!product) return { title: 'Product | Miozuki' };
-  const ogImage =
-    product.featuredImage?.url ?? product.images.edges[0]?.node.url;
-  const title = `${product.title} | Miozuki`;
+  const ogImageNode =
+    product.featuredImage ?? product.images.edges[0]?.node ?? null;
+  const ogImageUrl = ogImageNode?.url;
+  const pageTitle = `${product.title} | Miozuki`;
   const description = product.description || undefined;
-  return {
-    title,
+  const canonicalPath = `/products/${handle}`;
+  const openGraphBase = {
+    title: product.title,
     description,
-    alternates: { canonical: `/products/${handle}` },
-    openGraph: ogImage
-      ? { title, description, images: [{ url: ogImage, alt: product.title }] }
-      : undefined,
-    twitter: ogImage
-      ? { card: 'summary_large_image', title, images: [ogImage] }
+    url: canonicalPath,
+    siteName: 'Miozuki',
+    type: 'website' as const,
+    locale: 'en_NZ',
+  };
+  return {
+    title: pageTitle,
+    description,
+    alternates: { canonical: canonicalPath },
+    openGraph: ogImageUrl
+      ? {
+          ...openGraphBase,
+          images: [
+            {
+              url: ogImageUrl,
+              alt: product.title,
+              ...(ogImageNode?.width && ogImageNode?.height
+                ? { width: ogImageNode.width, height: ogImageNode.height }
+                : {}),
+            },
+          ],
+        }
+      : openGraphBase,
+    twitter: ogImageUrl
+      ? {
+          card: 'summary_large_image',
+          title: product.title,
+          description,
+          images: [ogImageUrl],
+        }
       : undefined,
   };
 }

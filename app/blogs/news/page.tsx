@@ -30,9 +30,7 @@ export default async function BlogListingPage() {
         Journal
       </h1>
       <p className="text-sm text-charcoal/55 mb-10 max-w-2xl">
-        Moissanite guides, styling tips, and jewellery stories from Auckland. Posts appear here
-        when they are published to the online store blog. Topic tags are optional; they only help
-        visitors filter the list below.
+        Moissanite guides, styling tips, and jewellery stories from Auckland.
       </p>
 
       <div className="h-px bg-charcoal/8 mb-10" />

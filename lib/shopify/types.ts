@@ -73,10 +73,6 @@ export interface ShopifyResponse<T> {
   errors?: { message: string }[];
 }
 
-export interface ArticleAuthor {
-  name: string;
-}
-
 export interface Article {
   handle: string;
   title: string;
@@ -85,5 +81,4 @@ export interface Article {
   contentHtml?: string;
   image: ShopifyImage | null;
   tags: string[];
-  author: ArticleAuthor;
 }

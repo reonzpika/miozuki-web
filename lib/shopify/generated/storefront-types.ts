@@ -459,7 +459,7 @@ export type GetBlogArticlesQueryVariables = Exact<{
 }>;
 
 
-export type GetBlogArticlesQuery = { blog: { articles: { edges: Array<{ node: { handle: string, title: string, publishedAt: string, excerpt: string | null, tags: Array<string>, image: { url: string, altText: string | null, width: number | null, height: number | null } | null, author: { name: string } } }> } } | null };
+export type GetBlogArticlesQuery = { blog: { articles: { edges: Array<{ node: { handle: string, title: string, publishedAt: string, excerpt: string | null, tags: Array<string>, image: { url: string, altText: string | null, width: number | null, height: number | null } | null } }> } } | null };
 
 export type GetArticleByHandleQueryVariables = Exact<{
   blogHandle: string;
@@ -467,12 +467,13 @@ export type GetArticleByHandleQueryVariables = Exact<{
 }>;
 
 
-export type GetArticleByHandleQuery = { blog: { articleByHandle: { title: string, publishedAt: string, contentHtml: string, excerpt: string | null, tags: Array<string>, image: { url: string, altText: string | null, width: number | null, height: number | null } | null, author: { name: string } } | null } | null };
+export type GetArticleByHandleQuery = { blog: { articleByHandle: { title: string, publishedAt: string, contentHtml: string, excerpt: string | null, tags: Array<string>, image: { url: string, altText: string | null, width: number | null, height: number | null } | null } | null } | null };
 
 export type GetCollectionByHandleQueryVariables = Exact<{
   handle: string;
   productsFirst: number;
+  after?: string | null | undefined;
 }>;
 
 
-export type GetCollectionByHandleQuery = { collectionByHandle: { id: string, handle: string, title: string, description: string, descriptionHtml: string, image: { url: string, altText: string | null, width: number | null, height: number | null } | null, metafield: { value: string } | null, products: { edges: Array<{ node: { id: string, handle: string, title: string, tags: Array<string>, productType: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null, images: { edges: Array<{ node: { url: string, altText: string | null, width: number | null, height: number | null } }> }, priceRange: { minVariantPrice: { amount: string, currencyCode: CurrencyCode }, maxVariantPrice: { amount: string, currencyCode: CurrencyCode } } } }> } } | null };
+export type GetCollectionByHandleQuery = { collectionByHandle: { id: string, handle: string, title: string, description: string, descriptionHtml: string, image: { url: string, altText: string | null, width: number | null, height: number | null } | null, metafield: { value: string } | null, products: { pageInfo: { hasNextPage: boolean, endCursor: string | null }, edges: Array<{ node: { id: string, handle: string, title: string, tags: Array<string>, productType: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null, images: { edges: Array<{ node: { url: string, altText: string | null, width: number | null, height: number | null } }> }, priceRange: { minVariantPrice: { amount: string, currencyCode: CurrencyCode }, maxVariantPrice: { amount: string, currencyCode: CurrencyCode } } } }> } } | null };

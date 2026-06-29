@@ -114,7 +114,6 @@ export const GET_BLOG_ARTICLES = /* GraphQL */ `
             excerpt
             image { url altText width height }
             tags
-            author { name }
           }
         }
       }
@@ -132,7 +131,6 @@ export const GET_ARTICLE_BY_HANDLE = /* GraphQL */ `
         excerpt
         image { url altText width height }
         tags
-        author { name }
       }
     }
   }

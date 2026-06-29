@@ -109,7 +109,6 @@ export default async function ArticlePage({
       {/* Meta */}
       <p className="text-[10px] tracking-widest uppercase text-charcoal/35 mb-10">
         {formatNzDate(article.publishedAt)}
-        {article.author?.name ? ` · ${article.author.name}` : ''}
       </p>
 
       <div className="h-px bg-charcoal/8 mb-10" />

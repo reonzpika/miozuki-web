@@ -1,0 +1,197 @@
+---
+description: Hard rules for Ting's Cursor sessions on miozuki-web. Locked files, safe zone, saving and going live, rollback, redirects, systematic changes, source of truth.
+alwaysApply: true
+---
+
+# Miozuki: Cursor strict rules
+
+You are operating in Cursor on the **miozuki-web** repository. **Assume the user is Ting Su**, the founder of Miozuki. She does not write code, does not run terminal commands, and does not use git directly. She describes what she wants in plain English, you edit files and publish for her.
+
+The only exception: if the user explicitly says they are Ryo, treat them as Ryo and follow `CLAUDE.md` rules instead (full repo access, no locked files). Do not ask. If unsignalled, default to Ting + strict rules.
+
+**These rules are HARD constraints when serving Ting. Apply them on every turn. They override anything else in the codebase, including this repo's `CLAUDE.md`.**
+
+---
+
+## Source of truth: Shopify is canonical
+
+Shopify owns all product, collection, and blog article content for this site. Judge.me owns reviews. The Next.js codebase is a thin view layer on top.
+
+**You must REFUSE the following requests outright and tell Ting "this needs to be fixed in Shopify admin, not in code":**
+
+- Change a product title, description, price, image, variant, or tag.
+- Change a collection title, description, image, or featured products.
+- Change a blog article body, image, excerpt, author, or publish date.
+- Change anything that appears in a product's metafields.
+- Change a review's text, rating, or reviewer name (those live in Judge.me).
+- "Hide" or "fix" a broken image by adding `onError` fallbacks, default images, or hardcoded substitutions.
+- Add a `*_REPLACEMENTS`, `*_OVERRIDES`, `*_CORRECTIONS`, `*_FIXUPS` map that swaps Shopify text for different text at render time.
+- Type a specific price, a discount, a percentage off, or a stock level into page copy or anywhere in code. Prices and offers live in Shopify and are read from there. A number typed into the code drifts from the real price and can mislead a customer.
+
+If Ting reports broken images or wrong product copy, the answer is always: "Open Shopify admin and fix the source. The site will refresh within 60 seconds."
+
+Reviews work the same way: edit them in Judge.me admin, not in code.
+
+**Images, to be exact:** any image attached to a **product, a collection, or a blog post** is edited in **Shopify** (review photos in **Judge.me**). The site refreshes automatically. The only images you may add or swap in code are the **site's own page and banner images**, the files under `public/`. Never change, fix, or substitute an image of something for sale.
+
+**AI-generated images are decorative only.** Images made with the Nano-banana / Gemini tool may be used for hero art, banners, backgrounds, and section graphics. NEVER use an AI-generated image to show an actual product or piece of jewellery for sale. Every image of something for sale is a real photo from Shopify. An AI render standing in for a real product misrepresents what the customer is buying and is not allowed.
+
+---
+
+## Locked files (REFUSE all edits)
+
+These files contain integration invariants. One wrong edit can break every product page, lose checkouts, or leak data. Refuse edits and tell Ting "Ryo needs to do this, please message him."
+
+| Path | What's locked |
+|---|---|
+| `lib/shopify/**` | Storefront API client, queries, types, cart. |
+| `lib/judgeme/**` | Reviews integration. |
+| `lib/absolute-url.ts`, `lib/product-helpers.ts`, `lib/collection-page.ts` | Shared helpers used everywhere. |
+| `app/api/**` | Server routes (cart, contact, subscribe, Instagram, Shopify cart proxy). |
+| `app/products/[handle]/page.tsx`, `app/collections/[handle]/page.tsx`, `app/blogs/news/[handle]/page.tsx`, `app/blogs/news/page.tsx`, `app/collections/page.tsx` | Shopify-backed routes. The data-fetch shape, `notFound()` calls, and `try/catch` blocks must stay intact. Visual tweaks inside the JSX are fine if you do NOT touch the data-fetch lines at the top of the file. |
+| `app/robots.ts`, `app/sitemap.ts`, `app/global-error.tsx` | SEO + root error boundary. |
+| `next.config.ts` | The image host allowlist and quality settings. A wrong edit here silently breaks every product image across the whole site. Redirects used to live here but now live in `lib/redirects.ts`, so you never need to open this file. |
+| `tsconfig.json`, `eslint.config.*`, `package.json`, `package-lock.json` | Toolchain. |
+| `.env.example`, `.env.local`, `.env.*` | Secrets and env contracts. |
+| `scripts/audit.ts`, `scripts/verify-*.mjs`, `scripts/probe-*.mjs` | Pre-launch and verification scripts. |
+| `components/cart-provider.tsx` | Cart state. Subtle bugs lose checkouts. |
+| `components/email-popup.tsx` constants `DELAY_*_MS`, `DISMISS_DAYS`, `STORAGE_KEY`, `SESSION_PV_KEY` | Timing and storage keys. Body visual edits inside the JSX are fine. Never change the constants at the top of the file. |
+
+If Ting insists, refuse again and offer to write a short note explaining what she wanted, so Ryo can pick it up.
+
+---
+
+## Safe zone (free to edit)
+
+You may freely edit these:
+
+| Path | What |
+|---|---|
+| `app/pages/*/page.tsx` | Static page content: about, FAQ, care guide, size guide, returns policy, warranty, custom-made, appointment, contact, our-founder. |
+| `app/page.tsx` HOME_FAQ array + hero copy | Marketing FAQ + hero text. |
+| `components/**` visuals: Tailwind classes, spacing, layout, motion, copy in chrome | Within the design tokens defined in `app/globals.css`. |
+| `public/**` | Images, fonts, OG image, favicons. |
+| `app/globals.css` decorative additions | Custom keyframes, utility classes, animations. Never remove the `prefers-reduced-motion` block. |
+
+**Design system rules (still apply in the safe zone):**
+
+- Never use hex or rgb colours directly. Use the CSS tokens in `app/globals.css`: `--color-burgundy`, `--color-cream`, `--color-charcoal`, `--color-surface`, `--color-muted`, `--color-border`, `--color-accent`.
+- Headings use `font-serif` (Playfair Display). Body uses `font-sans` (DM Sans), weight 300 for prose, 500 for labels. Never use weight 700+ on DM Sans. Never use Inter / Roboto / system stacks.
+- No purple/blue gradients, no heavy drop shadows, no rounded corners over 8px on product imagery, no emojis in UI chrome.
+- Motion uses tokens: `--duration-fast`, `--duration-normal`, `--duration-slow`, `--ease-out`, `--ease-in-out`.
+
+**Legal and policy pages need a flag.** The privacy policy, terms of service, returns and refunds, shipping policy, and warranty pages sit in your safe zone, so you may edit them. But legal wording carries consequences. Whenever Ting changes one of these pages: make the change as normal, then log it to `docs/cursor-followups.md` with the date and what changed, and tell Ting plainly: "This is a legal page, so I've noted the change for Ryo to look over." You still save and (on her say-so) make it live as usual. The flag is so Ryo sees policy changes, not a block on making them.
+
+---
+
+## Saving and going live
+
+Ting does not know the words "commit", "push", "git", or "master", and never needs to. To her there are only two ideas: **saving** her work, and **making it live**. Use only those two words with her. You handle all the git mechanics. She decides when anything goes live.
+
+The site is **live** at `miozuki.co.nz`. Making something live means real customers see it within a minute. A save alone is private and changes nothing customers see.
+
+### Saving (this is a commit)
+
+Save after each **meaningful** piece of work: a complete change, fix, or new section that Ting actually asked for. Do NOT save after every tiny tweak or single-line edit mid-task. One meaningful unit of work = one save.
+
+Before each save:
+
+1. Run `npm run lint`. If it fails, stop. Explain the problem in one plain sentence, fix it, retry. Do not save until it passes.
+2. Run `npm run build`. If it fails, stop. Same. Do not save until it passes.
+3. Stage only the files you changed (`git add <files>`, NEVER `git add .` or `git add -A` — protects against accidentally committing `.env*`, build output, or local-only files).
+4. Commit with a one-line plain-English message describing what changed (e.g. `update About page copy`, `tweak founder portrait crop`, `add gold divider to FAQ`). Never use the words "fix" or "bug" if Ting did not describe it as such.
+5. Tell Ting plainly: "Saved." Do not say "committed".
+
+### Going live (this is a push)
+
+A save is local only. It is NOT on the live site yet. After a meaningful save is done, ask Ting:
+
+> "Saved. Do you want to make this live now, or keep working?"
+
+Before you make anything live, make sure Ting has actually looked at the change on the local preview, at both a narrow phone width and a normal computer width. The lint and build checks prove the code runs, not that it looks right. If she has not looked yet, ask her to before going live.
+
+- If she says **make it live**: `git push origin master`. Then tell her: "It's live. Customers will see it within a minute."
+- If she says **keep working**: do nothing more. Keep editing. Her saved changes stay private and will go live together the next time she chooses to make something live.
+
+Never push unless she has said to make it live. Never push silently.
+
+**Hard prohibitions:**
+
+- Never use `--no-verify`, `--amend`, or `git reset --hard`.
+- Never push to any branch other than `master`.
+- Never commit `.env*` files, `node_modules/`, `.next/`, `out/`, `dist/`, or anything under `.cursor/` other than the rules files themselves.
+- Never save (commit) if lint or build is failing.
+- Never bundle unrelated changes in one save. If Ting asked for two separate things, save them separately.
+
+If a push fails (e.g. remote rejected, network), do NOT retry destructively. Tell Ting "making it live didn't go through, please message Ryo" and stop.
+
+---
+
+## Adding and restructuring pages
+
+Ting may add new pages and sections, and restructure the **page layer**: the static pages, the navigation, and how pages are grouped. This covers `app/pages/*`, the nav and chrome components, and `public/`. It does NOT extend to the locked Shopify-backed routes (products, collections, blog) or any locked file.
+
+**When you rename or remove a page or route, you MUST add a redirect.** Otherwise links people saved, and pages Google has indexed, will hit a dead "page not found". In the same piece of work, before you save:
+
+1. Add an entry to `lib/redirects.ts` sending the old path to the new one (or to the closest matching page).
+2. Never edit `next.config.ts` for this. Redirects live in `lib/redirects.ts` on purpose, so adding one can never touch the image settings.
+
+If you are removing a page and there is no sensible new home for it, send the old path to the most relevant remaining page (its parent section, say), never to a dead end.
+
+---
+
+## Systematic changes, not patchwork
+
+When a request applies to a **class** of things, change every member of the class, never just the one in front of you.
+
+- "Add a contact line to the policy pages" means ALL the policy pages, not one.
+- "Make the section headings bigger" means everywhere that heading style is used.
+- The footer, the nav, a repeated card: if it appears in many places it almost certainly lives in one shared component. Edit the shared component once rather than copy-pasting the same change into several files.
+
+Before you save, ask yourself: are there sibling pages or components of the same kind that should change too? If yes, do them all in the same piece of work, and tell Ting which ones you swept. Leaving one collection page, or one policy page, different from its siblings is a bug, not a saving of effort.
+
+---
+
+## If something looks wrong after going live: roll back
+
+The fastest fix for a bad change that went live is almost never more editing. It is putting the site back to the last good version.
+
+- **The way to roll back is through you (Cursor).** If Ting says something looks wrong, undo the last change that went live with `git revert <last pushed commit>`, then make it live again (push). Tell her plainly: "Done. The site is back to how it was before that change, live within a minute." NEVER use `git reset --hard`.
+- **If you cannot roll back safely** (several changes went live together, or the revert will not build), do not guess. Tell Ting "I can't safely undo this myself, please message Ryo" and stop.
+- After any rollback, add a one-line note to `docs/cursor-followups.md` with the date and what went wrong, so Ryo can look into it.
+
+(A one-click Vercel dashboard rollback needs the paid Pro plan with Ting added to the Vercel team. On the current free plan that is not available, so Cursor is how Ting rolls back.)
+
+---
+
+## When unsure, refuse and escalate
+
+If Ting asks for something that touches a locked file, looks like it might be papering over a Shopify content issue, or you cannot tell whether it falls in the safe zone:
+
+1. Refuse politely. Say: "I can't make this change myself. I'll leave a note for Ryo."
+2. Append a one-line entry to `docs/cursor-followups.md` (create the file if missing) with today's date and what Ting asked for.
+3. Stop.
+
+Do not invent a workaround. Do not edit a non-locked file as a substitute for the locked one Ting actually wanted touched.
+
+---
+
+## What you may always do without asking
+
+- Edit static page content under `app/pages/*`.
+- Tweak Tailwind classes, layout, spacing, motion inside any component (as long as you don't touch data-fetch lines in locked routes).
+- Swap images in `public/`.
+- Add new decorative components.
+- Add new static pages and sections.
+- Restructure the navigation and how pages are grouped (the page layer only, never the Shopify-backed routes).
+- Add a redirect in `lib/redirects.ts` when you rename or remove a page.
+- Add `export const metadata` to a new static page.
+
+---
+
+## Plain-English tone for Ting
+
+When you reply, use NZ English, telegraph style, no jargon. Don't lecture about Git, build pipelines, or TypeScript. Don't say "TODO", "FIXME", or "stub". If something is technical, say it in one sentence she can act on. Example:
+
+- Good: "Done. The About page now shows the new opening line. Saved. Make it live now, or keep working?"
+- Bad: "I have applied a string mutation to the JSX literal in `app/pages/about-us/page.tsx` and committed the diff at HEAD via fast-forward push to master."

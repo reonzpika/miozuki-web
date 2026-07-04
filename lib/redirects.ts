@@ -50,15 +50,87 @@ export const redirects: RedirectList = [
     destination: '/pages/bespoke-order',
     permanent: true,
   },
-  // Renamed collections (Shopify drifted the handles; old handles were indexed).
-  {
-    source: '/collections/moissanite-rings',
-    destination: '/collections/moissanite-rings-nz',
-    permanent: true,
-  },
   {
     source: '/collections/necklaces',
     destination: '/collections/moissanite-necklace-nz',
+    permanent: true,
+  },
+  // Collection consolidation (2026-07-04): six near-duplicate ring collections,
+  // three near-duplicate broad collections, and two near-duplicate earring
+  // collections were all competing with each other in Google for the same
+  // searches. Each group is now one Shopify collection (renamed from the
+  // strongest of the duplicates); every other handle in the group redirects
+  // here so Google backs one page per group instead of splitting the signal.
+  {
+    source: '/collections/moissanite-rings-nz',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-engagement-ring-nz',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-engagement-rings-nz',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/engagement-ring-moissanite',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/engravable-rings',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/promise-rings-nz',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  // Dead handles (never a live Shopify collection, or long gone) that still
+  // pull real impressions in Search Console; redirect rather than 404 them.
+  {
+    source: '/collections/promise-ring-nz',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-ring-engagement',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/all-moissanite-pearl-nz',
+    destination: '/collections/moissanite-nz',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-new-zealand',
+    destination: '/collections/moissanite-nz',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-diamond',
+    destination: '/collections/moissanite-nz',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-ear-rings',
+    destination: '/collections/moissanite-earrings',
+    permanent: true,
+  },
+  {
+    source: '/collections/bridal-earring',
+    destination: '/collections/moissanite-earrings',
+    permanent: true,
+  },
+  {
+    source: '/collections/pearl-earrings-silver',
+    destination: '/collections/pearl-earrings',
     permanent: true,
   },
 ];

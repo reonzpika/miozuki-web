@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 const SHORTCUTS = [
-  { label: 'Moissanite rings', href: '/collections/moissanite-rings-nz' },
-  { label: 'Moissanite earrings', href: '/collections/moissanite-ear-rings' },
+  { label: 'Moissanite rings', href: '/collections/moissanite-rings' },
+  { label: 'Moissanite earrings', href: '/collections/moissanite-earrings' },
   { label: 'Bridal', href: '/collections/bridal-jewellery' },
   { label: 'Best sellers', href: '/collections/best-sellers' },
 ] as const;

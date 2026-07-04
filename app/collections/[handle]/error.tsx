@@ -37,7 +37,7 @@ export default function CollectionError({
           Try again
         </button>
         <Link
-          href="/collections/all-moissanite-pearl-nz"
+          href="/collections/moissanite-nz"
           className="inline-flex min-h-11 items-center justify-center px-8 py-3 text-xs uppercase tracking-[0.2em] text-burgundy underline underline-offset-4 transition-colors hover:text-burgundy/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
         >
           View All Collections

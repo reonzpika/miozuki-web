@@ -78,7 +78,7 @@ export default function AboutPage() {
           Meet Our Founder
         </Link>
         <Link
-          href="/collections/all-moissanite-pearl-nz"
+          href="/collections/moissanite-nz"
           className="text-xs tracking-widest uppercase text-charcoal/50 hover:text-charcoal transition-colors"
         >
           Shop the Collection

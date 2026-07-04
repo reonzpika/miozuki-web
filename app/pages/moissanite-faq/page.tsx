@@ -109,7 +109,7 @@ export default function MoissaniteFaqPage() {
 
       <div className="mt-10 pt-8 border-t border-charcoal/8">
         <Link
-          href="/collections/moissanite-rings-nz"
+          href="/collections/moissanite-rings"
           className="text-xs tracking-widest uppercase text-burgundy hover:text-burgundy/70 transition-colors underline underline-offset-4"
         >
           Shop Moissanite Rings

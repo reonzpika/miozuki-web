@@ -15,7 +15,7 @@ export default function CollectionNotFound() {
       </p>
       <div className="flex flex-col gap-3 sm:flex-row">
         <Link
-          href="/collections/all-moissanite-pearl-nz"
+          href="/collections/moissanite-nz"
           className="inline-flex min-h-11 items-center justify-center border border-charcoal/40 px-8 py-3 text-xs uppercase tracking-[0.2em] text-charcoal transition-colors duration-300 hover:bg-charcoal hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
         >
           View All Collections

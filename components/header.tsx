@@ -10,16 +10,16 @@ import CartDrawer from './cart-drawer';
 const NAV = [
   {
     label: 'Rings',
-    href: '/collections/moissanite-rings-nz',
+    href: '/collections/moissanite-rings',
     children: [
-      { label: 'Moissanite Rings', href: '/collections/moissanite-rings-nz' },
+      { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
     ],
   },
   {
     label: 'Earrings',
-    href: '/collections/moissanite-ear-rings',
+    href: '/collections/moissanite-earrings',
     children: [
-      { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings' },
+      { label: 'Moissanite Earrings', href: '/collections/moissanite-earrings' },
       { label: 'Pearl Earrings', href: '/collections/pearl-earrings' },
     ],
   },
@@ -52,9 +52,9 @@ const NAV = [
 
 const MOBILE_NAV = [
   { label: 'Best Sellers', href: '/collections/best-sellers', indent: false },
-  { label: 'Moissanite Rings', href: '/collections/moissanite-rings-nz', indent: true },
+  { label: 'Moissanite Rings', href: '/collections/moissanite-rings', indent: true },
   { label: 'Bridal Rings', href: '/collections/bridal-jewellery', indent: true },
-  { label: 'Moissanite Earrings', href: '/collections/moissanite-ear-rings', indent: true },
+  { label: 'Moissanite Earrings', href: '/collections/moissanite-earrings', indent: true },
   { label: 'Pearl Earrings', href: '/collections/pearl-earrings', indent: true },
   { label: 'Necklaces', href: '/collections/moissanite-necklace-nz', indent: true },
   { label: 'Appointment', href: '/pages/appointment-online', indent: false },

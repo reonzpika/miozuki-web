@@ -94,7 +94,7 @@ const DIFFERENTIATORS = [
 
 /** Featured on the home grid (order preserved). Best Sellers is only the product rail below, not a grid tile. */
 const HOME_FEATURED_COLLECTION_HANDLES = [
-  'moissanite-ear-rings',
+  'moissanite-earrings',
   'moissanite-rings',
   'pearl-earrings',
   'bridal-jewellery',
@@ -120,7 +120,7 @@ export default async function Home() {
 
   if (products.length === 0) {
     try {
-      const fallback = await getCollectionByHandle('all-moissanite-pearl-nz', 8);
+      const fallback = await getCollectionByHandle('moissanite-nz', 8);
       products = fallback?.products.edges.map((e) => e.node) ?? [];
     } catch {
       // catalog fallback failed
@@ -178,7 +178,7 @@ export default async function Home() {
               <h2 className="font-serif text-3xl md:text-4xl text-charcoal">Our Collections</h2>
             </div>
             <Link
-              href="/collections/all-moissanite-pearl-nz"
+              href="/collections/moissanite-nz"
               className="inline-flex min-h-11 shrink-0 items-center text-xs tracking-widest uppercase text-burgundy transition-colors hover:text-burgundy/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               View All
@@ -251,7 +251,7 @@ export default async function Home() {
                 Fine jewellery for romantic<br />moments to everyday elegance
               </h2>
               <Link
-                href="/collections/all-moissanite-pearl-nz"
+                href="/collections/moissanite-nz"
                 className="inline-block text-xs tracking-[0.2em] uppercase text-cream border border-cream/40 px-8 py-3 hover:bg-cream hover:text-charcoal transition-colors duration-300"
               >
                 Shop the Collection

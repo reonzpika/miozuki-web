@@ -88,7 +88,7 @@ export default function HeroSection() {
         {/* CTA */}
         <motion.div variants={fadeUp(0.8)} initial="hidden" animate="show">
           <Link
-            href="/collections/all-moissanite-pearl-nz"
+            href="/collections/moissanite-nz"
             className="inline-block rounded-full border border-burgundy bg-burgundy px-10 py-4 text-xs uppercase tracking-[0.04em] text-cream transition-colors duration-300 hover:border-accent-hover hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/50 focus-visible:ring-offset-2 focus-visible:ring-offset-burgundy/80"
           >
             Discover the Collection

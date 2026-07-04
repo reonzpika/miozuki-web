@@ -76,8 +76,8 @@ export default function AucklandNorthShorePage() {
             To explore the full range, browse the{' '}
             <Link href="/collections/bridal-jewellery" className={linkClass}>Bridal Jewellery</Link>{' '}
             collection or view{' '}
-            <Link href="/collections/moissanite-rings-nz" className={linkClass}>Moissanite Rings</Link>,{' '}
-            <Link href="/collections/moissanite-ear-rings" className={linkClass}>Moissanite Earrings</Link>, and{' '}
+            <Link href="/collections/moissanite-rings" className={linkClass}>Moissanite Rings</Link>,{' '}
+            <Link href="/collections/moissanite-earrings" className={linkClass}>Moissanite Earrings</Link>, and{' '}
             <Link href="/collections/pearl-earrings" className={linkClass}>Pearl Earrings</Link>{' '}
             in our NZ catalogue.
           </p>

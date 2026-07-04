@@ -15,20 +15,34 @@ import StorefrontChrome from '@/components/storefront-chrome';
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 
+// JewelryStore is a more specific schema.org subtype of Organization, and this
+// block is the site's single canonical business-identity schema (site-wide, via
+// the root layout, not duplicated per-page). If a page ever needs its own
+// schema (e.g. a homepage FAQPage block), keep it additive, don't redeclare
+// Organization/JewelryStore info there too.
 const ORGANIZATION_SCHEMA = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'JewelryStore',
   name: 'Miozuki',
   url: 'https://www.miozuki.co.nz',
   logo: 'https://www.miozuki.co.nz/miozuki-logo-full-light.svg',
   description:
-    'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand.',
+    'Japanese-inspired fine jewellery studio in Auckland, New Zealand, specialising in moissanite rings, earrings, necklaces, and custom bridal pieces in 925 sterling silver.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Auckland',
+    addressRegion: 'Auckland',
+    addressCountry: 'NZ',
+  },
   email: 'info@miozuki.co.nz',
+  founder: { '@type': 'Person', name: 'Ting Eguchi' },
   sameAs: [
     'https://www.instagram.com/miozukijewellery',
     'https://www.tiktok.com/@miozuki.nz',
     'https://www.facebook.com/profile.php?id=61578033779488',
   ],
+  priceRange: '$$',
+  areaServed: 'NZ',
 };
 
 const playfair = Playfair_Display({

@@ -11,6 +11,7 @@ import BestSellersGrid from '@/components/best-sellers-grid';
 import FounderSection from '@/components/founder-section';
 import FaqAccordion from '@/components/faq-accordion';
 import ScrollReveal from '@/components/scroll-reveal';
+import JsonLd from '@/components/json-ld';
 
 export const revalidate = 60;
 
@@ -36,6 +37,10 @@ const HOME_FAQ = [
     a: 'Yes. Moissanite will stay beautifully brilliant for a lifetime when cared for properly. It does not go cloudy or lose its shine. Avoid contact with chemicals, perfumes, and harsh cleaning products.',
   },
   {
+    q: 'How do I know what ring size to order?',
+    a: 'We recommend ordering a ring sizer before you order your ring, the cost is credited toward your final purchase. Since our rings are made to order, getting your size right the first time avoids the need for a resize.',
+  },
+  {
     q: 'What is your return and exchange policy?',
     a: 'We offer a 14-day return window on most items returned in original packaging and sellable condition. Earrings, custom-made rings, and sale items are non-refundable. We recommend ordering a ring sizer first, the cost is credited toward your ring order.',
   },
@@ -43,7 +48,25 @@ const HOME_FAQ = [
     q: 'What if my parcel gets lost or stolen?',
     a: 'All NZ orders are sent via NZ Post with tracking and require a signature on delivery, giving you peace of mind from dispatch to door.',
   },
+  {
+    q: 'Do you ship to Australia?',
+    a: 'Yes, we ship to Australia as well as New Zealand, with tracked delivery. AU orders are shown in AUD at checkout.',
+  },
 ];
+
+// FAQPage schema is generated from HOME_FAQ so the hidden schema can never drift
+// from the visible homepage text (Google requires them to match). Business
+// identity schema (name, address, founder, etc.) already lives site-wide in
+// app/layout.tsx, not duplicated here.
+const FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME_FAQ.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 
 const DIFFERENTIATORS = [
   {
@@ -164,6 +187,7 @@ export default async function Home() {
 
   return (
     <main>
+      <JsonLd data={FAQ_SCHEMA} />
       {/* ── Hero ─────────────────────────────────────────── */}
       <HeroSection />
 

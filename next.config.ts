@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import createMDX from "@next/mdx";
 import { redirects } from "./lib/redirects";
 
 const nextConfig: NextConfig = {
+  // Let .mdx files under app/ be routes (used by the guide hubs: /moissanite-guide,
+  // /pearl-guide, /bridal-guide).
+  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   images: {
     qualities: [75, 82, 85, 95],
     remotePatterns: [
@@ -23,11 +27,13 @@ const nextConfig: NextConfig = {
   },
 };
 
+const withMDX = createMDX({});
+
 // Sentry build-time wrapper. Uploads source maps when SENTRY_AUTH_TOKEN /
 // SENTRY_ORG / SENTRY_PROJECT are present (set in the Vercel build env); when
 // they are absent the build still succeeds and just skips the upload, so local
 // and preview builds without Sentry env are unaffected.
-export default withSentryConfig(nextConfig, {
+export default withSentryConfig(withMDX(nextConfig), {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   // Quiet during CI builds, verbose locally.

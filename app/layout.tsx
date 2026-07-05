@@ -73,6 +73,13 @@ export const metadata: Metadata = {
   title: 'Miozuki, Fine Jewellery',
   description:
     'Moissanite and pearl fine jewellery, ethically made and designed in New Zealand. Discover pieces that last a lifetime.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180' }],
+  },
   openGraph: {
     title: 'Miozuki, Fine Jewellery',
     description:

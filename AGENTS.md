@@ -19,6 +19,8 @@ Redesigned 2026-07-06, see `../miozuki-brain/decisions/2026-07-06-codex-full-aut
 - `harbor-content-workflow.md` for the full call-Harbor-and-shape-the-page procedure, including the known Harbor output bugs to check for every time
 - `content-checklist-and-calendar.md` for the edit-gate checklist Ting's experience pass runs against
 
+Save Harbor's raw output to `../miozuki-brain/seo/drafts/{slug}-harbor-raw.md` before shaping it, a recovery point and an audit trail, see `seo/drafts/README.md` there. The shaped, final page still only ever lives here, in the real route, never duplicated into that folder.
+
 See `docs/guide-hub-overview.md` in this repo for how all of this fits together.
 
 ## Publishing (the safety rails, self-contained here so they hold even if nothing else loads)

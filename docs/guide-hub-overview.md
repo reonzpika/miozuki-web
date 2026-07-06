@@ -15,6 +15,7 @@ Three content hubs, `/moissanite-guide`, `/pearl-guide`, `/bridal-guide`, each a
 | The voice rules | `miozuki-brain/brand-pr/voice-guide.md` | Ting's brand voice, banned words |
 | The Harbor procedure | `miozuki-brain/seo/harbor-content-workflow.md` | The full pick, draft, shape, review, publish steps, and the known Harbor output bugs to check for |
 | Ting's edit checklist | `miozuki-brain/seo/content-checklist-and-calendar.md` | What she checks before anything goes live |
+| Harbor's raw output, before shaping | `miozuki-brain/seo/drafts/` | Working scratch space, added 2026-07-06, a recovery point and audit trail, never the final page |
 | Codex's operating rules for this repo | `AGENTS.md` (this repo, root) | Scope, safety rails, what's off-limits |
 | The actual pages | `app/moissanite-guide/`, `app/pearl-guide/`, `app/bridal-guide/` | The real `.mdx` article files, and the shared layout and components that render them |
 

@@ -35,6 +35,18 @@ function suppressSubscribed() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ subscribedAt: Date.now() }));
 }
 
+/** True once someone has closed the popup without subscribing: the reopen badge should be there for them from then on. */
+function hasDismissedBefore(): boolean {
+  if (typeof window === 'undefined') return false;
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return false;
+  const { subscribedAt, dismissedAt } = JSON.parse(raw) as {
+    subscribedAt?: number;
+    dismissedAt?: number;
+  };
+  return Boolean(dismissedAt) && !subscribedAt;
+}
+
 export default function EmailPopup() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -43,7 +55,12 @@ export default function EmailPopup() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showReopenBadge, setShowReopenBadge] = useState(false);
   const lastFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setShowReopenBadge(hasDismissedBefore());
+  }, []);
 
   useEffect(() => {
     const next =
@@ -84,6 +101,11 @@ export default function EmailPopup() {
   function dismiss() {
     suppressDismiss();
     setOpen(false);
+    setShowReopenBadge(true);
+  }
+
+  function reopen() {
+    setOpen(true);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -99,6 +121,7 @@ export default function EmailPopup() {
       if (!res.ok) throw new Error('Failed');
       setSubmitted(true);
       suppressSubscribed();
+      setShowReopenBadge(false);
       setTimeout(() => setOpen(false), 2200);
     } catch {
       setError('Something went wrong. Please try again.');
@@ -108,6 +131,7 @@ export default function EmailPopup() {
   }
 
   return (
+    <>
     <AnimatePresence>
       {open && (
         <>
@@ -221,5 +245,25 @@ export default function EmailPopup() {
         </>
       )}
     </AnimatePresence>
+
+    <AnimatePresence>
+      {!open && showReopenBadge && (
+        <motion.button
+          key="reopen-badge"
+          type="button"
+          onClick={reopen}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.25 }}
+          aria-label="Reopen the $15 off sign-up offer"
+          className="fixed bottom-5 left-5 z-30 inline-flex items-center gap-2 rounded-full border border-burgundy bg-burgundy px-5 py-3 text-xs uppercase tracking-[0.12em] text-cream shadow-[0_8px_24px_var(--miozuki-shadow)] transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:bottom-6 md:left-6"
+          style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
+        >
+          $15 off
+        </motion.button>
+      )}
+    </AnimatePresence>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import Script from 'next/script';
-import { useIsProductionHost } from '@/lib/analytics-host';
+import { useIsProductionTrackingContext } from '@/lib/analytics-host';
 
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 
@@ -15,9 +15,9 @@ const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
  * separate domain and is not recorded here.
  */
 export default function Clarity() {
-  // Enable only for real customers on the production host, so localhost dev and
-  // Vercel preview review sessions are never recorded.
-  const enabled = useIsProductionHost();
+  // Enable only for real customers on the production storefront, so localhost,
+  // Vercel preview, and admin sessions are never recorded.
+  const enabled = useIsProductionTrackingContext();
 
   if (!CLARITY_ID || !enabled) return null;
 

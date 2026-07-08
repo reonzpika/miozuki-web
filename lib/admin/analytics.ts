@@ -16,7 +16,7 @@
 // Application Default Credentials. This lets local development use
 // `gcloud auth application-default login` without a downloadable key.
 
-import { BetaAnalyticsDataClient } from '@google-analytics/data';
+import { BetaAnalyticsDataClient, type protos } from '@google-analytics/data';
 import { unstable_cache } from 'next/cache';
 
 export type Period = '7d' | '30d' | '90d';
@@ -32,6 +32,50 @@ export function asPeriod(v: string | undefined): Period {
 }
 
 const PERIOD_DAYS: Record<Period, number> = { '7d': 7, '30d': 30, '90d': 90 };
+const GA_CACHE_VERSION = 'clean-v1';
+const STOREFRONT_HOSTS = ['www.miozuki.co.nz', 'miozuki.co.nz'];
+const CUSTOMER_HOSTS = [...STOREFRONT_HOSTS, 'checkout.miozuki.co.nz'];
+
+type FilterExpression = protos.google.analytics.data.v1beta.IFilterExpression;
+
+function hostFilter(hosts: string[]): FilterExpression {
+  return {
+    filter: {
+      fieldName: 'hostName',
+      inListFilter: { values: hosts },
+    },
+  };
+}
+
+function notPathPrefix(fieldName: 'pagePath' | 'landingPage', prefix: string): FilterExpression {
+  return {
+    notExpression: {
+      filter: {
+        fieldName,
+        stringFilter: { matchType: 'BEGINS_WITH', value: prefix },
+      },
+    },
+  };
+}
+
+function cleanDataFilter(
+  hosts = STOREFRONT_HOSTS,
+  extraExpressions: FilterExpression[] = [],
+): FilterExpression {
+  return {
+    andGroup: {
+      expressions: [hostFilter(hosts), notPathPrefix('pagePath', '/admin'), ...extraExpressions],
+    },
+  };
+}
+
+function storefrontDataFilter(extraExpressions: FilterExpression[] = []): FilterExpression {
+  return cleanDataFilter(STOREFRONT_HOSTS, extraExpressions);
+}
+
+function customerDataFilter(extraExpressions: FilterExpression[] = []): FilterExpression {
+  return cleanDataFilter(CUSTOMER_HOSTS, extraExpressions);
+}
 
 // Current window = last N days ending today. Previous = the N days before that.
 function ranges(period: Period) {
@@ -126,6 +170,7 @@ async function pairTotals(
     const [res] = await client.runReport({
       property,
       dateRanges: [current, previous],
+      dimensionFilter: storefrontDataFilter(),
       metrics: metricNames.map((name) => ({ name })),
     });
     // Returns one row per date range with an auto "dateRange" dimension
@@ -158,7 +203,7 @@ export async function getVisitorSummary(
         pageViews: { current: cur[1], previous: prev[1] },
       };
     },
-    ['ga-visitor-summary', period],
+    [GA_CACHE_VERSION, 'ga-visitor-summary', period],
     { revalidate: 300 },
   )();
 }
@@ -179,6 +224,7 @@ export async function getSalesTotals(): Promise<SalesTotals | null> {
         const [res] = await client.runReport({
           property,
           dateRanges: [{ startDate: start, endDate: ymd(new Date()) }],
+          dimensionFilter: customerDataFilter(),
           metrics: [{ name: 'ecommercePurchases' }, { name: 'totalRevenue' }],
         });
         const row = res.rows?.[0];
@@ -192,7 +238,7 @@ export async function getSalesTotals(): Promise<SalesTotals | null> {
         return null;
       }
     },
-    ['ga-sales-totals', salesStart],
+    [GA_CACHE_VERSION, 'ga-sales-totals', salesStart],
     { revalidate: 300 },
   )();
 }
@@ -213,6 +259,7 @@ export async function getWeeklySales(): Promise<WeeklySales | null> {
         const [res] = await client.runReport({
           property,
           dateRanges: [current],
+          dimensionFilter: customerDataFilter(),
           metrics: [{ name: 'ecommercePurchases' }, { name: 'totalRevenue' }],
         });
         const row = res.rows?.[0];
@@ -224,7 +271,7 @@ export async function getWeeklySales(): Promise<WeeklySales | null> {
         return null;
       }
     },
-    ['ga-weekly-sales'],
+    [GA_CACHE_VERSION, 'ga-weekly-sales'],
     { revalidate: 300 },
   )();
 }
@@ -240,6 +287,7 @@ export async function getDailyTrend(period: Period): Promise<TrendPoint[] | null
         const [res] = await client.runReport({
           property,
           dateRanges: [current],
+          dimensionFilter: storefrontDataFilter(),
           dimensions: [{ name: 'date' }],
           metrics: [{ name: 'activeUsers' }],
           orderBys: [{ dimension: { dimensionName: 'date' } }],
@@ -252,7 +300,7 @@ export async function getDailyTrend(period: Period): Promise<TrendPoint[] | null
         return null;
       }
     },
-    ['ga-daily-trend', period],
+    [GA_CACHE_VERSION, 'ga-daily-trend', period],
     { revalidate: 300 },
   )();
 }
@@ -268,9 +316,12 @@ async function sliceReport(
   if (!client || !property) return null;
   try {
     const { current } = ranges(period);
+    const extraFilters =
+      dimension === 'landingPage' ? [notPathPrefix('landingPage', '/admin')] : [];
     const [res] = await client.runReport({
       property,
       dateRanges: [current],
+      dimensionFilter: storefrontDataFilter(extraFilters),
       dimensions: [{ name: dimension }],
       metrics: [{ name: metric }],
       orderBys: [{ metric: { metricName: metric }, desc: true }],
@@ -290,7 +341,7 @@ async function sliceReport(
 export async function getDeviceBreakdown(period: Period): Promise<Slice[] | null> {
   return unstable_cache(
     () => sliceReport('deviceCategory', period),
-    ['ga-devices', period],
+    [GA_CACHE_VERSION, 'ga-devices', period],
     { revalidate: 300 },
   )();
 }
@@ -298,7 +349,7 @@ export async function getDeviceBreakdown(period: Period): Promise<Slice[] | null
 export async function getNewVsReturning(period: Period): Promise<Slice[] | null> {
   return unstable_cache(
     () => sliceReport('newVsReturning', period),
-    ['ga-new-returning', period],
+    [GA_CACHE_VERSION, 'ga-new-returning', period],
     { revalidate: 300 },
   )();
 }
@@ -317,6 +368,7 @@ export async function getTopPages(
         const [res] = await client.runReport({
           property,
           dateRanges: [current],
+          dimensionFilter: storefrontDataFilter(),
           dimensions: [{ name: 'pageTitle' }, { name: 'pagePath' }],
           metrics: [{ name: 'screenPageViews' }],
           orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
@@ -331,7 +383,7 @@ export async function getTopPages(
         return null;
       }
     },
-    ['ga-top-pages', period, String(limit)],
+    [GA_CACHE_VERSION, 'ga-top-pages', period, String(limit)],
     { revalidate: 300 },
   )();
 }
@@ -346,7 +398,7 @@ export async function getTopLandingPages(
       if (!slices) return null;
       return slices.map((s) => ({ path: s.label, sessions: s.value }));
     },
-    ['ga-landing-pages', period, String(limit)],
+    [GA_CACHE_VERSION, 'ga-landing-pages', period, String(limit)],
     { revalidate: 300 },
   )();
 }
@@ -366,7 +418,7 @@ export async function getChannels(
       if (!slices) return null;
       return slices.map((s) => ({ name: s.label, sessions: s.value }));
     },
-    ['ga-channels', period, String(limit)],
+    [GA_CACHE_VERSION, 'ga-channels', period, String(limit)],
     { revalidate: 300 },
   )();
 }

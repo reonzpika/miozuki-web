@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { isProductionHost } from '@/lib/analytics-host';
+import { useIsProductionTrackingContext } from '@/lib/analytics-host';
 
 /**
  * Loads GA4 only after the page has settled or the user first interacts, so the
@@ -12,11 +12,12 @@ import { isProductionHost } from '@/lib/analytics-host';
  */
 export default function DeferredAnalytics({ gaId }: { gaId: string }) {
   const [ready, setReady] = useState(false);
+  const enabled = useIsProductionTrackingContext();
 
   useEffect(() => {
-    // Only load GA4 for real customers on the production host. This keeps
-    // localhost dev and Vercel preview review sessions out of the data.
-    if (!isProductionHost()) return;
+    // Only load GA4 for real customers on the production storefront. This keeps
+    // localhost, Vercel preview, and admin sessions out of the data.
+    if (!enabled) return;
     let fired = false;
     const trigger = () => {
       if (fired) return;
@@ -33,7 +34,7 @@ export default function DeferredAnalytics({ gaId }: { gaId: string }) {
       window.removeEventListener('scroll', trigger);
       window.removeEventListener('pointerdown', trigger);
     };
-  }, []);
+  }, [enabled]);
 
-  return ready ? <GoogleAnalytics gaId={gaId} /> : null;
+  return enabled && ready ? <GoogleAnalytics gaId={gaId} /> : null;
 }

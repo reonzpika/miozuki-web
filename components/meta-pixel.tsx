@@ -3,7 +3,7 @@
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { useIsProductionHost } from '@/lib/analytics-host';
+import { useIsProductionTrackingContext } from '@/lib/analytics-host';
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
@@ -24,9 +24,9 @@ declare global {
 export default function MetaPixel() {
   const pathname = usePathname();
   const isFirstRender = useRef(true);
-  // Enable only for real customers on the production host, so localhost dev and
-  // Vercel preview never fire the pixel.
-  const enabled = useIsProductionHost();
+  // Enable only for real customers on the production storefront, so localhost,
+  // Vercel preview, and admin sessions never fire the pixel.
+  const enabled = useIsProductionTrackingContext();
 
   useEffect(() => {
     if (!enabled || !PIXEL_ID) return;

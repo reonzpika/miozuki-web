@@ -89,7 +89,7 @@ This gate fires regardless of Plan check approval. Plan approval covers directio
 
 ## Team workflow
 
-This project has two contributors with different workflows:
+This project has three contributors with different workflows. Ting's Codex is new as of 2026-07-06, see `AGENTS.md` (this repo's own, for Codex specifically) and `docs/guide-hub-overview.md`: it runs the guide-hub content pipeline (`app/moissanite-guide/`, `/pearl-guide/`, `/bridal-guide/`, `.mdx` files only) end to end, drafting through publishing, with no check-in to Ryo. Everything else in this repo is still Ting-via-Cursor or Ryo, below.
 
 **Ting (content/UI changes, working directly on `master` via Cursor):**
 - Ting does not write code, does not run terminal commands, and does not use git. Cursor edits files and publishes for her.
@@ -271,6 +271,8 @@ The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. Ne
 | `/pages/[slug]` | `app/pages/[slug]/page.tsx` |
 | `/policies/shipping-policy` | `app/policies/shipping-policy/page.tsx` |
 | `/api/instagram/refresh-token` | `app/api/instagram/refresh-token/route.ts` |
+| `/moissanite-guide`, `/moissanite-guide/<slug>` | `app/moissanite-guide/layout.tsx` + `.mdx` files. Content hub, see `docs/guide-hub-overview.md` |
+| `/pearl-guide/<slug>`, `/bridal-guide/<slug>` | Same pattern, `app/pearl-guide/`, `app/bridal-guide/`. Layout is shared via `components/hub/guide-hub-layout.tsx` |
 
 ## Env vars
 

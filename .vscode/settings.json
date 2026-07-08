@@ -1,7 +1,7 @@
 {
-  "git.postCommitCommand": "sync",
-  "git.confirmSync": false,
-  "git.enableSmartCommit": true,
-  "git.smartCommitChanges": "all",
+  "task.allowAutomaticTasks": "on",
+  "git.postCommitCommand": "none",
+  "git.confirmSync": true,
+  "git.enableSmartCommit": false,
   "workbench.startupEditor": "none"
 }

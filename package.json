@@ -11,6 +11,10 @@
   ],
   "scripts": {
     "dev": "next dev",
+    "dev:restart": "node scripts/dev-restart.mjs",
+    "sync:safe": "node scripts/ting-safe-sync.mjs --mode=supervised",
+    "sync:silent": "node scripts/ting-safe-sync.mjs --mode=silent",
+    "sync:publish": "node scripts/ting-safe-sync.mjs --mode=publish",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:schema": "graphql-codegen --config codegen-schema.ts",
     "prebuild": "graphql-codegen --config codegen.ts",

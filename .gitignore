@@ -51,3 +51,4 @@ docs/audit/lighthouse/
 
 # cursor agent debug logs
 .cursor/debug-*.log
+.cursor/deps-stamp

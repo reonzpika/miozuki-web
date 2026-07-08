@@ -23,7 +23,7 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": "> next dev",
-          "endsPattern": "Ready in"
+          "endsPattern": "preview ready:"
         }
       }
     }

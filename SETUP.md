@@ -43,17 +43,21 @@ the local site can talk to Shopify, the admin, and checkout.
    vercel env pull .env.local --environment=production
    ```
 
-6. **Start the site.** Opening the folder in Cursor starts the dev server
-   automatically. If it is not running:
+6. **Start the site.** Opening the `miozuki-web` folder in Cursor silently checks
+   for safe website updates, then starts the dev server automatically. If it is
+   not running:
 
    ```
-   npm run dev
+   npm run dev:restart
    ```
+
+   Do not run `npm run dev` directly while Cursor auto-start is active; use
+   `dev:restart` so only one server owns port 3000.
 
 ## Check it worked
 
-- Open `http://localhost:3000` — the home page loads with real products.
-- Open `http://localhost:3000/admin` and log in with the admin password
+- Open `http://127.0.0.1:3000` — the home page loads with real products.
+- Open `http://127.0.0.1:3000/admin` and log in with the admin password
   (it came down in step 5). The **Rules** tab is Ting's guide to the site.
 
 ## Important

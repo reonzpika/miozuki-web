@@ -97,6 +97,8 @@ This project has two contributors with different workflows:
 - Ting commits land under Ryo's git identity. `git log` author alone does not reliably tell who made the change; check the commit message style or ask.
 - Dev server starts automatically via VS Code task. Do not suggest `npm run dev` to her.
 
+**Local preview server (Cursor and Codex on `miozuki-web`):** one process owns `http://127.0.0.1:3000`. Cursor starts it on folder open via `scripts/cursor-start.mjs`, which silently runs the website safe-sync guard first. **Never** run `npm run dev` directly. **Never** `taskkill` or stop all `node` processes to "fix" preview. If preview is down or stuck, run `npm run dev:restart` (or `node scripts/dev-restart.mjs`) once. Do not start a second dev server while Cursor has the project open. Logs: `.next/dev/cursor-start.log`; sync state/logs: `.git/miozuki-safe-sync.json` and `.git/miozuki-safe-sync.log`.
+
 **Ryo (structural/feature changes, working on feature branches):**
 - Normal branching workflow: branch → build → PR → merge to master
 - Vercel generates a preview URL for every branch. Share these with Ting for approval before merging.
@@ -105,7 +107,10 @@ This project has two contributors with different workflows:
 ## Commands
 
 ```bash
-npm run dev              # local dev server
+npm run dev:restart     # restart local preview (use instead of npm run dev)
+npm run dev              # raw next dev; avoid when Cursor auto-start is active
+npm run sync:safe        # safe pre-work sync; never pushes
+npm run sync:publish     # after Ting says "make it live"; checks then pushes
 npm run build            # production build
 npm run lint             # ESLint
 npm run audit            # Playwright crawl: cart/checkout flows + broken images (docs/audit/)

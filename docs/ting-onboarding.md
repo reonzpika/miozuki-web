@@ -13,13 +13,15 @@ You are already set up on this machine. This is your day-to-day workflow.
 
 You do **not** need to create branches, switch branches, or use Git in the terminal. Stay on **master** and keep working as normal.
 
-If the preview says **connection refused**, the local preview server is not running. Close and reopen the project first; if it still happens, message Ryo.
+If the preview says **connection refused**, close and reopen the `miozuki-web` folder first. The Agent can run **`npm run dev:restart`** once if it still fails. Message Ryo if that does not fix it.
 
 ---
 
 ## Publishing your changes
 
-The Agent publishes for you. After a meaningful change, it runs lint and build checks, then commits and pushes on its own. You will see a short note from the Agent confirming it published.
+The Agent saves for you first. A save is private on this laptop, so customers do not see it yet.
+
+When you are happy, tell the Agent **make it live**. It will check the site, bring in any background updates if needed, and publish for you.
 
 No shortcut to press. No Source Control panel to open.
 

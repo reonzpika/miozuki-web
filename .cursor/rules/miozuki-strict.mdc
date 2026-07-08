@@ -84,11 +84,40 @@ You may freely edit these:
 
 ---
 
+## Local preview server
+
+Cursor auto-starts the site at **http://127.0.0.1:3000** when the `miozuki-web` folder opens. Ting does not start it herself.
+
+**Agents (Cursor):**
+
+- **Never** run `npm run dev` directly.
+- **Never** `taskkill` or stop all `node` processes to fix preview.
+- If preview says connection refused and reopening the project does not help, run **`npm run dev:restart`** once.
+- Only one dev server may own port 3000. A second server (from an agent or Codex) causes connection refused or silent fallback to port 3001.
+
+Debug log (Ryo only): `.next/dev/cursor-start.log`
+
+---
+
 ## Saving and going live
 
 Ting does not know the words "commit", "push", "git", or "master", and never needs to. To her there are only two ideas: **saving** her work, and **making it live**. Use only those two words with her. You handle all the git mechanics. She decides when anything goes live.
 
 The site is **live** at `miozuki.co.nz`. Making something live means real customers see it within a minute. A save alone is private and changes nothing customers see.
+
+### Before website work
+
+Before editing the website, quietly run the safe sync guard:
+
+```bash
+npm run sync:safe
+```
+
+If it says the website is up to date, updated, merged, work is in progress, or there is saved unpublished work, continue. Saved unpublished work means Ting chose to keep working earlier; it is okay to build more work on top of it.
+
+If the safe sync guard fails, decide what to do with maximum autonomy. You may resolve merge, lint, build, and local Git issues yourself where safe. Normally locked files may be touched only when required to recover a merge or build failure, and the change must be minimal. If you still cannot recover cleanly, say: "I could not safely update the site. I'll leave this for Ryo." Add the technical detail to `docs/cursor-followups.md`.
+
+Background sync is silent and conservative. It never makes anything live.
 
 ### Saving (this is a commit)
 
@@ -110,10 +139,12 @@ A save is local only. It is NOT on the live site yet. After a meaningful save is
 
 Before you make anything live, make sure Ting has actually looked at the change on the local preview, at both a narrow phone width and a normal computer width. The lint and build checks prove the code runs, not that it looks right. If she has not looked yet, ask her to before going live.
 
-- If she says **make it live**: `git push origin master`. Then tell her: "It's live. Customers will see it within a minute."
+- If she says **make it live**: run `npm run sync:publish`. It fetches GitHub, merges if needed, runs lint and build, then pushes. Then tell her: "It's live. Customers will see it within a minute."
 - If she says **keep working**: do nothing more. Keep editing. Her saved changes stay private and will go live together the next time she chooses to make something live.
 
 Never push unless she has said to make it live. Never push silently.
+
+If making it live hits a merge, lint, build, or push problem, recover with maximum autonomy. Ting's "make it live" approval covers technical recovery work as long as the final result still reflects her requested change and the checks pass. If recovery touches a normally locked file, keep the edit minimal and add a note for Ryo in `docs/cursor-followups.md`. If recovery cannot be completed cleanly, stop and tell Ting the live update did not go through.
 
 **Hard prohibitions:**
 

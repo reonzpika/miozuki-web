@@ -7,9 +7,6 @@ export const metadata: Metadata = {
     'Convert New Zealand and Australian alphabetical ring sizes to US numbers and millimetres, with a full size chart and how-to-measure guide.',
 };
 
-const linkClass =
-  'text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors';
-
 // Conversion data transcribed verbatim from the live Miozuki size chart image.
 const SIZE_ROWS: [string, string, string, string][] = [
   ['48', '15.27', 'I 1/2', '4.5'],

@@ -138,18 +138,22 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
   const handleInstagramDm = useCallback(() => {
     setOpen(false);
     showShareHint('instagram');
+    void writeShareBody(shareBody);
 
+    // Instagram has no supported URL scheme for opening the DM composer with
+    // prefilled text (`instagram://sharesheet` is undocumented and no-ops on
+    // most devices). Use Instagram's own inbox URL instead: it's a real
+    // universal link, so it opens the installed app on mobile and falls back
+    // to instagram.com in a browser tab otherwise.
+    const inboxUrl = 'https://www.instagram.com/direct/inbox/';
     const isMobile = isMobileUserAgent();
-    const encodedBody = encodeURIComponent(shareBody);
 
     if (isMobile) {
-      void writeShareBody(shareBody);
-      window.location.href = `instagram://sharesheet?text=${encodedBody}`;
+      window.location.href = inboxUrl;
       return;
     }
 
-    openDesktopTab('https://www.instagram.com/direct/inbox/');
-    void writeShareBody(shareBody);
+    openDesktopTab(inboxUrl);
   }, [shareBody, showShareHint]);
 
   useEffect(() => {

@@ -10,8 +10,11 @@
 //
 // Env (set in .env.local and Vercel):
 //   GA_PROPERTY_ID      the numeric GA4 property id, e.g. 523095453
-//   GA_SA_CLIENT_EMAIL  the service-account email (granted Viewer on the property)
-//   GA_SA_PRIVATE_KEY   the service-account private key (literal \n is fine)
+//   GA_SA_CLIENT_EMAIL  optional service-account email for deployed envs
+//   GA_SA_PRIVATE_KEY   optional service-account private key (literal \n is fine)
+// If service-account credentials are absent, the client falls back to Google
+// Application Default Credentials. This lets local development use
+// `gcloud auth application-default login` without a downloadable key.
 
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { unstable_cache } from 'next/cache';
@@ -48,8 +51,11 @@ let cachedClient: BetaAnalyticsDataClient | null = null;
 function getClient(): BetaAnalyticsDataClient | null {
   const clientEmail = process.env.GA_SA_CLIENT_EMAIL;
   const rawKey = process.env.GA_SA_PRIVATE_KEY;
-  if (!clientEmail || !rawKey) return null;
   if (cachedClient) return cachedClient;
+  if (!clientEmail || !rawKey) {
+    cachedClient = new BetaAnalyticsDataClient();
+    return cachedClient;
+  }
   const privateKey = rawKey.replace(/\\n/g, '\n');
   cachedClient = new BetaAnalyticsDataClient({
     credentials: { client_email: clientEmail, private_key: privateKey },

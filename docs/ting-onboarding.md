@@ -8,10 +8,12 @@ You are already set up on this machine. This is your day-to-day workflow.
 
 1. **Open the project** in Cursor (`miozuki-web` folder). The dev server should start automatically; the first time, click **Allow** if Cursor asks about tasks.
 2. **Edit** the files you need (with the AI or by hand).
-3. **Check in the browser** at [http://localhost:3000](http://localhost:3000). The page usually updates when you save.
+3. **Check in the browser** at [http://127.0.0.1:3000](http://127.0.0.1:3000). The page usually updates when you save.
 4. **Publish** when you are happy with how it looks (see below).
 
 You do **not** need to create branches, switch branches, or use Git in the terminal. Stay on **master** and keep working as normal.
+
+If the preview says **connection refused**, the local preview server is not running. Close and reopen the project first; if it still happens, message Ryo.
 
 ---
 

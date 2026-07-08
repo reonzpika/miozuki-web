@@ -1,5 +1,6 @@
 import type { MDXComponents } from 'mdx/types';
 import type { ComponentPropsWithoutRef } from 'react';
+import Image from 'next/image';
 
 /**
  * App Router requires this file for MDX. It styles the markdown elements in hub
@@ -50,6 +51,27 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     td: (p: ComponentPropsWithoutRef<'td'>) => (
       <td className="px-3 py-2 align-top text-charcoal/80" {...p} />
+    ),
+    // Guide content images (Ting's real photos, or decorative art if task #23
+    // turns that on) come from a remote URL with no known dimensions ahead of
+    // time, so next/image can't auto-detect width/height the way it can for a
+    // locally-imported file. `fill` inside a sized, positioned wrapper is the
+    // documented way to use next/image for a remote, dimension-unknown source.
+    // If task #23 turns on Harbor's AI Images, its image host will also need
+    // adding to next.config.ts's images.remotePatterns, only cdn.shopify.com
+    // and miozuki.co.nz are allowlisted today.
+    img: (p: ComponentPropsWithoutRef<'img'>) => (
+      <span className="relative my-6 block aspect-[4/3] w-full overflow-hidden rounded-xl bg-charcoal/5">
+        {typeof p.src === 'string' && (
+          <Image
+            src={p.src}
+            alt={p.alt ?? ''}
+            fill
+            sizes="(max-width: 768px) 100vw, 768px"
+            style={{ objectFit: 'cover' }}
+          />
+        )}
+      </span>
     ),
     ...components,
   };

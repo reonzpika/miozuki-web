@@ -27,7 +27,17 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withMDX = createMDX({});
+// remark-gfm adds GitHub-flavoured markdown tables (and strikethrough, task
+// lists) to the guide-hub .mdx files. Without it, pipe-table syntax isn't
+// parsed as a table at all, and every guide draft relies on tables for
+// featured-snippet eligibility. Passed as a string, not an import: Turbopack
+// (this project's default bundler) can't pass JS function references across
+// its Rust boundary, only serializable plugin names.
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: ["remark-gfm"],
+  },
+});
 
 // Sentry build-time wrapper. Uploads source maps when SENTRY_AUTH_TOKEN /
 // SENTRY_ORG / SENTRY_PROJECT are present (set in the Vercel build env); when

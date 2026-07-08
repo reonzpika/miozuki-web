@@ -34,6 +34,23 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     a: (p: ComponentPropsWithoutRef<'a'>) => (
       <a className="text-burgundy underline underline-offset-2 transition-colors hover:text-burgundy/70" {...p} />
     ),
+    table: (p: ComponentPropsWithoutRef<'table'>) => (
+      <div className="mb-6 overflow-x-auto">
+        <table className="w-full border-collapse text-left text-[14px]" {...p} />
+      </div>
+    ),
+    thead: (p: ComponentPropsWithoutRef<'thead'>) => (
+      <thead className="border-b border-charcoal/15 text-charcoal" {...p} />
+    ),
+    th: (p: ComponentPropsWithoutRef<'th'>) => (
+      <th className="px-3 py-2 font-medium" {...p} />
+    ),
+    tbody: (p: ComponentPropsWithoutRef<'tbody'>) => (
+      <tbody className="divide-y divide-charcoal/10" {...p} />
+    ),
+    td: (p: ComponentPropsWithoutRef<'td'>) => (
+      <td className="px-3 py-2 align-top text-charcoal/80" {...p} />
+    ),
     ...components,
   };
 }

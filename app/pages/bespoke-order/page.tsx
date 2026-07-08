@@ -19,8 +19,9 @@ export default function CustomMadePage() {
       <h1 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-4">
         Custom made
       </h1>
-      <p className="text-sm text-charcoal/55 leading-relaxed mb-10">
-        Our pieces are designed to feel timeless and uniquely yours.
+      <p className="max-w-prose text-sm md:text-base text-charcoal/55 leading-relaxed mb-10">
+        Created exclusively for you, each custom-made piece is thoughtfully designed to reflect your
+        story, your style, and the meaning behind it.
       </p>
 
       <p className="border-l border-burgundy bg-surface px-5 py-4 text-sm text-charcoal/70 leading-relaxed mb-10">

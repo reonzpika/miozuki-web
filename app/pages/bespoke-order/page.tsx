@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Custom Made | Miozuki',
   description:
-    'Custom made and bespoke moissanite fine jewellery by Miozuki, designed with you, crafted in sterling silver.',
+    'Custom made and bespoke moissanite fine jewellery by Miozuki, designed with you, with gold options available on request.',
 };
 
 export default function CustomMadePage() {
@@ -23,11 +23,15 @@ export default function CustomMadePage() {
         Our pieces are designed to feel timeless and uniquely yours.
       </p>
 
+      <p className="border-l border-burgundy bg-surface px-5 py-4 text-sm text-charcoal/70 leading-relaxed mb-10">
+        Gold options are available on request for custom pieces.
+      </p>
+
       <div className="h-px bg-charcoal/8 mb-10" />
 
       <p className="text-sm text-charcoal/65 leading-relaxed">
-        Looking for something special? We also offer gold options and would love to help bring your
-        idea to life. Get in touch to start your custom piece through our{' '}
+        Looking for something special? We would love to help bring your idea to life. Get in touch
+        to start your custom piece through our{' '}
         <Link
           href="/pages/contact"
           className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm"

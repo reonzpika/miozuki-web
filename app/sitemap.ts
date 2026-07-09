@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getProducts, getCollections, getBlogArticles } from '@/lib/shopify';
+import launchedGuides from '@/lib/launched-guides.json';
 
 const BASE = 'https://www.miozuki.co.nz';
 
@@ -40,6 +41,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency,
       priority,
+    })),
+    // Guide-hub pages enter the sitemap automatically once "launched": a guide
+    // is launched when its .mdx source carries zero VERIFY markers (content
+    // Ting hasn't confirmed yet). The list is generated at build time by
+    // scripts/gen-launched-guides.mjs (prebuild), so resolving the last marker
+    // and publishing IS the launch action; there is no manual sitemap step.
+    ...launchedGuides.launched.map((path) => ({
+      url: `${BASE}${path}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
     })),
     ...products.map((p) => ({
       url: `${BASE}/products/${p.handle}`,

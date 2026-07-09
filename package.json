@@ -17,7 +17,7 @@
     "sync:publish": "node scripts/ting-safe-sync.mjs --mode=publish",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:schema": "graphql-codegen --config codegen-schema.ts",
-    "prebuild": "graphql-codegen --config codegen.ts",
+    "prebuild": "graphql-codegen --config codegen.ts && node scripts/gen-launched-guides.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

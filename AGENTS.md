@@ -31,6 +31,8 @@ Redesigned 2026-07-06, see `../miozuki-brain/decisions/2026-07-06-codex-full-aut
 
 Save the raw draft to `../miozuki-brain/seo/drafts/{slug}-opus-raw.md` before shaping it, a recovery point and an audit trail, see `seo/drafts/README.md` there. The shaped, final page still only ever lives here, in the real route, never duplicated into that folder.
 
+**The `<GuideSchema ... />` line under each H1** renders the byline, the visible "Updated" date, and the hidden Article code. When you materially change an article's content (an experience pass counts), bump its `updated="YYYY-MM-DD"` to today so the date stays truthful. Never remove the component or change its `title`/`path`.
+
 See `docs/guide-hub-overview.md` in this repo for how all of this fits together, and `harbor-vs-claude-pilot-findings.md` in miozuki-brain for the full pilot record behind these instructions.
 
 ### Publishing a guide (uses the safe sync scripts above, not raw git)

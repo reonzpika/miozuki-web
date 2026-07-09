@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { prunedBlogRedirects } from "./pruned-blogs";
+import { prunedBlogRedirects, migratedBlogRedirects } from "./pruned-blogs";
 
 // Redirect list: old URLs -> their current home on this site.
 //
@@ -138,6 +138,12 @@ export const redirects: RedirectList = [
   // surviving collection or page. List and rationale in lib/pruned-blogs.ts;
   // the same list excludes these slugs from the sitemap.
   ...prunedBlogRedirects.map(({ slug, destination }) => ({
+    source: `/blogs/news/${slug}`,
+    destination,
+    permanent: true,
+  })),
+  // Migrated blogs -> their now-live replacement guides (ranking transfer).
+  ...migratedBlogRedirects.map(({ slug, destination }) => ({
     source: `/blogs/news/${slug}`,
     destination,
     permanent: true,

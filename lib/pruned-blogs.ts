@@ -46,4 +46,18 @@ export const prunedBlogRedirects: Array<{ slug: string; destination: string }> =
   { slug: 'guide-on-ring-size-and-bespoke-ordering', destination: '/pages/the-master-moissanite-conversion-chart-mm-dew-nz-ring-sizes-explained' },
 ];
 
-export const prunedBlogSlugs = new Set(prunedBlogRedirects.map((r) => r.slug));
+// MIGRATED blogs (2026-07-10, first launch wave): posts whose replacement
+// guide is now LIVE, so their 301 fires and transfers the old post's ranking
+// into the guide. A migrate entry is added here only once its target guide
+// has launched (zero VERIFY-FACT markers, in the sitemap), never before.
+export const migratedBlogRedirects: Array<{ slug: string; destination: string }> = [
+  { slug: 'moissanite-is-what-exactly-the-complete-nz-guide-to-this-brilliant-gemstone', destination: '/moissanite-guide' },
+  { slug: 'moissanite-earrings-guide-nz', destination: '/moissanite-guide/moissanite-earrings-nz' },
+  { slug: 'akoya-vs-freshwater-pearls-nz-guide', destination: '/pearl-guide/akoya-vs-freshwater-pearls-nz' },
+  { slug: 'bridal-earrings-guide-nz', destination: '/bridal-guide/bridal-earrings-nz' },
+  { slug: 'best-bridesmaid-jewellery-gifts-guide', destination: '/bridal-guide/bridesmaid-jewellery-gifts' },
+];
+
+export const prunedBlogSlugs = new Set(
+  [...prunedBlogRedirects, ...migratedBlogRedirects].map((r) => r.slug),
+);

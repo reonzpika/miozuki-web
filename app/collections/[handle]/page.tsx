@@ -84,9 +84,28 @@ export default async function CollectionPage({
     ],
   };
 
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: collection.title,
+    description: collection.description || undefined,
+    url: `https://www.miozuki.co.nz/collections/${collection.handle}`,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: products.length,
+      itemListElement: products.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: p.title,
+        url: `https://www.miozuki.co.nz/products/${p.handle}`,
+      })),
+    },
+  };
+
   return (
     <main>
       <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={collectionSchema} />
       <CollectionHeroBanner collection={collection} />
 
       <div className="border-b border-charcoal/8 bg-cream">

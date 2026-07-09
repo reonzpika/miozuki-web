@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getProducts, getCollections, getBlogArticles } from '@/lib/shopify';
 import launchedGuides from '@/lib/launched-guides.json';
+import { prunedBlogSlugs } from '@/lib/pruned-blogs';
 
 const BASE = 'https://www.miozuki.co.nz';
 
@@ -65,7 +66,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     })),
-    ...articles.map((a) => ({
+    // Pruned blog posts 301 to a collection/page (lib/pruned-blogs.ts), so
+    // they must not appear in the sitemap as if they were live pages.
+    ...articles.filter((a) => !prunedBlogSlugs.has(a.handle)).map((a) => ({
       url: `${BASE}/blogs/news/${a.handle}`,
       lastModified: a.publishedAt ? new Date(a.publishedAt) : now,
       changeFrequency: 'monthly' as const,

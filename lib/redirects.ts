@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { prunedBlogRedirects } from "./pruned-blogs";
 
 // Redirect list: old URLs -> their current home on this site.
 //
@@ -133,4 +134,12 @@ export const redirects: RedirectList = [
     destination: '/collections/pearl-earrings',
     permanent: true,
   },
+  // Blog prune (2026-07-09): thin/near-duplicate posts 301 to the nearest
+  // surviving collection or page. List and rationale in lib/pruned-blogs.ts;
+  // the same list excludes these slugs from the sitemap.
+  ...prunedBlogRedirects.map(({ slug, destination }) => ({
+    source: `/blogs/news/${slug}`,
+    destination,
+    permanent: true,
+  })),
 ];

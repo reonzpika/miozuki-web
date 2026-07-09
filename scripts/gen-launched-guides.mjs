@@ -1,11 +1,16 @@
 // Generates lib/launched-guides.json: which guide-hub pages are "launched"
-// (eligible for the sitemap) vs "pending" (still carrying VERIFY markers).
+// (eligible for the sitemap) vs "pending" (still carrying VERIFY-FACT markers).
 //
-// The rule: a guide enters the sitemap only when its source contains zero
-// VERIFY markers. Markers ({/* VERIFY: ... */} in prose, /* VERIFY: ... */ in
-// FAQ object literals) are invisible on the rendered page and flag content
-// Ting hasn't confirmed yet. So "Ting resolved every marker and published"
-// IS the launch action; no separate manual sitemap step exists.
+// The split-gate rule (Ryo, 2026-07-09): markers come in two kinds.
+//   VERIFY-FACT: an unconfirmed fact about Miozuki's own business (prices,
+//     process, stock). BLOCKS launch; the page stays out of the sitemap until
+//     Ting resolves every one.
+//   VERIFY-EXP: an experience prompt (her photo, a real story, an image
+//     sign-off). Does NOT block launch; Ting works through these on live
+//     pages at her own pace.
+// Both marker forms ({/* ... */} in prose, /* ... */ in FAQ object literals)
+// are invisible on the rendered page. "Ting resolved the last FACT marker and
+// published" IS the launch action; no separate manual sitemap step exists.
 //
 // Runs as part of `prebuild` (before every `next build`), so the JSON is
 // always regenerated from the actual .mdx sources at build time. The JSON is
@@ -39,7 +44,7 @@ for (const hub of HUBS) {
 
   for (const c of candidates) {
     const src = readFileSync(c.file, 'utf8');
-    (src.includes('VERIFY:') ? pending : launched).push(c.route);
+    (src.includes('VERIFY-FACT:') ? pending : launched).push(c.route);
   }
 }
 
@@ -61,5 +66,5 @@ writeFileSync(
 );
 
 console.log(
-  `[launched-guides] ${launched.length} launched, ${pending.length} pending (VERIFY markers present)`,
+  `[launched-guides] ${launched.length} launched, ${pending.length} pending (VERIFY-FACT markers present)`,
 );

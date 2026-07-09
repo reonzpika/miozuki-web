@@ -60,19 +60,30 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // If task #23 turns on Harbor's AI Images, its image host will also need
     // adding to next.config.ts's images.remotePatterns, only cdn.shopify.com
     // and miozuki.co.nz are allowlisted today.
-    img: (p: ComponentPropsWithoutRef<'img'>) => (
-      <span className="relative my-6 block aspect-[4/3] w-full overflow-hidden rounded-xl bg-charcoal/5">
-        {typeof p.src === 'string' && (
-          <Image
-            src={p.src}
-            alt={p.alt ?? ''}
-            fill
-            sizes="(max-width: 768px) 100vw, 768px"
-            style={{ objectFit: 'cover' }}
-          />
-        )}
-      </span>
-    ),
+    // Informational diagrams (filenames starting with "diagram-") must never be
+    // cropped: objectFit contain on the brand cream, instead of the photo
+    // treatment's cover crop.
+    img: (p: ComponentPropsWithoutRef<'img'>) => {
+      const isDiagram =
+        typeof p.src === 'string' && /\/diagram-[^/]*$/.test(p.src);
+      return (
+        <span
+          className={`relative my-6 block aspect-[4/3] w-full overflow-hidden rounded-xl ${
+            isDiagram ? 'bg-cream' : 'bg-charcoal/5'
+          }`}
+        >
+          {typeof p.src === 'string' && (
+            <Image
+              src={p.src}
+              alt={p.alt ?? ''}
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              style={{ objectFit: isDiagram ? 'contain' : 'cover' }}
+            />
+          )}
+        </span>
+      );
+    },
     ...components,
   };
 }

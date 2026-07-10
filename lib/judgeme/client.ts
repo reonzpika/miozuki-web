@@ -68,6 +68,50 @@ export async function getProductReviews(
   }
 }
 
+export interface FeaturedReviews {
+  reviews: JudgeMeReview[];
+  averageRating: number;
+  totalCount: number;
+}
+
+/**
+ * Recent five-star reviews with a quotable body, plus the storewide aggregate,
+ * for the homepage social-proof section. Returns empty data (section hides)
+ * when the token is missing or too few real reviews exist.
+ */
+export async function getFeaturedReviews(limit = 3): Promise<FeaturedReviews> {
+  const empty: FeaturedReviews = { reviews: [], averageRating: 0, totalCount: 0 };
+  const token = process.env.JUDGE_ME_PRIVATE_TOKEN;
+  if (!token) return empty;
+
+  try {
+    const res = await fetch(
+      `${BASE}/reviews?api_token=${token}&shop_domain=${SHOP_DOMAIN}&per_page=250&sort_by=created_at&sort_dir=desc`,
+      { next: { revalidate: 3600 } }
+    );
+    if (!res.ok) return empty;
+
+    const json = await res.json();
+    const publicReviews: JudgeMeReview[] = (json.reviews ?? []).filter(isPublicReview);
+    if (publicReviews.length === 0) return empty;
+
+    const averageRating =
+      publicReviews.reduce((sum, r) => sum + r.rating, 0) / publicReviews.length;
+
+    const quotable = publicReviews.filter(
+      (r) => r.rating === 5 && r.body && r.body.trim().length >= 40 && r.body.trim().length <= 400
+    );
+
+    return {
+      reviews: quotable.slice(0, limit),
+      averageRating,
+      totalCount: publicReviews.length,
+    };
+  } catch {
+    return empty;
+  }
+}
+
 export async function getAllRatings(): Promise<Record<string, RatingSummary>> {
   const token = process.env.JUDGE_ME_PRIVATE_TOKEN;
   if (!token) return {};

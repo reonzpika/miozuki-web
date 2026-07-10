@@ -1,6 +1,7 @@
 const MESSAGES = [
   'Complimentary NZ shipping over $300',
   'NZ-owned & operated · Ships from Auckland',
+  'We ship to Australia · AUD at checkout',
   '6-month warranty on all pieces',
   'Unsure of your ring size? Start with our ring sizer',
 ];

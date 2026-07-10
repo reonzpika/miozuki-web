@@ -9,6 +9,8 @@ import HomeShopShortcuts from '@/components/home-shop-shortcuts';
 import CollectionsGrid from '@/components/collections-grid';
 import BestSellersGrid from '@/components/best-sellers-grid';
 import FounderSection from '@/components/founder-section';
+import HomeTestimonials from '@/components/home-testimonials';
+import HomeGuidesSection from '@/components/home-guides-section';
 import FaqAccordion from '@/components/faq-accordion';
 import ScrollReveal from '@/components/scroll-reveal';
 import JsonLd from '@/components/json-ld';
@@ -71,7 +73,7 @@ const FAQ_SCHEMA = {
 const DIFFERENTIATORS = [
   {
     label: 'NZ-owned & operated',
-    sub: 'Ships from Auckland',
+    sub: 'Ships from Auckland to NZ & Australia',
     svg: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 21c-4.5-4.5-7-8.5-7-11a7 7 0 0 1 14 0c0 2.5-2.5 6.5-7 11Z" />
@@ -193,6 +195,26 @@ export default async function Home() {
 
       <HomeShopShortcuts />
 
+      {/* ── Best Sellers (product-first: most-loved pieces before category browse) ── */}
+      {products.length > 0 && (
+        <section className="py-24">
+          <ScrollReveal className="mb-10 flex max-w-7xl mx-auto flex-col gap-4 px-6 sm:flex-row sm:items-end sm:justify-between md:px-10">
+            <div>
+              <p className="text-xs tracking-[0.3em] uppercase text-burgundy mb-2">Most loved</p>
+              <h2 className="font-serif text-3xl md:text-4xl text-charcoal">Best Sellers</h2>
+            </div>
+            <Link
+              href="/collections/best-sellers"
+              className="inline-flex min-h-11 shrink-0 items-center text-xs tracking-widest uppercase text-burgundy transition-colors hover:text-burgundy/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+            >
+              View All
+            </Link>
+          </ScrollReveal>
+
+          <BestSellersGrid products={products} ratings={ratings} />
+        </section>
+      )}
+
       {/* ── Collections ──────────────────────────────────── */}
       {curatedCollections.length > 0 && (
         <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto w-full">
@@ -213,28 +235,11 @@ export default async function Home() {
         </section>
       )}
 
+      {/* ── Social proof: real Judge.me reviews ───────────── */}
+      <HomeTestimonials />
+
       {/* ── Founder ───────────────────────────────────────── */}
       <FounderSection />
-
-      {/* ── Best Sellers ──────────────────────────────────── */}
-      {products.length > 0 && (
-        <section className="py-24">
-          <ScrollReveal className="mb-10 flex max-w-7xl mx-auto flex-col gap-4 px-6 sm:flex-row sm:items-end sm:justify-between md:px-10">
-            <div>
-              <p className="text-xs tracking-[0.3em] uppercase text-burgundy mb-2">Most loved</p>
-              <h2 className="font-serif text-3xl md:text-4xl text-charcoal">Best Sellers</h2>
-            </div>
-            <Link
-              href="/collections/best-sellers"
-              className="inline-flex min-h-11 shrink-0 items-center text-xs tracking-widest uppercase text-burgundy transition-colors hover:text-burgundy/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
-            >
-              View All
-            </Link>
-          </ScrollReveal>
-
-          <BestSellersGrid products={products} ratings={ratings} />
-        </section>
-      )}
 
       {/* ── Differentiator strip ─────────────────────────── */}
       <section className="w-full bg-burgundy py-16">
@@ -284,6 +289,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Guide hubs entry ──────────────────────────────── */}
+      <HomeGuidesSection />
 
       {/* ── FAQ ───────────────────────────────────────────── */}
       <section className="py-24 px-6 md:px-10 max-w-3xl mx-auto w-full">

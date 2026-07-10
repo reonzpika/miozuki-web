@@ -155,7 +155,7 @@ Three client-side trackers, each an env-gated component rendered in `app/layout.
 
 | Tool | Component | Env var | Purpose |
 |---|---|---|---|
-| Google Analytics 4 | `components/deferred-analytics.tsx` (via `@next/third-parties`, deferred) | `NEXT_PUBLIC_GA4_ID` | Traffic and behaviour stats |
+| Google Analytics 4 | `components/deferred-analytics.tsx` (via `@next/third-parties`) | `NEXT_PUBLIC_GA4_ID` | Traffic, behaviour stats, and storefront ecommerce events |
 | Meta (Facebook) Pixel | `components/meta-pixel.tsx` (`next/script`, `lazyOnload`) | `NEXT_PUBLIC_META_PIXEL_ID` | Ad attribution and conversion events for Meta ads |
 | Microsoft Clarity | `components/clarity.tsx` (`next/script`, `lazyOnload`) | `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Heatmaps and session recordings |
 

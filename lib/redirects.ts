@@ -33,11 +33,12 @@ export const redirects: RedirectList = [
     destination: '/blogs/news',
     permanent: true,
   },
-  // Legacy secondary blog index -> the matching journal article
+  // Legacy secondary blog index -> straight to the guide that absorbed the
+  // article (was a hop via /blogs/news/...; pointed direct when the article
+  // itself was migrated in wave 2, to avoid a redirect chain).
   {
     source: '/blogs/moissanite-vs-diamond-for-nz-engagement-rings',
-    destination:
-      '/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly',
+    destination: '/moissanite-guide/moissanite-vs-diamond-nz',
     permanent: true,
   },
   // Renamed Shopify pages (old slugs were indexed; new build renamed them).

@@ -33,6 +33,8 @@ Save the raw draft to `../miozuki-brain/seo/drafts/{slug}-opus-raw.md` before sh
 
 **The `<GuideSchema ... />` line under each H1** renders the byline, the visible "Updated" date, and the hidden Article code. When you materially change an article's content (an experience pass counts), bump its `updated="YYYY-MM-DD"` to today so the date stays truthful. Never remove the component or change its `title`/`path`.
 
+**Price and metal rules (added 2026-07-10, Ryo's decision).** Never put a Miozuki price in the same sentence or table cell as a market price for gold-set jewellery: most market rings are gold, Miozuki's are sterling silver, and pairing the two is an unfair comparison that confuses customers. Market figures must name their basis ("typically set in 10k-18k gold"); Miozuki pricing always stands alone as a from-price ("rings start from NZ$320"). Never state a price for Miozuki gold pieces (gold is quoted individually as a custom order; the gold price moves). Never write "we only sell silver" or similar: the standing phrasing is "S925 sterling silver, with solid gold available as a custom order".
+
 See `docs/guide-hub-overview.md` in this repo for how all of this fits together, and `harbor-vs-claude-pilot-findings.md` in miozuki-brain for the full pilot record behind these instructions.
 
 ### Publishing a guide (uses the safe sync scripts above, not raw git)

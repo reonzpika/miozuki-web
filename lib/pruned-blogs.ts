@@ -56,6 +56,24 @@ export const migratedBlogRedirects: Array<{ slug: string; destination: string }>
   { slug: 'akoya-vs-freshwater-pearls-nz-guide', destination: '/pearl-guide/akoya-vs-freshwater-pearls-nz' },
   { slug: 'bridal-earrings-guide-nz', destination: '/bridal-guide/bridal-earrings-nz' },
   { slug: 'best-bridesmaid-jewellery-gifts-guide', destination: '/bridal-guide/bridesmaid-jewellery-gifts' },
+  // Wave 2 (2026-07-10): all remaining guides launched (Ting's fact-check reply
+  // resolved every blocking marker), so the rest of the migrate list fires.
+  // Slugs verified against the live Shopify articles API before adding.
+  { slug: 'moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly', destination: '/moissanite-guide/moissanite-vs-diamond-nz' },
+  { slug: 'why-choose-moissanite-over-diamonds-nz', destination: '/moissanite-guide/moissanite-vs-diamond-nz' },
+  { slug: 'moissanite-jewellery-nz-why-is-it-accessible-luxury', destination: '/moissanite-guide/moissanite-vs-diamond-nz' },
+  { slug: 'difference-between-moissanite-and-cubic-zirconia-a-complete-guide', destination: '/moissanite-guide/moissanite-vs-cubic-zirconia' },
+  { slug: 'moissanite-colour-clarity-grades-explained-nz', destination: '/moissanite-guide/moissanite-grades-and-brands-nz' },
+  { slug: 'overview-on-moissanite-colour-clarity-grades-nz', destination: '/moissanite-guide/moissanite-grades-and-brands-nz' },
+  { slug: 'engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime', destination: '/moissanite-guide/how-to-choose-a-moissanite-ring' },
+  { slug: 'complete-guide-for-moissanite-ring-setting', destination: '/moissanite-guide/how-to-choose-a-moissanite-ring' },
+  { slug: 'platinum-vs-silver-settings-for-moissanite-ring-nz', destination: '/moissanite-guide/how-to-choose-a-moissanite-ring' },
+  { slug: 'classic-solitaire-vs-pave-moissanite-engagement-rings', destination: '/moissanite-guide/how-to-choose-a-moissanite-ring' },
+  { slug: 'complete-guide-moissanite-ring-nz-cuts-for-sparkle', destination: '/moissanite-guide/how-to-choose-a-moissanite-ring' },
+  { slug: 'how-to-choose-a-promise-ring-nz', destination: '/moissanite-guide/how-to-choose-a-promise-ring-nz' },
+  { slug: 'best-selling-moissanite-promise-rings-in-nz-for-young-couples', destination: '/moissanite-guide/how-to-choose-a-promise-ring-nz' },
+  { slug: 'how-to-know-if-pearls-are-real-or-fake', destination: '/pearl-guide/how-to-tell-real-pearls' },
+  { slug: 'pearl-earrings-nz-jewellery-guide', destination: '/pearl-guide/pearl-earrings-nz' },
 ];
 
 export const prunedBlogSlugs = new Set(

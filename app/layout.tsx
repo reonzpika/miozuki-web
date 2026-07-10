@@ -8,6 +8,7 @@ import AnnouncementBar from '@/components/announcement-bar';
 import { CartProvider } from '@/components/cart-provider';
 import EmailPopup from '@/components/email-popup';
 import EnquiryWidget from '@/components/enquiry-widget';
+import AdvisorWidget from '@/components/advisor-widget';
 import JsonLd from '@/components/json-ld';
 import MetaPixel from '@/components/meta-pixel';
 import Clarity from '@/components/clarity';
@@ -42,7 +43,7 @@ const ORGANIZATION_SCHEMA = {
     'https://www.facebook.com/profile.php?id=61578033779488',
   ],
   priceRange: '$$',
-  areaServed: 'NZ',
+  areaServed: ['NZ', 'AU'],
 };
 
 const playfair = Playfair_Display({
@@ -131,6 +132,10 @@ export default function RootLayout({
             <Footer />
             <EmailPopup />
             <EnquiryWidget />
+            {/* Advisor renders only when the server holds an Anthropic key, so
+                the widget can never appear unconfigured. Add ANTHROPIC_API_KEY
+                in Vercel env + redeploy to switch it on. */}
+            {process.env.ANTHROPIC_API_KEY ? <AdvisorWidget /> : null}
           </StorefrontChrome>
         </CartProvider>
         {GA4_ID ? <DeferredAnalytics gaId={GA4_ID} /> : null}

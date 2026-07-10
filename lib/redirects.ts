@@ -149,4 +149,12 @@ export const redirects: RedirectList = [
     destination,
     permanent: true,
   })),
+  // Moissanite FAQ page folded into the moissanite pillar (2026-07-10): its
+  // content was already covered by the guide, so the standalone page is
+  // retired and its traffic sent to the pillar.
+  {
+    source: '/pages/moissanite-faq',
+    destination: '/moissanite-guide',
+    permanent: true,
+  },
 ];

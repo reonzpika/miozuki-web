@@ -7,7 +7,7 @@ const HELP_LINKS = [
   { label: 'Returns & Refunds', href: '/pages/returns-refunds-policy' },
   { label: 'Warranty', href: '/pages/warranty-cover' },
   { label: 'Size Guide', href: '/pages/size-guide' },
-  { label: 'Moissanite FAQ', href: '/pages/moissanite-faq' },
+  { label: 'Moissanite FAQ', href: '/moissanite-guide' },
 ];
 
 const RESOURCES_LINKS = [

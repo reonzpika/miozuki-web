@@ -15,7 +15,6 @@ const STATIC_PATHS: Array<{ path: string; changeFrequency: MetadataRoute.Sitemap
   { path: '/pages/contact', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/pages/bespoke-order', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/pages/jewellery-care-guide', changeFrequency: 'monthly', priority: 0.4 },
-  { path: '/pages/moissanite-faq', changeFrequency: 'monthly', priority: 0.4 },
   { path: '/pages/nz-au-to-us-ring-size-converter', changeFrequency: 'monthly', priority: 0.4 },
   { path: '/pages/the-master-moissanite-conversion-chart-mm-dew-nz-ring-sizes-explained', changeFrequency: 'monthly', priority: 0.4 },
   { path: '/pages/miozuki-in-auckland-northshore', changeFrequency: 'monthly', priority: 0.4 },

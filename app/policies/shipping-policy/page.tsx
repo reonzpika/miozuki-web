@@ -3,7 +3,8 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Shipping Policy | Miozuki',
-  description: 'Miozuki NZ shipping rates, delivery times, and made-to-order lead times.',
+  description:
+    'Miozuki shipping to New Zealand and Australia: rates, delivery times, made-to-order lead times, and what AU customers pay at the border.',
 };
 
 export default function ShippingPolicyPage() {
@@ -67,7 +68,7 @@ export default function ShippingPolicyPage() {
           </div>
           <p className="mb-4">
             Delivery times to Australia vary by destination. A tracking number will be emailed to you
-            once your order is dispatched.
+            once your order is dispatched. Australian orders are shown and charged in AUD at checkout.
           </p>
           <p>
             We do not currently ship to other international destinations. Sign up to our newsletter
@@ -106,10 +107,17 @@ export default function ShippingPolicyPage() {
         </div>
 
         <div>
-          <h2 className="font-serif text-xl text-charcoal mb-4">Customs &amp; Taxes</h2>
+          <h2 className="font-serif text-xl text-charcoal mb-4">Customs &amp; Taxes (Australia)</h2>
           <p>
-            International orders may incur extra duties or taxes, which are the customer&apos;s
-            responsibility.
+            Parcels with a customs value of{' '}
+            <strong className="text-charcoal font-medium">AUD $1,000 or less</strong> enter Australia
+            with no GST or duty charged at the border, which covers most Miozuki orders.
+          </p>
+          <p className="mt-3">
+            Parcels totalling <strong className="text-charcoal font-medium">over AUD $1,000</strong>{' '}
+            may attract Australian GST and import duty, charged to you on delivery. The threshold
+            applies per parcel, not per item, so several pieces in one order can add up past it. Any
+            such charges are the customer&apos;s responsibility.
           </p>
         </div>
 

@@ -49,6 +49,9 @@ docs/audit/video/
 docs/audit/lighthouse/
 .unlighthouse/
 
+# newsletter/coupon audit reports contain real customer emails, never commit
+docs/audit/newsletter-coupon-audit-*.md
+
 # cursor agent debug logs
 .cursor/debug-*.log
 .cursor/deps-stamp

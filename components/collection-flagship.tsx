@@ -143,7 +143,7 @@ export function CollectionFlagshipEducation({ themes }: { themes: CollectionEduc
             ))}
           </ul>
           <Link
-            href="/pages/moissanite-faq"
+            href="/moissanite-guide"
             className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-charcoal/20 bg-cream px-5 text-sm text-charcoal transition-colors hover:border-burgundy/40 hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
           >
             Learn more about moissanite
@@ -172,10 +172,10 @@ export function CollectionFlagshipEducation({ themes }: { themes: CollectionEduc
             ))}
           </ul>
           <Link
-            href="/pages/jewellery-care-guide"
+            href="/pearl-guide"
             className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-charcoal/20 bg-cream px-5 text-sm text-charcoal transition-colors hover:border-burgundy/40 hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
           >
-            Pearl and jewellery care
+            Read the pearl guide
           </Link>
         </section>
       ) : null}

@@ -41,7 +41,9 @@ Three Google image models exist as of April 2026:
 - Best-in-class text-in-image rendering, multilingual
 - Built on Gemini 3 Pro reasoning, so it understands compositional language well
 
-**Miozuki use:** mood imagery, section backgrounds, blog heroes, OG backgrounds. **Never** AI-rendered jewellery, hands wearing pieces, or product-accurate gems; real product photography stays in Shopify. See `_templates.md`.
+**Miozuki use:** mood imagery, section backgrounds, blog heroes, OG backgrounds, and (since the 2026-07-09 pilot) **informational diagrams** for guide-hub pages. **Never** AI-rendered jewellery, hands wearing pieces, or product-accurate gems; real product photography stays in Shopify. See `_templates.md`.
+
+**Informational diagram class (added 2026-07-09):** flat labelled infographics for guide pages (e.g. the Mohs hardness ladder, the neckline pairing chart). Rules for this class: flat vector-illustration style on brand cream, never photorealistic; exact label text spelled out in the prompt and figures matched to the site copy; filenames start with `diagram-` (the MDX img override renders those with objectFit contain instead of the photo crop); no gemstone or jewellery illustrations (line-art dress silhouettes are allowed, approved for the neckline chart); Nano Banana Pro model for text fidelity; every embed carries a VERIFY marker so Ting signs off the diagram before the page launches. Schematic pearl/gem illustrations remain NOT approved (carve-out declined 2026-07-09 in favour of the two low-conflict diagrams). Examples: `public/generated/diagram-mohs-hardness.jpg`, `public/generated/diagram-neckline-earrings.jpg`, prompt sidecars in `scripts/prompts/`.
 
 Sources:
 - [Nano Banana Pro - Google Blog (Nov 2025)](https://blog.google/innovation-and-ai/products/nano-banana-pro/)

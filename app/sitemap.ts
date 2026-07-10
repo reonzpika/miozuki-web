@@ -1,5 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getProducts, getCollections, getBlogArticles } from '@/lib/shopify';
+import launchedGuides from '@/lib/launched-guides.json';
+import { prunedBlogSlugs } from '@/lib/pruned-blogs';
 
 const BASE = 'https://www.miozuki.co.nz';
 
@@ -41,6 +43,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency,
       priority,
     })),
+    // Guide-hub pages enter the sitemap automatically once "launched": a guide
+    // is launched when its .mdx source carries zero VERIFY markers (content
+    // Ting hasn't confirmed yet). The list is generated at build time by
+    // scripts/gen-launched-guides.mjs (prebuild), so resolving the last marker
+    // and publishing IS the launch action; there is no manual sitemap step.
+    ...launchedGuides.launched.map((path) => ({
+      url: `${BASE}${path}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    })),
     ...products.map((p) => ({
       url: `${BASE}/products/${p.handle}`,
       lastModified: now,
@@ -53,7 +66,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     })),
-    ...articles.map((a) => ({
+    // Pruned blog posts 301 to a collection/page (lib/pruned-blogs.ts), so
+    // they must not appear in the sitemap as if they were live pages.
+    ...articles.filter((a) => !prunedBlogSlugs.has(a.handle)).map((a) => ({
       url: `${BASE}/blogs/news/${a.handle}`,
       lastModified: a.publishedAt ? new Date(a.publishedAt) : now,
       changeFrequency: 'monthly' as const,

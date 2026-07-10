@@ -11,6 +11,9 @@ const HELP_LINKS = [
 ];
 
 const RESOURCES_LINKS = [
+  { label: 'Moissanite Guide', href: '/moissanite-guide' },
+  { label: 'Pearl Guide', href: '/pearl-guide' },
+  { label: 'Bridal Guide', href: '/bridal-guide' },
   { label: 'Jewellery Care', href: '/pages/jewellery-care-guide' },
 ];
 

@@ -52,6 +52,7 @@ These files contain integration invariants. One wrong edit can break every produ
 | `app/robots.ts`, `app/sitemap.ts`, `app/global-error.tsx` | SEO + root error boundary. |
 | `next.config.ts` | The image host allowlist and quality settings. A wrong edit here silently breaks every product image across the whole site. Redirects used to live here but now live in `lib/redirects.ts`, so you never need to open this file. |
 | `tsconfig.json`, `eslint.config.*`, `package.json`, `package-lock.json` | Toolchain. |
+| `app/moissanite-guide/layout.tsx`, `app/pearl-guide/layout.tsx`, `app/bridal-guide/layout.tsx`, `components/hub/**`, `mdx-components.tsx` | The guide-hub scaffold, added 2026-07-06: shared layout, FAQ/CTA components, MDX element styling. This is structure, not the article itself, see the safe zone below for what you can edit. |
 | `.env.example`, `.env.local`, `.env.*` | Secrets and env contracts. |
 | `scripts/audit.ts`, `scripts/verify-*.mjs`, `scripts/probe-*.mjs` | Pre-launch and verification scripts. |
 | `components/cart-provider.tsx` | Cart state. Subtle bugs lose checkouts. |
@@ -72,6 +73,7 @@ You may freely edit these:
 | `components/**` visuals: Tailwind classes, spacing, layout, motion, copy in chrome | Within the design tokens defined in `app/globals.css`. |
 | `public/**` | Images, fonts, OG image, favicons. |
 | `app/globals.css` decorative additions | Custom keyframes, utility classes, animations. Never remove the `prefers-reduced-motion` block. |
+| `app/moissanite-guide/**/*.mdx`, `app/pearl-guide/**/*.mdx`, `app/bridal-guide/**/*.mdx` | Added 2026-07-06. The guide article text itself: headings, paragraphs, your real experience, photo references. This is content, edit it the same as any page copy. The `<HubFaq items={[...]} />` block partway through looks code-like, it isn't, it's just the question-and-answer text, safe to edit. |
 
 **Design system rules (still apply in the safe zone):**
 

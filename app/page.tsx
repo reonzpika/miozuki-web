@@ -298,7 +298,7 @@ export default async function Home() {
 
         <ScrollReveal delay={0.1} className="mt-10 text-center">
           <Link
-            href="/pages/moissanite-faq"
+            href="/moissanite-guide"
             className="text-xs tracking-widest uppercase text-burgundy hover:text-burgundy/70 transition-colors underline underline-offset-4"
           >
             Full Moissanite Guide

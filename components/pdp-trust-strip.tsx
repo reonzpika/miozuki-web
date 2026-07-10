@@ -13,7 +13,7 @@ const ITEMS = [
   },
   {
     label: 'NZ-owned',
-    sub: 'Ships from Auckland',
+    sub: 'Ships to NZ & Australia',
     svg: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 21s-7-4.35-7-11a7 7 0 1 1 14 0c0 6.65-7 11-7 11Z" />

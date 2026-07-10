@@ -18,6 +18,7 @@ import { PdpCustomEnquiry } from '@/components/pdp/custom-enquiry';
 import { isEarringProduct } from '@/lib/product-helpers';
 import { getRequestAbsoluteUrl } from '@/lib/absolute-url';
 import { getProductReviews } from '@/lib/judgeme/client';
+import { metaDescription } from '@/lib/meta-description';
 import JsonLd from '@/components/json-ld';
 
 export const revalidate = 60;
@@ -44,8 +45,10 @@ export async function generateMetadata({
   const ogImageNode =
     product.featuredImage ?? product.images.edges[0]?.node ?? null;
   const ogImageUrl = ogImageNode?.url;
-  const pageTitle = `${product.title} | Miozuki`;
-  const description = product.description || undefined;
+  // Prefer the Shopify "Search engine listing" fields (Ting's lane) when set;
+  // fall back to the product title and truncated body copy.
+  const pageTitle = `${product.seo?.title?.trim() || product.title} | Miozuki`;
+  const description = metaDescription(product.seo?.description, product.description);
   const canonicalPath = `/products/${handle}`;
   const openGraphBase = {
     title: product.title,

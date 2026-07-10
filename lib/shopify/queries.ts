@@ -35,6 +35,7 @@ export const GET_PRODUCT_BY_HANDLE = /* GraphQL */ `
       title
       description
       descriptionHtml
+      seo { title description }
       tags
       productType
       featuredImage { url altText width height }
@@ -144,6 +145,7 @@ export const GET_COLLECTION_BY_HANDLE = /* GraphQL */ `
       title
       description
       descriptionHtml
+      seo { title description }
       image { url altText width height }
       metafield(namespace: "custom", key: "intro") { value }
       products(first: $productsFirst, after: $after, sortKey: COLLECTION_DEFAULT) {

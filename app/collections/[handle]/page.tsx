@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getAllRatings } from '@/lib/judgeme/client';
 import { getCollections, getCollectionByHandle } from '@/lib/shopify';
 import { cleanDescriptionHtml } from '@/lib/description-html';
-import { getCollectionEducationThemes } from '@/lib/collection-page';
+import { getCollectionEducationPanels } from '@/lib/collection-page';
 import ProductsGrid from '@/components/products-grid';
 import CollectionHeroBanner from '@/components/collection-hero-banner';
 import JsonLd from '@/components/json-ld';
@@ -124,7 +124,7 @@ export default async function CollectionPage({
       </div>
 
       <div className="border-t border-charcoal/8 bg-cream py-14 md:py-16">
-        <CollectionFlagshipEducation themes={getCollectionEducationThemes(handle)} />
+        <CollectionFlagshipEducation panels={getCollectionEducationPanels(handle)} />
       </div>
 
       {collection.descriptionHtml && (

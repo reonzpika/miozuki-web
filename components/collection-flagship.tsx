@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Collection } from '@/lib/shopify';
-import type { CollectionEducationTheme } from '@/lib/collection-page';
+import type { CollectionEducationPanel } from '@/lib/collection-page';
 import { richTextToPlain, clipAfterNeedAssistanceQuestion } from '@/components/rich-text';
 
 const TRUST_PILLS = [
@@ -117,68 +117,67 @@ const PEARL_CHIPS = [
   'Beautiful layered or worn solo',
 ] as const;
 
+const BRIDAL_CHIPS = [
+  'For brides and bridesmaids',
+  'Pearl softness, moissanite sparkle',
+  'Designed in Auckland',
+] as const;
+
 const gemstoneEducationSectionClass =
   'rounded-md border border-charcoal/12 bg-surface/60 p-6 md:p-8';
 
-export function CollectionFlagshipEducation({ themes }: { themes: CollectionEducationTheme[] }) {
+const EDUCATION_PANEL_COPY = {
+  moissanite: {
+    eyebrow: 'What is moissanite?',
+    heading: 'A Bright Gemstone with Diamond-Like Brilliance',
+    body: 'Loved for its sparkle, clarity, and durability, moissanite brings lasting sparkle to modern jewellery made for everyday wear.',
+    chips: MOISSANITE_CHIPS,
+    chipsLabel: 'Moissanite highlights',
+  },
+  pearl: {
+    eyebrow: 'What are pearls?',
+    heading: 'Organic Gems with Quiet, Lasting Lustre',
+    body: 'Cultured pearls build lustre layer by layer, giving each piece a soft glow that pairs beautifully with sharper sparkle. We choose pearls for their understated elegance and everyday wearability.',
+    chips: PEARL_CHIPS,
+    chipsLabel: 'Pearl highlights',
+  },
+  bridal: {
+    eyebrow: 'Jewellery for the day',
+    heading: 'Bridal Pieces Chosen to Outlast the Occasion',
+    body: 'Bridal earrings, necklaces and sets that pair pearl softness with moissanite sparkle, chosen to be worn again long after the wedding day.',
+    chips: BRIDAL_CHIPS,
+    chipsLabel: 'Bridal highlights',
+  },
+} as const;
+
+export function CollectionFlagshipEducation({ panels }: { panels: CollectionEducationPanel[] }) {
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-6 md:px-10">
-      {themes.includes('moissanite') ? (
-        <section className={gemstoneEducationSectionClass}>
-          <p className="text-[11px] uppercase tracking-[0.28em] text-charcoal/45">What is moissanite?</p>
-          <h2 className="mt-2 font-serif text-xl text-charcoal md:text-2xl">
-            A Bright Gemstone with Diamond-Like Brilliance
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-charcoal/65">
-            Loved for its sparkle, clarity, and durability, moissanite brings lasting sparkle to modern
-            jewellery made for everyday wear.
-          </p>
-          <ul className="mt-4 flex flex-wrap gap-2" aria-label="Moissanite highlights">
-            {MOISSANITE_CHIPS.map((label) => (
-              <li key={label}>
-                <span className="inline-block rounded-full border border-charcoal/8 bg-cream px-3 py-1.5 text-[11px] text-charcoal/75">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <Link
-            href="/moissanite-guide"
-            className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-charcoal/20 bg-cream px-5 text-sm text-charcoal transition-colors hover:border-burgundy/40 hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-          >
-            Learn more about moissanite
-          </Link>
-        </section>
-      ) : null}
-
-      {themes.includes('pearl') ? (
-        <section className={gemstoneEducationSectionClass}>
-          <p className="text-[11px] uppercase tracking-[0.28em] text-charcoal/45">What are pearls?</p>
-          <h2 className="mt-2 font-serif text-xl text-charcoal md:text-2xl">
-            Organic Gems with Quiet, Lasting Lustre
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-charcoal/65">
-            Cultured pearls build lustre layer by layer, giving each piece a soft glow that pairs
-            beautifully with sharper sparkle. We choose pearls for their understated elegance and everyday
-            wearability.
-          </p>
-          <ul className="mt-4 flex flex-wrap gap-2" aria-label="Pearl highlights">
-            {PEARL_CHIPS.map((label) => (
-              <li key={label}>
-                <span className="inline-block rounded-full border border-charcoal/8 bg-cream px-3 py-1.5 text-[11px] text-charcoal/75">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <Link
-            href="/pearl-guide"
-            className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-charcoal/20 bg-cream px-5 text-sm text-charcoal transition-colors hover:border-burgundy/40 hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-          >
-            Read the pearl guide
-          </Link>
-        </section>
-      ) : null}
+      {panels.map((panel) => {
+        const copy = EDUCATION_PANEL_COPY[panel.theme];
+        return (
+          <section key={panel.theme} className={gemstoneEducationSectionClass}>
+            <p className="text-[11px] uppercase tracking-[0.28em] text-charcoal/45">{copy.eyebrow}</p>
+            <h2 className="mt-2 font-serif text-xl text-charcoal md:text-2xl">{copy.heading}</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-charcoal/65">{copy.body}</p>
+            <ul className="mt-4 flex flex-wrap gap-2" aria-label={copy.chipsLabel}>
+              {copy.chips.map((label) => (
+                <li key={label}>
+                  <span className="inline-block rounded-full border border-charcoal/8 bg-cream px-3 py-1.5 text-[11px] text-charcoal/75">
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href={panel.guideHref}
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-charcoal/20 bg-cream px-5 text-sm text-charcoal transition-colors hover:border-burgundy/40 hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            >
+              {panel.guideLabel}
+            </Link>
+          </section>
+        );
+      })}
 
       <section className="rounded-md border border-charcoal/12 bg-cream p-6 md:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start">

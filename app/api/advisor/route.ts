@@ -38,6 +38,78 @@ interface ChatMessage {
   content: string;
 }
 
+/**
+ * Live product search backed by Shopify's own Storefront MCP endpoint
+ * (free, store-hosted, no token needed). The raw response is compacted to a
+ * few lines per product so tool results stay cheap and the model can only
+ * relay real titles, prices, and availability.
+ */
+const SHOPIFY_MCP_ENDPOINT = 'https://nassuu-px.myshopify.com/api/mcp';
+
+const SEARCH_PRODUCTS_TOOL: Anthropic.Tool = {
+  name: 'search_products',
+  description:
+    'Search the live Miozuki catalogue. Call this for any specific product question: budget limits (e.g. rings under $500), stone or style preferences, availability, or when the customer asks what you stock beyond the overview you already have. Returns real products with live NZD from-prices and availability.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      query: {
+        type: 'string',
+        description:
+          'Natural-language search, e.g. "moissanite stud earrings under 400 NZD" or "pearl necklace"',
+      },
+    },
+    required: ['query'],
+    additionalProperties: false,
+  },
+};
+
+interface UcpProduct {
+  title?: string;
+  url?: string;
+  price_range?: { min?: { amount?: number; currency?: string } };
+  variants?: { availability?: { available?: boolean } }[];
+}
+
+async function searchLiveCatalogue(query: string): Promise<string> {
+  if (!query.trim()) return 'No search query given.';
+  try {
+    const r = await fetch(SHOPIFY_MCP_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'tools/call',
+        params: {
+          name: 'search_catalog',
+          arguments: { query, context: 'Customer chatting with the Miozuki jewellery advisor' },
+        },
+      }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!r.ok) return 'Live search is unavailable right now.';
+    const json = await r.json();
+    const text: string | undefined = json?.result?.content?.[0]?.text;
+    if (!text) return 'Live search returned no results.';
+    const parsed = JSON.parse(text) as { products?: UcpProduct[] };
+    const products = (parsed.products ?? []).slice(0, 6);
+    if (products.length === 0) return 'No matching products found.';
+    return products
+      .map((p) => {
+        const cents = p.price_range?.min?.amount;
+        const price = typeof cents === 'number' ? `from NZ$${Math.round(cents / 100)}` : 'price at link';
+        const path = p.url ? new URL(p.url).pathname : '';
+        const available = p.variants?.some((v) => v.availability?.available !== false);
+        return `- ${p.title ?? 'Untitled'}, ${price}, ${path}${available === false ? ' (currently unavailable)' : ''}`;
+      })
+      .join('\n');
+  } catch (err) {
+    console.error('Live catalogue search failed', err);
+    return 'Live search is unavailable right now; answer from the catalogue overview and suggest browsing /collections/moissanite-nz.';
+  }
+}
+
 function validMessages(body: unknown): ChatMessage[] | null {
   if (!body || typeof body !== 'object') return null;
   const messages = (body as { messages?: unknown }).messages;
@@ -92,22 +164,51 @@ export async function POST(request: Request) {
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
-        const runner = client.messages.stream({
-          model: MODEL,
-          max_tokens: 700,
-          system: [
-            {
-              type: 'text',
-              text: system,
-              cache_control: { type: 'ephemeral' },
-            },
-          ],
-          messages,
-        });
-        runner.on('text', (text) => {
-          controller.enqueue(encoder.encode(text));
-        });
-        await runner.finalMessage();
+        // Manual tool loop (max 3 rounds): stream text as it arrives; when the
+        // model calls search_products, run the live catalogue search and
+        // continue. Live search grounds prices/availability in Shopify truth
+        // instead of the hourly digest (the Air Canada ruling made hallucinated
+        // chatbot prices a legal liability, not just a UX bug).
+        const convo: Anthropic.MessageParam[] = [...messages];
+        for (let round = 0; round < 3; round++) {
+          const runner = client.messages.stream({
+            model: MODEL,
+            max_tokens: 700,
+            system: [
+              {
+                type: 'text',
+                text: system,
+                cache_control: { type: 'ephemeral' },
+              },
+            ],
+            tools: [SEARCH_PRODUCTS_TOOL],
+            messages: convo,
+          });
+          runner.on('text', (text) => {
+            controller.enqueue(encoder.encode(text));
+          });
+          const final = await runner.finalMessage();
+          if (final.stop_reason !== 'tool_use') break;
+
+          convo.push({
+            role: 'assistant',
+            content: final.content as Anthropic.ContentBlockParam[],
+          });
+          const results: Anthropic.ToolResultBlockParam[] = [];
+          for (const block of final.content) {
+            if (block.type === 'tool_use') {
+              const query = String(
+                (block.input as { query?: unknown })?.query ?? ''
+              );
+              results.push({
+                type: 'tool_result',
+                tool_use_id: block.id,
+                content: await searchLiveCatalogue(query),
+              });
+            }
+          }
+          convo.push({ role: 'user', content: results });
+        }
         controller.close();
       } catch (err) {
         console.error('Advisor stream failed', err);

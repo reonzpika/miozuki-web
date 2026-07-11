@@ -22,6 +22,12 @@ const STARTERS = [
   'Do you ship to Australia?',
 ] as const;
 
+/** GA4 event, no-op when GA is not loaded (dev, preview, admin). */
+function track(event: string, params?: Record<string, string>) {
+  const gtag = (window as { gtag?: (...args: unknown[]) => void }).gtag;
+  if (typeof gtag === 'function') gtag('event', event, params);
+}
+
 /** Render assistant text, turning [label](/path) markdown links AND bare
  * site paths (e.g. "/moissanite-guide") into real links. The bare-path
  * fallback exists because the model occasionally writes a path in prose
@@ -38,15 +44,19 @@ function AssistantText({ text }: { text: string }) {
   let match: RegExpExecArray | null;
   while ((match = linkPattern.exec(text)) !== null) {
     if (match[1] !== undefined && match[2] !== undefined) {
-      // Markdown form: [label](/path)
+      // Markdown form: [label](/path). Capture into consts: the onClick
+      // closure must not read the reassigned loop variable.
+      const label = match[1];
+      const href = match[2];
       if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
       parts.push(
         <Link
-          key={`${match.index}-${match[2]}`}
-          href={match[2]}
+          key={`${match.index}-${href}`}
+          href={href}
+          onClick={() => track('advisor_link_click', { link_url: href })}
           className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
         >
-          {match[1]}
+          {label}
         </Link>
       );
       lastIndex = match.index + match[0].length;
@@ -95,6 +105,7 @@ export default function AdvisorWidget() {
     setMessages(history);
     setInput('');
     setBusy(true);
+    track('advisor_message_sent');
     try {
       const res = await fetch('/api/advisor', {
         method: 'POST',
@@ -135,7 +146,10 @@ export default function AdvisorWidget() {
       {/* Floating trigger, stacked above the Enquire button */}
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+          track('advisor_open');
+        }}
         aria-haspopup="dialog"
         aria-expanded={open}
         className="fixed bottom-[4.65rem] right-5 z-30 inline-flex items-center gap-2 rounded-full border border-burgundy bg-cream px-5 py-3 text-xs uppercase tracking-[0.12em] text-burgundy shadow-[0_8px_24px_var(--miozuki-shadow)] transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:bottom-20 md:right-6"

@@ -54,10 +54,11 @@ function MioAvatar({ size = 36 }: { size?: number }) {
   );
 }
 
-/** Inline links: [label](/path) markdown links plus bare site paths. */
+/** Inline links: [label](/path) markdown links, bare site paths, and email
+ * addresses (rendered as a tappable mailto pill so nobody has to copy-paste). */
 function InlineLinks({ text }: { text: string }) {
   const linkPattern =
-    /\[([^\]]+)\]\((\/[^\s)]+)\)|(^|[\s(])(\/(?:products|collections|pages|policies|moissanite-guide|pearl-guide|bridal-guide)(?:\/[\w-]+)*)/g;
+    /\[([^\]]+)\]\((\/[^\s)]+)\)|(^|[\s(])(\/(?:products|collections|pages|policies|moissanite-guide|pearl-guide|bridal-guide)(?:\/[\w-]+)*)|([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
   const parts: React.ReactNode[] = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
@@ -92,6 +93,24 @@ function InlineLinks({ text }: { text: string }) {
         </Link>
       );
       lastIndex = start + href.length;
+    } else if (match[5] !== undefined) {
+      const email = match[5];
+      if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
+      parts.push(
+        <a
+          key={`${match.index}-${email}`}
+          href={`mailto:${email}`}
+          onClick={() => track('advisor_email_click')}
+          className="mx-0.5 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-burgundy/40 bg-cream px-2.5 py-0.5 align-middle text-xs text-burgundy transition-colors hover:border-burgundy hover:bg-blush focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+            <rect x="3" y="5" width="18" height="14" rx="1.5" />
+            <path d="m3 7 9 6 9-6" />
+          </svg>
+          {email}
+        </a>
+      );
+      lastIndex = match.index + email.length;
     }
   }
   if (lastIndex < text.length) parts.push(text.slice(lastIndex));

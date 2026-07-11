@@ -19,10 +19,13 @@ interface ChatMessage {
   content: string;
 }
 
+// Sceptic-first set (Ryo's pick, 2026-07-11): two doubt-killers plus
+// durability, then one guided-selling chip.
 const STARTERS = [
   'Is moissanite a real gemstone?',
+  'Moissanite vs diamond: honest take?',
+  'Will it scratch or cloud?',
   'Help me choose a ring',
-  'Do you ship to Australia?',
 ] as const;
 
 /** GA4 event, no-op when GA is not loaded (dev, preview, admin). */

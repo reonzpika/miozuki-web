@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import ReactMarkdown, { type Components } from 'react-markdown';
+import { linkifyBareRefs, toInternalHref } from '@/lib/advisor/markdown-utils';
 
 /**
  * "Chat with Mio": the Miozuki jewellery guide. Floating button above the
@@ -54,159 +56,85 @@ function MioAvatar({ size = 36 }: { size?: number }) {
   );
 }
 
-/** Inline links: [label](/path) markdown links, bare site paths, and email
- * addresses (rendered as a tappable mailto pill so nobody has to copy-paste). */
-function InlineLinks({ text }: { text: string }) {
-  const linkPattern =
-    /\[([^\]]+)\]\((\/[^\s)]+)\)|(^|[\s(])(\/(?:products|collections|pages|policies|moissanite-guide|pearl-guide|bridal-guide)(?:\/[\w-]+)*)|([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
-  const parts: React.ReactNode[] = [];
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-  while ((match = linkPattern.exec(text)) !== null) {
-    if (match[1] !== undefined && match[2] !== undefined) {
-      const label = match[1];
-      const href = match[2];
-      if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
-      parts.push(
-        <Link
-          key={`${match.index}-${href}`}
-          href={href}
-          onClick={() => track('advisor_link_click', { link_url: href })}
-          className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
-        >
-          {label}
-        </Link>
-      );
-      lastIndex = match.index + match[0].length;
-    } else if (match[4] !== undefined) {
-      const href = match[4];
-      const start = match.index + (match[3]?.length ?? 0);
-      if (start > lastIndex) parts.push(text.slice(lastIndex, start));
-      parts.push(
-        <Link
-          key={`${start}-${href}`}
-          href={href}
-          onClick={() => track('advisor_link_click', { link_url: href })}
-          className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
-        >
-          {href}
-        </Link>
-      );
-      lastIndex = start + href.length;
-    } else if (match[5] !== undefined) {
-      const email = match[5];
-      if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
-      parts.push(
-        <a
-          key={`${match.index}-${email}`}
-          href={`mailto:${email}`}
-          onClick={() => track('advisor_email_click')}
-          className="mx-0.5 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-burgundy/40 bg-cream px-2.5 py-0.5 align-middle text-xs text-burgundy transition-colors hover:border-burgundy hover:bg-blush focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-            <rect x="3" y="5" width="18" height="14" rx="1.5" />
-            <path d="m3 7 9 6 9-6" />
-          </svg>
-          {email}
-        </a>
-      );
-      lastIndex = match.index + email.length;
-    }
-  }
-  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
-  return <>{parts}</>;
-}
-
-/** Inline markdown: **bold** segments, links inside and outside bold. */
-function InlineMd({ text }: { text: string }) {
-  const boldPattern = /\*\*([^*]+)\*\*/g;
-  const parts: React.ReactNode[] = [];
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-  while ((match = boldPattern.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(<InlineLinks key={`t${lastIndex}`} text={text.slice(lastIndex, match.index)} />);
-    }
-    parts.push(
-      <strong key={`b${match.index}`} className="font-medium text-charcoal">
-        <InlineLinks text={match[1]} />
-      </strong>
-    );
-    lastIndex = match.index + match[0].length;
-  }
-  if (lastIndex < text.length) {
-    parts.push(<InlineLinks key={`t${lastIndex}`} text={text.slice(lastIndex)} />);
-  }
-  return <>{parts}</>;
-}
-
 /**
- * Block-level markdown-lite for assistant replies: paragraphs, ordered and
- * unordered lists, bold, links. Safe on streaming partials (re-parsed per
- * chunk). Ting's screenshot showed raw ** and run-on numbered lists; this
- * renders them properly.
+ * Assistant replies render through react-markdown (CommonMark), not a
+ * hand-rolled parser. History lesson: three separate rendering bugs (raw **,
+ * run-on lists, unrendered absolute-URL links) came from hand-rolling; a
+ * maintained parser removes the whole failure class. Streaming-safe: the
+ * partial text is simply re-parsed on every chunk.
+ *
+ * Pre-processing (lib/advisor/markdown-utils) linkifies the shapes CommonMark
+ * leaves as plain text but the model sometimes emits anyway: bare site paths
+ * and bare email addresses.
  */
-function AssistantText({ text }: { text: string }) {
-  const lines = text.split('\n');
-  const blocks: React.ReactNode[] = [];
-  let listItems: { ordered: boolean; content: string }[] = [];
-  let paragraph: string[] = [];
-  let key = 0;
 
-  const flushParagraph = () => {
-    if (paragraph.length === 0) return;
-    blocks.push(
-      <p key={key++} className="my-1.5 first:mt-0 last:mb-0">
-        <InlineMd text={paragraph.join(' ')} />
-      </p>
+function SmartLink({ href, children }: { href?: string; children?: React.ReactNode }) {
+  const raw = href ?? '';
+  if (raw.startsWith('mailto:')) {
+    const email = raw.slice('mailto:'.length);
+    return (
+      <a
+        href={raw}
+        onClick={() => track('advisor_email_click')}
+        className="mx-0.5 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-burgundy/40 bg-cream px-2.5 py-0.5 align-middle text-xs text-burgundy transition-colors hover:border-burgundy hover:bg-blush focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+          <rect x="3" y="5" width="18" height="14" rx="1.5" />
+          <path d="m3 7 9 6 9-6" />
+        </svg>
+        {email}
+      </a>
     );
-    paragraph = [];
-  };
-  const flushList = () => {
-    if (listItems.length === 0) return;
-    const ordered = listItems[0].ordered;
-    const items = listItems.map((item, i) => (
-      <li key={i}>
-        <InlineMd text={item.content} />
-      </li>
-    ));
-    blocks.push(
-      ordered ? (
-        <ol key={key++} className="my-1.5 list-decimal space-y-1 pl-5">
-          {items}
-        </ol>
-      ) : (
-        <ul key={key++} className="my-1.5 list-disc space-y-1 pl-5">
-          {items}
-        </ul>
-      )
-    );
-    listItems = [];
-  };
-
-  for (const raw of lines) {
-    const line = raw.trimEnd();
-    const orderedMatch = line.match(/^\s*\d{1,2}[.)]\s+(.*)$/);
-    const bulletMatch = line.match(/^\s*[-•]\s+(.*)$/);
-    if (orderedMatch) {
-      flushParagraph();
-      if (listItems.length > 0 && !listItems[0].ordered) flushList();
-      listItems.push({ ordered: true, content: orderedMatch[1] });
-    } else if (bulletMatch) {
-      flushParagraph();
-      if (listItems.length > 0 && listItems[0].ordered) flushList();
-      listItems.push({ ordered: false, content: bulletMatch[1] });
-    } else if (line.trim() === '') {
-      flushParagraph();
-      flushList();
-    } else {
-      flushList();
-      paragraph.push(line.trim());
-    }
   }
-  flushParagraph();
-  flushList();
-  return <>{blocks}</>;
+  const internal = toInternalHref(raw);
+  if (internal.startsWith('/')) {
+    return (
+      <Link
+        href={internal}
+        onClick={() => track('advisor_link_click', { link_url: internal })}
+        className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
+      >
+        {children}
+      </Link>
+    );
+  }
+  // External link (rare; the prompt discourages them): open safely in a new tab.
+  return (
+    <a
+      href={raw}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
+    >
+      {children}
+    </a>
+  );
+}
+
+const MARKDOWN_COMPONENTS: Components = {
+  a: ({ href, children }) => <SmartLink href={href}>{children}</SmartLink>,
+  p: ({ children }) => <p className="my-1.5 first:mt-0 last:mb-0">{children}</p>,
+  strong: ({ children }) => <strong className="font-medium text-charcoal">{children}</strong>,
+  ol: ({ children }) => <ol className="my-1.5 list-decimal space-y-1 pl-5">{children}</ol>,
+  ul: ({ children }) => <ul className="my-1.5 list-disc space-y-1 pl-5">{children}</ul>,
+  li: ({ children }) => <li>{children}</li>,
+};
+
+// Text-level elements only; anything exotic (images, html, headings) degrades
+// to its text content rather than rendering.
+const ALLOWED_ELEMENTS = ['p', 'strong', 'em', 'a', 'ol', 'ul', 'li', 'br'];
+
+function AssistantText({ text }: { text: string }) {
+  return (
+    <ReactMarkdown
+      components={MARKDOWN_COMPONENTS}
+      allowedElements={ALLOWED_ELEMENTS}
+      unwrapDisallowed
+      skipHtml
+    >
+      {linkifyBareRefs(text)}
+    </ReactMarkdown>
+  );
 }
 
 export default function AdvisorWidget() {

@@ -22,26 +22,49 @@ const STARTERS = [
   'Do you ship to Australia?',
 ] as const;
 
-/** Render assistant text, turning [label](/path) markdown links into real links. */
+/** Render assistant text, turning [label](/path) markdown links AND bare
+ * site paths (e.g. "/moissanite-guide") into real links. The bare-path
+ * fallback exists because the model occasionally writes a path in prose
+ * despite the prompt instruction. */
 function AssistantText({ text }: { text: string }) {
-  // Fresh regex per render: a shared global regex carries lastIndex state,
+  // Fresh regexes per render: a shared global regex carries lastIndex state,
   // which React lint rightly rejects as an external mutation.
-  const linkPattern = /\[([^\]]+)\]\((\/[^\s)]+)\)/g;
+  // Alternation: markdown link first, else a bare internal path bounded by
+  // whitespace/start and trailing punctuation.
+  const linkPattern =
+    /\[([^\]]+)\]\((\/[^\s)]+)\)|(^|[\s(])(\/(?:products|collections|pages|policies|moissanite-guide|pearl-guide|bridal-guide)(?:\/[\w-]+)*)/g;
   const parts: React.ReactNode[] = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   while ((match = linkPattern.exec(text)) !== null) {
-    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
-    parts.push(
-      <Link
-        key={`${match.index}-${match[2]}`}
-        href={match[2]}
-        className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
-      >
-        {match[1]}
-      </Link>
-    );
-    lastIndex = match.index + match[0].length;
+    if (match[1] !== undefined && match[2] !== undefined) {
+      // Markdown form: [label](/path)
+      if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
+      parts.push(
+        <Link
+          key={`${match.index}-${match[2]}`}
+          href={match[2]}
+          className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
+        >
+          {match[1]}
+        </Link>
+      );
+      lastIndex = match.index + match[0].length;
+    } else if (match[4] !== undefined) {
+      // Bare path form: link the path text itself, keep the leading boundary char
+      const start = match.index + (match[3]?.length ?? 0);
+      if (start > lastIndex) parts.push(text.slice(lastIndex, start));
+      parts.push(
+        <Link
+          key={`${start}-${match[4]}`}
+          href={match[4]}
+          className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
+        >
+          {match[4]}
+        </Link>
+      );
+      lastIndex = start + match[4].length;
+    }
   }
   if (lastIndex < text.length) parts.push(text.slice(lastIndex));
   return <>{parts}</>;

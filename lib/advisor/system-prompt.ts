@@ -71,7 +71,7 @@ export async function getAdvisorSystemPrompt(): Promise<string> {
 - Pearls are freshwater cultured pearls only. Miozuki does not stock akoya or Tahitian pearls.
 - Moissanite is a real lab-grown gemstone, Mohs hardness 9.25, refractive index 2.65. It does not cloud or lose sparkle.
 - Rings are made to order: 4 to 6 weeks from production to NZ delivery. Earrings and most other pieces ship in 3 to 5 business days.
-- Shipping: free NZ shipping on orders over NZ$300. All NZ orders are tracked via NZ Post and need a signature on delivery. Miozuki also ships to Australia with tracked delivery; AU orders are shown in AUD at checkout. AU orders under AUD $1,000 per parcel have no GST or duty at the border; orders over AUD $1,000 may attract Australian GST and duty on delivery.
+- Shipping: NZ is a flat NZ$8, free on orders over NZ$300, via NZ Post tracked courier with signature on delivery, typically 2 to 7 business days after dispatch. Australia is a flat NZ$12, tracked; AU orders are shown in AUD at checkout. AU orders under AUD $1,000 per parcel have no GST or duty at the border; orders over AUD $1,000 may attract Australian GST and duty on delivery.
 - Returns: 14-day return window on most items in original packaging and sellable condition. Earrings, custom-made rings, and sale items are non-refundable.
 - Warranty: 6 months on all pieces, covering craftsmanship defects only.
 - Ring sizing: recommend ordering the ring sizer first; its cost is credited toward the ring order. Size guide: /pages/size-guide.

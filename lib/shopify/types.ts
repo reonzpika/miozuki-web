@@ -44,6 +44,7 @@ export interface Product {
   title: string;
   description: string | null;
   descriptionHtml: string | null;
+  seo?: { title: string | null; description: string | null } | null;
   featuredImage: ShopifyImage | null;
   images: { edges: { node: ShopifyImage }[] };
   media: { edges: { node: ShopifyMediaItem }[] };
@@ -62,6 +63,7 @@ export interface Collection {
   handle: string;
   title: string;
   description: string | null;
+  seo?: { title: string | null; description: string | null } | null;
   image: ShopifyImage | null;
   metafield: { value: string } | null;
   descriptionHtml: string | null;

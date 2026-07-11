@@ -168,8 +168,16 @@ export default function CartDrawer({
               </span>
             </div>
             <p className="text-xs text-charcoal/40">
-              Shipping and taxes calculated at checkout.
+              Shipping and taxes calculated at checkout. We ship to NZ and
+              Australia; AU orders are charged in AUD at checkout.
             </p>
+            {parseFloat(cart.cost.subtotalAmount.amount) >= 1000 && (
+              <p className="text-xs leading-relaxed text-charcoal/55">
+                Shipping to Australia? Parcels totalling over about AUD $1,000
+                may attract Australian GST and duty on delivery. Under that,
+                there are no extra border charges.
+              </p>
+            )}
             <a
               href={checkoutUrl ?? '#'}
               className="block w-full text-center bg-burgundy text-cream py-4 text-xs tracking-[0.2em] uppercase transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"

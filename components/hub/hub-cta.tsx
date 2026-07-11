@@ -8,7 +8,7 @@ import Link from 'next/link';
 export function HubCta({
   heading = 'Explore the collection',
   body,
-  href = '/collections/all-moissanite-pearl-nz',
+  href = '/collections/moissanite-nz',
   label = 'Shop moissanite',
 }: {
   heading?: string;

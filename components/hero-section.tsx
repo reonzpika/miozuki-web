@@ -82,7 +82,8 @@ export default function HeroSection() {
           initial="hidden"
           animate="show"
         >
-          Moissanite with brilliance of diamond
+          Moissanite and freshwater pearl jewellery in S925 sterling silver,
+          designed in Auckland
         </motion.p>
 
         {/* CTA */}
@@ -94,6 +95,16 @@ export default function HeroSection() {
             Discover the Collection
           </Link>
         </motion.div>
+
+        {/* Trust microline */}
+        <motion.p
+          className="mt-6 text-[11px] uppercase tracking-[0.18em] text-cream/65"
+          variants={fadeUp(0.95)}
+          initial="hidden"
+          animate="show"
+        >
+          Free NZ shipping over $300 &middot; Tracked delivery to NZ &amp; Australia
+        </motion.p>
 
         {/* Decorative rule */}
         <motion.div

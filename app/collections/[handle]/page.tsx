@@ -3,7 +3,8 @@ import type { Metadata } from 'next';
 import { getAllRatings } from '@/lib/judgeme/client';
 import { getCollections, getCollectionByHandle } from '@/lib/shopify';
 import { cleanDescriptionHtml } from '@/lib/description-html';
-import { getCollectionEducationThemes } from '@/lib/collection-page';
+import { metaDescription } from '@/lib/meta-description';
+import { getCollectionEducationPanels } from '@/lib/collection-page';
 import ProductsGrid from '@/components/products-grid';
 import CollectionHeroBanner from '@/components/collection-hero-banner';
 import JsonLd from '@/components/json-ld';
@@ -35,8 +36,9 @@ export async function generateMetadata({
   }
   if (!collection) return { title: 'Collection | Miozuki' };
   const ogImage = collection.image?.url;
-  const title = `${collection.title} | Miozuki`;
-  const description = collection.description || undefined;
+  // Prefer the Shopify "Search engine listing" fields (Ting's lane) when set.
+  const title = `${collection.seo?.title?.trim() || collection.title} | Miozuki`;
+  const description = metaDescription(collection.seo?.description, collection.description);
   return {
     title,
     description,
@@ -124,7 +126,7 @@ export default async function CollectionPage({
       </div>
 
       <div className="border-t border-charcoal/8 bg-cream py-14 md:py-16">
-        <CollectionFlagshipEducation themes={getCollectionEducationThemes(handle)} />
+        <CollectionFlagshipEducation panels={getCollectionEducationPanels(handle)} />
       </div>
 
       {collection.descriptionHtml && (

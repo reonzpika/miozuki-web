@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { preconnect } from 'react-dom';
 import DeferredAnalytics from '@/components/deferred-analytics';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
 import './globals.css';
@@ -8,6 +9,7 @@ import AnnouncementBar from '@/components/announcement-bar';
 import { CartProvider } from '@/components/cart-provider';
 import EmailPopup from '@/components/email-popup';
 import EnquiryWidget from '@/components/enquiry-widget';
+import AdvisorWidget from '@/components/advisor-widget';
 import JsonLd from '@/components/json-ld';
 import MetaPixel from '@/components/meta-pixel';
 import Clarity from '@/components/clarity';
@@ -42,7 +44,7 @@ const ORGANIZATION_SCHEMA = {
     'https://www.facebook.com/profile.php?id=61578033779488',
   ],
   priceRange: '$$',
-  areaServed: 'NZ',
+  areaServed: ['NZ', 'AU'],
 };
 
 const playfair = Playfair_Display({
@@ -115,6 +117,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Every LCP image (hero, product photos) is served from the Shopify CDN;
+  // warming the connection before the image request shaves DNS+TLS time off
+  // first paint.
+  preconnect('https://cdn.shopify.com');
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
@@ -131,6 +137,10 @@ export default function RootLayout({
             <Footer />
             <EmailPopup />
             <EnquiryWidget />
+            {/* Advisor renders only when the server holds an Anthropic key, so
+                the widget can never appear unconfigured. Add ANTHROPIC_API_KEY
+                in Vercel env + redeploy to switch it on. */}
+            {process.env.ANTHROPIC_API_KEY ? <AdvisorWidget /> : null}
           </StorefrontChrome>
         </CartProvider>
         {GA4_ID ? <DeferredAnalytics gaId={GA4_ID} /> : null}

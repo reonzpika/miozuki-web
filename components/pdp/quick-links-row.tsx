@@ -28,6 +28,13 @@ function PdpShippingGlanceBody() {
             Made-to-order pieces may take <span className="font-medium text-charcoal">4–6 weeks</span> to receive for both NZ and AU.
           </span>
         </li>
+        <li className="flex gap-2.5">
+          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy/45" aria-hidden />
+          <span>
+            <span className="font-medium text-charcoal">Australia:</span> $12 NZD flat rate, tracked;
+            charged in AUD at checkout. No GST or duty at the border for parcels under AUD $1,000.
+          </span>
+        </li>
       </ul>
       <Link
         href="/policies/shipping-policy"
@@ -122,6 +129,26 @@ function PdpMaterialsCareGlanceBody() {
           <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy/45" aria-hidden />
           <span>
             <span className="font-medium text-charcoal">Store:</span> pouches or lined compartments so pieces do not scratch; keep pearls away from airtight plastic and harder jewellery.
+          </span>
+        </li>
+        <li className="flex gap-2.5">
+          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy/45" aria-hidden />
+          <span>
+            New to these stones? Our{' '}
+            <Link
+              href="/moissanite-guide"
+              className="text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+            >
+              moissanite guide
+            </Link>{' '}
+            and{' '}
+            <Link
+              href="/pearl-guide"
+              className="text-burgundy underline underline-offset-4 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+            >
+              pearl guide
+            </Link>{' '}
+            explain everything before you buy.
           </span>
         </li>
       </ul>

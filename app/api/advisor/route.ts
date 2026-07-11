@@ -173,7 +173,12 @@ function validMessages(body: unknown): ChatMessage[] | null {
     }
     out.push({ role: m.role, content: m.content });
   }
-  if (out[out.length - 1].role !== 'user') return null;
+  // The widget sends a sliding window of the last 12 turns; once a
+  // conversation is long enough that window can start mid-exchange with an
+  // assistant turn, which the API rejects (conversations must start with a
+  // user message). Trim leading assistant turns instead of failing.
+  while (out.length > 0 && out[0].role === 'assistant') out.shift();
+  if (out.length === 0 || out[out.length - 1].role !== 'user') return null;
   return out;
 }
 

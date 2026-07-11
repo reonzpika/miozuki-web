@@ -223,6 +223,17 @@ export default function AdvisorWidget() {
         // Keep the last 12 turns; the API rejects longer conversations.
         body: JSON.stringify({ messages: history.slice(-12) }),
       });
+      if (res.status === 429) {
+        setMessages([
+          ...history,
+          {
+            role: 'assistant',
+            content:
+              'You are sending messages a little faster than I can keep up with. Give me a few seconds and try again.',
+          },
+        ]);
+        return;
+      }
       if (!res.ok || !res.body) {
         throw new Error(`advisor ${res.status}`);
       }

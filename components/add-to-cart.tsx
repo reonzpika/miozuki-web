@@ -6,6 +6,7 @@ import RingSizeGuide from '@/components/ring-size-guide';
 import PdpTrustStrip from '@/components/pdp-trust-strip';
 import PdpRingSizeSelect from '@/components/pdp-ring-size-select';
 import { isRingSizeOption } from '@/lib/ring-size-chart';
+import { trackAddToCart } from '@/lib/ga-events';
 import { useCart } from './cart-provider';
 
 function formatPrice(amount: string, currencyCode: string) {
@@ -112,7 +113,9 @@ export default function AddToCart({
     if (!variant || !available) return;
     setBtnState('loading');
     try {
-      await addToCart(variant.id, 1);
+      const quantity = 1;
+      await addToCart(variant.id, quantity);
+      trackAddToCart({ productTitle, variant, quantity });
       setBtnState('added');
       setTimeout(() => setBtnState('idle'), 2000);
     } catch {

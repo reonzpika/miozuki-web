@@ -9,6 +9,10 @@ This is the customer-facing Miozuki website. Real customers may see changes shor
 - If instructions conflict, Ting's strict Cursor rules win for Ting sessions.
 - **Exception, the guide-hub content pipeline below:** for the three `.mdx` folders only (`app/moissanite-guide/`, `app/pearl-guide/`, `app/bridal-guide/`), Codex runs the full pipeline itself per the section below, not the general Cursor-first routing above. Everything else in this repo still follows the routing rule as written.
 
+## Ting communication preference
+
+For Ting sessions: fix technical issues in the background and reply outcome-first (what changed, saved or live, one next step if needed). Do not narrate lint, build, git, or recovery steps unless she asks. See **Outcome-first** in `.cursor/rules/miozuki-strict.mdc`.
+
 ## Safe sync reminder
 
 - Before website work, run `npm run sync:safe`.

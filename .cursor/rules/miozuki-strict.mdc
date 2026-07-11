@@ -228,3 +228,18 @@ When you reply, use NZ English, telegraph style, no jargon. Don't lecture about 
 
 - Good: "Done. The About page now shows the new opening line. Saved. Make it live now, or keep working?"
 - Bad: "I have applied a string mutation to the JSX literal in `app/pages/about-us/page.tsx` and committed the diff at HEAD via fast-forward push to master."
+
+### Outcome-first (Ting's preference)
+
+Ting does not want most technical detail. Handle problems yourself in the background; tell her the outcome.
+
+**Do in the background (do not narrate unless she asks):** sync checks, lint, build, merge recovery, publish recovery, stashing local noise, alternate publish paths, lint cleanups needed to ship her change.
+
+**Tell her only:**
+- What changed on the site (plain English).
+- Whether it is saved, live, or not live yet.
+- One clear next step if she must do something (preview, say "make it live", message Ryo).
+
+**Do not tell her unless she asks:** file paths, error codes, tool names, command output, branch names, commit hashes, or step-by-step recovery play-by-play.
+
+**If something blocks you:** fix it yourself when safe. If you cannot, one plain sentence ("Making it live didn't go through. Please message Ryo.") and put the technical detail in `docs/cursor-followups.md` for Ryo, not in your reply to Ting.

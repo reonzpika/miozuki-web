@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 /**
- * Floating jewellery-advisor chat. Sits above the Enquire button (same corner,
- * same visual language). The layout only renders this component when the
- * server has an ANTHROPIC_API_KEY, so it never appears half-configured.
- * Streams plain text from /api/advisor; product links arrive as markdown
- * links and are rendered as real links.
+ * "Chat with Mio": the Miozuki jewellery guide. Floating button above the
+ * Enquire button, brand-styled slide-over chat. The layout only renders this
+ * component when the server has an ANTHROPIC_API_KEY.
+ *
+ * Persona notes: Mio presents as a warm human guide (name, avatar, voice) but
+ * the footer keeps the explicit AI disclosure, and the system prompt makes her
+ * answer honestly when asked if she is a real person. The avatar is a brand
+ * moon mark, deliberately not a photoreal human face.
  */
 
 interface ChatMessage {
@@ -28,15 +31,28 @@ function track(event: string, params?: Record<string, string>) {
   if (typeof gtag === 'function') gtag('event', event, params);
 }
 
-/** Render assistant text, turning [label](/path) markdown links AND bare
- * site paths (e.g. "/moissanite-guide") into real links. The bare-path
- * fallback exists because the model occasionally writes a path in prose
- * despite the prompt instruction. */
-function AssistantText({ text }: { text: string }) {
-  // Fresh regexes per render: a shared global regex carries lastIndex state,
-  // which React lint rightly rejects as an external mutation.
-  // Alternation: markdown link first, else a bare internal path bounded by
-  // whitespace/start and trailing punctuation.
+/** Miozuki moon-mark avatar (brand motif: waterway to the moon). */
+function MioAvatar({ size = 36 }: { size?: number }) {
+  return (
+    <span
+      className="inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-burgundy/25 bg-gradient-to-b from-[#fcf0ef] to-blush"
+      style={{ width: size, height: size }}
+      aria-hidden
+    >
+      <svg width={size * 0.62} height={size * 0.62} viewBox="0 0 24 24" fill="none">
+        <path
+          d="M16.5 3.5a9.3 9.3 0 1 0 4 16.6A10.6 10.6 0 0 1 16.5 3.5Z"
+          fill="#7B1E22"
+          opacity="0.9"
+        />
+        <path d="M17.5 6.6l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z" fill="#7B1E22" opacity="0.65" />
+      </svg>
+    </span>
+  );
+}
+
+/** Inline links: [label](/path) markdown links plus bare site paths. */
+function InlineLinks({ text }: { text: string }) {
   const linkPattern =
     /\[([^\]]+)\]\((\/[^\s)]+)\)|(^|[\s(])(\/(?:products|collections|pages|policies|moissanite-guide|pearl-guide|bridal-guide)(?:\/[\w-]+)*)/g;
   const parts: React.ReactNode[] = [];
@@ -44,8 +60,6 @@ function AssistantText({ text }: { text: string }) {
   let match: RegExpExecArray | null;
   while ((match = linkPattern.exec(text)) !== null) {
     if (match[1] !== undefined && match[2] !== undefined) {
-      // Markdown form: [label](/path). Capture into consts: the onClick
-      // closure must not read the reassigned loop variable.
       const label = match[1];
       const href = match[2];
       if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
@@ -61,23 +75,116 @@ function AssistantText({ text }: { text: string }) {
       );
       lastIndex = match.index + match[0].length;
     } else if (match[4] !== undefined) {
-      // Bare path form: link the path text itself, keep the leading boundary char
+      const href = match[4];
       const start = match.index + (match[3]?.length ?? 0);
       if (start > lastIndex) parts.push(text.slice(lastIndex, start));
       parts.push(
         <Link
-          key={`${start}-${match[4]}`}
-          href={match[4]}
+          key={`${start}-${href}`}
+          href={href}
+          onClick={() => track('advisor_link_click', { link_url: href })}
           className="text-burgundy underline underline-offset-2 hover:text-burgundy/70"
         >
-          {match[4]}
+          {href}
         </Link>
       );
-      lastIndex = start + match[4].length;
+      lastIndex = start + href.length;
     }
   }
   if (lastIndex < text.length) parts.push(text.slice(lastIndex));
   return <>{parts}</>;
+}
+
+/** Inline markdown: **bold** segments, links inside and outside bold. */
+function InlineMd({ text }: { text: string }) {
+  const boldPattern = /\*\*([^*]+)\*\*/g;
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = boldPattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(<InlineLinks key={`t${lastIndex}`} text={text.slice(lastIndex, match.index)} />);
+    }
+    parts.push(
+      <strong key={`b${match.index}`} className="font-medium text-charcoal">
+        <InlineLinks text={match[1]} />
+      </strong>
+    );
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    parts.push(<InlineLinks key={`t${lastIndex}`} text={text.slice(lastIndex)} />);
+  }
+  return <>{parts}</>;
+}
+
+/**
+ * Block-level markdown-lite for assistant replies: paragraphs, ordered and
+ * unordered lists, bold, links. Safe on streaming partials (re-parsed per
+ * chunk). Ting's screenshot showed raw ** and run-on numbered lists; this
+ * renders them properly.
+ */
+function AssistantText({ text }: { text: string }) {
+  const lines = text.split('\n');
+  const blocks: React.ReactNode[] = [];
+  let listItems: { ordered: boolean; content: string }[] = [];
+  let paragraph: string[] = [];
+  let key = 0;
+
+  const flushParagraph = () => {
+    if (paragraph.length === 0) return;
+    blocks.push(
+      <p key={key++} className="my-1.5 first:mt-0 last:mb-0">
+        <InlineMd text={paragraph.join(' ')} />
+      </p>
+    );
+    paragraph = [];
+  };
+  const flushList = () => {
+    if (listItems.length === 0) return;
+    const ordered = listItems[0].ordered;
+    const items = listItems.map((item, i) => (
+      <li key={i}>
+        <InlineMd text={item.content} />
+      </li>
+    ));
+    blocks.push(
+      ordered ? (
+        <ol key={key++} className="my-1.5 list-decimal space-y-1 pl-5">
+          {items}
+        </ol>
+      ) : (
+        <ul key={key++} className="my-1.5 list-disc space-y-1 pl-5">
+          {items}
+        </ul>
+      )
+    );
+    listItems = [];
+  };
+
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    const orderedMatch = line.match(/^\s*\d{1,2}[.)]\s+(.*)$/);
+    const bulletMatch = line.match(/^\s*[-•]\s+(.*)$/);
+    if (orderedMatch) {
+      flushParagraph();
+      if (listItems.length > 0 && !listItems[0].ordered) flushList();
+      listItems.push({ ordered: true, content: orderedMatch[1] });
+    } else if (bulletMatch) {
+      flushParagraph();
+      if (listItems.length > 0 && listItems[0].ordered) flushList();
+      listItems.push({ ordered: false, content: bulletMatch[1] });
+    } else if (line.trim() === '') {
+      flushParagraph();
+      flushList();
+    } else {
+      flushList();
+      paragraph.push(line.trim());
+    }
+  }
+  flushParagraph();
+  flushList();
+  return <>{blocks}</>;
 }
 
 export default function AdvisorWidget() {
@@ -152,14 +259,11 @@ export default function AdvisorWidget() {
         }}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="fixed bottom-[4.65rem] right-5 z-30 inline-flex items-center gap-2 rounded-full border border-burgundy bg-cream px-5 py-3 text-xs uppercase tracking-[0.12em] text-burgundy shadow-[0_8px_24px_var(--miozuki-shadow)] transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:bottom-20 md:right-6"
+        className="fixed bottom-[4.65rem] right-5 z-30 inline-flex items-center gap-2 rounded-full border border-burgundy bg-cream py-2 pl-2 pr-5 text-xs uppercase tracking-[0.12em] text-burgundy shadow-[0_8px_24px_var(--miozuki-shadow)] transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:bottom-20 md:right-6"
         style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z" />
-          <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" />
-        </svg>
-        Ask us
+        <MioAvatar size={28} />
+        Chat with Mio
       </button>
 
       {/* Backdrop */}
@@ -179,70 +283,92 @@ export default function AdvisorWidget() {
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between border-b border-charcoal/10 px-6 py-4">
-          <div>
-            <h2 id="advisor-heading" className="font-serif text-xl text-charcoal">
-              Jewellery advisor
-            </h2>
-            <p className="text-xs text-charcoal/55">
-              Instant answers, powered by AI. For orders and bespoke work,{' '}
-              <a
-                href="mailto:info@miozuki.co.nz"
-                className="text-burgundy underline underline-offset-2"
-              >
-                email us
-              </a>
-              .
-            </p>
+        <div className="flex items-center justify-between gap-3 border-b border-charcoal/10 px-5 py-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <MioAvatar size={40} />
+            <div className="min-w-0">
+              <h2 id="advisor-heading" className="font-serif text-xl leading-tight text-charcoal">
+                Mio
+              </h2>
+              <p className="truncate text-xs text-charcoal/55">Your Miozuki jewellery guide</p>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            aria-label="Close advisor"
-            className="rounded-full p-2 text-charcoal/60 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
+          <div className="flex shrink-0 items-center gap-1">
+            {messages.length > 0 ? (
+              <button
+                type="button"
+                onClick={() => setMessages([])}
+                aria-label="Start a new chat"
+                title="Start a new chat"
+                className="rounded-full p-2 text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                  <path d="M3 12a9 9 0 1 0 3-6.7" />
+                  <path d="M3 4v5h5" />
+                </svg>
+              </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close chat"
+              className="rounded-full p-2 text-charcoal/60 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-6 py-5">
+        <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-5 py-5">
           {messages.length === 0 ? (
-            <div>
-              <p className="text-sm leading-relaxed text-charcoal/75">
-                Kia ora! Ask me anything about moissanite, freshwater pearls, sizing,
-                shipping to NZ or Australia, or which piece might suit.
-              </p>
-              <div className="mt-4 flex flex-col items-start gap-2">
-                {STARTERS.map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    onClick={() => send(q)}
-                    className="rounded-full border border-charcoal/15 bg-surface px-4 py-2 text-left text-sm text-charcoal/80 transition-colors hover:border-burgundy/40 hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
-                  >
-                    {q}
-                  </button>
-                ))}
+            <div className="flex gap-2.5">
+              <MioAvatar size={28} />
+              <div>
+                <p className="text-sm leading-relaxed text-charcoal/75">
+                  Kia ora! I&apos;m Mio. Ask me anything about moissanite, freshwater
+                  pearls, sizing, shipping to NZ or Australia, or which piece might
+                  suit you.
+                </p>
+                <div className="mt-4 flex flex-col items-start gap-2">
+                  {STARTERS.map((q) => (
+                    <button
+                      key={q}
+                      type="button"
+                      onClick={() => send(q)}
+                      className="rounded-full border border-charcoal/15 bg-surface px-4 py-2 text-left text-sm text-charcoal/80 transition-colors hover:border-burgundy/40 hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           ) : (
-            messages.map((m, i) => (
-              <div
-                key={i}
-                className={
-                  m.role === 'user'
-                    ? 'ml-8 rounded-2xl rounded-br-sm bg-burgundy px-4 py-3 text-sm leading-relaxed text-cream'
-                    : 'mr-8 whitespace-pre-wrap rounded-2xl rounded-bl-sm border border-charcoal/10 bg-surface px-4 py-3 text-sm leading-relaxed text-charcoal/85'
-                }
-              >
-                {m.role === 'assistant' ? <AssistantText text={m.content} /> : m.content}
-              </div>
-            ))
+            messages.map((m, i) =>
+              m.role === 'user' ? (
+                <div
+                  key={i}
+                  className="ml-10 rounded-2xl rounded-br-sm bg-burgundy px-4 py-3 text-sm leading-relaxed text-cream"
+                >
+                  {m.content}
+                </div>
+              ) : (
+                <div key={i} className="flex gap-2.5">
+                  <MioAvatar size={28} />
+                  <div className="mr-6 min-w-0 flex-1 rounded-2xl rounded-tl-sm border border-charcoal/10 bg-surface px-4 py-3 text-sm leading-relaxed text-charcoal/85">
+                    <AssistantText text={m.content} />
+                  </div>
+                </div>
+              )
+            )
           )}
           {busy && messages[messages.length - 1]?.role === 'user' ? (
-            <p className="mr-8 px-4 text-sm text-charcoal/50">Thinking…</p>
+            <div className="flex items-center gap-2.5">
+              <MioAvatar size={28} />
+              <p className="text-sm text-charcoal/50">Mio is typing…</p>
+            </div>
           ) : null}
         </div>
 
@@ -251,7 +377,7 @@ export default function AdvisorWidget() {
             e.preventDefault();
             void send(input);
           }}
-          className="border-t border-charcoal/10 px-6 py-4"
+          className="border-t border-charcoal/10 px-5 py-4"
         >
           <div className="flex gap-2">
             <input
@@ -259,7 +385,7 @@ export default function AdvisorWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               maxLength={1200}
-              placeholder="Ask about a piece, sizing, shipping…"
+              placeholder="Ask Mio about a piece, sizing, shipping…"
               aria-label="Your question"
               className="min-w-0 flex-1 rounded-full border border-charcoal/20 bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-charcoal/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
             />
@@ -272,7 +398,12 @@ export default function AdvisorWidget() {
             </button>
           </div>
           <p className="mt-2 text-[11px] text-charcoal/45">
-            AI answers can make mistakes. Prices and policies are confirmed at checkout.
+            Mio is an AI assistant and can make mistakes. Prices and policies are
+            confirmed at checkout. For orders and bespoke work,{' '}
+            <a href="mailto:info@miozuki.co.nz" className="underline underline-offset-2">
+              email us
+            </a>
+            .
           </p>
         </form>
       </div>

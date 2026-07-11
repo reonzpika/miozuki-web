@@ -64,6 +64,49 @@ const SEARCH_PRODUCTS_TOOL: Anthropic.Tool = {
   },
 };
 
+/**
+ * Welcome-offer signup: the model may call this only after the customer typed
+ * their email and agreed. Reuses the existing Klaviyo subscribe route (same
+ * list and welcome flow as the popup), so consent and delivery behave
+ * identically to the proven path.
+ */
+const SIGN_UP_TOOL: Anthropic.Tool = {
+  name: 'sign_up_for_offer',
+  description:
+    'Subscribe the customer to the Miozuki list so they receive the NZ$15-off welcome code by email. Call ONLY after the customer has typed their email address in this conversation and clearly agreed to receive the offer.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      email: {
+        type: 'string',
+        description: 'The email address the customer typed, exactly as given',
+      },
+    },
+    required: ['email'],
+    additionalProperties: false,
+  },
+};
+
+async function signUpForOffer(email: string, requestUrl: string): Promise<string> {
+  const trimmed = email.trim();
+  if (!trimmed.includes('@') || trimmed.length > 254) {
+    return 'That email address does not look valid; ask the customer to re-type it.';
+  }
+  try {
+    const r = await fetch(new URL('/api/subscribe', requestUrl), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: trimmed }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!r.ok) return 'Signup failed; apologise and suggest the popup form or emailing info@miozuki.co.nz.';
+    return 'Signed up successfully. The welcome code usually arrives within about 10 minutes.';
+  } catch (err) {
+    console.error('Advisor signup failed', err);
+    return 'Signup failed; apologise and suggest the popup form or emailing info@miozuki.co.nz.';
+  }
+}
+
 interface UcpProduct {
   title?: string;
   url?: string;
@@ -181,7 +224,7 @@ export async function POST(request: Request) {
                 cache_control: { type: 'ephemeral' },
               },
             ],
-            tools: [SEARCH_PRODUCTS_TOOL],
+            tools: [SEARCH_PRODUCTS_TOOL, SIGN_UP_TOOL],
             messages: convo,
           });
           runner.on('text', (text) => {
@@ -196,16 +239,20 @@ export async function POST(request: Request) {
           });
           const results: Anthropic.ToolResultBlockParam[] = [];
           for (const block of final.content) {
-            if (block.type === 'tool_use') {
-              const query = String(
-                (block.input as { query?: unknown })?.query ?? ''
-              );
-              results.push({
-                type: 'tool_result',
-                tool_use_id: block.id,
-                content: await searchLiveCatalogue(query),
-              });
+            if (block.type !== 'tool_use') continue;
+            let content: string;
+            if (block.name === 'sign_up_for_offer') {
+              const email = String((block.input as { email?: unknown })?.email ?? '');
+              content = await signUpForOffer(email, request.url);
+            } else {
+              const query = String((block.input as { query?: unknown })?.query ?? '');
+              content = await searchLiveCatalogue(query);
             }
+            results.push({
+              type: 'tool_result',
+              tool_use_id: block.id,
+              content,
+            });
           }
           convo.push({ role: 'user', content: results });
         }

@@ -22,14 +22,14 @@ Redesigned 2026-07-06, see `../miozuki-brain/decisions/2026-07-06-codex-full-aut
 
 **Scope, exactly:** the `.mdx` files under `app/moissanite-guide/`, `app/pearl-guide/`, `app/bridal-guide/`. Nothing else in this repo. Not the shared layout (`components/hub/**`, the three `layout.tsx` files in those folders, `mdx-components.tsx`), not `next.config.ts`, not `package.json`, not any other route. If a request touches any of those, stop, do not attempt it, say "this needs Ryo."
 
-**Before you draft anything, read these in `../miozuki-brain/seo/`** (a sibling folder, you have access to it):
+**Before you draft anything, read these in `../miozuki-brain/guides/`** (a sibling folder, you have access to it):
 - `content-plan.md` for the build order, which guide is next
 - `content-hubs.md` for the guide's keyword, planned URL, and its "Boundary (do not repeat)" cell, the content-ownership rule that stops guides overlapping
 - `../brand-pr/voice-guide.md` for Ting's voice and the banned-words list
 - `harbor-content-workflow.md` and `drafts/opus-drafting-prompt-v2.md` for the drafting/verify/citation procedure and the known failure modes to check for every time
 - `content-checklist-and-calendar.md` for the edit-gate checklist Ting's experience pass runs against
 
-Save the raw draft to `../miozuki-brain/seo/drafts/{slug}-opus-raw.md` before shaping it, a recovery point and an audit trail, see `seo/drafts/README.md` there. The shaped, final page still only ever lives here, in the real route, never duplicated into that folder.
+Save the raw draft to `../miozuki-brain/guides/drafts/{slug}-opus-raw.md` before shaping it, a recovery point and an audit trail, see `guides/drafts/README.md` there. The shaped, final page still only ever lives here, in the real route, never duplicated into that folder.
 
 **The `<GuideSchema ... />` line under each H1** renders the byline, the visible "Updated" date, and the hidden Article code. When you materially change an article's content (an experience pass counts), bump its `updated="YYYY-MM-DD"` to today so the date stays truthful. Never remove the component or change its `title`/`path`.
 

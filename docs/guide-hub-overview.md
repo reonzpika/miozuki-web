@@ -13,20 +13,20 @@ Two guides are built, tested, and **live on `master`**, but not yet properly lau
 - `/moissanite-guide/moissanite-vs-diamond-nz`
 - `/bridal-guide/bridal-jewellery-sets-nz`
 
-"Live" here means pushed and reachable at their URL, not discoverable: neither is in `app/sitemap.ts` or linked from site navigation yet. Both are awaiting Ting's reply to a confirmation email (drafted, not sent, see `../miozuki-brain/seo/drafts/ting-experience-pass-email-draft.md`) resolving a handful of `VERIFY` markers, invisible notes in the article text flagging exactly what needs her real photo, opinion, or confirmation before either guide is properly finished. New guides from here on follow the same proven pipeline.
+"Live" here means pushed and reachable at their URL, not discoverable: neither is in `app/sitemap.ts` or linked from site navigation yet. Both are awaiting Ting's reply to a confirmation email (drafted, not sent, see `../miozuki-brain/archive/guide-drafts/ting-experience-pass-email-draft.md`) resolving a handful of `VERIFY` markers, invisible notes in the article text flagging exactly what needs her real photo, opinion, or confirmation before either guide is properly finished. New guides from here on follow the same proven pipeline.
 
 ## Where the pieces live
 
 | Piece | Lives in | What it holds |
 |---|---|---|
-| The build order, what to write next | `miozuki-brain/seo/content-plan.md` | Four waves, which old blog content each guide can reuse |
-| The full guide map | `miozuki-brain/seo/content-hubs.md` | Every guide's keyword, URL, and its content-ownership boundary (what it must not repeat) |
+| The build order, what to write next | `miozuki-brain/guides/content-plan.md` | Four waves, which old blog content each guide can reuse |
+| The full guide map | `miozuki-brain/guides/content-hubs.md` | Every guide's keyword, URL, and its content-ownership boundary (what it must not repeat) |
 | The voice rules | `miozuki-brain/brand-pr/voice-guide.md` | Ting's brand voice, banned words |
-| **The full procedure** | `miozuki-brain/seo/harbor-content-workflow.md` | The real, current pick/research/draft/verify/publish sequence, the citation rule, the `VERIFY` marker reference. Despite the filename (kept for the wikilinks pointing at it), Harbor is research-only now |
-| **The actual drafting/verify prompts** | `miozuki-brain/seo/drafts/opus-drafting-prompt-v2.md` | The versioned, generalised Claude prompts: drafting, verify/shape, citation rules, the free Harbor research call wiring |
-| **The full pilot test record** | `miozuki-brain/seo/harbor-vs-claude-pilot-findings.md` | Every test round, why Claude won, the citation-trap catches, the mechanical build test, the generalisation test |
-| Ting's edit checklist | `miozuki-brain/seo/content-checklist-and-calendar.md` | What she checks before anything goes live, and the pacing decision (no fixed schedule) |
-| Raw drafts, verified drafts, flag reports, confirmation emails | `miozuki-brain/seo/drafts/` | Working scratch space, one file type per pipeline stage, see that folder's own `README.md` |
+| **The full procedure** | `miozuki-brain/guides/harbor-content-workflow.md` | The real, current pick/research/draft/verify/publish sequence, the citation rule, the `VERIFY` marker reference. Despite the filename (kept for the wikilinks pointing at it), Harbor is research-only now |
+| **The actual drafting/verify prompts** | `miozuki-brain/guides/opus-drafting-prompt-v2.md` | The versioned, generalised Claude prompts: drafting, verify/shape, citation rules, the free Harbor research call wiring |
+| **The full pilot test record** | `miozuki-brain/guides/harbor-vs-claude-pilot-findings.md` | Every test round, why Claude won, the citation-trap catches, the mechanical build test, the generalisation test |
+| Ting's edit checklist | `miozuki-brain/guides/content-checklist-and-calendar.md` | What she checks before anything goes live, and the pacing decision (no fixed schedule) |
+| Raw drafts, verified drafts, flag reports, confirmation emails | `miozuki-brain/guides/drafts/` | Working scratch space, one file type per pipeline stage, see that folder's own `README.md` |
 | Codex's operating rules for this repo | `AGENTS.md` (this repo, root) | Scope, safety rails, the guide-hub pipeline job, publishing via `npm run sync:publish` |
 | The actual pages | `app/moissanite-guide/`, `app/pearl-guide/`, `app/bridal-guide/` | The real `.mdx` article files, and the shared layout and components (`components/hub/**`, `mdx-components.tsx`) that render them, including `next/image` and markdown-table support |
 
@@ -46,9 +46,9 @@ The content-ownership boundary (`content-hubs.md`) exists because one real Harbo
 
 ## More detail
 
-- The full, current procedure: `../miozuki-brain/seo/harbor-content-workflow.md`
-- The actual prompts: `../miozuki-brain/seo/drafts/opus-drafting-prompt-v2.md`
-- The full pilot record: `../miozuki-brain/seo/harbor-vs-claude-pilot-findings.md`
+- The full, current procedure: `../miozuki-brain/guides/harbor-content-workflow.md`
+- The actual prompts: `../miozuki-brain/guides/opus-drafting-prompt-v2.md`
+- The full pilot record: `../miozuki-brain/guides/harbor-vs-claude-pilot-findings.md`
 - Ryo's own working notes on this repo: `CLAUDE.md` (root of this repo)
 - Ting's Cursor rules, including the guide-hub content/code boundary: `.cursor/rules/miozuki-strict.mdc`
 - Codex's own rules for this repo: `AGENTS.md` (root of this repo)

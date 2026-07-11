@@ -1,5 +1,5 @@
 // Blog prune list (SEO cleanup, 2026-07-09): thin, listicle, or near-duplicate
-// posts with an explicit disposition in miozuki-brain/seo/content-plan.md and
+// posts with an explicit disposition in miozuki-brain/guides/content-plan.md and
 // the July 2026 audit (site-audit-202607.md section 4). Each slug 301s to the
 // nearest surviving collection or page, and is excluded from the sitemap.
 //

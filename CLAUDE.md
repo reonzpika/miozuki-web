@@ -79,13 +79,22 @@ This gate fires regardless of Plan check approval. Plan approval covers directio
 - Surface what the user does not know. Flag blind spots before commitment.
 - When no ideal solution is clear, web search first. Do not settle for second-best when a better answer may exist. Check for new platform features, new libraries, new docs. Training data cuts off; the answer may have shipped after.
 
-## Formatting rules (non-negotiable)
+## Output format (mirrors global)
+
+Reply formatting is governed by the global `~/.claude/CLAUDE.md` Output format rules, which are canonical. Repo-specific reinforcement:
 
 - New Zealand English: organise, behaviour, programme, etc.
 - No em dashes. Use commas, colons, or restructure.
 - Telegraph style: short sentences, no preamble, no padding.
 - Bullet points for lists. Prose only when flow requires it.
 - Lead with the answer.
+- Title: open every substantial reply with a backtick-wrapped UPPERCASE triple-dash line, `--- TITLE ---`. Subheadings use a double-dash line, `-- SUBHEADING --`. Never use markdown `##`/`###` as headings, they render bold-only here.
+
+## Asking questions
+
+**Non-negotiable: always use the `AskUserQuestion` tool.** Never write questions as plain text, bullet points, or prose at the end of a response.
+
+**Every question must be self-contained.** Restate the proposal in the question text, carry each choice's substance in its description, and use option `preview` fields for artefact/plan content. Test: answerable with the dialog alone on screen.
 
 ## Team workflow
 

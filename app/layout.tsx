@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { preconnect } from 'react-dom';
 import DeferredAnalytics from '@/components/deferred-analytics';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
 import './globals.css';
@@ -116,6 +117,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Every LCP image (hero, product photos) is served from the Shopify CDN;
+  // warming the connection before the image request shaves DNS+TLS time off
+  // first paint.
+  preconnect('https://cdn.shopify.com');
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">

@@ -271,6 +271,7 @@ The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. Ne
 | `/pages/[slug]` | `app/pages/[slug]/page.tsx` |
 | `/policies/shipping-policy` | `app/policies/shipping-policy/page.tsx` |
 | `/api/instagram/refresh-token` | `app/api/instagram/refresh-token/route.ts` |
+| `/api/advisor` | `app/api/advisor/route.ts`. Streaming Claude jewellery-advisor chat; system prompt + live catalogue digest in `lib/advisor/system-prompt.ts`; widget `components/advisor-widget.tsx` is rendered by the layout only when `ANTHROPIC_API_KEY` is set |
 | `/moissanite-guide`, `/moissanite-guide/<slug>` | `app/moissanite-guide/layout.tsx` + `.mdx` files. Content hub, see `docs/guide-hub-overview.md` |
 | `/pearl-guide/<slug>`, `/bridal-guide/<slug>` | Same pattern, `app/pearl-guide/`, `app/bridal-guide/`. Layout is shared via `components/hub/guide-hub-layout.tsx` |
 
@@ -291,6 +292,8 @@ The `prefers-reduced-motion` safety net is in `globals.css`. Never remove it. Ne
 | `NEXT_PUBLIC_SENTRY_DSN` | Sentry error monitoring (client + server) |
 | `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Sentry source-map upload (build time) |
 | `NEXT_PUBLIC_STATUS_PAGE_URL` | OpenStatus public status-page link in admin |
+| `ANTHROPIC_API_KEY` | Advisor chatbot (server). Unset: widget not rendered, `/api/advisor` returns 503 |
+| `ADVISOR_MODEL` | Optional advisor model override; default `claude-haiku-4-5` (recorded sub-US$15/month cost envelope) |
 
 ### GraphQL codegen (Storefront type-safety)
 

@@ -9,7 +9,10 @@ import ScrollReveal from '@/components/scroll-reveal';
  */
 export default async function HomeTestimonials() {
   const { reviews, averageRating, totalCount } = await getFeaturedReviews(3);
-  if (reviews.length < 2 || totalCount < 5) return null;
+  if (reviews.length < 2) return null;
+  // Only make a numeric aggregate claim once there is a meaningful base;
+  // below that, show the quotes without a statistic.
+  const showAggregate = totalCount >= 5;
 
   return (
     <section className="border-y border-charcoal/8 bg-surface/60 py-20 md:py-24">
@@ -20,7 +23,9 @@ export default async function HomeTestimonials() {
           <div className="mt-4 flex items-center justify-center gap-2">
             <StarRating rating={averageRating} size={18} />
             <p className="text-sm text-charcoal/65">
-              {averageRating.toFixed(1)} from {totalCount} verified reviews
+              {showAggregate
+                ? `${averageRating.toFixed(1)} from ${totalCount} verified reviews`
+                : 'From verified Judge.me reviews'}
             </p>
           </div>
         </ScrollReveal>

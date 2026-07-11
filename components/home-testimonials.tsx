@@ -1,4 +1,5 @@
 import { getFeaturedReviews } from '@/lib/judgeme/client';
+import { reviewerNameForDisplay } from '@/lib/judgeme/reviewer-display';
 import StarRating from '@/components/star-rating';
 import ScrollReveal from '@/components/scroll-reveal';
 
@@ -38,7 +39,7 @@ export default async function HomeTestimonials() {
               &ldquo;{reviews[0].body.trim()}&rdquo;
             </blockquote>
             <figcaption className="mt-4 text-xs uppercase tracking-[0.2em] text-charcoal/50">
-              {reviews[0].reviewer?.name || 'Verified customer'}
+              {reviews[0].reviewer?.name ? reviewerNameForDisplay(reviews[0].reviewer.name) : 'Verified customer'}
               {reviews[0].reviewer?.verified_buyer ? (
                 <span className="ml-2 normal-case tracking-normal text-burgundy/80">Verified buyer</span>
               ) : null}
@@ -56,7 +57,7 @@ export default async function HomeTestimonials() {
                     &ldquo;{review.body.trim()}&rdquo;
                   </blockquote>
                   <figcaption className="mt-5 text-xs uppercase tracking-[0.2em] text-charcoal/50">
-                    {review.reviewer?.name || 'Verified customer'}
+                    {review.reviewer?.name ? reviewerNameForDisplay(review.reviewer.name) : 'Verified customer'}
                     {review.reviewer?.verified_buyer ? (
                       <span className="ml-2 normal-case tracking-normal text-burgundy/80">Verified buyer</span>
                     ) : null}

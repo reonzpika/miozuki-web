@@ -1,18 +1,9 @@
 import Link from 'next/link';
 import { getProductReviews } from '@/lib/judgeme/client';
 import type { JudgeMeReview } from '@/lib/judgeme/types';
+import { reviewerNameForDisplay } from '@/lib/judgeme/reviewer-display';
 import StarRating from './star-rating';
 import { formatNzDate } from '@/lib/format-date';
-
-/** Display overrides for Judge.me reviewer names (source data unchanged in Judge.me). */
-const REVIEWER_DISPLAY_NAME: Record<string, string> = {
-  'Ting Chou': 'Casey',
-};
-
-function reviewerNameForDisplay(name: string): string {
-  const trimmed = name.trim();
-  return REVIEWER_DISPLAY_NAME[trimmed] ?? name;
-}
 
 function ReviewCard({ review }: { review: JudgeMeReview }) {
   const date = formatNzDate(review.created_at);

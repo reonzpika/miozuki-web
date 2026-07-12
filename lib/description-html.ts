@@ -114,29 +114,46 @@ const IMG_SIZES = '(max-width: 927px) 100vw, 896px';
 export function cleanDescriptionHtml(
   html: string | null | undefined,
   width: number = DEFAULT_IMG_WIDTH,
+  opts: {
+    /**
+     * Keep the first embedded image eager. Right for blog article bodies, where
+     * the first image can sit above the fold and be the LCP element. Pass false
+     * for collection descriptions, which always render at the bottom of the page
+     * (their first image is below the fold too and must lazy-load).
+     */
+    eagerFirstImage?: boolean;
+  } = {},
 ): string {
   if (!html) return '';
+  const { eagerFirstImage = true } = opts;
   let imgIndex = 0;
   const cleaned = html.replace(IMG_TAG, (tag) => {
     const match = tag.match(SRC_ATTR);
     if (!match) return tag;
     // Pin primary-domain /cdn/shop URLs to cdn.shopify.com so they survive cutover.
     const src = normalizeCdnSrc(match[1]);
-    if (!isShopifyCdn(src)) return src === match[1] ? tag : tag.replace(SRC_ATTR, `src="${src}"`);
-    const path = pathOf(src);
-    if (path && DEAD_IMAGE_PATHS.has(path)) return ''; // strip dead image
+    const onShopifyCdn = isShopifyCdn(src);
+    if (onShopifyCdn) {
+      const path = pathOf(src);
+      if (path && DEAD_IMAGE_PATHS.has(path)) return ''; // strip dead image
+    }
     const isFirstImage = imgIndex === 0;
     imgIndex += 1;
-    // Responsive candidates so phones stop downloading the desktop-width file.
     let attrs = '';
+    // Lazy-load everything except the first embedded image, which on some blog
+    // articles sits above the fold and can be the LCP element. Applies to every
+    // host: Ting's Shopify content sometimes embeds tool-hosted images (e.g. a
+    // 699 KiB convex.cloud infographic) and those must not download eagerly.
+    if ((!isFirstImage || !eagerFirstImage) && !/\bloading=/i.test(tag)) attrs += ' loading="lazy"';
+    if (!/\bdecoding=/i.test(tag)) attrs += ' decoding="async"';
+    // The width/srcset transforms are Shopify-CDN-only; other hosts have no
+    // known resize API, so their tags get the loading attributes and nothing else.
+    if (!onShopifyCdn) return tag.replace(SRC_ATTR, `src="${src}"${attrs}`);
+    // Responsive candidates so phones stop downloading the desktop-width file.
     if (!/\bsrcset=/i.test(tag)) {
       const srcset = SRCSET_WIDTHS.map((w) => `${setWidth(src, w)} ${w}w`).join(', ');
       attrs += ` srcset="${srcset}" sizes="${IMG_SIZES}"`;
     }
-    // Lazy-load everything except the first embedded image, which on some blog
-    // articles sits above the fold and can be the LCP element.
-    if (!isFirstImage && !/\bloading=/i.test(tag)) attrs += ' loading="lazy"';
-    if (!/\bdecoding=/i.test(tag)) attrs += ' decoding="async"';
     return tag.replace(SRC_ATTR, `src="${withWidth(src, width)}"${attrs}`);
   });
   // Demote embedded h1s to h2 so they do not compete with the page-title h1.

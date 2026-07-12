@@ -52,4 +52,9 @@ export default withSentryConfig(withMDX(nextConfig), {
   widenClientFileUpload: true,
   // Proxy Sentry requests through this route so ad-blockers do not drop events.
   tunnelRoute: "/monitoring",
+  // Strip Sentry's internal debug logging from the client bundle. Behaviour is
+  // unchanged; it only trims shipped bytes.
+  bundleSizeOptimizations: {
+    excludeDebugStatements: true,
+  },
 });

@@ -129,6 +129,13 @@ export default function ProductsGrid({
       ? 'grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-4'
       : 'grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4';
 
+  // Mirrors gridClassName's column counts so phones download ~45vw images for
+  // 2-column grid cells instead of the card default's carousel-width 70vw.
+  const cardImageSizes =
+    layout === 'flagship'
+      ? '(max-width: 767px) 45vw, (max-width: 1023px) 47vw, (max-width: 1279px) 31vw, 300px'
+      : '(max-width: 767px) 45vw, (max-width: 1023px) 31vw, 25vw';
+
   return (
     <div>
       {quickFiltersOn ? (
@@ -376,6 +383,7 @@ export default function ProductsGrid({
               product={product}
               layout={layout}
               priority={index < 4}
+              imageSizes={cardImageSizes}
               rating={ratings[product.id.split('/').pop() ?? '']}
             />
           ))}

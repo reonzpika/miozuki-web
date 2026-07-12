@@ -92,11 +92,31 @@ function withWidth(src: string, width: number): string {
   }
 }
 
+/** Set (override) the `width` transform param, for srcset candidate URLs. */
+function setWidth(src: string, width: number): string {
+  try {
+    const url = new URL(src);
+    url.searchParams.set('width', String(width));
+    return url.toString();
+  } catch {
+    return src;
+  }
+}
+
+/**
+ * Widths for the embedded-image srcset. The column displays at ~360px on phones
+ * and up to ~848px on desktop; these cover 1x-2x density without shipping the
+ * oversized originals Shopify embeds (Lighthouse flagged ~84 KiB wasted per image).
+ */
+const SRCSET_WIDTHS = [480, 768, 1024];
+const IMG_SIZES = '(max-width: 927px) 100vw, 896px';
+
 export function cleanDescriptionHtml(
   html: string | null | undefined,
   width: number = DEFAULT_IMG_WIDTH,
 ): string {
   if (!html) return '';
+  let imgIndex = 0;
   const cleaned = html.replace(IMG_TAG, (tag) => {
     const match = tag.match(SRC_ATTR);
     if (!match) return tag;
@@ -105,7 +125,19 @@ export function cleanDescriptionHtml(
     if (!isShopifyCdn(src)) return src === match[1] ? tag : tag.replace(SRC_ATTR, `src="${src}"`);
     const path = pathOf(src);
     if (path && DEAD_IMAGE_PATHS.has(path)) return ''; // strip dead image
-    return tag.replace(SRC_ATTR, `src="${withWidth(src, width)}"`);
+    const isFirstImage = imgIndex === 0;
+    imgIndex += 1;
+    // Responsive candidates so phones stop downloading the desktop-width file.
+    let attrs = '';
+    if (!/\bsrcset=/i.test(tag)) {
+      const srcset = SRCSET_WIDTHS.map((w) => `${setWidth(src, w)} ${w}w`).join(', ');
+      attrs += ` srcset="${srcset}" sizes="${IMG_SIZES}"`;
+    }
+    // Lazy-load everything except the first embedded image, which on some blog
+    // articles sits above the fold and can be the LCP element.
+    if (!isFirstImage && !/\bloading=/i.test(tag)) attrs += ' loading="lazy"';
+    if (!/\bdecoding=/i.test(tag)) attrs += ' decoding="async"';
+    return tag.replace(SRC_ATTR, `src="${withWidth(src, width)}"${attrs}`);
   });
   // Demote embedded h1s to h2 so they do not compete with the page-title h1.
   const demoted = cleaned.replace(H1_OPEN, '<h2$1>').replace(H1_CLOSE, '</h2>');

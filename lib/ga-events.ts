@@ -1,6 +1,6 @@
 'use client';
 
-import { sendGAEvent } from '@next/third-parties/google';
+import { gaEvent } from '@/lib/gtag';
 import { isProductionTrackingContext } from '@/lib/analytics-host';
 import type { Money, ProductVariant } from '@/lib/shopify';
 
@@ -19,7 +19,7 @@ export function trackAddToCart({ productTitle, variant, quantity }: AddToCartEve
   if (!isProductionTrackingContext()) return;
 
   const price = Number.parseFloat(variant.price.amount);
-  sendGAEvent('event', 'add_to_cart', {
+  gaEvent('add_to_cart', {
     currency: variant.price.currencyCode,
     value: moneyValue(variant.price, quantity),
     items: [

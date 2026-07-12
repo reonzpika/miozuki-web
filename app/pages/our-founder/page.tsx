@@ -40,6 +40,7 @@ export default function OurFounderPage() {
           alt="Ting Eguchi, founder of Miozuki"
           fill
           priority
+          fetchPriority="high"
           sizes="256px"
           className="object-cover object-top"
         />

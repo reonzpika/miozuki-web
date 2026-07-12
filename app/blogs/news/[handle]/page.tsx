@@ -123,6 +123,7 @@ export default async function ArticlePage({
             sizes="(min-width: 768px) 672px, 100vw"
             className="object-cover"
             priority
+            fetchPriority="high"
           />
         </div>
       )}

@@ -53,17 +53,25 @@ function productMetaLine(product: Product): string | null {
   return bits.length ? bits.join(' · ') : null;
 }
 
+// Default matches the best-sellers carousel (cards are ~68vw on phones). Grids
+// render narrower cards and pass their own value, so phones stop downloading
+// carousel-width images for grid cells.
+const DEFAULT_IMAGE_SIZES = '(max-width: 767px) 70vw, (max-width: 1023px) 33vw, 25vw';
+
 export default function ProductCard({
   product,
   rating,
   layout = 'default',
   priority = false,
+  imageSizes = DEFAULT_IMAGE_SIZES,
 }: {
   product: Product;
   rating?: RatingSummary;
   layout?: 'default' | 'flagship';
   /** Eager-load + prioritise this card's primary image (use for the first visible row). */
   priority?: boolean;
+  /** `sizes` for the card images; pass a layout-accurate value when the card is not ~70vw on phones. */
+  imageSizes?: string;
 }) {
   const hoverCapable = useHoverCapable();
   const { handle, title, featuredImage, images, priceRange, tags } = product;
@@ -97,7 +105,7 @@ export default function ProductCard({
               alt={primary.altText ?? title}
               fill
               priority={priority}
-              sizes="(max-width: 767px) 70vw, (max-width: 1023px) 33vw, 25vw"
+              sizes={imageSizes}
               quality={85}
               className={`object-cover transition-opacity duration-500 ease-out${secondary ? ' group-hover:opacity-0' : ''}`}
             />
@@ -106,7 +114,7 @@ export default function ProductCard({
                 src={secondary.url}
                 alt={secondary.altText ?? title}
                 fill
-                sizes="(max-width: 767px) 70vw, (max-width: 1023px) 33vw, 25vw"
+                sizes={imageSizes}
                 quality={85}
                 className="object-cover opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
               />

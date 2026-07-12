@@ -55,6 +55,9 @@ export default function CollectionHeroBanner({ collection }: Props) {
       alt={imageAlt}
       fill
       priority
+      // priority alone does not emit the fetchpriority attribute, and this banner is
+      // the LCP element on every collection page; keep both, like the home hero.
+      fetchPriority="high"
       sizes="100vw"
       className={imagePositionClass}
     />

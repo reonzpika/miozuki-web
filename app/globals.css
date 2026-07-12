@@ -61,6 +61,15 @@
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Below-the-fold sections opt out of initial layout/paint work: the browser
+   skips rendering them until the visitor scrolls near, which frees the main
+   thread to paint the hero (LCP) sooner. contain-intrinsic-size reserves an
+   estimated height so the scrollbar stays stable before first render. */
+.below-fold-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
 .article-prose {
   color: color-mix(in oklch, var(--foreground) 65%, transparent);
   font-size: 0.9375rem;

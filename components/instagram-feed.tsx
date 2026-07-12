@@ -9,7 +9,7 @@ export default async function InstagramFeed() {
   if (posts.length === 0) return null;
 
   return (
-    <section className="bg-burgundy py-12 md:py-16">
+    <section className="below-fold-defer bg-burgundy py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         {/* Heading */}
         <div className="text-center mb-8">

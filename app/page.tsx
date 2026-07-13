@@ -286,29 +286,27 @@ export default async function Home() {
     }
   }
 
-  // Near-square thumb for the bridal guide card. Prefer Courtside Halo studs
-  // (bridal earrings, distinct from the pearl card), never a generated stand-in.
+  // Portrait model shot for the bridal guide card. Prefer Pavé Drop worn with
+  // a white lace top (bridal-adjacent), never a packshot or generated stand-in.
   let bridalGuideImage: { url: string; alt: string } | null = null;
   try {
-    const product = await getProductByHandle('courtside-halo-moissanite-studs');
+    const product = await getProductByHandle('moissanite-pave-drop');
     const gallery =
       product?.images.edges
         .map((e) => e.node)
         .filter((img) => {
           if (!img.url) return false;
           const url = img.url.toLowerCase();
-          // Skip cross-linked gallery images and ChatGPT renders.
           if (url.includes('chatgpt')) return false;
-          if (!url.includes('courtside-halo')) return false;
-          return true;
+          if (!url.includes('moissanite-pave-drop')) return false;
+          return img.width > 0 && img.height > 0 && img.width / img.height < 0.85;
         }) ?? [];
-    const square = gallery
-      .filter((img) => img.width > 0 && img.height > 0)
-      .sort(
-        (a, b) =>
-          Math.abs(a.width / a.height - 1) - Math.abs(b.width / b.height - 1),
-      );
-    const pick = square[0] ?? null;
+    // Prefer the worn-on-model lace look over tight ear crops when both exist.
+    const preferUrl = 'moissanite-pave-drop-4022154';
+    const pick =
+      gallery.find((img) => img.url.toLowerCase().includes(preferUrl)) ??
+      gallery[0] ??
+      null;
     if (pick && product) {
       bridalGuideImage = {
         url: pick.url,
@@ -317,6 +315,29 @@ export default async function Home() {
     }
   } catch {
     // product unavailable
+  }
+  if (!bridalGuideImage) {
+    try {
+      const product = await getProductByHandle('courtside-halo-moissanite-studs');
+      const gallery =
+        product?.images.edges
+          .map((e) => e.node)
+          .filter((img) => {
+            if (!img.url) return false;
+            const url = img.url.toLowerCase();
+            if (!url.includes('courtside-halo')) return false;
+            return img.width > 0 && img.height > 0 && img.width / img.height < 0.85;
+          }) ?? [];
+      const pick = gallery[0] ?? null;
+      if (pick && product) {
+        bridalGuideImage = {
+          url: pick.url,
+          alt: pick.altText || product.title,
+        };
+      }
+    } catch {
+      // product unavailable
+    }
   }
   if (!bridalGuideImage) {
     try {

@@ -105,7 +105,7 @@ export default function HomeGuidesSection({
                     alt={bridalImage.alt}
                     fill
                     sizes="9rem"
-                    className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                    className="object-cover object-[center_20%] transition-transform duration-500 ease-out group-hover:scale-[1.05]"
                   />
                 ) : null}
               </div>

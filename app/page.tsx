@@ -238,6 +238,54 @@ export default async function Home() {
     }
   }
 
+  // Near-square thumb for the pearl guide card. Prefer a clean square product
+  // shot from baroque pearl studs (fits the side card), never a generated stand-in.
+  let pearlGuideImage: { url: string; alt: string } | null = null;
+  try {
+    const product = await getProductByHandle('fresh-water-baroque-pearl-studs');
+    const gallery =
+      product?.images.edges
+        .map((e) => e.node)
+        .filter((img) => {
+          if (!img.url) return false;
+          const url = img.url.toLowerCase();
+          // Skip cross-linked gallery images from other products.
+          if (url.includes('moissanite') && !url.includes('pearl')) return false;
+          return true;
+        }) ?? [];
+    const square = gallery
+      .filter((img) => img.width > 0 && img.height > 0)
+      .sort(
+        (a, b) =>
+          Math.abs(a.width / a.height - 1) - Math.abs(b.width / b.height - 1),
+      );
+    const pick = square[0] ?? null;
+    if (pick && product) {
+      pearlGuideImage = {
+        url: pick.url,
+        alt: pick.altText || product.title,
+      };
+    }
+  } catch {
+    // product unavailable
+  }
+  if (!pearlGuideImage) {
+    try {
+      const pearls = await getCollectionByHandle('pearl-earrings', 4);
+      const pick = pearls?.products.edges
+        .map((e) => e.node)
+        .find((p) => p.featuredImage?.url);
+      if (pick?.featuredImage) {
+        pearlGuideImage = {
+          url: pick.featuredImage.url,
+          alt: pick.featuredImage.altText || pick.title,
+        };
+      }
+    } catch {
+      // collection unavailable
+    }
+  }
+
   return (
     <main>
       <JsonLd data={FAQ_SCHEMA} />
@@ -342,7 +390,10 @@ export default async function Home() {
       </section>
 
       {/* ── Guide hubs entry ──────────────────────────────── */}
-      <HomeGuidesSection moissaniteImage={moissaniteGuideImage} />
+      <HomeGuidesSection
+        moissaniteImage={moissaniteGuideImage}
+        pearlImage={pearlGuideImage}
+      />
 
       {/* ── FAQ ───────────────────────────────────────────── */}
       <section className="py-24 px-6 md:px-10 max-w-3xl mx-auto w-full">

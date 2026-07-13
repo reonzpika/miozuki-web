@@ -51,7 +51,7 @@ export default function HeroSection() {
       <div className="relative z-10 flex flex-col items-center px-6">
         {/* Headline, line-by-line reveal */}
         <motion.h1
-          className="mb-8 max-w-3xl font-serif text-4xl leading-tight tracking-tight text-cream sm:text-5xl md:mb-10 md:text-7xl lg:text-8xl"
+          className="mb-4 max-w-3xl font-serif text-4xl leading-tight tracking-tight text-cream sm:text-5xl md:text-7xl lg:text-8xl"
           variants={container}
           initial="hidden"
           animate="show"
@@ -63,6 +63,16 @@ export default function HeroSection() {
           ))}
         </motion.h1>
 
+        {/* Subheading */}
+        <motion.p
+          className="mb-8 max-w-sm text-sm leading-relaxed tracking-wide text-cream/75 md:mb-10 md:text-base"
+          variants={fadeUp(0.65)}
+          initial="hidden"
+          animate="show"
+        >
+          Moissanite and freshwater pearl fine jewellery
+        </motion.p>
+
         {/* CTA */}
         <motion.div variants={fadeUp(0.8)} initial="hidden" animate="show">
           <Link
@@ -73,16 +83,6 @@ export default function HeroSection() {
           </Link>
         </motion.div>
       </div>
-
-      {/* Subheading */}
-      <motion.p
-        className="relative z-10 mt-8 max-w-sm px-6 text-sm leading-relaxed tracking-wide text-cream/75 md:mt-10 md:text-base"
-        variants={fadeUp(0.65)}
-        initial="hidden"
-        animate="show"
-      >
-        Moissanite and freshwater pearl fine jewellery
-      </motion.p>
     </section>
   );
 }

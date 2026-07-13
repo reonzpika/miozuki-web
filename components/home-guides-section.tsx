@@ -7,25 +7,20 @@ type GuideImage = {
   alt: string;
 };
 
-const BRIDAL_GUIDE = {
-  href: '/bridal-guide',
-  title: 'The Bridal Guide',
-  blurb: 'Earrings, sets and gifts for the wedding day, and long after it.',
-  image: '/generated/hero-bridal-guide.jpg',
-} as const;
-
 /**
  * Homepage entry point into the three guide hubs. Asymmetric editorial layout:
  * moissanite guide featured large, pearl and bridal as compact rows.
- * Moissanite and pearl cards use live Shopify product photos, never generated
- * stand-ins for jewellery.
+ * All three cards use live Shopify product photos, never generated stand-ins
+ * for jewellery.
  */
 export default function HomeGuidesSection({
   moissaniteImage,
   pearlImage,
+  bridalImage,
 }: {
   moissaniteImage: GuideImage | null;
   pearlImage: GuideImage | null;
+  bridalImage: GuideImage | null;
 }) {
   return (
     <section className="mx-auto w-full max-w-7xl px-6 py-24 md:px-10">
@@ -100,23 +95,27 @@ export default function HomeGuidesSection({
 
           <ScrollReveal delay={0.16} className="flex-1">
             <Link
-              href={BRIDAL_GUIDE.href}
+              href="/bridal-guide"
               className="group flex h-full items-stretch overflow-hidden rounded-md border border-charcoal/10 bg-surface/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
-              <div className="relative w-28 shrink-0 overflow-hidden sm:w-36">
-                <Image
-                  src={BRIDAL_GUIDE.image}
-                  alt=""
-                  fill
-                  sizes="9rem"
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                />
+              <div className="relative w-28 shrink-0 overflow-hidden bg-surface sm:w-36">
+                {bridalImage ? (
+                  <Image
+                    src={bridalImage.url}
+                    alt={bridalImage.alt}
+                    fill
+                    sizes="9rem"
+                    className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                  />
+                ) : null}
               </div>
               <div className="flex flex-col justify-center p-5">
                 <h3 className="font-serif text-lg text-charcoal transition-colors group-hover:text-burgundy">
-                  {BRIDAL_GUIDE.title}
+                  The Bridal Guide
                 </h3>
-                <p className="mt-1 text-sm leading-relaxed text-charcoal/65">{BRIDAL_GUIDE.blurb}</p>
+                <p className="mt-1 text-sm leading-relaxed text-charcoal/65">
+                  Earrings, sets and gifts for the wedding day, and long after it.
+                </p>
               </div>
             </Link>
           </ScrollReveal>

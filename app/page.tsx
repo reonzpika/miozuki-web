@@ -286,6 +286,55 @@ export default async function Home() {
     }
   }
 
+  // Near-square thumb for the bridal guide card. Prefer Courtside Halo studs
+  // (bridal earrings, distinct from the pearl card), never a generated stand-in.
+  let bridalGuideImage: { url: string; alt: string } | null = null;
+  try {
+    const product = await getProductByHandle('courtside-halo-moissanite-studs');
+    const gallery =
+      product?.images.edges
+        .map((e) => e.node)
+        .filter((img) => {
+          if (!img.url) return false;
+          const url = img.url.toLowerCase();
+          // Skip cross-linked gallery images and ChatGPT renders.
+          if (url.includes('chatgpt')) return false;
+          if (!url.includes('courtside-halo')) return false;
+          return true;
+        }) ?? [];
+    const square = gallery
+      .filter((img) => img.width > 0 && img.height > 0)
+      .sort(
+        (a, b) =>
+          Math.abs(a.width / a.height - 1) - Math.abs(b.width / b.height - 1),
+      );
+    const pick = square[0] ?? null;
+    if (pick && product) {
+      bridalGuideImage = {
+        url: pick.url,
+        alt: pick.altText || product.title,
+      };
+    }
+  } catch {
+    // product unavailable
+  }
+  if (!bridalGuideImage) {
+    try {
+      const bridal = await getCollectionByHandle('bridal-jewellery', 4);
+      const pick = bridal?.products.edges
+        .map((e) => e.node)
+        .find((p) => p.featuredImage?.url && p.handle !== 'fresh-water-baroque-pearl-studs');
+      if (pick?.featuredImage) {
+        bridalGuideImage = {
+          url: pick.featuredImage.url,
+          alt: pick.featuredImage.altText || pick.title,
+        };
+      }
+    } catch {
+      // collection unavailable
+    }
+  }
+
   return (
     <main>
       <JsonLd data={FAQ_SCHEMA} />
@@ -393,6 +442,7 @@ export default async function Home() {
       <HomeGuidesSection
         moissaniteImage={moissaniteGuideImage}
         pearlImage={pearlGuideImage}
+        bridalImage={bridalGuideImage}
       />
 
       {/* ── FAQ ───────────────────────────────────────────── */}

@@ -25,7 +25,7 @@ export default function HomeGuidesSection({
   return (
     <section className="mx-auto w-full max-w-7xl px-6 py-24 md:px-10">
       <ScrollReveal className="mb-10">
-        <p className="mb-2 text-xs uppercase tracking-[0.3em] text-burgundy">Learn before you buy</p>
+        <p className="mb-2 text-xs uppercase tracking-[0.3em] text-burgundy">Discover Miozuki&apos;s Blog Guide</p>
         <h2 className="font-serif text-3xl text-charcoal md:text-4xl">Honest guides, written by our founder</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-charcoal/65 md:text-base">
           Everything we wish every buyer knew about moissanite, pearls and bridal jewellery,

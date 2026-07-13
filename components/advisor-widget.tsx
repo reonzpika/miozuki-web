@@ -8,7 +8,7 @@ import { linkifyBareRefs, toInternalHref } from '@/lib/advisor/markdown-utils';
 /**
  * "Chat with Mio": the Miozuki jewellery guide. Floating button above the
  * Enquire button, brand-styled slide-over chat. The layout only renders this
- * component when the server has an ANTHROPIC_API_KEY.
+ * component when the server has a LAOZHANG_API_KEY.
  *
  * Persona notes: Mio presents as a warm human guide (name, avatar, voice) but
  * the footer keeps the explicit AI disclosure, and the system prompt makes her

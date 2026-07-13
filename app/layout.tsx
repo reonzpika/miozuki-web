@@ -137,10 +137,10 @@ export default function RootLayout({
             <Footer />
             <EmailPopup />
             <EnquiryWidget />
-            {/* Advisor renders only when the server holds an Anthropic key, so
-                the widget can never appear unconfigured. Add ANTHROPIC_API_KEY
-                in Vercel env + redeploy to switch it on. */}
-            {process.env.ANTHROPIC_API_KEY ? <AdvisorWidget /> : null}
+            {/* Advisor renders only when the server holds the LaoZhang relay
+                key, so the widget can never appear unconfigured. Add
+                LAOZHANG_API_KEY in Vercel env + redeploy to switch it on. */}
+            {process.env.LAOZHANG_API_KEY ? <AdvisorWidget /> : null}
           </StorefrontChrome>
         </CartProvider>
         {GA4_ID ? <DeferredAnalytics gaId={GA4_ID} /> : null}

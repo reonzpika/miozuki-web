@@ -4,17 +4,22 @@ import { getAdvisorSystemPrompt } from '@/lib/advisor/system-prompt';
 /**
  * Streaming endpoint for the Miozuki jewellery advisor widget.
  *
- * Cost guardrails: Haiku-tier model by default (the recorded chatbot decision
- * caps spend at ~US$15/month under 1,000 chats), capped output tokens, capped
- * conversation length, and a best-effort per-IP rate limit. The system prompt
- * carries a cache_control breakpoint so repeat traffic reads the prompt from
- * cache. Returns 503 when ANTHROPIC_API_KEY is unset, so the widget (which the
- * layout only renders when the key exists) can never strand a customer.
+ * Claude is reached through the LaoZhang API relay (docs.laozhang.ai), which
+ * supports the Claude-native Messages format, so the Anthropic SDK works
+ * unchanged with a baseURL override. Sonnet-tier model by default (Ryo's
+ * 2026-07-13 call: Haiku answers read too weak for a fine-jewellery advisor),
+ * capped output tokens, capped conversation length, and a best-effort per-IP
+ * rate limit. The system prompt carries a cache_control breakpoint so repeat
+ * traffic reads the prompt from cache where the relay supports it. Returns 503
+ * when LAOZHANG_API_KEY is unset, so the widget (which the layout only renders
+ * when the key exists) can never strand a customer.
  */
 
 export const runtime = 'nodejs';
 
-const MODEL = process.env.ADVISOR_MODEL || 'claude-haiku-4-5';
+const MODEL = process.env.ADVISOR_MODEL || 'claude-sonnet-4-6';
+// The relay's documented base for Claude-native calls; override if it changes.
+const BASE_URL = process.env.ADVISOR_BASE_URL || 'https://api.laozhang.ai/v1';
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_CHARS = 1200;
 const RATE_LIMIT_PER_MINUTE = 8;
@@ -183,7 +188,7 @@ function validMessages(body: unknown): ChatMessage[] | null {
 }
 
 export async function POST(request: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.LAOZHANG_API_KEY) {
     return new Response('Advisor not configured', { status: 503 });
   }
 
@@ -205,7 +210,10 @@ export async function POST(request: Request) {
     return new Response('Invalid messages', { status: 400 });
   }
 
-  const client = new Anthropic();
+  const client = new Anthropic({
+    apiKey: process.env.LAOZHANG_API_KEY,
+    baseURL: BASE_URL,
+  });
   const system = await getAdvisorSystemPrompt();
 
   const encoder = new TextEncoder();

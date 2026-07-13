@@ -59,7 +59,7 @@ export default function HomeGuidesSection({
                 zirconia, and how to choose a ring you will keep forever.
               </p>
               <span className="mt-4 inline-block text-xs uppercase tracking-widest text-burgundy">
-                Start reading
+                Read the founder&apos;s guide
               </span>
             </div>
           </Link>

@@ -28,8 +28,8 @@ export default function HomeGuidesSection({
         <p className="mb-2 text-xs uppercase tracking-[0.3em] text-burgundy">The Miozuki Journal</p>
         <h2 className="font-serif text-3xl text-charcoal md:text-4xl">Honest guides, written by our founder</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-charcoal/65 md:text-base">
-          Everything we wish every buyer knew about moissanite, pearls and bridal jewellery,
-          with no pressure attached.
+          Guide on moissanite, pearls and bridal jewellery, shared simply to help you find what
+          feels right for you.
         </p>
       </ScrollReveal>
 

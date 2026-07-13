@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getCollections, getCollectionByHandle } from '@/lib/shopify';
+import { getCollections, getCollectionByHandle, getProductByHandle } from '@/lib/shopify';
 import { getAllRatings } from '@/lib/judgeme/client';
 import type { Collection, Product } from '@/lib/shopify';
 import HeroSection from '@/components/hero-section';
@@ -187,21 +187,46 @@ export default async function Home() {
 
   const ratings = await getAllRatings().catch(() => ({}));
 
-  // Real Shopify product photo for the moissanite guide card (never a generated stand-in).
+  // Wide model/lifestyle shot for the moissanite guide card (16:9). Prefer a
+  // landscape gallery image from a known ring with on-hand photos; never use a
+  // generated stand-in.
   let moissaniteGuideImage: { url: string; alt: string } | null = null;
   try {
-    const rings = await getCollectionByHandle('moissanite-rings', 4);
-    const pick = rings?.products.edges
-      .map((e) => e.node)
-      .find((p) => p.featuredImage?.url);
-    if (pick?.featuredImage) {
+    const product = await getProductByHandle('pear-cut-pave-moissanite-ring-nz');
+    const gallery = product?.images.edges.map((e) => e.node).filter((img) => img.url) ?? [];
+    const targetRatio = 16 / 9;
+    const landscape = gallery
+      .filter((img) => img.width > 0 && img.height > 0 && img.width / img.height >= 1.2)
+      .sort(
+        (a, b) =>
+          Math.abs(a.width / a.height - targetRatio) -
+          Math.abs(b.width / b.height - targetRatio),
+      );
+    const pick = landscape[0] ?? null;
+    if (pick && product) {
       moissaniteGuideImage = {
-        url: pick.featuredImage.url,
-        alt: pick.featuredImage.altText || pick.title,
+        url: pick.url,
+        alt: pick.altText || product.title,
       };
     }
   } catch {
-    // collection unavailable
+    // product unavailable
+  }
+  if (!moissaniteGuideImage) {
+    try {
+      const rings = await getCollectionByHandle('moissanite-rings', 4);
+      const pick = rings?.products.edges
+        .map((e) => e.node)
+        .find((p) => p.featuredImage?.url);
+      if (pick?.featuredImage) {
+        moissaniteGuideImage = {
+          url: pick.featuredImage.url,
+          alt: pick.featuredImage.altText || pick.title,
+        };
+      }
+    } catch {
+      // collection unavailable
+    }
   }
   if (!moissaniteGuideImage) {
     const pick = products.find((p) => p.featuredImage?.url);

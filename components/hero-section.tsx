@@ -83,18 +83,6 @@ export default function HeroSection() {
             Discover the Collection
           </Link>
         </motion.div>
-
-        {/* Decorative rule */}
-        <motion.div
-          className="mt-8 flex items-center gap-3 md:mt-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1.0 }}
-        >
-          <div className="h-px w-10 bg-cream/35" />
-          <div className="h-1.5 w-1.5 rotate-45 bg-cream/45" />
-          <div className="h-px w-10 bg-cream/35" />
-        </motion.div>
       </div>
     </section>
   );

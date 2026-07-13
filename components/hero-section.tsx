@@ -49,18 +49,6 @@ export default function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center px-6">
-        {/* Decorative rule */}
-        <motion.div
-          className="mb-6 flex items-center gap-3 md:mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-        >
-          <div className="h-px w-10 bg-cream/35" />
-          <div className="h-1.5 w-1.5 rotate-45 bg-cream/45" />
-          <div className="h-px w-10 bg-cream/35" />
-        </motion.div>
-
         {/* Headline, line-by-line reveal */}
         <motion.h1
           className="mb-4 max-w-3xl font-serif text-4xl leading-tight tracking-tight text-cream sm:text-5xl md:text-7xl lg:text-8xl"
@@ -95,16 +83,6 @@ export default function HeroSection() {
             Discover the Collection
           </Link>
         </motion.div>
-
-        {/* Trust microline */}
-        <motion.p
-          className="mt-6 text-[11px] uppercase tracking-[0.18em] text-cream/65"
-          variants={fadeUp(0.95)}
-          initial="hidden"
-          animate="show"
-        >
-          Free NZ shipping over $300 &middot; Tracked delivery to NZ &amp; Australia
-        </motion.p>
 
         {/* Decorative rule */}
         <motion.div

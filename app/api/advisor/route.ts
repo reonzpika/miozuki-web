@@ -18,8 +18,10 @@ import { getAdvisorSystemPrompt } from '@/lib/advisor/system-prompt';
 export const runtime = 'nodejs';
 
 const MODEL = process.env.ADVISOR_MODEL || 'claude-sonnet-4-6';
-// The relay's documented base for Claude-native calls; override if it changes.
-const BASE_URL = process.env.ADVISOR_BASE_URL || 'https://api.laozhang.ai/v1';
+// The relay's base for Claude-native calls; override if it changes. No /v1
+// suffix: the Anthropic SDK appends /v1/messages itself (the relay docs'
+// baseURL example includes /v1 and 404s with this SDK, verified 2026-07-13).
+const BASE_URL = process.env.ADVISOR_BASE_URL || 'https://api.laozhang.ai';
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_CHARS = 1200;
 const RATE_LIMIT_PER_MINUTE = 8;

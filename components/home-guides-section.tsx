@@ -17,11 +17,21 @@ const SUB_GUIDES = [
   },
 ] as const;
 
+type GuideImage = {
+  url: string;
+  alt: string;
+};
+
 /**
  * Homepage entry point into the three guide hubs. Asymmetric editorial layout:
  * moissanite guide featured large, pearl and bridal as compact rows.
+ * Moissanite card uses a live Shopify product photo, never a generated stand-in.
  */
-export default function HomeGuidesSection() {
+export default function HomeGuidesSection({
+  moissaniteImage,
+}: {
+  moissaniteImage: GuideImage | null;
+}) {
   return (
     <section className="mx-auto w-full max-w-7xl px-6 py-24 md:px-10">
       <ScrollReveal className="mb-10">
@@ -39,14 +49,16 @@ export default function HomeGuidesSection() {
             href="/moissanite-guide"
             className="group block overflow-hidden rounded-md border border-charcoal/10 bg-surface/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
           >
-            <div className="relative aspect-[16/9] w-full overflow-hidden">
-              <Image
-                src="/generated/hero-moissanite-guide.jpg"
-                alt="Moissanite guide: close view of a moissanite ring catching the light"
-                fill
-                sizes="(min-width: 1024px) 60vw, 100vw"
-                className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-              />
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-surface">
+              {moissaniteImage ? (
+                <Image
+                  src={moissaniteImage.url}
+                  alt={moissaniteImage.alt}
+                  fill
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                />
+              ) : null}
             </div>
             <div className="p-6 md:p-8">
               <h3 className="font-serif text-2xl text-charcoal transition-colors group-hover:text-burgundy">

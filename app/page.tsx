@@ -187,6 +187,32 @@ export default async function Home() {
 
   const ratings = await getAllRatings().catch(() => ({}));
 
+  // Real Shopify product photo for the moissanite guide card (never a generated stand-in).
+  let moissaniteGuideImage: { url: string; alt: string } | null = null;
+  try {
+    const rings = await getCollectionByHandle('moissanite-rings', 4);
+    const pick = rings?.products.edges
+      .map((e) => e.node)
+      .find((p) => p.featuredImage?.url);
+    if (pick?.featuredImage) {
+      moissaniteGuideImage = {
+        url: pick.featuredImage.url,
+        alt: pick.featuredImage.altText || pick.title,
+      };
+    }
+  } catch {
+    // collection unavailable
+  }
+  if (!moissaniteGuideImage) {
+    const pick = products.find((p) => p.featuredImage?.url);
+    if (pick?.featuredImage) {
+      moissaniteGuideImage = {
+        url: pick.featuredImage.url,
+        alt: pick.featuredImage.altText || pick.title,
+      };
+    }
+  }
+
   return (
     <main>
       <JsonLd data={FAQ_SCHEMA} />
@@ -291,7 +317,7 @@ export default async function Home() {
       </section>
 
       {/* ── Guide hubs entry ──────────────────────────────── */}
-      <HomeGuidesSection />
+      <HomeGuidesSection moissaniteImage={moissaniteGuideImage} />
 
       {/* ── FAQ ───────────────────────────────────────────── */}
       <section className="py-24 px-6 md:px-10 max-w-3xl mx-auto w-full">

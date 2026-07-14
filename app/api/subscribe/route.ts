@@ -105,5 +105,34 @@ export async function POST(request: Request) {
     data: { jobId, email },
   });
 
+  // The bulk-subscribe job above is queued/batched by Klaviyo and can take several
+  // minutes to actually add the profile to the list (Klaviyo's own guidance: list-
+  // triggered flows enter within ~2-3 minutes, not instantly). This event exists so
+  // the Welcome Series flow can be triggered by it directly instead of by list
+  // membership, which fires far closer to real time. Non-fatal if it fails: the
+  // profile is still subscribed either way.
+  const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
+    method: 'POST',
+    headers: klaviyoHeaders,
+    body: JSON.stringify({
+      data: {
+        type: 'event',
+        attributes: {
+          properties: {},
+          metric: { data: { type: 'metric', attributes: { name: 'Signed Up For Discount' } } },
+          profile: { data: { type: 'profile', attributes: { email } } },
+        },
+      },
+    }),
+  });
+  if (!eventRes.ok) {
+    const body = await eventRes.text();
+    console.error('Klaviyo track-event error', eventRes.status, body);
+    Sentry.captureMessage('Klaviyo track-event failed', {
+      level: 'warning',
+      extra: { status: eventRes.status, body, email },
+    });
+  }
+
   return NextResponse.json({ ok: true });
 }

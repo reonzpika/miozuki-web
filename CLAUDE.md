@@ -342,31 +342,4 @@ Every Storefront query in `lib/shopify/` is validated against Shopify's publishe
 
 ## Coding standards
 
-**Think before coding**
-- State assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them. Do not pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what is confusing. Ask.
-
-**Simplicity first**
-- Minimum code that solves the problem. Nothing speculative.
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No error handling for impossible scenarios.
-- If it took 200 lines and could be 50, rewrite it.
-- Self-check: would a senior engineer say this is overcomplicated?
-
-**Surgical changes**
-- Touch only what you must.
-- Do not improve adjacent code, comments, or formatting.
-- Do not refactor things that are not broken.
-- Match existing style, even if you would do it differently.
-- Remove imports, variables, or functions that your changes made unused. Do not delete pre-existing dead code unless asked.
-- Every changed line must trace directly to the user's request.
-
-**Goal-driven execution**
-- Transform tasks into verifiable goals:
-  - "Add validation" becomes "Write tests for invalid inputs, then make them pass"
-  - "Fix the bug" becomes "Write a test that reproduces it, then make it pass"
-  - "Refactor X" becomes "Ensure tests pass before and after"
-- For multi-step tasks, state a brief plan with a verification check per step.
+See global `~/.claude/CLAUDE.md` — "Coding standards" section (Think before coding, Goal-driven execution). Consolidated there 2026-07-19; this file used to carry its own full copy.

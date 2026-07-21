@@ -5,8 +5,8 @@ import { useState } from 'react';
 const BUDGET_OPTIONS = [
   '$1,000 – $2,000 NZD',
   '$2,000 – $4,000 NZD',
-  '$4,000+ NZD',
-  'Not sure yet',
+  '$4,000 – $6,000 NZD',
+  'Above $6,000 NZD',
 ] as const;
 
 const LEAD_TIME_OPTIONS = [

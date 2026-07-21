@@ -2,10 +2,11 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Product } from '@/lib/shopify';
+import type { Money, Product } from '@/lib/shopify';
 import type { RatingSummary } from '@/lib/judgeme/types';
 import { useHoverCapable } from '@/hooks/use-hover-capable';
 import { MiozukiBrandLogo } from '@/components/miozuki-brand-logo';
+import SalePriceDisplay from '@/components/sale-price-display';
 import StarRating from './star-rating';
 
 function formatPrice(amount: string, currencyCode: string): string {
@@ -53,6 +54,14 @@ function productMetaLine(product: Product): string | null {
   return bits.length ? bits.join(' · ') : null;
 }
 
+/** Present once Ryo adds compareAtPriceRange to collection product queries. */
+type ProductWithCompareAt = Product & {
+  compareAtPriceRange?: {
+    minVariantPrice: Money;
+    maxVariantPrice: Money;
+  };
+};
+
 // Default matches the best-sellers carousel (cards are ~68vw on phones). Grids
 // render narrower cards and pass their own value, so phones stop downloading
 // carousel-width images for grid cells.
@@ -76,6 +85,12 @@ export default function ProductCard({
   const hoverCapable = useHoverCapable();
   const { handle, title, featuredImage, images, priceRange, tags } = product;
   const price = priceRange.minVariantPrice;
+  const compareAtMin =
+    (product as ProductWithCompareAt).compareAtPriceRange?.minVariantPrice ?? null;
+  const compareAtForDisplay =
+    compareAtMin && parseFloat(compareAtMin.amount) > parseFloat(price.amount)
+      ? compareAtMin
+      : null;
   const badge = layout === 'flagship' ? pickFlagshipBadge(handle, tags) : null;
   const meta = layout === 'flagship' ? productMetaLine(product) : null;
   const href = `/products/${handle}`;
@@ -145,9 +160,12 @@ export default function ProductCard({
         {meta ? (
           <p className="mb-1 line-clamp-2 text-[11px] leading-snug text-charcoal/50">{meta}</p>
         ) : null}
-        <p className="text-[13px] text-graphite font-medium tabular-nums">
-          {formatPrice(price.amount, price.currencyCode)}
-        </p>
+        <SalePriceDisplay
+          priceLabel={formatPrice(price.amount, price.currencyCode)}
+          compareAt={compareAtForDisplay}
+          size="card"
+          tone="graphite"
+        />
         {rating && rating.count > 0 && (
           <div className="flex items-center gap-1 mt-1">
             <StarRating rating={rating.rating} size={11} />

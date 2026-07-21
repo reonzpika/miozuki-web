@@ -8,63 +8,13 @@ import PdpRingSizeSelect from '@/components/pdp-ring-size-select';
 import { isRingSizeOption } from '@/lib/ring-size-chart';
 import { trackAddToCart } from '@/lib/ga-events';
 import { useCart } from './cart-provider';
+import SalePriceDisplay from '@/components/sale-price-display';
 
 function formatPrice(amount: string, currencyCode: string) {
   return new Intl.NumberFormat('en-NZ', {
     style: 'currency',
     currency: currencyCode,
   }).format(parseFloat(amount));
-}
-
-function SalePriceDisplay({
-  priceLabel,
-  compareAt,
-  size = 'lg',
-}: {
-  priceLabel: string;
-  compareAt: Money | null | undefined;
-  size?: 'lg' | 'sm';
-}) {
-  // Only show a crossed-out "was" price next to a concrete amount, never beside "From …".
-  const onSale =
-    Boolean(compareAt) &&
-    !priceLabel.startsWith('From ') &&
-    parseFloat(compareAt!.amount) > 0;
-
-  if (!onSale || !compareAt) {
-    return (
-      <p
-        className={
-          size === 'lg'
-            ? 'text-xl font-medium text-burgundy'
-            : 'truncate font-medium text-burgundy'
-        }
-      >
-        {priceLabel}
-      </p>
-    );
-  }
-
-  return (
-    <p
-      className={
-        size === 'lg'
-          ? 'flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-xl font-medium text-burgundy'
-          : 'flex flex-wrap items-baseline gap-x-2 gap-y-0.5 font-medium text-burgundy'
-      }
-    >
-      <span className={size === 'sm' ? 'truncate' : undefined}>{priceLabel}</span>
-      <span
-        className={
-          size === 'lg'
-            ? 'text-base font-normal text-charcoal/40 line-through'
-            : 'shrink-0 text-[12px] font-normal text-charcoal/40 line-through'
-        }
-      >
-        {formatPrice(compareAt.amount, compareAt.currencyCode)}
-      </span>
-    </p>
-  );
 }
 
 interface Option {

@@ -56,7 +56,7 @@ const MOBILE_NAV = [
   { label: 'Bridal', href: '/collections/bridal-jewellery', indent: true },
   { label: 'Moissanite Earrings', href: '/collections/moissanite-earrings', indent: true },
   { label: 'Pearl Earrings', href: '/collections/pearl-earrings', indent: true },
-  { label: 'Necklaces', href: '/collections/moissanite-necklace-nz', indent: true },
+  { label: 'Moissanite Necklaces', href: '/collections/moissanite-necklace-nz', indent: true },
   { label: 'Appointment', href: '/pages/appointment-online', indent: false },
   { label: 'Custom Made', href: '/pages/bespoke-order', indent: false },
   { label: 'About Miozuki', href: '/pages/about-us', indent: false },

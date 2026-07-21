@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 const BUDGET_OPTIONS = [
-  'Under $500 NZD',
   '$500 – $1,000 NZD',
   '$1,000 – $2,000 NZD',
   '$2,000 – $4,000 NZD',

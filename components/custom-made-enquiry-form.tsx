@@ -14,7 +14,6 @@ const LEAD_TIME_OPTIONS = [
   '1–3 months',
   '3–6 months',
   '6+ months',
-  'Flexible',
 ] as const;
 
 const HEAR_ABOUT_OPTIONS = [

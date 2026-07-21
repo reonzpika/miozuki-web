@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import CustomMadeEnquiryForm from '@/components/custom-made-enquiry-form';
 
 export const metadata: Metadata = {
   title: 'Custom Made | Miozuki',
@@ -30,18 +31,19 @@ export default function CustomMadePage() {
 
       <div className="h-px bg-charcoal/8 mb-10" />
 
-      <p className="text-sm text-charcoal/65 leading-relaxed">
-        Looking for something special? We would love to help bring your idea to life. Get in touch
-        to start your custom piece through our{' '}
-        <Link
-          href="/pages/contact"
-          className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm"
-        >
-          contact page
-        </Link>{' '}
-        or by emailing{' '}
+      <div className="mb-8">
+        <h2 className="font-serif text-xl text-charcoal mb-3">Start your custom piece</h2>
+        <p className="text-sm text-charcoal/55 leading-relaxed">
+          Tell us a little about what you have in mind. We normally reply within 1–2 business days.
+        </p>
+      </div>
+
+      <CustomMadeEnquiryForm />
+
+      <p className="mt-10 text-sm text-charcoal/55 leading-relaxed">
+        Prefer email? Write to{' '}
         <a
-          href="mailto:info@miozuki.co.nz?subject=Bespoke%20order%20enquiry"
+          href="mailto:info@miozuki.co.nz?subject=Custom%20made%20enquiry"
           className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm"
         >
           info@miozuki.co.nz

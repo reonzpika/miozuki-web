@@ -26,8 +26,11 @@ export default function CustomMadePage() {
       </p>
 
       <p className="border-l border-burgundy bg-surface px-5 py-4 text-sm text-charcoal/70 leading-relaxed mb-10">
-        For something uniquely yours, custom pieces can be created in gold or platinum, with coloured
-        moissanites available upon request.
+        Custom pieces can be created in{' '}
+        <strong className="font-medium text-charcoal">gold</strong> or{' '}
+        <strong className="font-medium text-charcoal">platinum</strong>, with{' '}
+        <strong className="font-medium text-charcoal">coloured moissanite</strong> available upon
+        request.
       </p>
 
       <div className="h-px bg-charcoal/8 mb-10" />

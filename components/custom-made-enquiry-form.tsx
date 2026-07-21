@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const BUDGET_OPTIONS = [
   '$1,000 – $2,000 NZD',
@@ -26,12 +26,21 @@ const HEAR_ABOUT_OPTIONS = [
   'Other',
 ] as const;
 
+const MAX_PHOTOS = 3;
+const MAX_PHOTO_BYTES = 1_500_000;
+
 const fieldClass =
   'w-full border border-charcoal/15 bg-transparent px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/40 transition-colors disabled:opacity-50';
 
 const labelClass = 'block text-xs tracking-widest uppercase text-charcoal/50 mb-2';
 
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export default function CustomMadeEnquiryForm() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -39,14 +48,55 @@ export default function CustomMadeEnquiryForm() {
   const [leadTime, setLeadTime] = useState('');
   const [hearAbout, setHearAbout] = useState('');
   const [message, setMessage] = useState('');
-  const [photoLink, setPhotoLink] = useState('');
+  const [photos, setPhotos] = useState<File[]>([]);
   const [honeypot, setHoneypot] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  function addPhotos(incoming: FileList | File[]) {
+    const next: File[] = [];
+    const rejected: string[] = [];
+
+    for (const file of Array.from(incoming)) {
+      if (!file.type.startsWith('image/')) {
+        rejected.push(`${file.name} is not an image`);
+        continue;
+      }
+      if (file.size > MAX_PHOTO_BYTES) {
+        rejected.push(`${file.name} is too large (max ${formatFileSize(MAX_PHOTO_BYTES)})`);
+        continue;
+      }
+      if (photos.length + next.length >= MAX_PHOTOS) {
+        rejected.push(`You can attach up to ${MAX_PHOTOS} photos`);
+        break;
+      }
+      next.push(file);
+    }
+
+    if (rejected.length > 0) {
+      setError(rejected[0]);
+    } else {
+      setError(null);
+    }
+
+    if (next.length > 0) {
+      setPhotos((current) => [...current, ...next].slice(0, MAX_PHOTOS));
+    }
+  }
+
+  function removePhoto(index: number) {
+    setPhotos((current) => current.filter((_, i) => i !== index));
+    setError(null);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (photos.length === 0) {
+      setError('Please attach at least one inspiration photo.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -57,7 +107,7 @@ export default function CustomMadeEnquiryForm() {
       `Budget: ${budget}`,
       `Lead time: ${leadTime}`,
       hearAbout.trim() ? `How they heard about Miozuki: ${hearAbout.trim()}` : null,
-      `Inspiration photo: ${photoLink.trim()}`,
+      `Inspiration photos attached: ${photos.length}`,
       '',
       'Message:',
       message.trim(),
@@ -65,17 +115,20 @@ export default function CustomMadeEnquiryForm() {
       .filter((line) => line != null)
       .join('\n');
 
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('message', composedMessage);
+    formData.append('source', 'miozuki-custom-made-form');
+    formData.append('mz_hp', honeypot);
+    for (const photo of photos) {
+      formData.append('photos', photo);
+    }
+
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          order: '',
-          message: composedMessage,
-          mz_hp: honeypot,
-        }),
+        body: formData,
       });
       if (!res.ok) throw new Error('Failed');
       setSubmitted(true);
@@ -258,23 +311,60 @@ export default function CustomMadeEnquiryForm() {
       </div>
 
       <div>
-        <label htmlFor="custom-photo-link" className={labelClass}>
-          Inspiration photo <span className="text-burgundy">*</span>
-        </label>
-        <input
-          id="custom-photo-link"
-          name="photoLink"
-          type="url"
-          required
-          value={photoLink}
-          onChange={(e) => setPhotoLink(e.target.value)}
-          disabled={loading}
-          className={fieldClass}
-          placeholder="https://"
-        />
-        <p className="mt-1.5 text-xs text-charcoal/40">
-          Paste a Google Drive, Dropbox, Pinterest, or Instagram link to your inspiration photos.
+        <p className={labelClass}>
+          Inspiration photos <span className="text-burgundy">*</span>
         </p>
+        <div className="border border-dashed border-charcoal/20 bg-surface/40 px-4 py-5">
+          <input
+            ref={fileInputRef}
+            id="custom-photos"
+            name="photos"
+            type="file"
+            accept="image/*"
+            multiple
+            disabled={loading || photos.length >= MAX_PHOTOS}
+            className="sr-only"
+            onChange={(e) => {
+              if (e.target.files) addPhotos(e.target.files);
+              e.target.value = '';
+            }}
+          />
+          <button
+            type="button"
+            disabled={loading || photos.length >= MAX_PHOTOS}
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full border border-charcoal/15 bg-cream px-4 py-3 text-xs tracking-[0.04em] uppercase text-charcoal transition-colors hover:border-charcoal/30 disabled:opacity-50"
+          >
+            {photos.length >= MAX_PHOTOS ? 'Photo limit reached' : 'Choose photos from your device'}
+          </button>
+          <p className="mt-2 text-xs text-charcoal/40">
+            Up to {MAX_PHOTOS} images, {formatFileSize(MAX_PHOTO_BYTES)} each. JPG, PNG, or HEIC from your
+            camera roll.
+          </p>
+
+          {photos.length > 0 ? (
+            <ul className="mt-4 space-y-2">
+              {photos.map((photo, index) => (
+                <li
+                  key={`${photo.name}-${photo.size}-${index}`}
+                  className="flex items-center justify-between gap-3 border border-charcoal/10 bg-cream px-3 py-2 text-xs text-charcoal/70"
+                >
+                  <span className="truncate">
+                    {photo.name} ({formatFileSize(photo.size)})
+                  </span>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => removePhoto(index)}
+                    className="shrink-0 text-burgundy underline underline-offset-2 hover:text-burgundy/70"
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
       </div>
 
       <button

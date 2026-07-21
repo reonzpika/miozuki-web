@@ -1,13 +1,24 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const CONTACT_SOURCES = new Set(['miozuki-contact-form']);
+const CONTACT_SOURCES = new Set(['miozuki-contact-form', 'miozuki-custom-made-form']);
 
-// Enquiries are emailed to Ting's monitored inbox. Sent from the Miozuki
-// Resend domain (enquiries@miozuki.co.nz), with Reply-To set to the customer
-// so a reply goes straight back to them.
 const ENQUIRY_TO = 'info@miozuki.co.nz';
 const ENQUIRY_FROM = 'Miozuki Enquiries <enquiries@miozuki.co.nz>';
+
+const MAX_PHOTOS = 3;
+const MAX_PHOTO_BYTES = 1_500_000;
+
+type EnquiryPayload = {
+  name?: string;
+  email?: string;
+  order?: string;
+  message?: string;
+  source?: string;
+  productTitle?: string;
+  mz_hp?: string;
+  photos?: File[];
+};
 
 function escapeHtml(value: string): string {
   return value
@@ -16,20 +27,55 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;');
 }
 
-export async function POST(request: Request) {
-  const body = await request.json();
-  const { name, email, order, message, source, productTitle, mz_hp } = body as {
-    name?: string;
-    email?: string;
-    order?: string;
-    message?: string;
-    source?: string;
-    productTitle?: string;
-    mz_hp?: string; // anti-spam trap — real users never fill this
-  };
+async function parseEnquiryRequest(request: Request): Promise<EnquiryPayload> {
+  const contentType = request.headers.get('content-type') ?? '';
 
-  // Anti-spam trap: the hidden mz_hp field is invisible to people but naive
-  // bots fill it. Pretend success so the bot does not retry, but send nothing.
+  if (contentType.includes('multipart/form-data')) {
+    const formData = await request.formData();
+    const photos = formData
+      .getAll('photos')
+      .filter((entry): entry is File => entry instanceof File && entry.size > 0);
+
+    return {
+      name: String(formData.get('name') ?? ''),
+      email: String(formData.get('email') ?? ''),
+      order: String(formData.get('order') ?? ''),
+      message: String(formData.get('message') ?? ''),
+      source: String(formData.get('source') ?? ''),
+      productTitle: String(formData.get('productTitle') ?? ''),
+      mz_hp: String(formData.get('mz_hp') ?? ''),
+      photos,
+    };
+  }
+
+  const body = (await request.json()) as EnquiryPayload;
+  return body;
+}
+
+function validatePhotos(photos: File[] | undefined): string | null {
+  if (!photos || photos.length === 0) return null;
+  if (photos.length > MAX_PHOTOS) return `Too many photos (max ${MAX_PHOTOS})`;
+
+  for (const photo of photos) {
+    if (!photo.type.startsWith('image/')) return 'Only image files are allowed';
+    if (photo.size > MAX_PHOTO_BYTES) return 'One or more photos are too large';
+  }
+
+  return null;
+}
+
+export async function POST(request: Request) {
+  const {
+    name,
+    email,
+    order,
+    message,
+    source,
+    productTitle,
+    mz_hp,
+    photos,
+  } = await parseEnquiryRequest(request);
+
   if (typeof mz_hp === 'string' && mz_hp.trim().length > 0) {
     console.warn('[enquiry] honeypot tripped, dropping submission silently');
     return NextResponse.json({ ok: true });
@@ -42,6 +88,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Message required' }, { status: 400 });
   }
 
+  const photoError = validatePhotos(photos);
+  if (photoError) {
+    return NextResponse.json({ error: photoError }, { status: 400 });
+  }
+
   const eventSource =
     typeof source === 'string' && CONTACT_SOURCES.has(source)
       ? source
@@ -50,30 +101,50 @@ export async function POST(request: Request) {
     typeof productTitle === 'string' && productTitle.trim().length > 0
       ? productTitle.trim()
       : null;
+  const isCustomMade = eventSource === 'miozuki-custom-made-form';
 
-  // 1. Email the enquiry to Ting. This is the must-succeed path. Instantiate
-  //    inside the handler so a missing key never breaks the build.
+  if (isCustomMade && (!photos || photos.length === 0)) {
+    return NextResponse.json({ error: 'At least one inspiration photo is required' }, { status: 400 });
+  }
+
   const resendKey = process.env.RESEND_API_KEY_MIOZUKI;
   if (!resendKey) {
     console.error('RESEND_API_KEY_MIOZUKI missing');
     return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
   }
+
+  const attachments =
+    photos && photos.length > 0
+      ? await Promise.all(
+          photos.map(async (photo) => ({
+            filename: photo.name || 'inspiration-photo.jpg',
+            content: Buffer.from(await photo.arrayBuffer()),
+          })),
+        )
+      : undefined;
+
   const resend = new Resend(resendKey);
   const { error: emailError } = await resend.emails.send({
     from: ENQUIRY_FROM,
     to: ENQUIRY_TO,
     replyTo: email,
-    subject: `New enquiry from ${name?.trim() || email}`,
+    subject: isCustomMade
+      ? `Custom made enquiry from ${name?.trim() || email}`
+      : `New enquiry from ${name?.trim() || email}`,
     html: [
       `<p><strong>Name:</strong> ${name?.trim() ? escapeHtml(name.trim()) : '(not given)'}</p>`,
       `<p><strong>Email:</strong> ${escapeHtml(email)}</p>`,
       order?.trim() ? `<p><strong>Order:</strong> ${escapeHtml(order.trim())}</p>` : '',
       product ? `<p><strong>Product:</strong> ${escapeHtml(product)}</p>` : '',
+      photos && photos.length > 0
+        ? `<p><strong>Photos attached:</strong> ${photos.length}</p>`
+        : '',
       `<p><strong>Message:</strong></p>`,
       `<p>${escapeHtml(message.trim()).replace(/\n/g, '<br>')}</p>`,
     ]
       .filter(Boolean)
       .join('\n'),
+    attachments,
   });
   if (emailError) {
     console.error('Resend enquiry email error', emailError);
@@ -81,9 +152,6 @@ export async function POST(request: Request) {
   }
   console.log('[enquiry] email accepted by Resend for', ENQUIRY_TO);
 
-  // 2. Best-effort: log the profile to Klaviyo for the marketing list. The
-  //    enquiry has already reached Ting, so never fail the request on a
-  //    Klaviyo error.
   const apiKey = process.env.KLAVIYO_PRIVATE_KEY;
   if (apiKey) {
     try {
@@ -105,6 +173,7 @@ export async function POST(request: Request) {
                 message,
                 source: eventSource,
                 product_title: product,
+                photo_count: photos?.length ?? 0,
               },
               metric: {
                 data: {

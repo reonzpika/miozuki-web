@@ -157,4 +157,112 @@ export const redirects: RedirectList = [
     destination: '/moissanite-guide',
     permanent: true,
   },
+  // Old Shopify collection-scoped product URLs (SEO audit, 2026-07-17). This
+  // app never had the nested route for any handle, so every such URL 404s,
+  // current collections included; the product page at /products/<handle> is
+  // the canonical home. One rule covers all collections, past and future.
+  {
+    source: '/collections/:collection/products/:product',
+    destination: '/products/:product',
+    permanent: true,
+  },
+  // Shopify auto-published .atom feeds for these collections, indexed by
+  // Google, with no equivalent route in this app (SEO audit, 2026-07-17).
+  // Each points straight at the canonical collection so consolidated handles
+  // don't chain through the HTML redirect above.
+  {
+    source: '/collections/moissanite-engagement-ring-nz.atom',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/engagement-ring-moissanite.atom',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/engravable-rings.atom',
+    destination: '/collections/moissanite-rings',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-diamond.atom',
+    destination: '/collections/moissanite-nz',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-ear-rings.atom',
+    destination: '/collections/moissanite-earrings',
+    permanent: true,
+  },
+  {
+    source: '/collections/pearl-earrings-silver.atom',
+    destination: '/collections/pearl-earrings',
+    permanent: true,
+  },
+  {
+    source: '/collections/pearl-earrings.atom',
+    destination: '/collections/pearl-earrings',
+    permanent: true,
+  },
+  {
+    source: '/collections/bridal-jewellery.atom',
+    destination: '/collections/bridal-jewellery',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-necklace-nz.atom',
+    destination: '/collections/moissanite-necklace-nz',
+    permanent: true,
+  },
+  // Legacy Shopify /pages/* URLs unpublished at the June 2026 headless
+  // cutover with no redirect added at the time (SEO audit, 2026-07-17).
+  {
+    source: '/pages/warranty',
+    destination: '/pages/warranty-cover',
+    permanent: true,
+  },
+  {
+    source: '/pages/returns-refunds',
+    destination: '/pages/returns-refunds-policy',
+    permanent: true,
+  },
+  {
+    source: '/pages/pearl-earrings-nz',
+    destination: '/collections/pearl-earrings',
+    permanent: true,
+  },
+  {
+    source: '/pages/moissanite-new-zealand',
+    destination: '/moissanite-guide',
+    permanent: true,
+  },
+  {
+    source: '/pages/moissanite-guide-nz',
+    destination: '/moissanite-guide',
+    permanent: true,
+  },
+  {
+    source: '/pages/why-choose-moissanite-over-diamonds-nz',
+    destination: '/moissanite-guide/moissanite-vs-diamond-nz',
+    permanent: true,
+  },
+  // No exact-match target: the old page was deleted outright from Shopify
+  // (not just unpublished), confirmed via the Admin API pages list, with no
+  // Wayback snapshot. The moissanite pillar is the closest living topic.
+  {
+    source: '/pages/materials',
+    destination: '/moissanite-guide',
+    permanent: true,
+  },
+  // Schemeless link bug (SEO audit, 2026-07-17): a Shopify article's FAQ
+  // table linked bare "www.miozuki.co.nz" with no protocol, which browsers
+  // and Googlebot resolve relative to the current page, producing this exact
+  // URL. Fixed at the source in Shopify admin; this is belt-and-braces while
+  // Google recrawls the old broken link.
+  {
+    source: '/blogs/news/www.miozuki.co.nz',
+    destination: '/',
+    permanent: true,
+  },
 ];

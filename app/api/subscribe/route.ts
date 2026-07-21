@@ -26,30 +26,39 @@ export async function POST(request: Request) {
     Authorization: `Klaviyo-API-Key ${apiKey}`,
   };
 
-  // Save the first_name via the Create Profile endpoint. The
-  // profile-subscription-bulk-create-jobs endpoint only accepts email/phone/
-  // subscriptions, so the name must be set separately. 409 = profile already
-  // exists, which is fine, we don't overwrite existing names.
+  // Always call Create Profile, even with no name, to get back a profile id:
+  // the Events API only reliably attaches an event to a profile when referenced
+  // by id, not by email attributes alone (confirmed by testing -- an
+  // attributes-only profile reference on an event silently never attaches,
+  // even for a profile that already exists, with no error surfaced). 409 =
+  // profile already exists, whose id is in the error body's
+  // meta.duplicate_profile_id; we don't overwrite an existing name in that case.
+  const profileAttributes: Record<string, string> = { email };
   if (name && typeof name === 'string' && name.trim().length > 0) {
-    const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
-      method: 'POST',
-      headers: klaviyoHeaders,
-      body: JSON.stringify({
-        data: {
-          type: 'profile',
-          attributes: { email, first_name: name.trim() },
-        },
-      }),
+    profileAttributes.first_name = name.trim();
+  }
+  const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
+    method: 'POST',
+    headers: klaviyoHeaders,
+    body: JSON.stringify({
+      data: { type: 'profile', attributes: profileAttributes },
+    }),
+  });
+  let profileId: string | null = null;
+  if (profileRes.status === 201) {
+    const body = await profileRes.json().catch(() => null);
+    profileId = body?.data?.id ?? null;
+  } else if (profileRes.status === 409) {
+    const body = await profileRes.json().catch(() => null);
+    profileId = body?.errors?.[0]?.meta?.duplicate_profile_id ?? null;
+  } else {
+    const body = await profileRes.text();
+    console.error('Klaviyo create-profile error', profileRes.status, body);
+    Sentry.captureMessage('Klaviyo create-profile failed', {
+      level: 'warning',
+      extra: { status: profileRes.status, body },
     });
-    if (!profileRes.ok && profileRes.status !== 409) {
-      const body = await profileRes.text();
-      console.error('Klaviyo create-profile error', profileRes.status, body);
-      Sentry.captureMessage('Klaviyo create-profile failed', {
-        level: 'warning',
-        extra: { status: profileRes.status, body },
-      });
-      // Non-fatal: continue to subscribe regardless
-    }
+    // Non-fatal: continue to subscribe regardless
   }
 
   const res = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
@@ -104,6 +113,43 @@ export async function POST(request: Request) {
     message: 'Subscribe job accepted',
     data: { jobId, email },
   });
+
+  // The bulk-subscribe job above is queued/batched by Klaviyo and can take several
+  // minutes to actually add the profile to the list (Klaviyo's own guidance: list-
+  // triggered flows enter within ~2-3 minutes, not instantly). This event exists so
+  // the Welcome Series flow can be triggered by it directly instead of by list
+  // membership, which fires far closer to real time. Non-fatal if it fails: the
+  // profile is still subscribed either way.
+  if (profileId) {
+    const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
+      method: 'POST',
+      headers: klaviyoHeaders,
+      body: JSON.stringify({
+        data: {
+          type: 'event',
+          attributes: {
+            properties: {},
+            metric: { data: { type: 'metric', attributes: { name: 'Signed Up For Discount' } } },
+            profile: { data: { type: 'profile', id: profileId } },
+          },
+        },
+      }),
+    });
+    if (!eventRes.ok) {
+      const body = await eventRes.text();
+      console.error('Klaviyo track-event error', eventRes.status, body);
+      Sentry.captureMessage('Klaviyo track-event failed', {
+        level: 'warning',
+        extra: { status: eventRes.status, body, email },
+      });
+    }
+  } else {
+    console.error('Klaviyo track-event skipped: no profile id resolved', email);
+    Sentry.captureMessage('Klaviyo track-event skipped: no profile id', {
+      level: 'warning',
+      extra: { email },
+    });
+  }
 
   return NextResponse.json({ ok: true });
 }

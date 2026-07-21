@@ -16,6 +16,57 @@ function formatPrice(amount: string, currencyCode: string) {
   }).format(parseFloat(amount));
 }
 
+function SalePriceDisplay({
+  priceLabel,
+  compareAt,
+  size = 'lg',
+}: {
+  priceLabel: string;
+  compareAt: Money | null | undefined;
+  size?: 'lg' | 'sm';
+}) {
+  // Only show a crossed-out "was" price next to a concrete amount, never beside "From …".
+  const onSale =
+    Boolean(compareAt) &&
+    !priceLabel.startsWith('From ') &&
+    parseFloat(compareAt!.amount) > 0;
+
+  if (!onSale || !compareAt) {
+    return (
+      <p
+        className={
+          size === 'lg'
+            ? 'text-xl font-medium text-burgundy'
+            : 'truncate font-medium text-burgundy'
+        }
+      >
+        {priceLabel}
+      </p>
+    );
+  }
+
+  return (
+    <p
+      className={
+        size === 'lg'
+          ? 'flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-xl font-medium text-burgundy'
+          : 'flex flex-wrap items-baseline gap-x-2 gap-y-0.5 font-medium text-burgundy'
+      }
+    >
+      <span className={size === 'sm' ? 'truncate' : undefined}>{priceLabel}</span>
+      <span
+        className={
+          size === 'lg'
+            ? 'text-base font-normal text-charcoal/40 line-through'
+            : 'shrink-0 text-[12px] font-normal text-charcoal/40 line-through'
+        }
+      >
+        {formatPrice(compareAt.amount, compareAt.currencyCode)}
+      </span>
+    </p>
+  );
+}
+
 interface Option {
   name: string;
   values: string[];
@@ -104,6 +155,21 @@ export default function AddToCart({
       ? `From ${formatPrice(minP.amount, minP.currencyCode)}`
       : formatPrice(minP.amount, minP.currencyCode);
 
+  // Crossed-out "was" price only when Shopify compare-at is higher than the selling price.
+  const compareAtForDisplay = (() => {
+    if (variant?.compareAtPrice) {
+      const selling = parseFloat(variant.price.amount);
+      const was = parseFloat(variant.compareAtPrice.amount);
+      return was > selling ? variant.compareAtPrice : null;
+    }
+    if (!hasPriceRange && variants[0]?.compareAtPrice) {
+      const selling = parseFloat(minP.amount);
+      const was = parseFloat(variants[0].compareAtPrice.amount);
+      return was > selling ? variants[0].compareAtPrice : null;
+    }
+    return null;
+  })();
+
   const handleAdd = async () => {
     if (needsRingSize) {
       setBtnState('select-size');
@@ -161,7 +227,7 @@ export default function AddToCart({
 
   return (
     <>
-      <p className="text-xl text-burgundy font-medium">{priceLabel}</p>
+      <SalePriceDisplay priceLabel={priceLabel} compareAt={compareAtForDisplay} size="lg" />
       <div className="mt-4">
         <PdpTrustStrip />
       </div>
@@ -277,7 +343,11 @@ export default function AddToCart({
             <p className="text-[10px] uppercase tracking-widest text-charcoal/45 truncate">
               {productTitle}
             </p>
-            <p className="truncate font-medium text-burgundy">{priceLabel}</p>
+            <SalePriceDisplay
+              priceLabel={priceLabel}
+              compareAt={compareAtForDisplay}
+              size="sm"
+            />
           </div>
           <button
             type="button"

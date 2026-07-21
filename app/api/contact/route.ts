@@ -166,9 +166,6 @@ export async function POST(request: Request) {
     if (!leadTime?.trim()) {
       return NextResponse.json({ error: 'Lead time required' }, { status: 400 });
     }
-    if (!photos || photos.length === 0) {
-      return NextResponse.json({ error: 'At least one inspiration photo is required' }, { status: 400 });
-    }
   }
 
   const resendKey = process.env.RESEND_API_KEY_MIOZUKI;

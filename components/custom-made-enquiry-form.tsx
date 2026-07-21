@@ -92,11 +92,6 @@ export default function CustomMadeEnquiryForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (photos.length === 0) {
-      setError('Please attach at least one inspiration photo.');
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
@@ -301,7 +296,8 @@ export default function CustomMadeEnquiryForm() {
 
       <div>
         <p className={labelClass}>
-          Inspiration photos <span className="text-burgundy">*</span>
+          Inspiration photos{' '}
+          <span className="normal-case tracking-normal text-charcoal/30">(optional)</span>
         </p>
         <div className="border border-dashed border-charcoal/20 bg-surface/40 px-4 py-5">
           <input

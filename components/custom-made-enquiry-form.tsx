@@ -100,25 +100,14 @@ export default function CustomMadeEnquiryForm() {
     setLoading(true);
     setError(null);
 
-    const composedMessage = [
-      'Custom made enquiry',
-      '',
-      `Phone: ${phone.trim()}`,
-      `Budget: ${budget}`,
-      `Lead time: ${leadTime}`,
-      hearAbout.trim() ? `How they heard about Miozuki: ${hearAbout.trim()}` : null,
-      `Inspiration photos attached: ${photos.length}`,
-      '',
-      'Message:',
-      message.trim(),
-    ]
-      .filter((line) => line != null)
-      .join('\n');
-
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);
-    formData.append('message', composedMessage);
+    formData.append('phone', phone.trim());
+    formData.append('budget', budget);
+    formData.append('leadTime', leadTime);
+    if (hearAbout.trim()) formData.append('hearAbout', hearAbout.trim());
+    formData.append('message', message.trim());
     formData.append('source', 'miozuki-custom-made-form');
     formData.append('mz_hp', honeypot);
     for (const photo of photos) {

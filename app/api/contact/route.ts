@@ -12,6 +12,10 @@ const MAX_PHOTO_BYTES = 1_500_000;
 type EnquiryPayload = {
   name?: string;
   email?: string;
+  phone?: string;
+  budget?: string;
+  leadTime?: string;
+  hearAbout?: string;
   order?: string;
   message?: string;
   source?: string;
@@ -27,6 +31,47 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;');
 }
 
+function fieldRow(label: string, value: string): string {
+  return `<p><strong>${label}:</strong> ${escapeHtml(value)}</p>`;
+}
+
+function buildEnquiryEmailHtml(payload: {
+  name?: string;
+  email: string;
+  order?: string;
+  product?: string | null;
+  phone?: string;
+  budget?: string;
+  leadTime?: string;
+  hearAbout?: string;
+  message: string;
+  photoCount: number;
+  isCustomMade: boolean;
+}): string {
+  const rows = [
+    fieldRow('Name', payload.name?.trim() || '(not given)'),
+    fieldRow('Email', payload.email),
+  ];
+
+  if (payload.isCustomMade) {
+    if (payload.phone?.trim()) rows.push(fieldRow('Phone', payload.phone.trim()));
+    if (payload.budget?.trim()) rows.push(fieldRow('Budget', payload.budget.trim()));
+    if (payload.leadTime?.trim()) rows.push(fieldRow('Lead time', payload.leadTime.trim()));
+    if (payload.hearAbout?.trim()) {
+      rows.push(fieldRow('How they heard about Miozuki', payload.hearAbout.trim()));
+    }
+  }
+
+  if (payload.order?.trim()) rows.push(fieldRow('Order', payload.order.trim()));
+  if (payload.product) rows.push(fieldRow('Product', payload.product));
+  if (payload.photoCount > 0) rows.push(fieldRow('Photos attached', String(payload.photoCount)));
+
+  rows.push('<p><strong>Message:</strong></p>');
+  rows.push(`<p>${escapeHtml(payload.message.trim()).replace(/\n/g, '<br>')}</p>`);
+
+  return rows.join('\n');
+}
+
 async function parseEnquiryRequest(request: Request): Promise<EnquiryPayload> {
   const contentType = request.headers.get('content-type') ?? '';
 
@@ -39,6 +84,10 @@ async function parseEnquiryRequest(request: Request): Promise<EnquiryPayload> {
     return {
       name: String(formData.get('name') ?? ''),
       email: String(formData.get('email') ?? ''),
+      phone: String(formData.get('phone') ?? ''),
+      budget: String(formData.get('budget') ?? ''),
+      leadTime: String(formData.get('leadTime') ?? ''),
+      hearAbout: String(formData.get('hearAbout') ?? ''),
       order: String(formData.get('order') ?? ''),
       message: String(formData.get('message') ?? ''),
       source: String(formData.get('source') ?? ''),
@@ -68,6 +117,10 @@ export async function POST(request: Request) {
   const {
     name,
     email,
+    phone,
+    budget,
+    leadTime,
+    hearAbout,
     order,
     message,
     source,
@@ -103,8 +156,19 @@ export async function POST(request: Request) {
       : null;
   const isCustomMade = eventSource === 'miozuki-custom-made-form';
 
-  if (isCustomMade && (!photos || photos.length === 0)) {
-    return NextResponse.json({ error: 'At least one inspiration photo is required' }, { status: 400 });
+  if (isCustomMade) {
+    if (!phone?.trim()) {
+      return NextResponse.json({ error: 'Phone number required' }, { status: 400 });
+    }
+    if (!budget?.trim()) {
+      return NextResponse.json({ error: 'Budget required' }, { status: 400 });
+    }
+    if (!leadTime?.trim()) {
+      return NextResponse.json({ error: 'Lead time required' }, { status: 400 });
+    }
+    if (!photos || photos.length === 0) {
+      return NextResponse.json({ error: 'At least one inspiration photo is required' }, { status: 400 });
+    }
   }
 
   const resendKey = process.env.RESEND_API_KEY_MIOZUKI;
@@ -131,19 +195,19 @@ export async function POST(request: Request) {
     subject: isCustomMade
       ? `Custom made enquiry from ${name?.trim() || email}`
       : `New enquiry from ${name?.trim() || email}`,
-    html: [
-      `<p><strong>Name:</strong> ${name?.trim() ? escapeHtml(name.trim()) : '(not given)'}</p>`,
-      `<p><strong>Email:</strong> ${escapeHtml(email)}</p>`,
-      order?.trim() ? `<p><strong>Order:</strong> ${escapeHtml(order.trim())}</p>` : '',
-      product ? `<p><strong>Product:</strong> ${escapeHtml(product)}</p>` : '',
-      photos && photos.length > 0
-        ? `<p><strong>Photos attached:</strong> ${photos.length}</p>`
-        : '',
-      `<p><strong>Message:</strong></p>`,
-      `<p>${escapeHtml(message.trim()).replace(/\n/g, '<br>')}</p>`,
-    ]
-      .filter(Boolean)
-      .join('\n'),
+    html: buildEnquiryEmailHtml({
+      name,
+      email,
+      order,
+      product,
+      phone,
+      budget,
+      leadTime,
+      hearAbout,
+      message,
+      photoCount: photos?.length ?? 0,
+      isCustomMade,
+    }),
     attachments,
   });
   if (emailError) {
@@ -169,6 +233,10 @@ export async function POST(request: Request) {
             attributes: {
               properties: {
                 name: name ?? null,
+                phone: phone?.trim() || null,
+                budget: budget?.trim() || null,
+                lead_time: leadTime?.trim() || null,
+                hear_about: hearAbout?.trim() || null,
                 order: order ?? null,
                 message,
                 source: eventSource,

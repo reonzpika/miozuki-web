@@ -24,8 +24,8 @@ export default function CollectionHeroBanner({ collection }: Props) {
     ? PEARL_HERO_ALT
     : (collection.image?.altText ?? collection.title);
   /**
-   * Original portrait framing: pearl sits upper-middle; shallow banners crop hard with cover only,
-   * so favour a slightly taller strip (section min-heights) and focal points that bias the jewel into view on all widths.
+   * Original portrait framing: pearl sits upper-middle; a short banner crops hard with cover only,
+   * so focal points bias the jewel into view on all widths.
    */
   const pearlBannerImageClass =
     'object-cover object-[50%_8%] md:object-[50%_26%] lg:object-[48%_26%] xl:object-[49%_25%]';
@@ -63,13 +63,14 @@ export default function CollectionHeroBanner({ collection }: Props) {
     />
   );
 
+  // About one-third of the screen on short viewports; capped so tall monitors keep a slim strip.
   const sectionHeightClass = usePearlHero
-    ? 'h-[24svh] md:h-auto md:min-h-[18.25rem]'
-    : 'min-h-[16rem] md:min-h-[18.25rem]';
+    ? 'h-[28svh] max-h-[12rem] min-h-[9.5rem] md:h-[22svh] md:max-h-[11rem] md:min-h-[9.5rem]'
+    : 'h-[33svh] max-h-[12rem] min-h-[10rem] md:h-[28svh] md:max-h-[11rem] md:min-h-[10rem]';
 
   const contentPaddingClass = usePearlHero
-    ? 'px-5 py-2 md:px-10 md:py-7'
-    : 'px-5 py-6 md:px-10 md:py-7';
+    ? 'px-5 py-2 md:px-10 md:py-4'
+    : 'px-5 py-3 md:px-10 md:py-4';
 
   return (
     <section

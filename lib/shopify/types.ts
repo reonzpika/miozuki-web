@@ -52,6 +52,10 @@ export interface Product {
     minVariantPrice: Money;
     maxVariantPrice: Money;
   };
+  compareAtPriceRange?: {
+    minVariantPrice: Money;
+    maxVariantPrice: Money;
+  };
   variants: { edges: { node: ProductVariant }[] };
   tags: string[];
   productType: string | null;

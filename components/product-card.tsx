@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Money, Product } from '@/lib/shopify';
+import type { Product } from '@/lib/shopify';
 import type { RatingSummary } from '@/lib/judgeme/types';
 import { useHoverCapable } from '@/hooks/use-hover-capable';
 import { MiozukiBrandLogo } from '@/components/miozuki-brand-logo';
@@ -54,14 +54,6 @@ function productMetaLine(product: Product): string | null {
   return bits.length ? bits.join(' · ') : null;
 }
 
-/** Present once Ryo adds compareAtPriceRange to collection product queries. */
-type ProductWithCompareAt = Product & {
-  compareAtPriceRange?: {
-    minVariantPrice: Money;
-    maxVariantPrice: Money;
-  };
-};
-
 // Default matches the best-sellers carousel (cards are ~68vw on phones). Grids
 // render narrower cards and pass their own value, so phones stop downloading
 // carousel-width images for grid cells.
@@ -85,8 +77,7 @@ export default function ProductCard({
   const hoverCapable = useHoverCapable();
   const { handle, title, featuredImage, images, priceRange, tags } = product;
   const price = priceRange.minVariantPrice;
-  const compareAtMin =
-    (product as ProductWithCompareAt).compareAtPriceRange?.minVariantPrice ?? null;
+  const compareAtMin = product.compareAtPriceRange?.minVariantPrice ?? null;
   const compareAtForDisplay =
     compareAtMin && parseFloat(compareAtMin.amount) > parseFloat(price.amount)
       ? compareAtMin

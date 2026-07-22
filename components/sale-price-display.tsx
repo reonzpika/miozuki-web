@@ -62,10 +62,10 @@ export default function SalePriceDisplay({
             : `flex flex-wrap items-baseline gap-x-2 gap-y-0.5 ${priceClass}`
       }
     >
-      <span className={size === 'sm' ? 'truncate' : undefined}>{priceLabel}</span>
       <span className={compareClass}>
         {formatPrice(compareAt.amount, compareAt.currencyCode)}
       </span>
+      <span className={size === 'sm' ? 'truncate' : undefined}>{priceLabel}</span>
     </p>
   );
 }

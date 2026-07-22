@@ -19,6 +19,10 @@ export const GET_PRODUCTS = /* GraphQL */ `
             minVariantPrice { amount currencyCode }
             maxVariantPrice { amount currencyCode }
           }
+          compareAtPriceRange {
+            minVariantPrice { amount currencyCode }
+            maxVariantPrice { amount currencyCode }
+          }
           tags
           productType
         }
@@ -163,6 +167,10 @@ export const GET_COLLECTION_BY_HANDLE = /* GraphQL */ `
               edges { node { url altText width height } }
             }
             priceRange {
+              minVariantPrice { amount currencyCode }
+              maxVariantPrice { amount currencyCode }
+            }
+            compareAtPriceRange {
               minVariantPrice { amount currencyCode }
               maxVariantPrice { amount currencyCode }
             }

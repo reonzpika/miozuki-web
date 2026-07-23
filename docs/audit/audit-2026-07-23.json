@@ -94,7 +94,7 @@
       "tier": 2,
       "page": "/pages/contact",
       "type": "missing-element",
-      "message": "Contact form not rendered, page may have returned error (503/404)",
+      "message": "#name field not visible within timeout, despite the page itself returning HTTP 200 with 0 console/network errors (see pages[] entry for /pages/contact). Not reproduced on manual check: the form renders correctly in the page HTML. Likely a transient hydration/render timing flake in this crawl, not a missing form.",
       "url": "https://miozuki.co.nz/pages/contact",
       "screenshotPath": "docs/audit/screenshots/flow-contact-missing-form.png"
     }

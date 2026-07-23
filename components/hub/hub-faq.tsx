@@ -26,7 +26,7 @@ export function HubFaq({ items }: { items: HubFaqItem[] }) {
             <summary className="flex cursor-pointer list-none items-center justify-between font-medium text-charcoal">
               {i.q}
               <span
-                className="ml-3 shrink-0 text-charcoal/65 transition-transform group-open:rotate-45"
+                className="ml-3 shrink-0 text-charcoal/40 transition-transform group-open:rotate-45"
                 aria-hidden
               >
                 +

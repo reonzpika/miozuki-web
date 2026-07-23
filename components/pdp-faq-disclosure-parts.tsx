@@ -15,7 +15,7 @@ export function PdpFaqDisclosureChevron() {
       height="14"
       viewBox="0 0 16 16"
       fill="none"
-      className="shrink-0 text-charcoal/65 transition-transform duration-[var(--duration-normal)] ease-[var(--ease-out)] group-open:rotate-180 motion-reduce:transition-none"
+      className="shrink-0 text-charcoal/35 transition-transform duration-[var(--duration-normal)] ease-[var(--ease-out)] group-open:rotate-180 motion-reduce:transition-none"
       aria-hidden
     >
       <path

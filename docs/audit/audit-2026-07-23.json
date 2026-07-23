@@ -1,0 +1,309 @@
+{
+  "meta": {
+    "date": "2026-07-23",
+    "target": "https://miozuki.co.nz",
+    "duration_seconds": 263,
+    "pages_crawled": 21,
+    "total_findings": 9
+  },
+  "summary": {
+    "critical": 2,
+    "high": 5,
+    "medium": 2,
+    "low": 0
+  },
+  "findings": [
+    {
+      "id": "F001",
+      "severity": "high",
+      "tier": 1,
+      "page": "/products/classic-moissanite-solitaire-ring",
+      "type": "broken-image",
+      "message": "1 broken image(s) detected",
+      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring"
+    },
+    {
+      "id": "F002",
+      "severity": "high",
+      "tier": 1,
+      "page": "/products/pear-cut-pave-moissanite-ring-nz",
+      "type": "broken-image",
+      "message": "1 broken image(s) detected",
+      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz"
+    },
+    {
+      "id": "F003",
+      "severity": "high",
+      "tier": 1,
+      "page": "/products/moissanite-solitaire-studs",
+      "type": "broken-image",
+      "message": "1 broken image(s) detected",
+      "url": "https://miozuki.co.nz/products/moissanite-solitaire-studs"
+    },
+    {
+      "id": "F004",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-rings",
+      "type": "broken-image",
+      "message": "3 broken image(s) detected",
+      "url": "https://miozuki.co.nz/collections/moissanite-rings"
+    },
+    {
+      "id": "F005",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-earrings",
+      "type": "broken-image",
+      "message": "4 broken image(s) detected",
+      "url": "https://miozuki.co.nz/collections/moissanite-earrings"
+    },
+    {
+      "id": "F006",
+      "severity": "high",
+      "tier": 2,
+      "page": "/products/pear-cut-pave-moissanite-ring-nz",
+      "type": "flow-failure",
+      "message": "Add to Cart button did not change state after click",
+      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz",
+      "screenshotPath": "docs/audit/screenshots/flow-cart-no-state-change.png"
+    },
+    {
+      "id": "F007",
+      "severity": "high",
+      "tier": 2,
+      "page": "cart-drawer",
+      "type": "flow-failure",
+      "message": "Cart drawer open but item not visible (Remove button not found)",
+      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz",
+      "screenshotPath": "docs/audit/screenshots/flow-cart-item-missing.png"
+    },
+    {
+      "id": "F008",
+      "severity": "critical",
+      "tier": 2,
+      "page": "cart-drawer",
+      "type": "missing-element",
+      "message": "Checkout link not visible in cart drawer footer",
+      "url": "https://miozuki.co.nz",
+      "screenshotPath": "docs/audit/screenshots/flow-checkout-no-link.png"
+    },
+    {
+      "id": "F009",
+      "severity": "critical",
+      "tier": 2,
+      "page": "/pages/contact",
+      "type": "missing-element",
+      "message": "Contact form not rendered, page may have returned error (503/404)",
+      "url": "https://miozuki.co.nz/pages/contact",
+      "screenshotPath": "docs/audit/screenshots/flow-contact-missing-form.png"
+    }
+  ],
+  "pages": [
+    {
+      "route": "/",
+      "url": "https://miozuki.co.nz/",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-homepage.png"
+    },
+    {
+      "route": "/collections",
+      "url": "https://miozuki.co.nz/collections",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-collections.png"
+    },
+    {
+      "route": "/pages/about-us",
+      "url": "https://miozuki.co.nz/pages/about-us",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-about-us.png"
+    },
+    {
+      "route": "/pages/appointment",
+      "url": "https://miozuki.co.nz/pages/appointment",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-appointment.png"
+    },
+    {
+      "route": "/pages/contact",
+      "url": "https://miozuki.co.nz/pages/contact",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-contact.png"
+    },
+    {
+      "route": "/pages/custom-made",
+      "url": "https://miozuki.co.nz/pages/custom-made",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-custom-made.png"
+    },
+    {
+      "route": "/pages/our-founder",
+      "url": "https://miozuki.co.nz/pages/our-founder",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-our-founder.png"
+    },
+    {
+      "route": "/pages/jewellery-care-guide",
+      "url": "https://miozuki.co.nz/pages/jewellery-care-guide",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-jewellery-care-guide.png"
+    },
+    {
+      "route": "/pages/moissanite-faq",
+      "url": "https://miozuki.co.nz/pages/moissanite-faq",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-moissanite-faq.png"
+    },
+    {
+      "route": "/pages/returns-refunds-policy",
+      "url": "https://miozuki.co.nz/pages/returns-refunds-policy",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-returns-refunds-policy.png"
+    },
+    {
+      "route": "/pages/size-guide",
+      "url": "https://miozuki.co.nz/pages/size-guide",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-size-guide.png"
+    },
+    {
+      "route": "/pages/warranty-cover",
+      "url": "https://miozuki.co.nz/pages/warranty-cover",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-warranty-cover.png"
+    },
+    {
+      "route": "/policies/shipping-policy",
+      "url": "https://miozuki.co.nz/policies/shipping-policy",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-policies-shipping-policy.png"
+    },
+    {
+      "route": "/blogs/news",
+      "url": "https://miozuki.co.nz/blogs/news",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-blogs-news.png"
+    },
+    {
+      "route": "/products/classic-moissanite-solitaire-ring",
+      "url": "https://miozuki.co.nz/products/classic-moissanite-solitaire-ring",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 1,
+      "screenshot": "docs/audit/screenshots/page-products-classic-moissanite-solitaire-ring.png"
+    },
+    {
+      "route": "/products/pear-cut-pave-moissanite-ring-nz",
+      "url": "https://miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 1,
+      "screenshot": "docs/audit/screenshots/page-products-pear-cut-pave-moissanite-ring-nz.png"
+    },
+    {
+      "route": "/products/moissanite-solitaire-studs",
+      "url": "https://miozuki.co.nz/products/moissanite-solitaire-studs",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 1,
+      "screenshot": "docs/audit/screenshots/page-products-moissanite-solitaire-studs.png"
+    },
+    {
+      "route": "/collections/moissanite-rings",
+      "url": "https://miozuki.co.nz/collections/moissanite-rings",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 3,
+      "screenshot": "docs/audit/screenshots/page-collections-moissanite-rings.png"
+    },
+    {
+      "route": "/collections/moissanite-earrings",
+      "url": "https://miozuki.co.nz/collections/moissanite-earrings",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 4,
+      "screenshot": "docs/audit/screenshots/page-collections-moissanite-earrings.png"
+    },
+    {
+      "route": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "url": "https://miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-blogs-news-moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly.png"
+    },
+    {
+      "route": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "url": "https://miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-blogs-news-engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime.png"
+    }
+  ],
+  "api_checks": [
+    {
+      "endpoint": "/api/subscribe",
+      "method": "POST",
+      "status": 200,
+      "result": "ok",
+      "detail": "Returned 200 ok:true"
+    },
+    {
+      "endpoint": "/api/contact",
+      "method": "POST",
+      "status": 200,
+      "result": "ok",
+      "detail": "Returned 200 ok:true"
+    }
+  ]
+}

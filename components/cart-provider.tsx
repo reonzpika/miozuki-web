@@ -1,7 +1,8 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { createCart, addCartLines, getCart, type CartAttribute } from '@/lib/shopify/cart';
+import { createCart, addCartLines, getCart, updateCartAttributes, type CartAttribute } from '@/lib/shopify/cart';
+import { getStoredAttributionAttributes } from '@/lib/attribution';
 
 const CART_ID_KEY = 'miozuki-cart-id';
 
@@ -84,6 +85,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setCartId(cart.id);
       setCartCount(cart.totalQuantity);
       setCheckoutUrl(cart.checkoutUrl);
+
+      // Best-effort: keep the cart's attribution attributes current so
+      // Shopify carries them onto the order. Never blocks the add-to-cart
+      // UX — a failed attribution write shouldn't stop a real sale.
+      const attrs = getStoredAttributionAttributes();
+      if (attrs.length) {
+        updateCartAttributes(cart.id, attrs).catch(() => {
+          /* attribution is best-effort, swallow */
+        });
+      }
     },
     [cartId]
   );

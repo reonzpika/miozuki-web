@@ -14,6 +14,7 @@ import JsonLd from '@/components/json-ld';
 import MetaPixel from '@/components/meta-pixel';
 import Clarity from '@/components/clarity';
 import StorefrontChrome from '@/components/storefront-chrome';
+import AttributionCapture from '@/components/attribution-capture';
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 
@@ -127,6 +128,7 @@ export default function RootLayout({
         <JsonLd data={ORGANIZATION_SCHEMA} />
         <MetaPixel />
         <Clarity />
+        <AttributionCapture />
         <CartProvider>
           <StorefrontChrome>
             <AnnouncementBar />

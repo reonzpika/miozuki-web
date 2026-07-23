@@ -108,6 +108,17 @@ export async function removeCartLines(cartId: string, lineIds: string[]): Promis
   return parsed.cart;
 }
 
+export async function updateCartAttributes(
+  cartId: string,
+  attributes: CartAttribute[]
+): Promise<Cart> {
+  const parsed = await invokeCart({ op: 'updateAttributes', cartId, attributes });
+  if (!hasCartShape(parsed)) {
+    throw new Error(`Unexpected cart response from updateAttributes: ${snippet(parsed)}`);
+  }
+  return parsed.cart;
+}
+
 export async function getCart(cartId: string): Promise<Cart | null> {
   const parsed = await invokeCart({ op: 'get', cartId });
   if (!hasNullableCartShape(parsed)) {

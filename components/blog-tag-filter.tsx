@@ -40,7 +40,7 @@ export default function BlogTagFilter({ articles }: { articles: Article[] }) {
           className={`text-xs tracking-wide px-3 py-1.5 border transition-colors ${
             !activeTag
               ? 'border-charcoal bg-charcoal text-cream'
-              : 'border-charcoal/20 text-charcoal/55 hover:border-charcoal/40'
+              : 'border-charcoal/20 text-charcoal/65 hover:border-charcoal/40'
           }`}
         >
           All
@@ -52,7 +52,7 @@ export default function BlogTagFilter({ articles }: { articles: Article[] }) {
             className={`text-xs tracking-wide px-3 py-1.5 border transition-colors ${
               activeTag === tag
                 ? 'border-burgundy bg-burgundy text-cream'
-                : 'border-charcoal/20 text-charcoal/55 hover:border-charcoal/40'
+                : 'border-charcoal/20 text-charcoal/65 hover:border-charcoal/40'
             }`}
           >
             {TAG_LABELS[tag] ?? tag}
@@ -95,11 +95,11 @@ export default function BlogTagFilter({ articles }: { articles: Article[] }) {
               {article.title}
             </h2>
             {article.excerpt && (
-              <p className="text-xs text-charcoal/55 leading-relaxed line-clamp-3 mb-3">
+              <p className="text-xs text-charcoal/65 leading-relaxed line-clamp-3 mb-3">
                 {article.excerpt}
               </p>
             )}
-            <p className="text-[10px] tracking-widest uppercase text-charcoal/35 mt-auto">
+            <p className="text-[10px] tracking-widest uppercase text-charcoal/65 mt-auto">
               {formatNzDate(article.publishedAt)}
             </p>
           </Link>
@@ -107,7 +107,7 @@ export default function BlogTagFilter({ articles }: { articles: Article[] }) {
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-sm text-charcoal/45 py-12 text-center">No articles for this tag.</p>
+        <p className="text-sm text-charcoal/65 py-12 text-center">No articles for this tag.</p>
       )}
     </>
   );

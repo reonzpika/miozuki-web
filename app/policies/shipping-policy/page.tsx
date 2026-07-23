@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ShippingPolicyPage() {
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>Shipping Policy</span>

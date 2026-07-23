@@ -96,7 +96,7 @@ export function ProductReviewWriteDisclosure({
             data-id={productNumericId}
             data-product-title={productTitle}
           />
-          <p className="mt-6 text-xs leading-relaxed text-charcoal/45">
+          <p className="mt-6 text-xs leading-relaxed text-charcoal/65">
             Form not loading?{' '}
             <a
               href={reviewPageFallbackHref}

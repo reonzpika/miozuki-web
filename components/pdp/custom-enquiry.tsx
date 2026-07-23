@@ -7,7 +7,7 @@ export function PdpCustomEnquiry() {
       aria-labelledby="pdp-custom-heading"
       className="rounded-sm border border-charcoal/8 bg-cream p-5"
     >
-      <p className="text-xs uppercase tracking-widest text-charcoal/40">
+      <p className="text-xs uppercase tracking-widest text-charcoal/65">
         Custom enquiries
       </p>
       <h2

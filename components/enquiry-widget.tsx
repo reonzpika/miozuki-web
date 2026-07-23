@@ -70,7 +70,7 @@ export default function EnquiryWidget() {
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Close enquiry form"
-            className="-mr-2 inline-flex h-11 w-11 shrink-0 items-center justify-center text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+            className="-mr-2 inline-flex h-11 w-11 shrink-0 items-center justify-center text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -80,7 +80,7 @@ export default function EnquiryWidget() {
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-6">
-          <p className="mb-5 text-sm leading-relaxed text-charcoal/60">
+          <p className="mb-5 text-sm leading-relaxed text-charcoal/65">
             Questions about a piece, sizing, or a custom order? Send us a message
             and we&apos;ll reply within 1&ndash;2 business days.
           </p>

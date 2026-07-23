@@ -143,13 +143,13 @@ export default function ProductCard({
 
       {/* Text */}
       <div>
-        <h3
+        <h2
           className={`text-[13px] text-charcoal leading-snug mb-1 line-clamp-2 transition-colors duration-200${hoverCapable ? ' group-hover:text-charcoal/70' : ''}`}
         >
           {title}
-        </h3>
+        </h2>
         {meta ? (
-          <p className="mb-1 line-clamp-2 text-[11px] leading-snug text-charcoal/50">{meta}</p>
+          <p className="mb-1 line-clamp-2 text-[11px] leading-snug text-charcoal/65">{meta}</p>
         ) : null}
         <SalePriceDisplay
           priceLabel={formatPrice(price.amount, price.currencyCode)}
@@ -160,7 +160,7 @@ export default function ProductCard({
         {rating && rating.count > 0 && (
           <div className="flex items-center gap-1 mt-1">
             <StarRating rating={rating.rating} size={11} />
-            <span className="text-[11px] text-charcoal/40">({rating.count})</span>
+            <span className="text-[11px] text-charcoal/65">({rating.count})</span>
           </div>
         )}
       </div>

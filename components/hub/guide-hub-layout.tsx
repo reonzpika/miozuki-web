@@ -19,7 +19,7 @@ export function GuideHubLayout({
     <main className="mx-auto w-full max-w-3xl px-6 py-12 md:px-10 md:py-16">
       <nav
         aria-label="Breadcrumb"
-        className="mb-8 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs uppercase tracking-[0.2em] text-charcoal/55"
+        className="mb-8 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs uppercase tracking-[0.2em] text-charcoal/65"
       >
         <Link href="/" className="transition-colors hover:text-charcoal">
           Home

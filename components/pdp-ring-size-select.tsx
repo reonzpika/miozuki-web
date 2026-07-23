@@ -80,12 +80,12 @@ export default function PdpRingSizeSelect({
               ) : null}
             </>
           ) : (
-            <span className="text-sm text-charcoal/45">Select size</span>
+            <span className="text-sm text-charcoal/65">Select size</span>
           )}
         </span>
       </button>
       <span
-        className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-charcoal/50"
+        className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-charcoal/65"
         aria-hidden
       >
         <svg

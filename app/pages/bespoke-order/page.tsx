@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function CustomMadePage() {
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>Custom Made</span>
@@ -20,7 +20,7 @@ export default function CustomMadePage() {
       <h1 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-4">
         Custom made
       </h1>
-      <p className="max-w-prose text-sm md:text-base text-charcoal/55 leading-relaxed mb-10">
+      <p className="max-w-prose text-sm md:text-base text-charcoal/65 leading-relaxed mb-10">
         Created exclusively for you, each custom-made piece is thoughtfully designed to reflect your
         story, your style, and the meaning behind it.
       </p>
@@ -37,14 +37,14 @@ export default function CustomMadePage() {
 
       <div className="mb-8">
         <h2 className="font-serif text-xl text-charcoal mb-3">Start your custom piece</h2>
-        <p className="text-sm text-charcoal/55 leading-relaxed">
+        <p className="text-sm text-charcoal/65 leading-relaxed">
           Tell us a little about what you have in mind. We normally reply within 1–2 business days.
         </p>
       </div>
 
       <CustomMadeEnquiryForm />
 
-      <p className="mt-10 text-sm text-charcoal/55 leading-relaxed">
+      <p className="mt-10 text-sm text-charcoal/65 leading-relaxed">
         Prefer email? Write to{' '}
         <a
           href="mailto:info@miozuki.co.nz?subject=Custom%20made%20enquiry"

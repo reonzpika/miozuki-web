@@ -56,7 +56,7 @@ export default function PdpTrustStrip() {
             <span className="text-[11px] tracking-wide font-medium text-charcoal">
               {item.label}
             </span>
-            <span className="text-[10px] tracking-wide text-charcoal/45">
+            <span className="text-[10px] tracking-wide text-charcoal/65">
               {item.sub}
             </span>
           </span>

@@ -199,7 +199,7 @@ export default function AddToCart({
                   <label
                     id={labelId}
                     htmlFor={fieldId}
-                    className="mb-3 block text-xs uppercase tracking-widest text-charcoal/50"
+                    className="mb-3 block text-xs uppercase tracking-widest text-charcoal/65"
                   >
                     Ring size
                   </label>
@@ -230,7 +230,7 @@ export default function AddToCart({
 
             return (
               <div key={opt.name}>
-                <p className="mb-3 text-xs uppercase tracking-widest text-charcoal/50">
+                <p className="mb-3 text-xs uppercase tracking-widest text-charcoal/65">
                   {opt.name}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -290,7 +290,7 @@ export default function AddToCart({
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[10px] uppercase tracking-widest text-charcoal/45 truncate">
+            <p className="text-[10px] uppercase tracking-widest text-charcoal/65 truncate">
               {productTitle}
             </p>
             <SalePriceDisplay

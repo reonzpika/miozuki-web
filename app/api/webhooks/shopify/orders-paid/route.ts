@@ -1,14 +1,29 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
+import { hashEmailForDataManager } from '@/lib/google-ads-hash';
+import {
+  buildIngestEventBody,
+  uploadConversionEvent,
+  getUploadStage,
+  type OrderForUpload,
+} from '@/lib/admin/google-ads-data-manager';
 
 // Receives Shopify's orders/paid webhook. Phase 1 of the GA4/Ads attribution
 // bridge (see .fable-plan.md and miozuki-brain/ads/google-ads-search.md,
-// "Fable plan, Phase 0 verification", 22 Jul 2026): this endpoint is
-// currently log-only, it verifies the identifiers captured by
-// lib/attribution.ts actually arrive on the real order, before Phase 2 (the
-// Google Ads Data Manager upload) is built against it. No durable storage
+// "Fable plan, Phase 0 verification", 22 Jul 2026) verified the identifiers
+// captured by lib/attribution.ts arrive on the real order. Phase 2 (23 Jul
+// 2026) uploads each paid order to Google Ads as a conversion via the Data
+// Manager API — see lib/admin/google-ads-data-manager.ts for the staged
+// rollout gate (GOOGLE_ADS_DM_UPLOAD_ENABLED: unset = build+log only,
+// "true" = validateOnly upload, "live" = real upload). No durable storage
 // here by design — the order itself is the record; Shopify's own delivery
 // log covers replay/audit for this verification period.
+//
+// The upload call runs inside next/server's after() so it survives past the
+// 200 ack sent to Shopify: this route is a serverless function, not a kept-
+// alive browser tab, so an un-awaited promise here could be silently killed
+// once the response flushes. Awaiting it inline instead would risk Shopify's
+// own webhook timeout retrying (and double-firing) the whole request.
 //
 // The webhook *subscription* that causes Shopify to call this endpoint is
 // registered separately (scripts/register-orders-paid-webhook.mts) and is
@@ -43,6 +58,8 @@ interface ShopifyOrderPayload {
   note_attributes?: { name: string; value: string }[];
   total_price?: string;
   currency?: string;
+  email?: string;
+  created_at?: string;
 }
 
 function verifyHmac(rawBody: string, header: string | null): boolean {
@@ -99,6 +116,56 @@ export async function POST(req: NextRequest) {
       attributionValues: Object.fromEntries(found.map((k) => [k, attributeMap.get(k)])),
     })
   );
+
+  // Phase 2: build (and, once enabled, upload) the Google Ads conversion
+  // event. Building and logging the body always happens, regardless of
+  // rollout stage, so a real order's payload shape is inspectable in Vercel
+  // logs before any network call is ever made. Never log the raw email —
+  // only its hash.
+  if (order.total_price && order.currency && order.created_at) {
+    const orderForUpload: OrderForUpload = {
+      id: order.id,
+      createdAt: order.created_at,
+      totalPrice: order.total_price,
+      currency: order.currency,
+      hashedEmail: order.email ? hashEmailForDataManager(order.email) : undefined,
+    };
+    const attribution = {
+      gclid: attributeMap.get('_gclid'),
+      gbraid: attributeMap.get('_gbraid'),
+      wbraid: attributeMap.get('_wbraid'),
+    };
+    const stage = getUploadStage();
+    const eventBody = buildIngestEventBody(orderForUpload, attribution, {
+      validateOnly: stage !== 'live',
+    });
+
+    console.log(
+      JSON.stringify({
+        event: 'orders_paid_dm_upload_attempt',
+        orderId: order.id,
+        orderName: order.name,
+        stage,
+        hasEmail: Boolean(orderForUpload.hashedEmail),
+        eventBody,
+      })
+    );
+
+    if (stage !== 'disabled') {
+      after(async () => {
+        const result = await uploadConversionEvent(orderForUpload, attribution);
+        console.log(
+          JSON.stringify({
+            event: 'orders_paid_dm_upload_result',
+            orderId: order.id,
+            orderName: order.name,
+            stage,
+            ...result,
+          })
+        );
+      });
+    }
+  }
 
   return NextResponse.json({ ok: true });
 }

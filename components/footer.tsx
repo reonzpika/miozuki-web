@@ -160,7 +160,7 @@ export default function Footer() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-xs text-charcoal/70 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                  className="inline-flex min-h-11 items-center text-xs text-charcoal/70 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
                 >
                   {l.label}
                 </Link>

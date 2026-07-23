@@ -17,7 +17,7 @@ export function PdpCustomerPhotosStrip({
   return (
     <section aria-labelledby="pdp-photos-heading" className="space-y-4">
       <div>
-        <p className="text-xs uppercase tracking-widest text-charcoal/40">
+        <p className="text-xs uppercase tracking-widest text-charcoal/65">
           On the product
         </p>
         <h2

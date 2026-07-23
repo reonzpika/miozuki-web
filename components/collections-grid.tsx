@@ -63,7 +63,7 @@ function CollectionCard({
         </div>
         <h3 className="font-serif text-lg text-charcoal mb-1">{collection.title}</h3>
         {collection.description && (
-          <p className="text-xs text-charcoal/45 line-clamp-1 leading-relaxed">
+          <p className="text-xs text-charcoal/65 line-clamp-1 leading-relaxed">
             {collection.description}
           </p>
         )}

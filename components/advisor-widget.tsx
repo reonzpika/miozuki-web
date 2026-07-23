@@ -251,7 +251,7 @@ export default function AdvisorWidget() {
               <h2 id="advisor-heading" className="font-serif text-xl leading-tight text-charcoal">
                 Mio
               </h2>
-              <p className="truncate text-xs text-charcoal/55">Your Miozuki jewellery guide</p>
+              <p className="truncate text-xs text-charcoal/65">Your Miozuki jewellery guide</p>
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-1">
@@ -261,7 +261,7 @@ export default function AdvisorWidget() {
                 onClick={() => setMessages([])}
                 aria-label="Start a new chat"
                 title="Start a new chat"
-                className="rounded-full p-2 text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+                className="rounded-full p-2 text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
               >
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
                   <path d="M3 12a9 9 0 1 0 3-6.7" />
@@ -273,7 +273,7 @@ export default function AdvisorWidget() {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close chat"
-              className="rounded-full p-2 text-charcoal/60 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+              className="rounded-full p-2 text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
                 <path d="M6 6l12 12M18 6L6 18" />
@@ -328,7 +328,7 @@ export default function AdvisorWidget() {
           {busy && messages[messages.length - 1]?.role === 'user' ? (
             <div className="flex items-center gap-2.5">
               <MioAvatar size={28} />
-              <p className="text-sm text-charcoal/50">Mio is typing…</p>
+              <p className="text-sm text-charcoal/65">Mio is typing…</p>
             </div>
           ) : null}
         </div>
@@ -358,7 +358,7 @@ export default function AdvisorWidget() {
               Send
             </button>
           </div>
-          <p className="mt-2 text-[11px] text-charcoal/45">
+          <p className="mt-2 text-[11px] text-charcoal/65">
             Mio is an AI assistant and can make mistakes. Prices and policies are
             confirmed at checkout. For orders and bespoke work,{' '}
             <a href="mailto:info@miozuki.co.nz" className="underline underline-offset-2">

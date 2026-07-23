@@ -39,7 +39,7 @@ export default function ContactForm({
     return (
       <div className="border border-charcoal/10 bg-charcoal/3 px-5 py-6 text-center">
         <p className="font-serif text-lg text-charcoal mb-2">Message received.</p>
-        <p className="text-sm text-charcoal/55 leading-relaxed">
+        <p className="text-sm text-charcoal/65 leading-relaxed">
           Thank you; we&apos;ll get back to you within 1–2 business days.
         </p>
       </div>
@@ -67,7 +67,7 @@ export default function ContactForm({
       </div>
 
       <div>
-        <label htmlFor="name" className="block text-xs tracking-widest uppercase text-charcoal/50 mb-2">
+        <label htmlFor="name" className="block text-xs tracking-widest uppercase text-charcoal/65 mb-2">
           Your Name
         </label>
         <input
@@ -84,7 +84,7 @@ export default function ContactForm({
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-xs tracking-widest uppercase text-charcoal/50 mb-2">
+        <label htmlFor="email" className="block text-xs tracking-widest uppercase text-charcoal/65 mb-2">
           Email Address
         </label>
         <input
@@ -101,8 +101,8 @@ export default function ContactForm({
       </div>
 
       <div>
-        <label htmlFor="order" className="block text-xs tracking-widest uppercase text-charcoal/50 mb-2">
-          Order Number <span className="normal-case text-charcoal/30">(if applicable)</span>
+        <label htmlFor="order" className="block text-xs tracking-widest uppercase text-charcoal/65 mb-2">
+          Order Number <span className="normal-case text-charcoal/65">(if applicable)</span>
         </label>
         <input
           id="order"
@@ -117,7 +117,7 @@ export default function ContactForm({
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-xs tracking-widest uppercase text-charcoal/50 mb-2">
+        <label htmlFor="message" className="block text-xs tracking-widest uppercase text-charcoal/65 mb-2">
           Message
         </label>
         <textarea

@@ -58,7 +58,7 @@ export default function CollectionFiltersSheet({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream -mr-2"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream -mr-2"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
               <line x1="18" y1="6" x2="6" y2="18" />

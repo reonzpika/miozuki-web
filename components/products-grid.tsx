@@ -206,7 +206,7 @@ export default function ProductsGrid({
                       </option>
                     ))}
                   </select>
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal/40">
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal/65">
                     {'\u25BE'}
                   </span>
                 </div>
@@ -224,7 +224,7 @@ export default function ProductsGrid({
                     </option>
                   ))}
                 </select>
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal/40">
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal/65">
                   {'\u25BE'}
                 </span>
               </div>
@@ -269,7 +269,7 @@ export default function ProductsGrid({
                     </option>
                   ))}
                 </select>
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal/40">
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal/65">
                   {'\u25BE'}
                 </span>
               </div>
@@ -287,7 +287,7 @@ export default function ProductsGrid({
                   </option>
                 ))}
               </select>
-              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal/40">
+              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal/65">
                 {'\u25BE'}
               </span>
             </div>
@@ -362,7 +362,7 @@ export default function ProductsGrid({
                 setFilterType('all');
                 setMobileSheet(null);
               }}
-              className="min-h-12 w-full border border-charcoal/15 text-xs uppercase tracking-widest text-charcoal/60 transition-colors hover:border-charcoal/30 hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+              className="min-h-12 w-full border border-charcoal/15 text-xs uppercase tracking-widest text-charcoal/65 transition-colors hover:border-charcoal/30 hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               Clear filter
             </button>
@@ -372,7 +372,7 @@ export default function ProductsGrid({
 
       {/* Grid */}
       {displayed.length === 0 ? (
-        <p className="py-24 text-center text-sm text-charcoal/40">
+        <p className="py-24 text-center text-sm text-charcoal/65">
           No products found.
         </p>
       ) : (

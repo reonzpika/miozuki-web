@@ -71,7 +71,7 @@ export function GuideSchema({
   };
 
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-x-2 text-[13px] text-charcoal/60">
+    <div className="mb-6 flex flex-wrap items-center gap-x-2 text-[13px] text-charcoal/65">
       <span>
         By{' '}
         <Link

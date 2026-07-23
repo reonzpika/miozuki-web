@@ -12,7 +12,7 @@ export default function NotFound() {
       <h1 className="mb-3 font-serif text-3xl text-charcoal leading-tight md:text-4xl">
         This page slipped away
       </h1>
-      <p className="mb-10 max-w-md text-sm leading-relaxed text-charcoal/60">
+      <p className="mb-10 max-w-md text-sm leading-relaxed text-charcoal/65">
         The page you are looking for has moved or no longer exists. Let&apos;s help you find
         something beautiful instead.
       </p>

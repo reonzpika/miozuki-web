@@ -12,7 +12,7 @@ function ReviewCard({ review }: { review: JudgeMeReview }) {
     <article className="py-6 border-t border-charcoal/8">
       <div className="flex items-center justify-between mb-3">
         <StarRating rating={review.rating} size={14} />
-        <time className="text-xs text-charcoal/40">{date}</time>
+        <time className="text-xs text-charcoal/65">{date}</time>
       </div>
       {review.title && (
         <p className="font-serif text-sm text-charcoal mb-1">{review.title}</p>
@@ -78,7 +78,7 @@ export default async function ProductReviews({
             {avgRating.toFixed(1)}
           </span>
         )}
-        <span className="text-sm text-charcoal/50">
+        <span className="text-sm text-charcoal/65">
           {count === 0
             ? 'No reviews yet'
             : `${count} ${count === 1 ? 'review' : 'reviews'}`}
@@ -86,7 +86,7 @@ export default async function ProductReviews({
       </div>
 
       {count === 0 ? (
-        <p className="text-sm text-charcoal/40 italic">
+        <p className="text-sm text-charcoal/65 italic">
           Be the first to share your experience.
         </p>
       ) : (

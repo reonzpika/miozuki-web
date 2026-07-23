@@ -32,7 +32,7 @@ const MAX_PHOTO_BYTES = 1_500_000;
 const fieldClass =
   'w-full border border-charcoal/15 bg-transparent px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/40 transition-colors disabled:opacity-50';
 
-const labelClass = 'block text-xs tracking-widest uppercase text-charcoal/50 mb-2';
+const labelClass = 'block text-xs tracking-widest uppercase text-charcoal/65 mb-2';
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
@@ -127,7 +127,7 @@ export default function CustomMadeEnquiryForm() {
     return (
       <div className="border border-charcoal/10 bg-charcoal/3 px-5 py-6 text-center">
         <p className="font-serif text-lg text-charcoal mb-2">Enquiry received.</p>
-        <p className="text-sm text-charcoal/55 leading-relaxed">
+        <p className="text-sm text-charcoal/65 leading-relaxed">
           Thank you; we&apos;ll get back to you within 1–2 business days.
         </p>
       </div>
@@ -203,7 +203,7 @@ export default function CustomMadeEnquiryForm() {
           className={fieldClass}
           placeholder="02X XXX XXXX"
         />
-        <p className="mt-1.5 text-xs text-charcoal/40">Only used to reply to your enquiry.</p>
+        <p className="mt-1.5 text-xs text-charcoal/65">Only used to reply to your enquiry.</p>
       </div>
 
       <div>
@@ -252,13 +252,13 @@ export default function CustomMadeEnquiryForm() {
             </option>
           ))}
         </select>
-        <p className="mt-1.5 text-xs text-charcoal/40">Helps us give you a realistic estimate.</p>
+        <p className="mt-1.5 text-xs text-charcoal/65">Helps us give you a realistic estimate.</p>
       </div>
 
       <div>
         <label htmlFor="custom-hear-about" className={labelClass}>
           How did you hear about Miozuki?{' '}
-          <span className="normal-case tracking-normal text-charcoal/30">(optional)</span>
+          <span className="normal-case tracking-normal text-charcoal/65">(optional)</span>
         </label>
         <select
           id="custom-hear-about"
@@ -297,7 +297,7 @@ export default function CustomMadeEnquiryForm() {
       <div>
         <p className={labelClass}>
           Inspiration photos{' '}
-          <span className="normal-case tracking-normal text-charcoal/30">(optional)</span>
+          <span className="normal-case tracking-normal text-charcoal/65">(optional)</span>
         </p>
         <div className="border border-dashed border-charcoal/20 bg-surface/40 px-4 py-5">
           <input
@@ -307,6 +307,7 @@ export default function CustomMadeEnquiryForm() {
             type="file"
             accept="image/*"
             multiple
+            aria-label="Inspiration photos (optional)"
             disabled={loading || photos.length >= MAX_PHOTOS}
             className="sr-only"
             onChange={(e) => {
@@ -322,7 +323,7 @@ export default function CustomMadeEnquiryForm() {
           >
             {photos.length >= MAX_PHOTOS ? 'Photo limit reached' : 'Choose photos from your device'}
           </button>
-          <p className="mt-2 text-xs text-charcoal/40">
+          <p className="mt-2 text-xs text-charcoal/65">
             Up to {MAX_PHOTOS} images, {formatFileSize(MAX_PHOTO_BYTES)} each. JPG, PNG, or HEIC from your
             camera roll.
           </p>

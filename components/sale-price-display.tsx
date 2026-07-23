@@ -41,10 +41,10 @@ export default function SalePriceDisplay({
 
   const compareClass =
     size === 'lg'
-      ? 'text-base font-normal text-charcoal/40 line-through'
+      ? 'text-base font-normal text-charcoal/65 line-through'
       : size === 'card'
-        ? 'text-[12px] font-normal text-charcoal/40 line-through tabular-nums'
-        : 'shrink-0 text-[12px] font-normal text-charcoal/40 line-through';
+        ? 'text-[12px] font-normal text-charcoal/65 line-through tabular-nums'
+        : 'shrink-0 text-[12px] font-normal text-charcoal/65 line-through';
 
   if (!onSale || !compareAt) {
     return (

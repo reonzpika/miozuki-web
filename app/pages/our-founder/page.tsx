@@ -24,14 +24,18 @@ export default function OurFounderPage() {
 
       <div className="h-px bg-charcoal/8 mb-10" />
 
-      <p className="text-sm text-charcoal/70 leading-relaxed mb-10">
-        Kia Ora, I&apos;m Ting Eguchi, the founder of Miozuki, based in Auckland. For the longest
-        time I have wondered: Can an introvert be the face of a brand, in a world that seems to
-        celebrate only the loudest voices? Miozuki is my quiet answer. From my studio, each piece
-        is carefully prepared and wrapped, with the same intention that goes into choosing it.
-        Thank you for finding your way here, and for supporting this small, heartfelt brand. Your
-        presence is now part of its story.
-      </p>
+      <div className="mb-10 space-y-6">
+        <section>
+          <p className="mb-2 text-xs uppercase tracking-[0.24em] text-burgundy/80">
+            A quiet answer
+          </p>
+          <p className="text-sm text-charcoal/70 leading-relaxed">
+            Kia Ora, I&apos;m Ting Eguchi, the founder of Miozuki, based in Auckland. For the longest
+            time I have wondered: Can an introvert be the face of a brand, in a world that seems to
+            celebrate only the loudest voices? Miozuki is my quiet answer.
+          </p>
+        </section>
+      </div>
 
       {/* Founder image */}
       <div className="relative aspect-square w-64 mx-auto mb-10 overflow-hidden">
@@ -78,6 +82,10 @@ export default function OurFounderPage() {
         <p className="text-sm text-charcoal/60 leading-relaxed">
           It is within these simple rituals that I find joy, beauty, and creativity, a
           reminder that the quietest glow often shines the longest.
+        </p>
+        <p className="text-sm text-charcoal/60 leading-relaxed">
+          Thank you for finding your way here, and for supporting this small, heartfelt brand.
+          Your presence is now part of its story.
         </p>
       </blockquote>
 

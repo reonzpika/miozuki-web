@@ -16,7 +16,6 @@ import { PdpCustomerPhotosStrip } from '@/components/pdp/customer-photos-strip';
 import { PdpQuickLinksRow } from '@/components/pdp/quick-links-row';
 import { PdpCustomEnquiry } from '@/components/pdp/custom-enquiry';
 import { isEarringProduct } from '@/lib/product-helpers';
-import { getRequestAbsoluteUrl } from '@/lib/absolute-url';
 import { getProductReviews } from '@/lib/judgeme/client';
 import { metaDescription } from '@/lib/meta-description';
 import JsonLd from '@/components/json-ld';
@@ -135,7 +134,10 @@ export default async function ProductPage({
   const descHtml = product.descriptionHtml ?? null;
   const descPlain = product.description ?? null;
 
-  const shareUrl = await getRequestAbsoluteUrl(`/products/${encodeURIComponent(handle)}`);
+  // PdpShare always rewrites this to the live storefront origin (components/pdp/share.tsx),
+  // so the path alone is enough; no need to detect the request host, which would force
+  // this page into fully dynamic (uncached) rendering.
+  const shareUrl = `/products/${encodeURIComponent(handle)}`;
 
   const reviewData = await getProductReviews(product.id).catch(() => null);
   const minPrice = product.priceRange.minVariantPrice;
@@ -189,11 +191,11 @@ export default async function ProductPage({
       <JsonLd data={breadcrumbSchema} />
       <nav
         aria-label="Breadcrumb"
-        className="mb-6 flex flex-wrap items-center gap-x-1 gap-y-1 text-sm uppercase tracking-widest text-charcoal/40 md:mb-8 md:gap-2 md:text-xs"
+        className="mb-6 flex flex-wrap items-center gap-x-1 gap-y-1 text-sm uppercase tracking-widest text-charcoal/65 md:mb-8 md:gap-2 md:text-xs"
       >
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center rounded-sm px-1 text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-1"
+          className="inline-flex min-h-11 items-center rounded-sm px-1 text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-1"
         >
           Home
         </Link>
@@ -202,7 +204,7 @@ export default async function ProductPage({
         </span>
         <Link
           href="/collections"
-          className="inline-flex min-h-11 items-center rounded-sm px-1 text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-1"
+          className="inline-flex min-h-11 items-center rounded-sm px-1 text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-1"
         >
           Collections
         </Link>
@@ -222,7 +224,7 @@ export default async function ProductPage({
         <div className="flex flex-col gap-8 pb-24 md:pb-0">
           <div>
             {product.productType && (
-              <p className="mb-2 text-xs uppercase tracking-widest text-charcoal/40">
+              <p className="mb-2 text-xs uppercase tracking-widest text-charcoal/65">
                 {product.productType}
               </p>
             )}
@@ -278,7 +280,7 @@ export default async function ProductPage({
             {product.tags.map((tag) => (
               <span
                 key={tag}
-                className="border border-charcoal/10 px-3 py-1 text-xs tracking-wide text-charcoal/40"
+                className="border border-charcoal/10 px-3 py-1 text-xs tracking-wide text-charcoal/65"
               >
                 {tag}
               </span>

@@ -44,6 +44,7 @@ next-env.d.ts
 # audit screenshots (large binary files)
 docs/audit/screenshots/
 docs/audit/video/
+docs/audit/responsive/
 
 # unlighthouse report output (generated)
 docs/audit/lighthouse/

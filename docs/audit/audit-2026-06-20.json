@@ -1,0 +1,1232 @@
+{
+  "meta": {
+    "date": "2026-06-20",
+    "target": "https://www.miozuki.co.nz",
+    "duration_seconds": 198,
+    "pages_crawled": 21,
+    "total_findings": 112
+  },
+  "summary": {
+    "critical": 0,
+    "high": 1,
+    "medium": 111,
+    "low": 0
+  },
+  "findings": [
+    {
+      "id": "F001",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/pages/appointment",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/pages/appointment",
+      "url": "https://www.miozuki.co.nz/pages/appointment"
+    },
+    {
+      "id": "F002",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/pages/appointment",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/pages/appointment"
+    },
+    {
+      "id": "F003",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/pages/custom-made",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/pages/custom-made",
+      "url": "https://www.miozuki.co.nz/pages/custom-made"
+    },
+    {
+      "id": "F004",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/pages/custom-made",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/pages/custom-made"
+    },
+    {
+      "id": "F005",
+      "severity": "high",
+      "tier": 1,
+      "page": "/blogs/news",
+      "type": "js-exception",
+      "message": "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "url": "https://www.miozuki.co.nz/blogs/news"
+    },
+    {
+      "id": "F006",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_26_2025_-_12_05PM.jpg?v=1769145233&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F007",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F008",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/HaloEarring_WhiteShirt_LookDown.jpg?v=1770688551&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F009",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F010",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250924_1637_LuxuryDiamondEarrings_remix_01k5x0234dfpesq8490jzxbfd4.jpg?v=1769144632&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F011",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F012",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250924_1739_Elegant_Diamond_Earrings_remix_01k5x3kpvefhsa763ybwes77sn.jpg?v=1769145035&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F013",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F014",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250924_1612_LuxuryDiamondEarrings_remix_01k5wymyf5f96vpcjxbc3z4ndc.jpg?v=1770802072&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F015",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F016",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250924_1652_Diamond_Earrings_remix_01k5x0xfx4fteaa9mnz2d8s8f5.jpg?v=1769145360&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F017",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F018",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_15_2025_-_3_21PM.jpg?v=1769143914&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F019",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F020",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_29_2025_-_6_08PM.jpg?v=1770077345&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F021",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F022",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250917_1342_EarringswithShadows_remix_01k5an9bqpf6jrrt55yh2yyxkq.jpg?v=1769143914&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F023",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F024",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250926_2128_Studio-Style_Box_Display_remix_01k62nhgg3f8hvpknc04tb6x8t.jpg?v=1770716046&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F025",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F026",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250902_2154_StudioJewelryShot_remix_01k44xfcxqfz0bnfx609519jq9.png?v=1769144173&width=1024",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F027",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F028",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/GeneratedImageSeptember26_2025-3_09PM.jpg?v=1770077453&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F029",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F030",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Coutside_Ear_Studs_Hair_Tied_Up.jpg?v=1770688376&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F031",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F032",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_26_2025_-_2_31PM.jpg?v=1769144173&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F033",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F034",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_16_2025_-_12_05PM.jpg?v=1770077446&width=2048",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F035",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F036",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250925_1443_Diamond_Hoop_Earrings_remix_01k5zbxx5hek4v28k2p2kv0f04.jpg?v=1770077453&width=1365",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F037",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F038",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/ikigai.aaa_make_it_potrait_--ar_5389_--v_7_8a6a95ff-95c8-4a60-80d8-5dc81319f1d5_3.png?v=1770688551&width=779",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F039",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F040",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/collections/moissanite-ear-rings",
+      "type": "broken-image",
+      "message": "17 broken image(s) detected",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings"
+    },
+    {
+      "id": "F041",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250918_1640_ElegantDiamondRing_remix_01k5dhwnhsfgxvyjndhpa5k1jq.jpg?v=1769142349&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F042",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F043",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250919_1319_LuxuryRingStudio_remix_01k5frsmt2f8kv4s5qhxjxc4j7.jpg?v=1769138555&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F044",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F045",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/GeneratedImageSeptember15_2025-4_22PM.jpg?v=1769139922&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F046",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F047",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250917_1509_DiamondRingElegance_remix_01k5at95c6e6xr7kws8bwysctr.jpg?v=1769138555&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F048",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F049",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250918_1331_LuxuryRingShowcase_remix_01k5d71gb8fhnv5dyec390resb.jpg?v=1769143170&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F050",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F051",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/53c64b0a715f43d5a8dc5106068c9b9b.jpg?v=1769557816&width=800",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F052",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F053",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250924_1637_LuxuryDiamondEarrings_remix_01k5x0234dfpesq8490jzxbfd4.jpg?v=1769144632&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F054",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F055",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_15_2025_-_3_21PM.jpg?v=1769143914&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F056",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F057",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_29_2025_-_6_08PM.jpg?v=1770077345&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F058",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F059",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250918_1540_Luxury_Diamond_Ring_remix_01k5deehmge238c284ah9vf8k2.jpg?v=1769143002&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F060",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F061",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "type": "broken-image",
+      "message": "10 broken image(s) detected",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly"
+    },
+    {
+      "id": "F062",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/collections/20250919_1522_Luxury_Diamond_Ring_Display_remix_01k5fzrxezexe829kvvd6q3kw3.jpg?v=1770716030&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F063",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F064",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250918_1640_ElegantDiamondRing_remix_01k5dhwnhsfgxvyjndhpa5k1jq.jpg?v=1769142349&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F065",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F066",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_October_03_2025_-_4_42PM.jpg?v=1770716036&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F067",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F068",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Untitled_design_1.jpg?v=1769910120&width=1344",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F069",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F070",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250919_1319_LuxuryRingStudio_remix_01k5frsmt2f8kv4s5qhxjxc4j7.jpg?v=1770716035&width=2048",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F071",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F072",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/53c64b0a715f43d5a8dc5106068c9b9b.jpg?v=1770716108&width=800",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F073",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F074",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250919_1602_SparklingDiamondRing_remix_01k5g22z9tftmrn0nf3wa76cp1.jpg?v=1770716019&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F075",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F076",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_09_2025_-_5_54PM.jpg?v=1770716029&width=500",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F077",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F078",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250917_1737_Elegant_Diamond_Ring_remix_01k5b2rbkrestr7m49a5vh940e_1.jpg?v=1770716110&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F079",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F080",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_29_2025_-_3_54PM.jpg?v=1770716042&width=1142",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F081",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F082",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/full_logo_light.png?v=1769750517&width=400",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F083",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F084",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Copy.jpg?v=1770716032&width=1521",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F085",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F086",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_15_2025_-_4_16PM.jpg?v=1770687726&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F087",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F088",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/HaloRing_LightGreyDress.jpg?v=1770716051&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F089",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F090",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250918_1331_LuxuryRingShowcase_remix_01k5d71gb8fhnv5dyec390resb.jpg?v=1770716046&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F091",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F092",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/GeneratedImageSeptember08_2025-7_12PM.jpg?v=1770716037&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F093",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F094",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Edited_Seven_Ring.jpg?v=1770802884&width=2048",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F095",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F096",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_29_2025_-_5_46PM.jpg?v=1770802377&width=1904",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F097",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F098",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/GeneratedImageSeptember16_2025-4_04PM.jpg?v=1770802884&width=500",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F099",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F100",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/20250919_1443_LuxuriousDiamondElegance_remix_01k5fxjq8we83r7v4zb7ywdpmg.jpg?v=1770716026&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F101",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F102",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/GeneratedImageSeptember15_2025-4_22PM.jpg?v=1770716109&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F103",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F104",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/GeneratedImageSeptember05_2025-5_13PM.jpg?v=1770716110&width=1286",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F105",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F106",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/GeneratedImageSeptember19_2025-2_15PM.jpg?v=1769142490&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F107",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F108",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/Generated_Image_September_08_2025_-_5_26PM.jpg?v=1770802822&width=1365",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F109",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F110",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "network-error",
+      "message": "HTTP 404, https://www.miozuki.co.nz/cdn/shop/files/407669d6f3d34926befcb66144a80ec8.jpg?v=1770716112&width=800",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F111",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "console-error",
+      "message": "Failed to load resource: the server responded with a status of 404 ()",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    },
+    {
+      "id": "F112",
+      "severity": "medium",
+      "tier": 1,
+      "page": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "type": "broken-image",
+      "message": "25 broken image(s) detected",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime"
+    }
+  ],
+  "pages": [
+    {
+      "route": "/",
+      "url": "https://www.miozuki.co.nz/",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-homepage.png"
+    },
+    {
+      "route": "/collections",
+      "url": "https://www.miozuki.co.nz/collections",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-collections.png"
+    },
+    {
+      "route": "/pages/about-us",
+      "url": "https://www.miozuki.co.nz/pages/about-us",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-about-us.png"
+    },
+    {
+      "route": "/pages/appointment",
+      "url": "https://www.miozuki.co.nz/pages/appointment",
+      "status": 404,
+      "console_errors": 1,
+      "network_errors": 1,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-appointment.png"
+    },
+    {
+      "route": "/pages/contact",
+      "url": "https://www.miozuki.co.nz/pages/contact",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-contact.png"
+    },
+    {
+      "route": "/pages/custom-made",
+      "url": "https://www.miozuki.co.nz/pages/custom-made",
+      "status": 404,
+      "console_errors": 1,
+      "network_errors": 1,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-custom-made.png"
+    },
+    {
+      "route": "/pages/our-founder",
+      "url": "https://www.miozuki.co.nz/pages/our-founder",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-our-founder.png"
+    },
+    {
+      "route": "/pages/jewellery-care-guide",
+      "url": "https://www.miozuki.co.nz/pages/jewellery-care-guide",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-jewellery-care-guide.png"
+    },
+    {
+      "route": "/pages/moissanite-faq",
+      "url": "https://www.miozuki.co.nz/pages/moissanite-faq",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-moissanite-faq.png"
+    },
+    {
+      "route": "/pages/returns-refunds-policy",
+      "url": "https://www.miozuki.co.nz/pages/returns-refunds-policy",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-returns-refunds-policy.png"
+    },
+    {
+      "route": "/pages/size-guide",
+      "url": "https://www.miozuki.co.nz/pages/size-guide",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-size-guide.png"
+    },
+    {
+      "route": "/pages/warranty-cover",
+      "url": "https://www.miozuki.co.nz/pages/warranty-cover",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-pages-warranty-cover.png"
+    },
+    {
+      "route": "/policies/shipping-policy",
+      "url": "https://www.miozuki.co.nz/policies/shipping-policy",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-policies-shipping-policy.png"
+    },
+    {
+      "route": "/blogs/news",
+      "url": "https://www.miozuki.co.nz/blogs/news",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-blogs-news.png"
+    },
+    {
+      "route": "/products/classic-moissanite-solitaire-ring",
+      "url": "https://www.miozuki.co.nz/products/classic-moissanite-solitaire-ring",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-products-classic-moissanite-solitaire-ring.png"
+    },
+    {
+      "route": "/products/pear-cut-pave-moissanite-ring-nz",
+      "url": "https://www.miozuki.co.nz/products/pear-cut-pave-moissanite-ring-nz",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-products-pear-cut-pave-moissanite-ring-nz.png"
+    },
+    {
+      "route": "/products/moissanite-solitaire-studs",
+      "url": "https://www.miozuki.co.nz/products/moissanite-solitaire-studs",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-products-moissanite-solitaire-studs.png"
+    },
+    {
+      "route": "/collections/moissanite-rings-nz",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-rings-nz",
+      "status": 200,
+      "console_errors": 0,
+      "network_errors": 0,
+      "broken_images": 0,
+      "screenshot": "docs/audit/screenshots/page-collections-moissanite-rings-nz.png"
+    },
+    {
+      "route": "/collections/moissanite-ear-rings",
+      "url": "https://www.miozuki.co.nz/collections/moissanite-ear-rings",
+      "status": 200,
+      "console_errors": 17,
+      "network_errors": 17,
+      "broken_images": 17,
+      "screenshot": "docs/audit/screenshots/page-collections-moissanite-ear-rings.png"
+    },
+    {
+      "route": "/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "url": "https://www.miozuki.co.nz/blogs/news/moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly",
+      "status": 200,
+      "console_errors": 10,
+      "network_errors": 10,
+      "broken_images": 10,
+      "screenshot": "docs/audit/screenshots/page-blogs-news-moissanite-vs-diamond-for-nz-engagement-rings-9-crucial-differences-nobody-explains-clearly.png"
+    },
+    {
+      "route": "/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "url": "https://www.miozuki.co.nz/blogs/news/engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime",
+      "status": 200,
+      "console_errors": 25,
+      "network_errors": 25,
+      "broken_images": 25,
+      "screenshot": "docs/audit/screenshots/page-blogs-news-engagement-ring-moissanite-guide-how-to-choose-a-ring-that-shines-for-a-lifetime.png"
+    }
+  ],
+  "api_checks": [
+    {
+      "endpoint": "/api/subscribe",
+      "method": "POST",
+      "status": 200,
+      "result": "ok",
+      "detail": "Returned 200 ok:true"
+    },
+    {
+      "endpoint": "/api/contact",
+      "method": "POST",
+      "status": 200,
+      "result": "ok",
+      "detail": "Returned 200 ok:true"
+    }
+  ]
+}

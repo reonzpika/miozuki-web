@@ -78,6 +78,12 @@ export function buildIngestEventBody(
 
   const event: Record<string, unknown> = {
     eventTimestamp: order.createdAt,
+    // Required by the API for an upload like this (confirmed live 25 Jul
+    // 2026: omitting it fails with events.events[0].event_source /
+    // REQUIRED_FIELD_MISSING). WEB is correct even though this is a
+    // server-side upload, because the underlying purchase happened on the
+    // web storefront, not in-app/in-store/phone.
+    eventSource: 'WEB',
     transactionId: String(order.id),
     currency: order.currency,
     conversionValue: Number(order.totalPrice),

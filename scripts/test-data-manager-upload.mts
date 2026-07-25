@@ -30,8 +30,8 @@ async function main() {
   // (confirmed via `tsx -e`). Dynamic import sidesteps whatever static-link
   // check is misfiring; not yet root-caused, noted here so a future cleanup
   // doesn't "fix" this back to a static import without re-testing.
-  const { hashEmailForDataManager } = await import('../lib/google-ads-hash.ts')
-  const { buildIngestEventBody } = await import('../lib/admin/google-ads-data-manager.ts')
+  const { hashEmailForDataManager } = await import('../lib/google-ads-hash')
+  const { buildIngestEventBody } = await import('../lib/admin/google-ads-data-manager')
   type OrderForUpload = Parameters<typeof buildIngestEventBody>[0]
 
   const order: OrderForUpload = {

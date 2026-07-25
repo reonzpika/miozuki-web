@@ -11,7 +11,7 @@ export default function AboutPage() {
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>About Us</span>
@@ -27,18 +27,18 @@ export default function AboutPage() {
         <p className="font-serif text-xl text-charcoal/80 italic leading-relaxed mb-4">
           Miozuki 澪月: Waterway to the Moon
         </p>
-        <p className="text-sm text-charcoal/60 leading-relaxed mb-4">
+        <p className="text-sm text-charcoal/65 leading-relaxed mb-4">
           &ldquo;The story began with a fortune slip at a shrine in Fukuoka, Japan in 2025, a small
           piece of paper that quietly changed everything.
         </p>
-        <p className="text-sm text-charcoal/60 leading-relaxed mb-4">
+        <p className="text-sm text-charcoal/65 leading-relaxed mb-4">
           I still remember the calm I felt as I read it:
         </p>
         <p className="text-sm text-charcoal/70 italic leading-relaxed mb-4">
           &ldquo;Even at the deepest part of the sea, if the water remains clear and still, the
           moonlight will always find its way to you.&rdquo;
         </p>
-        <p className="text-sm text-charcoal/60 leading-relaxed">
+        <p className="text-sm text-charcoal/65 leading-relaxed">
           Those words stayed with me, and became the story of the brand.&rdquo;
         </p>
       </blockquote>
@@ -79,7 +79,7 @@ export default function AboutPage() {
         </Link>
         <Link
           href="/collections/moissanite-nz"
-          className="text-xs tracking-widest uppercase text-charcoal/50 hover:text-charcoal transition-colors"
+          className="text-xs tracking-widest uppercase text-charcoal/65 hover:text-charcoal transition-colors"
         >
           Shop the Collection
         </Link>

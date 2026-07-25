@@ -80,7 +80,7 @@ export default function PdpRingSizeSelect({
               ) : null}
             </>
           ) : (
-            <span className="text-sm text-charcoal/45">Select size</span>
+            <span className="text-sm text-charcoal/65">Select size</span>
           )}
         </span>
       </button>

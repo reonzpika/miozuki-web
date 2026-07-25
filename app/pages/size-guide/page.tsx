@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function SizeGuidePage() {
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>Size Guide</span>
@@ -19,7 +19,7 @@ export default function SizeGuidePage() {
       <h1 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-4">
         Ring Size Guide
       </h1>
-      <p className="text-sm text-charcoal/55 leading-relaxed mb-10">
+      <p className="text-sm text-charcoal/65 leading-relaxed mb-10">
         Not sure of your ring size? We recommend ordering our ring sizer before purchasing a ring.
       </p>
 
@@ -74,7 +74,7 @@ export default function SizeGuidePage() {
         {/* Size chart */}
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-5">Size Chart</h2>
-          <p className="mb-3 text-xs text-charcoal/45">
+          <p className="mb-3 text-xs text-charcoal/65">
             Tap the chart to open a larger view you can scroll on small screens.
           </p>
           <RingSizeChartExpandable
@@ -83,7 +83,7 @@ export default function SizeGuidePage() {
             priority
             className="mb-4"
           />
-          <p className="text-xs text-charcoal/40">
+          <p className="text-xs text-charcoal/65">
             All Miozuki rings are sized in standard US ring sizes.
           </p>
         </div>

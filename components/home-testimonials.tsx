@@ -38,7 +38,7 @@ export default async function HomeTestimonials() {
             <blockquote className="font-serif text-xl leading-relaxed text-charcoal/90 md:text-2xl">
               &ldquo;{reviews[0].body.trim()}&rdquo;
             </blockquote>
-            <figcaption className="mt-4 text-xs uppercase tracking-[0.2em] text-charcoal/50">
+            <figcaption className="mt-4 text-xs uppercase tracking-[0.2em] text-charcoal/65">
               {reviews[0].reviewer?.name ? reviewerNameForDisplay(reviews[0].reviewer.name) : 'Verified customer'}
               {reviews[0].reviewer?.verified_buyer ? (
                 <span className="ml-2 normal-case tracking-normal text-burgundy/80">Verified buyer</span>
@@ -56,7 +56,7 @@ export default async function HomeTestimonials() {
                   <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-charcoal/80">
                     &ldquo;{review.body.trim()}&rdquo;
                   </blockquote>
-                  <figcaption className="mt-5 text-xs uppercase tracking-[0.2em] text-charcoal/50">
+                  <figcaption className="mt-5 text-xs uppercase tracking-[0.2em] text-charcoal/65">
                     {review.reviewer?.name ? reviewerNameForDisplay(review.reviewer.name) : 'Verified customer'}
                     {review.reviewer?.verified_buyer ? (
                       <span className="ml-2 normal-case tracking-normal text-burgundy/80">Verified buyer</span>

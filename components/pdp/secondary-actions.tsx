@@ -93,7 +93,7 @@ export function PdpSecondaryActions({ firstVideo }: { firstVideo: FirstVideo | n
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close video"
-              className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center text-charcoal/60 hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+              className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center text-charcoal/65 hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
                 <line x1="1" y1="1" x2="13" y2="13" />

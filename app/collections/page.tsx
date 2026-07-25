@@ -20,13 +20,13 @@ export default async function CollectionsPage() {
         <h1 className="font-serif text-4xl md:text-5xl text-charcoal mb-3">
           Collections
         </h1>
-        <p className="text-sm text-charcoal/50 tracking-wide">
+        <p className="text-sm text-charcoal/65 tracking-wide">
           Fine jewellery, curated by design
         </p>
       </div>
 
       {collections.length === 0 ? (
-        <p className="text-center text-charcoal/40 py-24">No collections found.</p>
+        <p className="text-center text-charcoal/65 py-24">No collections found.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {collections.map((collection, i) => (
@@ -62,7 +62,7 @@ export default async function CollectionsPage() {
                 {collection.title}
               </h2>
               {collection.description && (
-                <p className="text-xs text-charcoal/50 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-charcoal/65 line-clamp-2 leading-relaxed">
                   {collection.description}
                 </p>
               )}

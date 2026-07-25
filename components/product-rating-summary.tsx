@@ -19,7 +19,7 @@ export default async function ProductRatingSummary({
       <span className="text-xs font-medium text-charcoal/70">
         {product.rating.toFixed(1)}
       </span>
-      <span className="text-xs text-charcoal/50 group-hover:text-charcoal/70 transition-colors">
+      <span className="text-xs text-charcoal/65 group-hover:text-charcoal/70 transition-colors">
         {product.reviews_count === 1
           ? '1 review'
           : `${product.reviews_count} reviews`}

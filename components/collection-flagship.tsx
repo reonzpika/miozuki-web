@@ -36,11 +36,11 @@ export function CollectionFlagshipAboveGrid({
         <>
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex flex-wrap items-center gap-x-1 gap-y-1 text-xs uppercase tracking-[0.2em] text-charcoal/40"
+            className="mb-6 flex flex-wrap items-center gap-x-1 gap-y-1 text-xs uppercase tracking-[0.2em] text-charcoal/65"
           >
             <Link
               href="/"
-              className="inline-flex min-h-11 items-center rounded-sm px-1 text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-1"
+              className="inline-flex min-h-11 items-center rounded-sm px-1 text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-1"
             >
               Home
             </Link>
@@ -49,7 +49,7 @@ export function CollectionFlagshipAboveGrid({
             </span>
             <Link
               href="/collections"
-              className="inline-flex min-h-11 items-center rounded-sm px-1 text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-1"
+              className="inline-flex min-h-11 items-center rounded-sm px-1 text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:min-h-0 md:py-1"
             >
               Collections
             </Link>
@@ -157,7 +157,7 @@ export function CollectionFlagshipEducation({ panels }: { panels: CollectionEduc
         const copy = EDUCATION_PANEL_COPY[panel.theme];
         return (
           <section key={panel.theme} className={gemstoneEducationSectionClass}>
-            <p className="text-[11px] uppercase tracking-[0.28em] text-charcoal/45">{copy.eyebrow}</p>
+            <p className="text-[11px] uppercase tracking-[0.28em] text-charcoal/65">{copy.eyebrow}</p>
             <h2 className="mt-2 font-serif text-xl text-charcoal md:text-2xl">{copy.heading}</h2>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-charcoal/65">{copy.body}</p>
             <ul className="mt-4 flex flex-wrap gap-2" aria-label={copy.chipsLabel}>
@@ -191,7 +191,7 @@ export function CollectionFlagshipEducation({ panels }: { panels: CollectionEduc
             />
           </div>
           <div>
-            <p className="text-[11px] uppercase tracking-[0.28em] text-charcoal/45">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-charcoal/65">
               Why I created Miozuki
             </p>
             <p className="mt-2 text-sm font-medium text-charcoal">

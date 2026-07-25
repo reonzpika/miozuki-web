@@ -107,7 +107,7 @@ export function PdpInfoCardsSection({
         ) : null}
         <h2
           id="pdp-craft-heading"
-          className="mt-4 text-xs font-medium uppercase tracking-widest text-charcoal/40"
+          className="mt-4 text-xs font-medium uppercase tracking-widest text-charcoal/65"
         >
           Craft &amp; materials
         </h2>

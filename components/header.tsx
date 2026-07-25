@@ -168,7 +168,7 @@ export default function Header() {
                             key={child.href}
                             href={child.href}
                             onClick={() => setActiveDropdown(null)}
-                            className="block px-4 py-2.5 text-xs tracking-widest uppercase text-charcoal/60 transition-colors hover:bg-charcoal/4 hover:text-charcoal focus-visible:bg-charcoal/4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-burgundy/30"
+                            className="block px-4 py-2.5 text-xs tracking-widest uppercase text-charcoal/65 transition-colors hover:bg-charcoal/4 hover:text-charcoal focus-visible:bg-charcoal/4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-burgundy/30"
                           >
                             {child.label}
                           </Link>

@@ -32,7 +32,7 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
                 fill="none"
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                className={`shrink-0 ml-4 transition-colors duration-200 ${isOpen ? 'text-burgundy' : 'text-charcoal/35 group-hover:text-charcoal/60'}`}
+                className={`shrink-0 ml-4 transition-colors duration-200 ${isOpen ? 'text-burgundy' : 'text-charcoal/65 group-hover:text-charcoal/65'}`}
               >
                 <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
               </motion.svg>
@@ -47,7 +47,7 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
                   transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="pb-5 text-sm text-charcoal/60 leading-relaxed">{a}</p>
+                  <p className="pb-5 text-sm text-charcoal/65 leading-relaxed">{a}</p>
                 </motion.div>
               )}
             </AnimatePresence>

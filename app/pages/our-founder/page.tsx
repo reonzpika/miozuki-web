@@ -12,7 +12,7 @@ export default function OurFounderPage() {
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>Our Founder</span>
@@ -70,12 +70,12 @@ export default function OurFounderPage() {
       <div className="h-px bg-charcoal/8 my-10" />
 
       <blockquote className="space-y-4 mb-10">
-        <p className="text-sm text-charcoal/60 leading-relaxed">
+        <p className="text-sm text-charcoal/65 leading-relaxed">
           Outside of Miozuki, I find inspiration in the small, joyful moments that are so
           often overlooked. As an introvert, I enjoy journaling and meditation, and always
           decorate the house with colourful flowers from the Sunday market.
         </p>
-        <p className="text-sm text-charcoal/60 leading-relaxed">
+        <p className="text-sm text-charcoal/65 leading-relaxed">
           It is within these simple rituals that I find joy, beauty, and creativity, a
           reminder that the quietest glow often shines the longest.
         </p>

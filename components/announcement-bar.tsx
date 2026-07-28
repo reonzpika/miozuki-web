@@ -1,4 +1,5 @@
 const MESSAGES = [
+  'Earrings sale coming soon',
   'Complimentary NZ shipping over $300',
   'NZ-owned & operated · Ships from Auckland',
   'AU shipping available',

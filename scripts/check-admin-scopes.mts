@@ -74,8 +74,8 @@ async function readOne<T>(label: string, query: string): Promise<{ ok: boolean; 
   try {
     const data = await gql<T>(query)
     return { ok: true, detail: JSON.stringify(data) }
-  } catch (e: any) {
-    return { ok: false, detail: e.message }
+  } catch (e: unknown) {
+    return { ok: false, detail: e instanceof Error ? e.message : String(e) }
   }
 }
 

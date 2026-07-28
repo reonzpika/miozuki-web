@@ -78,7 +78,7 @@ export default async function ArticlePage({
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">
           Home
         </Link>
@@ -107,7 +107,7 @@ export default async function ArticlePage({
       </h1>
 
       {/* Meta */}
-      <p className="text-[10px] tracking-widest uppercase text-charcoal/35 mb-10">
+      <p className="text-[10px] tracking-widest uppercase text-charcoal/65 mb-10">
         {formatNzDate(article.publishedAt)}
       </p>
 
@@ -138,7 +138,7 @@ export default async function ArticlePage({
       <div className="mt-14 pt-8 border-t border-charcoal/8">
         <Link
           href="/blogs/news"
-          className="text-xs tracking-widest uppercase text-charcoal/45 hover:text-charcoal transition-colors"
+          className="text-xs tracking-widest uppercase text-charcoal/65 hover:text-charcoal transition-colors"
         >
           ← Back to Journal
         </Link>

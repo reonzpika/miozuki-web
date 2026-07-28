@@ -21,7 +21,7 @@ export default async function ContactPage({
 
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>Contact</span>
@@ -30,7 +30,7 @@ export default async function ContactPage({
       <h1 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-4">
         Contact Us
       </h1>
-      <p className="text-sm text-charcoal/55 leading-relaxed mb-10">
+      <p className="text-sm text-charcoal/65 leading-relaxed mb-10">
         We&apos;re a small brand and we read every message personally. We aim to respond within
         1–2 business days.
       </p>

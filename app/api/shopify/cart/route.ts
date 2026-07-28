@@ -5,6 +5,7 @@ import {
   storefrontAddCartLines,
   storefrontGetCart,
   storefrontRemoveCartLines,
+  storefrontUpdateCartAttributes,
   type CartAttribute,
 } from '@/lib/shopify/cart-backend';
 
@@ -111,6 +112,17 @@ export async function POST(req: NextRequest) {
           parsedQty.value,
           attrs,
         );
+        return NextResponse.json({ cart });
+      }
+      case 'updateAttributes': {
+        const { cartId, attributes } = payload as { cartId?: unknown; attributes?: unknown };
+        if (typeof cartId !== 'string' || !cartId) {
+          return NextResponse.json({ error: 'Missing cartId.' }, { status: 400 });
+        }
+        if (!isCartAttributeArray(attributes)) {
+          return NextResponse.json({ error: 'Missing or invalid attributes.' }, { status: 400 });
+        }
+        const cart = await storefrontUpdateCartAttributes(credentials, cartId, attributes);
         return NextResponse.json({ cart });
       }
       case 'get': {

@@ -13,7 +13,7 @@ const linkClass =
 export default function AucklandNorthShorePage() {
   return (
     <main className="max-w-2xl mx-auto px-6 md:px-10 py-16">
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>Miozuki in Auckland</span>
@@ -22,7 +22,7 @@ export default function AucklandNorthShorePage() {
       <h1 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-4">
         Miozuki in Auckland: Ethical Moissanite &amp; Freshwater Pearl Bridal Jewellery
       </h1>
-      <p className="text-sm text-charcoal/55 leading-relaxed mb-10">
+      <p className="text-sm text-charcoal/65 leading-relaxed mb-10">
         Based in Auckland, Miozuki brings ethically sourced moissanite and freshwater pearl bridal
         pieces to New Zealand brides. Discover a collection designed for accessible luxury, with
         moissanite set in genuine sterling silver (S925) and gold crafted for enduring sparkle on your

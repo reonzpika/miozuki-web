@@ -210,7 +210,7 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
 
       {shareHint === 'instagram' ? (
         <p
-          className="mt-2 max-w-xs text-[10px] tracking-wide text-charcoal/50"
+          className="mt-2 max-w-xs text-[10px] tracking-wide text-charcoal/65"
           role="status"
           aria-hidden
         >
@@ -219,7 +219,7 @@ export function PdpShare({ shareUrl, productTitle }: PdpShareProps) {
         </p>
       ) : shareHint === 'messenger' ? (
         <p
-          className="mt-2 max-w-xs text-[10px] tracking-wide text-charcoal/50"
+          className="mt-2 max-w-xs text-[10px] tracking-wide text-charcoal/65"
           role="status"
           aria-hidden
         >

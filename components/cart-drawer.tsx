@@ -79,7 +79,7 @@ export default function CartDrawer({
             type="button"
             onClick={onClose}
             aria-label="Close cart"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center text-charcoal/50 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream -mr-2"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center text-charcoal/65 transition-colors hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream -mr-2"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -92,7 +92,7 @@ export default function CartDrawer({
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
           {lines.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
-              <p className="text-charcoal/40 text-sm">Your cart is empty.</p>
+              <p className="text-charcoal/65 text-sm">Your cart is empty.</p>
               <button
                 type="button"
                 onClick={onClose}
@@ -131,7 +131,7 @@ export default function CartDrawer({
                     {line.merchandise.product.title}
                   </Link>
                   {line.merchandise.title !== 'Default Title' && (
-                    <p className="text-xs text-charcoal/40 mt-0.5">
+                    <p className="text-xs text-charcoal/65 mt-0.5">
                       {line.merchandise.title}
                     </p>
                   )}
@@ -139,14 +139,14 @@ export default function CartDrawer({
                     <p className="text-sm text-burgundy font-medium">
                       {formatPrice(line.merchandise.price.amount, line.merchandise.price.currencyCode)}
                       {line.quantity > 1 && (
-                        <span className="text-charcoal/40 text-xs ml-1">×{line.quantity}</span>
+                        <span className="text-charcoal/65 text-xs ml-1">×{line.quantity}</span>
                       )}
                     </p>
                     <button
                       type="button"
                       onClick={() => handleRemove(line.id)}
                       disabled={removing === line.id}
-                      className="inline-flex min-h-11 min-w-[4.5rem] shrink-0 items-center justify-center px-2 text-xs text-charcoal/40 transition-colors hover:text-charcoal/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm disabled:opacity-50"
+                      className="inline-flex min-h-11 min-w-[4.5rem] shrink-0 items-center justify-center px-2 text-xs text-charcoal/65 transition-colors hover:text-charcoal/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm disabled:opacity-50"
                       aria-label="Remove item"
                     >
                       {removing === line.id ? '…' : 'Remove'}
@@ -162,17 +162,17 @@ export default function CartDrawer({
         {lines.length > 0 && cart && (
           <div className="mt-auto border-t border-charcoal/8 bg-cream px-6 pt-6 space-y-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
             <div className="flex justify-between text-sm">
-              <span className="text-charcoal/60">Subtotal</span>
+              <span className="text-charcoal/65">Subtotal</span>
               <span className="text-charcoal font-medium">
                 {formatPrice(cart.cost.subtotalAmount.amount, cart.cost.subtotalAmount.currencyCode)}
               </span>
             </div>
-            <p className="text-xs text-charcoal/40">
+            <p className="text-xs text-charcoal/65">
               Shipping and taxes calculated at checkout. We ship to NZ and
               Australia; AU orders are charged in AUD at checkout.
             </p>
             {parseFloat(cart.cost.subtotalAmount.amount) >= 1000 && (
-              <p className="text-xs leading-relaxed text-charcoal/55">
+              <p className="text-xs leading-relaxed text-charcoal/65">
                 Shipping to Australia? Parcels totalling over about AUD $1,000
                 may attract Australian GST and duty on delivery. Under that,
                 there are no extra border charges.

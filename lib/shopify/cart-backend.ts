@@ -155,6 +155,43 @@ const REMOVE_CART_LINES = /* GraphQL */ `
   }
 `;
 
+const UPDATE_CART_ATTRIBUTES = /* GraphQL */ `
+  mutation CartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]!) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
+      cart {
+        id
+        checkoutUrl
+        totalQuantity
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  price { amount currencyCode }
+                  product {
+                    title
+                    handle
+                    featuredImage { url altText width height }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cost {
+          totalAmount { amount currencyCode }
+          subtotalAmount { amount currencyCode }
+        }
+      }
+      userErrors { field message }
+    }
+  }
+`;
+
 const GET_CART = /* GraphQL */ `
   query GetCart($cartId: ID!) {
     cart(id: $cartId) {
@@ -294,6 +331,24 @@ export async function storefrontRemoveCartLines(
   const { cart, userErrors } = data.cartLinesRemove;
   if (cart) return finalizeCheckoutUrl(cart);
   throwOnUserErrors(userErrors, 'Could not remove line');
+}
+
+// Cart-level attributes (as opposed to the per-line `attributes` passed to
+// storefrontCreateCart/storefrontAddCartLines above) are what Shopify carries
+// onto the resulting order as note_attributes — this is the mechanism the
+// attribution bridge relies on (see lib/attribution.ts).
+export async function storefrontUpdateCartAttributes(
+  credentials: StorefrontCredentials,
+  cartId: string,
+  attributes: CartAttribute[]
+): Promise<Cart> {
+  const data = await storefrontRequest<{
+    cartAttributesUpdate: { cart: Cart | null; userErrors: ShopifyUserError[] };
+  }>(credentials, UPDATE_CART_ATTRIBUTES, { cartId, attributes });
+
+  const { cart, userErrors } = data.cartAttributesUpdate;
+  if (cart) return finalizeCheckoutUrl(cart);
+  throwOnUserErrors(userErrors, 'Could not update cart attributes');
 }
 
 export async function storefrontGetCart(

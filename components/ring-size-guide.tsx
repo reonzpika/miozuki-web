@@ -11,7 +11,7 @@ export default function RingSizeGuide() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-sm text-charcoal/50 underline underline-offset-2 hover:text-charcoal transition-colors text-left"
+        className="text-sm text-charcoal/65 underline underline-offset-2 hover:text-charcoal transition-colors text-left"
       >
         Not sure about your ring size?
       </button>
@@ -31,7 +31,7 @@ export default function RingSizeGuide() {
             <button
               onClick={() => setOpen(false)}
               aria-label="Close size guide"
-              className="absolute top-4 right-4 text-charcoal/40 hover:text-charcoal transition-colors"
+              className="absolute top-4 right-4 text-charcoal/65 hover:text-charcoal transition-colors"
             >
               <svg
                 width="20"
@@ -49,7 +49,7 @@ export default function RingSizeGuide() {
             <h3 className="font-serif text-3xl text-charcoal mb-2">
               Find Your Perfect Fit
             </h3>
-            <p className="text-sm text-charcoal/55 mb-5 leading-relaxed">
+            <p className="text-sm text-charcoal/65 mb-5 leading-relaxed">
               Each Miozuki ring is made just for you. We recommend ordering our{' '}
               <Link
                 href="/products/order-your-ring-sizer-credited-toward-your-custom-bespoke-ring"
@@ -84,7 +84,7 @@ export default function RingSizeGuide() {
               <h4 className="font-serif text-xl text-charcoal mb-1">
                 Size Chart
               </h4>
-              <p className="text-xs text-charcoal/45 mb-3">
+              <p className="text-xs text-charcoal/65 mb-3">
                 Tap the chart to open a larger view you can scroll on small
                 screens.
               </p>

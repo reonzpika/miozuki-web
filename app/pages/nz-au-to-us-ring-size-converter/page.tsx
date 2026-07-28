@@ -65,7 +65,7 @@ export default function RingSizeConverterPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>Ring Size Converter</span>
@@ -74,7 +74,7 @@ export default function RingSizeConverterPage() {
       <h1 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-4">
         The Definitive NZ/AU to US Ring Size &amp; MM Converter
       </h1>
-      <p className="text-sm text-charcoal/55 leading-relaxed mb-10">
+      <p className="text-sm text-charcoal/65 leading-relaxed mb-10">
         Finding your perfect fit shouldn&apos;t be a guessing game. Use our comprehensive conversion
         guide to transition between New Zealand&apos;s alphabetical sizing and international numerical
         standards for your next Miozuki fine jewellery piece.

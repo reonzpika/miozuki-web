@@ -103,7 +103,7 @@ export default function MoissaniteConversionChartPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
         <span>/</span>
         <span>Moissanite Conversion Chart</span>
@@ -112,7 +112,7 @@ export default function MoissaniteConversionChartPage() {
       <h1 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-4">
         The Master Conversion Chart
       </h1>
-      <p className="text-sm text-charcoal/55 leading-relaxed mb-10">
+      <p className="text-sm text-charcoal/65 leading-relaxed mb-10">
         Your comprehensive technical guide to moissanite millimetres, Diamond Equivalent Weight
         (DEW), and New Zealand ring sizing.
       </p>

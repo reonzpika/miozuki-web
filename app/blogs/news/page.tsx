@@ -18,7 +18,7 @@ export default async function BlogListingPage() {
   return (
     <main className="max-w-7xl mx-auto px-6 md:px-10 py-16">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/40 mb-10">
+      <nav className="flex items-center gap-2 text-xs tracking-widest uppercase text-charcoal/65 mb-10">
         <Link href="/" className="hover:text-charcoal transition-colors">
           Home
         </Link>
@@ -29,7 +29,7 @@ export default async function BlogListingPage() {
       <h1 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-3">
         Journal
       </h1>
-      <p className="text-sm text-charcoal/55 mb-10 max-w-2xl">
+      <p className="text-sm text-charcoal/65 mb-10 max-w-2xl">
         Moissanite guides, styling tips, and jewellery stories from Auckland.
       </p>
 
@@ -38,7 +38,7 @@ export default async function BlogListingPage() {
       {articles.length > 0 ? (
         <BlogTagFilter articles={articles} />
       ) : (
-        <p className="py-12 text-center text-sm leading-relaxed text-charcoal/45 max-w-lg mx-auto">
+        <p className="py-12 text-center text-sm leading-relaxed text-charcoal/65 max-w-lg mx-auto">
           There are no published stories to show at the moment. New journal posts will appear here
           once they go live on the store.
         </p>

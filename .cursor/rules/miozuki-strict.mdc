@@ -46,7 +46,7 @@ These files contain integration invariants. One wrong edit can break every produ
 |---|---|
 | `lib/shopify/**` | Storefront API client, queries, types, cart. |
 | `lib/judgeme/**` | Reviews integration. |
-| `lib/absolute-url.ts`, `lib/product-helpers.ts`, `lib/collection-page.ts` | Shared helpers used everywhere. |
+| `lib/product-helpers.ts`, `lib/collection-page.ts` | Shared helpers used everywhere. |
 | `app/api/**` | Server routes (cart, contact, subscribe, Instagram, Shopify cart proxy). |
 | `app/products/[handle]/page.tsx`, `app/collections/[handle]/page.tsx`, `app/blogs/news/[handle]/page.tsx`, `app/blogs/news/page.tsx`, `app/collections/page.tsx` | Shopify-backed routes. The data-fetch shape, `notFound()` calls, and `try/catch` blocks must stay intact. Visual tweaks inside the JSX are fine if you do NOT touch the data-fetch lines at the top of the file. |
 | `app/robots.ts`, `app/sitemap.ts`, `app/global-error.tsx` | SEO + root error boundary. |

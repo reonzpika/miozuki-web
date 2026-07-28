@@ -11,7 +11,7 @@ export function PdpFounderTeaser() {
       aria-labelledby="pdp-founder-heading"
       className="rounded-sm border border-charcoal/8 bg-surface p-5"
     >
-      <p className="text-xs uppercase tracking-widest text-charcoal/40">
+      <p className="text-xs uppercase tracking-widest text-charcoal/65">
         Founder&apos;s story
       </p>
       <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -33,7 +33,7 @@ export function PdpFounderTeaser() {
             and strong, like pearl and moissanite. It began with a fortune slip in Fukuoka, Japan,
             and became a quiet reminder that true beauty is found in meaning.&rdquo;
           </blockquote>
-          <p className="mt-3 text-xs text-charcoal/45">
+          <p className="mt-3 text-xs text-charcoal/65">
             Read more on{' '}
             <Link
               href="/pages/our-founder"

@@ -187,6 +187,7 @@ function command(file, args, timeout) {
   const res = spawnSync(file, args, {
     cwd: REPO_ROOT,
     encoding: 'utf8',
+    shell: process.platform === 'win32',
     timeout,
     env: {
       ...process.env,

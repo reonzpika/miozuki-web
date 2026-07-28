@@ -1,5 +1,4 @@
 const MESSAGES = [
-  'Earrings sale coming soon',
   'Complimentary NZ shipping over $300',
   'NZ-owned & operated · Ships from Auckland',
   'AU shipping available',
@@ -24,12 +23,15 @@ function MessageList() {
 
 export default function AnnouncementBar() {
   return (
-    <div
-      className="border-b border-charcoal/12 bg-cream text-charcoal text-[12px] tracking-[0.04em] py-2.5 overflow-hidden"
-    >
-      <div className="announcement-marquee-track">
-        <MessageList />
-        <MessageList />
+    <div className="border-b border-charcoal/12">
+      <div className="bg-cream text-charcoal text-[12px] tracking-[0.04em] py-2.5 overflow-hidden">
+        <div className="announcement-marquee-track">
+          <MessageList />
+          <MessageList />
+        </div>
+      </div>
+      <div className="bg-burgundy px-4 py-2 text-center font-sans text-[12px] font-medium tracking-[0.04em] text-cream">
+        Earrings sale coming soon
       </div>
     </div>
   );

@@ -30,8 +30,8 @@ export default function AnnouncementBar() {
           <MessageList />
         </div>
       </div>
-      <div className="bg-burgundy px-4 py-2 text-center font-sans text-[12px] font-medium tracking-[0.04em] text-cream">
-        Earrings sale coming soon
+      <div className="border-y border-gold/45 bg-charcoal px-4 py-3 text-center font-sans text-[14px] font-medium uppercase leading-none tracking-[0.12em] text-cream sm:text-[15px]">
+        EARRINGS SALE COMING SOON
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ export default function AnnouncementBar() {
       </div>
       <div className="border-y border-gold/45 bg-charcoal px-4 py-3 text-center font-sans text-[14px] font-medium uppercase leading-none tracking-[0.12em] text-cream sm:text-[15px]">
         <Link href="/collections/moissanite-earrings" className="inline-block underline-offset-4 hover:underline">
-          EARRINGS SALE NOW ON
+          EARRINGS SALE IS LIVE
         </Link>
       </div>
     </div>

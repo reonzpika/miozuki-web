@@ -103,7 +103,7 @@ Debug log: `.next/dev/cursor-start.log`
 
 ## Saving and going live
 
-Ting does not know the words "commit", "push", "git", or "master", and never needs to. To her there are only two ideas: **saving** her work, and **making it live**. Use only those two words with her. You handle all the git mechanics. She decides when anything goes live.
+Ting does not know the words "commit", "push", "git", or "master", and never needs to. To her there are three simple stages: **local preview**, **saving**, and **making it live**. Use those words with her. You handle all the git mechanics. She decides when anything goes live.
 
 The site is **live** at `miozuki.co.nz`. Making something live means real customers see it within a minute. A save alone is private and changes nothing customers see.
 
@@ -123,7 +123,9 @@ Background sync is silent and conservative. It never makes anything live.
 
 ### Saving (this is a commit)
 
-Save after each **meaningful** piece of work: a complete change, fix, or new section that Ting actually asked for. Do NOT save after every tiny tweak or single-line edit mid-task. One meaningful unit of work = one save.
+For UI, page, copy, and visual website changes, work locally first. Use the in-app browser or local preview with Ting and keep iterating until she says she is happy. Do NOT save mid-iteration unless she asks.
+
+Once Ting says she is happy with the local preview, save the complete change, then make it live unless she says to keep it local.
 
 Before each save:
 
@@ -131,20 +133,20 @@ Before each save:
 2. Run `npm run build`. If it fails, stop. Same. Do not save until it passes.
 3. Stage only the files you changed (`git add <files>`, NEVER `git add .` or `git add -A` — protects against accidentally committing `.env*`, build output, or local-only files).
 4. Commit with a one-line plain-English message describing what changed (e.g. `update About page copy`, `tweak founder portrait crop`, `add gold divider to FAQ`). Never use the words "fix" or "bug" if Ting did not describe it as such.
-5. Tell Ting plainly: "Saved." Do not say "committed".
+5. Tell Ting plainly: "Saved." Do not say "committed". If she already said she is happy with the preview, continue to making it live.
 
 ### Going live (this is a push)
 
-A save is local only. It is NOT on the live site yet. After a meaningful save is done, ask Ting:
+A save is local only. It is NOT on the live site yet. If Ting has not already said she is happy with the local preview, ask:
 
 > "Saved. Do you want to make this live now, or keep working?"
 
-Before you make anything live, make sure Ting has actually looked at the change on the local preview, at both a narrow phone width and a normal computer width. The lint and build checks prove the code runs, not that it looks right. If she has not looked yet, ask her to before going live.
+Before you make anything live, make sure Ting has actually looked at the change on the local preview, preferably in the in-app browser, at both a narrow phone width and a normal computer width. The lint and build checks prove the code runs, not that it looks right. If she has not looked yet, ask her to before going live.
 
-- If she says **make it live**: run `npm run sync:publish`. It fetches GitHub, merges if needed, runs lint and build, then pushes. Then tell her: "It's live. Customers will see it within a minute."
+- If she says she is happy with the preview, or says **make it live**: run `npm run sync:publish`. It fetches GitHub, merges if needed, runs lint and build, then pushes. Then tell her: "It's live. Customers will see it within a minute."
 - If she says **keep working**: do nothing more. Keep editing. Her saved changes stay private and will go live together the next time she chooses to make something live.
 
-Never push unless she has said to make it live. Never push silently.
+Never push unless she has approved the preview or said to make it live. Never push silently.
 
 If making it live hits a merge, lint, build, or push problem, recover with maximum autonomy. Ting's "make it live" approval covers technical recovery work as long as the final result still reflects her requested change and the checks pass. If recovery touches a normally high-risk file, keep the edit minimal. If recovery cannot be completed cleanly, stop, tell Ting the live update did not go through, and ask before trying a riskier recovery.
 

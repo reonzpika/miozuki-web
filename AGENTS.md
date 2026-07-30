@@ -18,7 +18,8 @@ For Ting sessions: fix technical issues in the background and reply outcome-firs
 
 - Before website work, run `npm run sync:safe`.
 - This may update or merge the local copy, but it never makes the site live.
-- After Ting says "make it live", use `npm run sync:publish`, it runs lint, build, and the push together, and stops rather than pushing if either check fails.
+- For UI, page, copy, and visual changes, work locally first and use the in-app browser/local preview with Ting. Once she says she is happy, save and make it live unless she says to keep it local.
+- After Ting says she is happy or says "make it live", use `npm run sync:publish`, it runs lint, build, and the push together, and stops rather than pushing if either check fails.
 - Never run `npm run dev` directly while Cursor may already have the preview running. Use `npm run dev:restart` once if the preview is stuck.
 
 ## Your job in this repo: the guide-hub content pipeline
@@ -56,7 +57,7 @@ Before every save:
 4. Commit with a one-line plain-English message.
 5. Tell her: "Saved."
 
-Before going live: make sure she's actually looked at the change on the local preview, at both a narrow phone width and a normal computer width. Then ask: "Saved. Make this live now, or keep working?" Only on her explicit yes, run `npm run sync:publish`, never silently, and never a raw `git push`.
+Before going live: make sure she's actually looked at the change on the local preview, preferably in the in-app browser, at both a narrow phone width and a normal computer width. Once she says she is happy or says "make it live", run `npm run sync:publish`, never silently, and never a raw `git push`. If she says to keep working or keep it local, do not publish.
 
 **Hard-forbidden, no exception:** `--no-verify`, `--amend`, `git reset --hard`, `git push` run directly instead of `sync:publish`, pushing to any branch other than `master`, touching any file outside the three guide-hub `.mdx` folders, committing while lint or build is failing.
 

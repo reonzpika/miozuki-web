@@ -8,7 +8,7 @@ You are already set up on this machine. This is your day-to-day workflow.
 
 1. **Open the project** in Cursor (`miozuki-web` folder). The dev server should start automatically; the first time, click **Allow** if Cursor asks about tasks.
 2. **Edit** the files you need (with the AI or by hand).
-3. **Check in the browser** at [http://127.0.0.1:3000](http://127.0.0.1:3000). The page usually updates when you save.
+3. **Check in the in-app browser** at [http://127.0.0.1:3000](http://127.0.0.1:3000). The page usually updates while we work.
 4. **Publish** when you are happy with how it looks (see below).
 
 You do **not** need to create branches, switch branches, or use Git in the terminal. Stay on **master** and keep working as normal.
@@ -19,9 +19,9 @@ If the preview says **connection refused**, close and reopen the `miozuki-web` f
 
 ## Publishing your changes
 
-The Agent saves for you first. A save is private on this laptop, so customers do not see it yet.
+The Agent saves for you after you are happy with the local preview. A save is private on this laptop, so customers do not see it yet.
 
-When you are happy, tell the Agent **make it live**. It will check the site, bring in any background updates if needed, and publish for you.
+When you are happy, tell the Agent you are happy or say **make it live**. It will check the site, bring in any background updates if needed, save, and publish for you.
 
 No shortcut to press. No Source Control panel to open.
 

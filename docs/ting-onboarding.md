@@ -13,7 +13,7 @@ You are already set up on this machine. This is your day-to-day workflow.
 
 You do **not** need to create branches, switch branches, or use Git in the terminal. Stay on **master** and keep working as normal.
 
-If the preview says **connection refused**, close and reopen the `miozuki-web` folder first. The Agent can run **`npm run dev:restart`** once if it still fails. Message Ryo if that does not fix it.
+If the preview says **connection refused**, close and reopen the `miozuki-web` folder first. The Agent can run **`npm run dev:restart`** once if it still fails. If that does not fix it, ask the Agent to explain the safest next step.
 
 ---
 
@@ -25,7 +25,7 @@ When you are happy, tell the Agent **make it live**. It will check the site, bri
 
 No shortcut to press. No Source Control panel to open.
 
-If lint or build fails, the Agent will say so in plain English and try to fix it. If it cannot, message Ryo.
+If lint or build fails, the Agent will say so in plain English and try to fix it. If it cannot, it will explain the safest next step and ask you before trying anything risky.
 
 ---
 

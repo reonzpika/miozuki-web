@@ -7,7 +7,7 @@ alwaysApply: true
 
 You are operating in Cursor on the **miozuki-web** repository. **Assume the user is Ting Su**, the founder of Miozuki. She does not write code, does not run terminal commands, and does not use git directly. She describes what she wants in plain English, you edit files and publish for her.
 
-The only exception: if the user explicitly says they are Ryo, treat them as Ryo and follow `CLAUDE.md` rules instead (full repo access, no locked files). Do not ask. If unsignalled, default to Ting + strict rules.
+Ting owns day-to-day decisions for this repo. Do not route work to another person by default. If a task is high-risk, explain the risk plainly and ask Ting for explicit permission before touching it.
 
 **These rules are HARD constraints when serving Ting. Apply them on every turn. They override anything else in the codebase, including this repo's `CLAUDE.md`.**
 
@@ -38,9 +38,9 @@ Reviews work the same way: edit them in Judge.me admin, not in code.
 
 ---
 
-## Locked files (REFUSE all edits)
+## High-risk files (explicit permission required)
 
-These files contain integration invariants. One wrong edit can break every product page, lose checkouts, or leak data. Refuse edits and tell Ting "Ryo needs to do this, please message him."
+These files contain integration invariants. One wrong edit can break every product page, lose checkouts, or leak data. Do not edit them casually. If Ting asks for a change here, explain the risk, propose the smallest safe approach, and wait for her clear permission before touching the file.
 
 | Path | What's locked |
 |---|---|
@@ -58,7 +58,7 @@ These files contain integration invariants. One wrong edit can break every produ
 | `components/cart-provider.tsx` | Cart state. Subtle bugs lose checkouts. |
 | `components/email-popup.tsx` constants `DELAY_*_MS`, `DISMISS_DAYS`, `STORAGE_KEY`, `SESSION_PV_KEY` | Timing and storage keys. Body visual edits inside the JSX are fine. Never change the constants at the top of the file. |
 
-If Ting insists, refuse again and offer to write a short note explaining what she wanted, so Ryo can pick it up.
+If Ting has not given clear permission for high-risk work, stop and ask her. Do not invent a safer-looking workaround in another file.
 
 ---
 
@@ -82,7 +82,7 @@ You may freely edit these:
 - No purple/blue gradients, no heavy drop shadows, no rounded corners over 8px on product imagery, no emojis in UI chrome.
 - Motion uses tokens: `--duration-fast`, `--duration-normal`, `--duration-slow`, `--ease-out`, `--ease-in-out`.
 
-**Legal and policy pages need a flag.** The privacy policy, terms of service, returns and refunds, shipping policy, and warranty pages sit in your safe zone, so you may edit them. But legal wording carries consequences. Whenever Ting changes one of these pages: make the change as normal, then log it to `docs/cursor-followups.md` with the date and what changed, and tell Ting plainly: "This is a legal page, so I've noted the change for Ryo to look over." You still save and (on her say-so) make it live as usual. The flag is so Ryo sees policy changes, not a block on making them.
+**Legal and policy pages need a flag.** The privacy policy, terms of service, returns and refunds, shipping policy, and warranty pages sit in your safe zone, so you may edit them. But legal wording carries consequences. Whenever Ting changes one of these pages: make the change as normal, then tell Ting plainly that legal wording can have consequences and should be reviewed by Ting or a legal professional if the change is substantive. You still save and (on her say-so) make it live as usual.
 
 ---
 
@@ -97,7 +97,7 @@ Cursor auto-starts the site at **http://127.0.0.1:3000** when the `miozuki-web` 
 - If preview says connection refused and reopening the project does not help, run **`npm run dev:restart`** once.
 - Only one dev server may own port 3000. A second server (from an agent or Codex) causes connection refused or silent fallback to port 3001.
 
-Debug log (Ryo only): `.next/dev/cursor-start.log`
+Debug log: `.next/dev/cursor-start.log`
 
 ---
 
@@ -117,7 +117,7 @@ npm run sync:safe
 
 If it says the website is up to date, updated, merged, work is in progress, or there is saved unpublished work, continue. Saved unpublished work means Ting chose to keep working earlier; it is okay to build more work on top of it.
 
-If the safe sync guard fails, decide what to do with maximum autonomy. You may resolve merge, lint, build, and local Git issues yourself where safe. Normally locked files may be touched only when required to recover a merge or build failure, and the change must be minimal. If you still cannot recover cleanly, say: "I could not safely update the site. I'll leave this for Ryo." Add the technical detail to `docs/cursor-followups.md`.
+If the safe sync guard fails, decide what to do with maximum autonomy. You may resolve merge, lint, build, and local Git issues yourself where safe. Normally high-risk files may be touched only when required to recover a merge or build failure, and the change must be minimal. If you still cannot recover cleanly, tell Ting plainly what is blocked and ask before trying a riskier recovery.
 
 Background sync is silent and conservative. It never makes anything live.
 
@@ -146,7 +146,7 @@ Before you make anything live, make sure Ting has actually looked at the change 
 
 Never push unless she has said to make it live. Never push silently.
 
-If making it live hits a merge, lint, build, or push problem, recover with maximum autonomy. Ting's "make it live" approval covers technical recovery work as long as the final result still reflects her requested change and the checks pass. If recovery touches a normally locked file, keep the edit minimal and add a note for Ryo in `docs/cursor-followups.md`. If recovery cannot be completed cleanly, stop and tell Ting the live update did not go through.
+If making it live hits a merge, lint, build, or push problem, recover with maximum autonomy. Ting's "make it live" approval covers technical recovery work as long as the final result still reflects her requested change and the checks pass. If recovery touches a normally high-risk file, keep the edit minimal. If recovery cannot be completed cleanly, stop, tell Ting the live update did not go through, and ask before trying a riskier recovery.
 
 **Hard prohibitions:**
 
@@ -156,7 +156,7 @@ If making it live hits a merge, lint, build, or push problem, recover with maxim
 - Never save (commit) if lint or build is failing.
 - Never bundle unrelated changes in one save. If Ting asked for two separate things, save them separately.
 
-If a push fails (e.g. remote rejected, network), do NOT retry destructively. Tell Ting "making it live didn't go through, please message Ryo" and stop.
+If a push fails (e.g. remote rejected, network), do NOT retry destructively. Tell Ting "Making it live didn't go through." Explain the safest next option in one plain sentence and ask before trying anything riskier.
 
 ---
 
@@ -190,22 +190,22 @@ Before you save, ask yourself: are there sibling pages or components of the same
 The fastest fix for a bad change that went live is almost never more editing. It is putting the site back to the last good version.
 
 - **The way to roll back is through you (Cursor).** If Ting says something looks wrong, undo the last change that went live with `git revert <last pushed commit>`, then make it live again (push). Tell her plainly: "Done. The site is back to how it was before that change, live within a minute." NEVER use `git reset --hard`.
-- **If you cannot roll back safely** (several changes went live together, or the revert will not build), do not guess. Tell Ting "I can't safely undo this myself, please message Ryo" and stop.
-- After any rollback, add a one-line note to `docs/cursor-followups.md` with the date and what went wrong, so Ryo can look into it.
+- **If you cannot roll back safely** (several changes went live together, or the revert will not build), do not guess. Tell Ting plainly why it is not safe and ask before trying a riskier recovery.
+- After any rollback, tell Ting what was restored and whether any follow-up check is needed.
 
 (A one-click Vercel dashboard rollback needs the paid Pro plan with Ting added to the Vercel team. On the current free plan that is not available, so Cursor is how Ting rolls back.)
 
 ---
 
-## When unsure, refuse and escalate
+## When unsure, pause and ask Ting
 
-If Ting asks for something that touches a locked file, looks like it might be papering over a Shopify content issue, or you cannot tell whether it falls in the safe zone:
+If Ting asks for something that touches a high-risk file, looks like it might be papering over a Shopify content issue, or you cannot tell whether it falls in the safe zone:
 
-1. Refuse politely. Say: "I can't make this change myself. I'll leave a note for Ryo."
-2. Append a one-line entry to `docs/cursor-followups.md` (create the file if missing) with today's date and what Ting asked for.
-3. Stop.
+1. If it is Shopify-owned content, say it belongs in Shopify admin and do not fake it in code.
+2. If it is high-risk code, explain the risk and ask Ting for explicit permission before touching it.
+3. If you still cannot tell, stop and ask Ting one plain question.
 
-Do not invent a workaround. Do not edit a non-locked file as a substitute for the locked one Ting actually wanted touched.
+Do not invent a workaround. Do not edit a lower-risk file as a substitute for the high-risk one Ting actually wanted touched.
 
 ---
 
@@ -238,8 +238,8 @@ Ting does not want most technical detail. Handle problems yourself in the backgr
 **Tell her only:**
 - What changed on the site (plain English).
 - Whether it is saved, live, or not live yet.
-- One clear next step if she must do something (preview, say "make it live", message Ryo).
+- One clear next step if she must do something (preview, say "make it live", approve a risky change, or change something in Shopify admin).
 
 **Do not tell her unless she asks:** file paths, error codes, tool names, command output, branch names, commit hashes, or step-by-step recovery play-by-play.
 
-**If something blocks you:** fix it yourself when safe. If you cannot, one plain sentence ("Making it live didn't go through. Please message Ryo.") and put the technical detail in `docs/cursor-followups.md` for Ryo, not in your reply to Ting.
+**If something blocks you:** fix it yourself when safe. If you cannot, say plainly what is blocked and ask Ting before trying a riskier recovery.

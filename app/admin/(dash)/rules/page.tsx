@@ -108,7 +108,7 @@ export default function AdminLessons() {
         <p className="text-base text-graphite">
           Do not panic. Open Cursor and say &ldquo;put the site back&rdquo;. It
           undoes your last change and the site returns to how it was, live within
-          a minute. If that does not work, message Ryo.
+          a minute. If that does not work, ask the Agent to explain the safest next step.
         </p>
       </section>
 

@@ -1,5 +1,7 @@
 # Ting Workflow Setup Implementation Plan
 
+> Superseded as day-to-day guidance by the Ting-first Codex workflow adopted on 2026-07-30. Keep this file as historical setup context only.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Configure miozuki-web so Ting can open Cursor, make AI-assisted changes, and push to master without using a terminal or knowing any Git concepts.
@@ -166,7 +168,7 @@ That's it. The site is now running locally.
 ## If something looks broken
 
 - Don't panic. The live site can be rolled back instantly.
-- Message Ryo with a screenshot of what's wrong.
+- Ask the Agent to put the site back safely and explain the next step.
 - If the dev server stops (terminal panel goes quiet), press `Ctrl+Shift+P` and search for "Run Task" → "Start Dev Server".
 
 ---
@@ -204,14 +206,14 @@ In `CLAUDE.md`, find the `## Commands` section near the top. Add the following b
 ```markdown
 ## Team workflow
 
-This project has two contributors with different workflows:
+This older setup assumed two contributor workflows:
 
 **Ting (content/UI changes — working directly on `master`):**
 - Do not suggest creating branches, PRs, or terminal commands
 - Do not suggest running `npm run dev` — the dev server starts automatically via VS Code task
 - Keep instructions simple: edit files, check localhost:3000, use Source Control panel to commit
 
-**Ryo (structural/feature changes — working on feature branches):**
+**Historical structural/feature workflow (working on feature branches):**
 - Normal branching workflow: branch → build → PR → merge to master
 - Vercel generates a preview URL for every branch — share these with Ting for approval before merging
 

@@ -1,14 +1,14 @@
 # Miozuki-Web: Ting Collaboration Workflow
 
 **Date:** 2026-04-15
-**Status:** Approved
-**Scope:** Git workflow and Cursor setup for two-person team (Ryo + Ting)
+**Status:** Superseded by the current Ting-first Codex workflow as of 2026-07-30
+**Scope:** Historical Git workflow and Cursor setup
 
 ---
 
 ## Context
 
-Ting (Shih-Ting Chou) is the primary day-to-day contributor to miozuki-web, focusing on content/copy and UI changes. She uses Cursor with AI assistance and is non-technical. Ryo handles structural/feature work.
+Ting (Shih-Ting Chou) is the primary day-to-day contributor to miozuki-web, focusing on content/copy and UI changes. She uses Cursor and Codex with AI assistance and is non-technical. The current workflow asks Ting for explicit permission before high-risk work instead of routing day-to-day problems to another person.
 
 Goal: Ting should be able to open Cursor, talk to AI, preview locally, and push changes without touching a terminal or knowing any Git concepts.
 
@@ -31,9 +31,9 @@ Ting works directly on `master`. Her session flow:
 
 No terminal commands. No branch management. No staging step.
 
-### Ryo's workflow (feature branches)
+### Historical risky-work workflow (feature branches)
 
-Ryo works on short-lived branches for any structural, feature, or risky changes:
+This older plan put structural, feature, or risky changes on short-lived branches:
 
 1. Create branch from master (Cursor bottom-left branch switcher)
 2. Build and test locally
@@ -68,7 +68,7 @@ Plain-English, single-page cheat sheet covering:
 - How to open the project and start working
 - How to check changes at `localhost:3000`
 - How to commit and push (Source Control panel steps)
-- What to do if something looks broken (message Ryo — Vercel rolls back instantly)
+- What to do if something looks broken (ask the Agent to put the site back safely)
 
 ### 4. `CLAUDE.md` update
 
@@ -81,7 +81,7 @@ Add a note on the two-track workflow so AI agents in Ting's Cursor sessions unde
 | Risk | Mitigation |
 |------|-----------|
 | Ting's change breaks production | Vercel one-click rollback; content/UI changes are low-risk |
-| Merge conflict (Ryo + Ting push simultaneously) | Cursor shows the conflict inline; Ryo resolves it |
+| Merge conflict or publish problem | The Agent recovers autonomously when safe, then asks Ting before trying anything risky |
 | Auto-task not triggering | Fallback: `npm run dev` in Cursor's integrated terminal (documented in TING-GUIDE) |
 
 ---

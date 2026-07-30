@@ -4,10 +4,11 @@ This is the customer-facing Miozuki website. Real customers may see changes shor
 
 ## Which rules to follow
 
-- If the user is Ting or does not explicitly say they are Ryo, follow `.cursor/rules/miozuki-strict.mdc`.
-- If the user explicitly says they are Ryo, follow `CLAUDE.md`.
+- Follow `.cursor/rules/miozuki-strict.mdc` for Ting sessions. Ting owns day-to-day decisions.
+- Do not route work to another person by default. If a task is high-risk, explain the risk in plain English and ask Ting for explicit permission before doing it.
+- `CLAUDE.md` is historical/developer reference only unless Ting explicitly asks you to inspect it.
 - If instructions conflict, Ting's strict Cursor rules win for Ting sessions.
-- **Exception, the guide-hub content pipeline below:** for the three `.mdx` folders only (`app/moissanite-guide/`, `app/pearl-guide/`, `app/bridal-guide/`), Codex runs the full pipeline itself per the section below, not the general Cursor-first routing above. Everything else in this repo still follows the routing rule as written.
+- **Guide-hub content pipeline below:** for the three `.mdx` folders only (`app/moissanite-guide/`, `app/pearl-guide/`, `app/bridal-guide/`), Codex runs the full pipeline itself per the section below.
 
 ## Ting communication preference
 
@@ -22,9 +23,9 @@ For Ting sessions: fix technical issues in the background and reply outcome-firs
 
 ## Your job in this repo: the guide-hub content pipeline
 
-Redesigned 2026-07-06, see `../miozuki-brain/decisions/2026-07-06-codex-full-autonomy.md`. You run the whole guide-hub pipeline yourself: pick the next guide, draft it, shape it into a page, Ting's experience pass, publish it. No check-in to Ryo at any stage.
+Redesigned 2026-07-06, see `../miozuki-brain/decisions/2026-07-06-codex-full-autonomy.md`. You run the whole guide-hub pipeline yourself: pick the next guide, draft it, shape it into a page, Ting's experience pass, publish it. No extra human technical check-in at any stage.
 
-**Scope, exactly:** the `.mdx` files under `app/moissanite-guide/`, `app/pearl-guide/`, `app/bridal-guide/`. Nothing else in this repo. Not the shared layout (`components/hub/**`, the three `layout.tsx` files in those folders, `mdx-components.tsx`), not `next.config.ts`, not `package.json`, not any other route. If a request touches any of those, stop, do not attempt it, say "this needs Ryo."
+**Scope for autonomous guide work:** the `.mdx` files under `app/moissanite-guide/`, `app/pearl-guide/`, `app/bridal-guide/`. Shared layout (`components/hub/**`, the three `layout.tsx` files in those folders, `mdx-components.tsx`), `next.config.ts`, `package.json`, and other routes are high-risk or outside the guide pipeline. Touch them only when Ting explicitly asks for that broader website change and approves the risk.
 
 **Before you draft anything, read these in `../miozuki-brain/guides/`** (a sibling folder, you have access to it):
 - `content-plan.md` for the build order, which guide is next
@@ -37,7 +38,7 @@ Save the raw draft to `../miozuki-brain/guides/drafts/{slug}-opus-raw.md` before
 
 **The `<GuideSchema ... />` line under each H1** renders the byline, the visible "Updated" date, and the hidden Article code. When you materially change an article's content (an experience pass counts), bump its `updated="YYYY-MM-DD"` to today so the date stays truthful. Never remove the component or change its `title`/`path`.
 
-**Price and metal rules (added 2026-07-10, Ryo's decision).** Never put a Miozuki price in the same sentence or table cell as a market price for gold-set jewellery: most market rings are gold, Miozuki's are sterling silver, and pairing the two is an unfair comparison that confuses customers. Market figures must name their basis ("typically set in 10k-18k gold"); Miozuki pricing always stands alone as a from-price ("rings start from NZ$320"). Never state a price for Miozuki gold pieces (gold is quoted individually as a custom order; the gold price moves). Never write "we only sell silver" or similar: the standing phrasing is "S925 sterling silver, with solid gold available as a custom order".
+**Price and metal rules (added 2026-07-10, standing decision).** Never put a Miozuki price in the same sentence or table cell as a market price for gold-set jewellery: most market rings are gold, Miozuki's are sterling silver, and pairing the two is an unfair comparison that confuses customers. Market figures must name their basis ("typically set in 10k-18k gold"); Miozuki pricing always stands alone as a from-price ("rings start from NZ$320"). Never state a price for Miozuki gold pieces (gold is quoted individually as a custom order; the gold price moves). Never write "we only sell silver" or similar: the standing phrasing is "S925 sterling silver, with solid gold available as a custom order".
 
 See `docs/guide-hub-overview.md` in this repo for how all of this fits together, and `harbor-vs-claude-pilot-findings.md` in miozuki-brain for the full pilot record behind these instructions.
 
@@ -59,17 +60,17 @@ Before going live: make sure she's actually looked at the change on the local pr
 
 **Hard-forbidden, no exception:** `--no-verify`, `--amend`, `git reset --hard`, `git push` run directly instead of `sync:publish`, pushing to any branch other than `master`, touching any file outside the three guide-hub `.mdx` folders, committing while lint or build is failing.
 
-If `sync:publish` fails, do not retry destructively. Tell her "publishing didn't go through, please message Ryo" and stop.
+If `sync:publish` fails, do not retry destructively. Recover only with safe, explainable steps. If it still will not publish, tell Ting plainly that publishing did not go through and ask before trying any riskier recovery.
 
 ## End-of-session records
 
 Before finishing meaningful website work, do a quick records check.
 
-- If the work changed a legal or policy page, follow the strict rule and add a dated note to `docs/cursor-followups.md` for Ryo.
+- If the work changed a legal or policy page, tell Ting plainly that legal wording can have consequences and should be reviewed by Ting or a legal professional if the change is substantive.
 - If the work revealed a durable marketing, SEO, brand, or customer-experience decision that belongs in `miozuki-brain`, tell Ting plainly and update the brain only when the task includes that work or Ting approves it.
 - Do not copy product, collection, blog, price, inventory, review, or Shopify-owned content into code or into the brain as a workaround. Those facts live in Shopify or Judge.me.
 - In the final reply, mention whether a follow-up note or brain update was made, or say that none was needed.
 
 ## Everything else in this repo
 
-Not your job, guide-hub or otherwise. If Ting asks for anything outside the guide-hub `.mdx` files, tell her plainly this needs Cursor (content and visual changes) or Ryo (anything structural), and stop. Do not attempt a workaround.
+Outside the guide-hub `.mdx` files, follow `.cursor/rules/miozuki-strict.mdc`: safe-zone content and visual work is allowed, Shopify-owned content stays in Shopify, and high-risk code needs Ting's explicit permission before you touch it.

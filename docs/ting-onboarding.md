@@ -35,6 +35,3 @@ To make hero art, banners, or other graphics for the site: open the **Agent** ch
 
 ---
 
-## More detail
-
-For troubleshooting, the one-time keyboard shortcut setup, and useful bookmarks, read **[TING-GUIDE.md](../TING-GUIDE.md)** in the project root.

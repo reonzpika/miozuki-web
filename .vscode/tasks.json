@@ -1,31 +1,4 @@
 {
   "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Start Dev Server",
-      "type": "shell",
-      "command": "node scripts/cursor-start.mjs",
-      "isBackground": true,
-      "runOptions": {
-        "runOn": "folderOpen"
-      },
-      "presentation": {
-        "reveal": "never",
-        "panel": "shared",
-        "focus": false,
-        "clear": true,
-        "showReuseMessage": false
-      },
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^$"
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "> next dev",
-          "endsPattern": "preview ready:"
-        }
-      }
-    }
-  ]
+  "tasks": []
 }

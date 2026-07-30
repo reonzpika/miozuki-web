@@ -20,7 +20,11 @@ For Ting sessions: fix technical issues in the background and reply outcome-firs
 - This may update or merge the local copy, but it never makes the site live.
 - For UI, page, copy, and visual changes, work locally first and use the in-app browser/local preview with Ting. Once she says she is happy, save and make it live unless she says to keep it local.
 - After Ting says she is happy or says "make it live", use `npm run sync:publish`, it runs lint, build, and the push together, and stops rather than pushing if either check fails.
-- Never run `npm run dev` directly while Cursor may already have the preview running. Use `npm run dev:restart` once if the preview is stuck.
+- Local preview is Codex-first now. Cursor auto-start is disabled.
+- Use one preview only, defaulting to `http://127.0.0.1:3001`.
+- Do not run `npm run dev:restart` from Codex as a normal foreground command; it is long-running and can be orphaned if the command window times out.
+- Start preview as a hidden background process with its own log file, using `npm.cmd run dev -- --hostname 127.0.0.1 --port 3001`.
+- If preview is stuck, stop only the process listening on the exact preview port, never all `node` processes.
 
 ## Your job in this repo: the guide-hub content pipeline
 

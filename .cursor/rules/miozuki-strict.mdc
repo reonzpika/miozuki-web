@@ -109,6 +109,17 @@ Ting does not know the words "commit", "push", "git", or "master", and never nee
 
 The site is **live** at `miozuki.co.nz`. Making something live means real customers see it within a minute. A save alone is private and changes nothing customers see.
 
+### Simple copy edit fast path
+
+For small copywriting and content-placement edits in the safe zone, keep it very quick and straightforward:
+
+1. Edit the exact requested copy only.
+2. Show or refresh the exact localhost page Ting is using.
+3. If placement matters, follow the visible localhost page and the nearest heading/table/image Ting names. Do not guess a different spot.
+4. Do not add styling such as bold, cards, callouts, or layout changes unless Ting explicitly asks.
+5. Do not run extra audits, screenshots, repeated live checks, or broad investigations. Use only the minimum needed to show the local change and publish safely.
+6. Keep messages short: "Done on localhost", "Saved", or "It's live."
+
 ### Before website work
 
 Before editing the website, quietly run the safe sync guard:

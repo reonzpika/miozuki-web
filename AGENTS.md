@@ -14,6 +14,8 @@ This is the customer-facing Miozuki website. Real customers may see changes shor
 
 For Ting sessions: fix technical issues in the background and reply outcome-first (what changed, saved or live, one next step if needed). Do not narrate lint, build, git, or recovery steps unless she asks. See **Outcome-first** in `.cursor/rules/miozuki-strict.mdc`.
 
+For simple copywriting and content-placement edits, use the fast path in `.cursor/rules/miozuki-strict.mdc`: edit the exact copy, show localhost first, follow the visible localhost placement, avoid extra checks or commentary, and publish only after Ting says to make it live.
+
 ## Safe sync reminder
 
 - Before website work, run `npm run sync:safe`.

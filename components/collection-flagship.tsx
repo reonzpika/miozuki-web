@@ -108,8 +108,7 @@ export function CollectionFlagshipAboveGrid({
           <div>
             <p className="text-[11px] uppercase tracking-[0.24em] text-burgundy">From the founder</p>
             <p className="mt-1 text-sm leading-relaxed text-charcoal/80">
-              On a trip to Japan before I got married, I picked a fortune slip at a shrine in
-              Fukuoka. I didn&apos;t know it then, but that is how Miozuki started....
+              It was spring in Japan when I picked a fortune slip at a shrine - and Miozuki quietly began.
             </p>
           </div>
         </div>

@@ -20,9 +20,11 @@ function stripBlockquotesFromHtml(html: string): string {
 export function ProductDescriptionDisclosure({
   descriptionHtml,
   plainDescription,
+  showMaterialLine = true,
 }: {
   descriptionHtml: string | null;
   plainDescription: string | null;
+  showMaterialLine?: boolean;
 }) {
   const htmlRaw = descriptionHtml?.trim() || null;
   const withoutQuotes = htmlRaw ? stripBlockquotesFromHtml(htmlRaw).trim() : '';
@@ -38,12 +40,14 @@ export function ProductDescriptionDisclosure({
 
   return (
     <div className="mb-4 max-w-prose">
-      <p className="mb-3 text-sm font-medium leading-relaxed text-charcoal">
-        <span aria-hidden="true" className="text-burgundy">
-          ◆{' '}
-        </span>
-        S925 sterling silver with white gold finish
-      </p>
+      {showMaterialLine ? (
+        <p className="mb-3 text-sm font-medium leading-relaxed text-charcoal">
+          <span aria-hidden="true" className="text-burgundy">
+            {'\u25c6 '}
+          </span>
+          S925 sterling silver with white gold finish
+        </p>
+      ) : null}
       {html ? (
         <div className={proseClass} dangerouslySetInnerHTML={{ __html: html }} />
       ) : (

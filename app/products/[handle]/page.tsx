@@ -22,6 +22,15 @@ import JsonLd from '@/components/json-ld';
 
 export const revalidate = 60;
 
+function isRingProduct(
+  title: string,
+  productType: string | null | undefined,
+  tags: readonly string[],
+): boolean {
+  const searchable = [title, productType ?? '', ...tags].join(' ').toLowerCase();
+  return /(^|[^a-z])rings?([^a-z]|$)/.test(searchable);
+}
+
 export async function generateStaticParams() {
   const products = await getProducts(100).catch(() => []);
   return products.map((p) => ({ handle: p.handle }));
@@ -239,6 +248,7 @@ export default async function ProductPage({
             <ProductDescriptionDisclosure
               descriptionHtml={descHtml}
               plainDescription={descPlain}
+              showMaterialLine={!isRingProduct(product.title, product.productType, product.tags)}
             />
             <AddToCart
               variants={variants}

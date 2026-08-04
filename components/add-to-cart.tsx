@@ -47,6 +47,29 @@ function findVariant(
   );
 }
 
+function findMatchingVariants(
+  variants: ProductVariant[],
+  selected: Record<string, string>
+): ProductVariant[] {
+  return variants.filter((v) =>
+    v.selectedOptions.every((opt) => {
+      const selectedValue = selected[opt.name];
+      return !selectedValue || selectedValue === opt.value;
+    })
+  );
+}
+
+function priceRangeFromVariants(variants: ProductVariant[]) {
+  if (!variants.length) return null;
+  const sorted = [...variants].sort(
+    (a, b) => parseFloat(a.price.amount) - parseFloat(b.price.amount)
+  );
+  return {
+    min: sorted[0].price,
+    max: sorted[sorted.length - 1].price,
+  };
+}
+
 function sortRingSizeValues(values: string[]): string[] {
   return [...values].sort((a, b) => {
     const na = parseFloat(a);
@@ -94,16 +117,19 @@ export default function AddToCart({
 
   const variant = findVariant(variants, selected);
   const available = variant?.availableForSale ?? false;
+  const matchingVariants = findMatchingVariants(variants, selected);
+  const selectedPriceRange = priceRangeFromVariants(matchingVariants);
 
   const minP = priceRange.minVariantPrice;
   const maxP = priceRange.maxVariantPrice;
-  const hasPriceRange =
-    parseFloat(maxP.amount) > parseFloat(minP.amount);
+  const displayMinPrice = selectedPriceRange?.min ?? minP;
+  const displayMaxPrice = selectedPriceRange?.max ?? maxP;
+  const hasPriceRange = parseFloat(displayMaxPrice.amount) > parseFloat(displayMinPrice.amount);
   const priceLabel = variant
     ? formatPrice(variant.price.amount, variant.price.currencyCode)
     : hasPriceRange
-      ? `From ${formatPrice(minP.amount, minP.currencyCode)}`
-      : formatPrice(minP.amount, minP.currencyCode);
+      ? `From ${formatPrice(displayMinPrice.amount, displayMinPrice.currencyCode)}`
+      : formatPrice(displayMinPrice.amount, displayMinPrice.currencyCode);
 
   // Crossed-out "was" price only when Shopify compare-at is higher than the selling price.
   const compareAtForDisplay = (() => {
@@ -236,11 +262,11 @@ export default function AddToCart({
                 <div className="flex flex-wrap gap-2">
                   {valuesForUi.map((val) => {
                     const isSelected = selected[opt.name] === val;
-                    const testVariant = findVariant(variants, {
+                    const testVariants = findMatchingVariants(variants, {
                       ...selected,
                       [opt.name]: val,
                     });
-                    const isAvailable = testVariant?.availableForSale ?? false;
+                    const isAvailable = testVariants.some((v) => v.availableForSale);
                     return (
                       <button
                         type="button"

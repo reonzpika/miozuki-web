@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Money, ProductVariant } from '@/lib/shopify';
 import RingSizeGuide from '@/components/ring-size-guide';
 import PdpTrustStrip from '@/components/pdp-trust-strip';
@@ -121,6 +121,8 @@ export default function AddToCart({
   });
 
   const [btnState, setBtnState] = useState<ButtonState>('idle');
+  const [showStickyCart, setShowStickyCart] = useState(false);
+  const mainAddButtonRef = useRef<HTMLButtonElement>(null);
 
   const needsRingSize = options.some(
     (o) => isRingSizeOption(o.name, o.values) && !selected[o.name]
@@ -156,6 +158,25 @@ export default function AddToCart({
     }
     return null;
   })();
+
+  useEffect(() => {
+    const updateStickyCart = () => {
+      const button = mainAddButtonRef.current;
+      if (!button) {
+        setShowStickyCart(false);
+        return;
+      }
+      setShowStickyCart(button.getBoundingClientRect().bottom < 0);
+    };
+
+    updateStickyCart();
+    window.addEventListener('scroll', updateStickyCart, { passive: true });
+    window.addEventListener('resize', updateStickyCart);
+    return () => {
+      window.removeEventListener('scroll', updateStickyCart);
+      window.removeEventListener('resize', updateStickyCart);
+    };
+  }, []);
 
   const handleAdd = async () => {
     if (needsRingSize) {
@@ -331,6 +352,7 @@ export default function AddToCart({
 
         {/* Add to cart button */}
         <button
+          ref={mainAddButtonRef}
           type="button"
           onClick={handleAdd}
           disabled={addDisabled}
@@ -342,7 +364,12 @@ export default function AddToCart({
 
       {/* Cold-traffic style sticky bar: mirrors main CTA on small viewports */}
       <div
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-charcoal/10 bg-cream/95 px-4 py-3 backdrop-blur-md md:hidden"
+        aria-hidden={!showStickyCart}
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-charcoal/10 bg-cream/95 px-4 py-3 backdrop-blur-md transition-all duration-300 md:hidden ${
+          showStickyCart
+            ? 'visible translate-y-0 opacity-100'
+            : 'invisible pointer-events-none translate-y-full opacity-0'
+        }`}
         style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { MessageCircle } from 'lucide-react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import { linkifyBareRefs, toInternalHref } from '@/lib/advisor/markdown-utils';
 
@@ -220,11 +221,12 @@ export default function AdvisorWidget() {
         }}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="fixed bottom-[4.65rem] right-5 z-30 inline-flex items-center gap-2 rounded-full border border-burgundy bg-cream py-2 pl-2 pr-5 text-xs uppercase tracking-[0.12em] text-burgundy shadow-[0_8px_24px_var(--miozuki-shadow)] transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:bottom-20 md:right-6"
+        aria-label="Chat with Mio"
+        title="Chat with Mio"
+        className="fixed bottom-[4.65rem] right-5 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-burgundy/35 bg-cream/95 text-burgundy/80 shadow-[0_4px_14px_var(--miozuki-shadow)] transition-colors hover:border-burgundy/55 hover:bg-surface hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:bottom-20 md:right-6 md:h-11 md:w-11"
         style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
       >
-        <MioAvatar size={28} />
-        Chat with Mio
+        <MessageCircle className="h-[18px] w-[18px] md:h-5 md:w-5" strokeWidth={1.7} aria-hidden />
       </button>
 
       {/* Backdrop */}

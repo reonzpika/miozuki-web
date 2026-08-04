@@ -323,6 +323,12 @@ export default function AddToCart({
           </div>
         )}
 
+        {hasRingSizes ? (
+          <p className="text-left text-xs font-medium tracking-wide text-charcoal/65">
+            14K &amp; 18K Gold available on request
+          </p>
+        ) : null}
+
         {/* Add to cart button */}
         <button
           type="button"

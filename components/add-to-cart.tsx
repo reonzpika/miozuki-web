@@ -81,6 +81,15 @@ function sortRingSizeValues(values: string[]): string[] {
   });
 }
 
+function isMaterialOption(name: string, values: string[]): boolean {
+  const optionName = name.toLowerCase();
+  return (
+    optionName.includes('material') ||
+    optionName.includes('metal') ||
+    values.some((value) => /sterling|silver|gold/i.test(value))
+  );
+}
+
 type ButtonState = 'idle' | 'loading' | 'added' | 'error' | 'select-size';
 
 export default function AddToCart({
@@ -98,6 +107,8 @@ export default function AddToCart({
   /** Single-variant products still carry Shopify's Title/Default Title option; no picker needed. */
   const showVariantPicker = variants.length > 1;
   const hasRingSizes = options.some((o) => isRingSizeOption(o.name, o.values));
+  const hasMaterialOptions = options.some((o) => isMaterialOption(o.name, o.values));
+  const showSterlingOnlyMaterial = hasRingSizes && !hasMaterialOptions;
 
   const [selected, setSelected] = useState<Record<string, string>>(() => {
     const defaults: Record<string, string> = {};
@@ -209,10 +220,24 @@ export default function AddToCart({
       </div>
       <div className="mt-6 h-px bg-charcoal/8" />
       <div className="space-y-6">
+        {showSterlingOnlyMaterial ? (
+          <div>
+            <p className="mb-3 text-xs uppercase tracking-widest text-charcoal/65">
+              Jewellery material
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex min-h-11 items-center border border-burgundy bg-burgundy px-4 py-2 text-xs tracking-wide text-cream">
+                Sterling silver
+              </span>
+            </div>
+          </div>
+        ) : null}
+
         {/* Variant options (hidden for single-variant products) */}
         {showVariantPicker &&
           options.map((opt) => {
             const ringSize = isRingSizeOption(opt.name, opt.values);
+            const materialOption = isMaterialOption(opt.name, opt.values);
             const valuesForUi = ringSize
               ? sortRingSizeValues(opt.values)
               : opt.values;
@@ -257,7 +282,7 @@ export default function AddToCart({
             return (
               <div key={opt.name}>
                 <p className="mb-3 text-xs uppercase tracking-widest text-charcoal/65">
-                  {opt.name}
+                  {materialOption ? 'Jewellery material' : opt.name}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {valuesForUi.map((val) => {

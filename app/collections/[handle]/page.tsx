@@ -111,12 +111,12 @@ export default async function CollectionPage({
       <CollectionHeroBanner collection={collection} />
 
       <div className="border-b border-charcoal/8 bg-cream">
-        <div className="mx-auto w-full max-w-7xl px-6 pt-3 pb-2 md:px-10 md:pt-4 md:pb-3">
+        <div className="mx-auto w-full max-w-7xl px-6 pt-2 pb-1.5 md:px-10 md:pt-4 md:pb-3">
           <CollectionFlagshipAboveGrid collection={collection} afterHeroBanner />
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-7xl px-6 pt-2 pb-12 md:px-10 md:pt-3 md:pb-16">
+      <div className="mx-auto w-full max-w-7xl px-6 pt-1.5 pb-12 md:px-10 md:pt-3 md:pb-16">
         <ProductsGrid
           products={products}
           layout="flagship"

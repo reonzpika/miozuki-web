@@ -35,9 +35,8 @@ export default function CollectionHeroBanner({ collection }: Props) {
     : 'object-cover object-center';
 
   const crumbBand = 'text-cream/50';
-  const crumbLink = usePearlHero
-    ? 'inline-flex min-h-8 items-center rounded-sm px-0.5 text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/45 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal/50 md:min-h-0 md:py-0.5'
-    : 'inline-flex min-h-10 items-center rounded-sm px-0.5 text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/45 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal/50 md:min-h-0 md:py-0.5';
+  const crumbLink =
+    'inline-flex min-h-0 items-center rounded-sm px-0.5 py-0.5 text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/45 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal/50';
   const crumbDivider = 'text-cream/35';
   const crumbCurrent = 'text-cream/85';
   const headlineColor = 'text-cream';
@@ -63,14 +62,14 @@ export default function CollectionHeroBanner({ collection }: Props) {
     />
   );
 
-  // About one-third of the screen on short viewports; capped so tall monitors keep a slim strip.
+  // Mobile stays slim so product cards appear quickly after landing.
   const sectionHeightClass = usePearlHero
-    ? 'h-[28svh] max-h-[12rem] min-h-[9.5rem] md:h-[22svh] md:max-h-[11rem] md:min-h-[9.5rem]'
-    : 'h-[33svh] max-h-[12rem] min-h-[10rem] md:h-[28svh] md:max-h-[11rem] md:min-h-[10rem]';
+    ? 'h-[19svh] max-h-[8.5rem] min-h-[7.5rem] md:h-[22svh] md:max-h-[11rem] md:min-h-[9.5rem]'
+    : 'h-[21svh] max-h-[9rem] min-h-[8rem] md:h-[28svh] md:max-h-[11rem] md:min-h-[10rem]';
 
   const contentPaddingClass = usePearlHero
     ? 'px-5 py-2 md:px-10 md:py-4'
-    : 'px-5 py-3 md:px-10 md:py-4';
+    : 'px-5 py-2 md:px-10 md:py-4';
 
   return (
     <section
@@ -98,7 +97,7 @@ export default function CollectionHeroBanner({ collection }: Props) {
       >
         <nav
           aria-label="Breadcrumb"
-          className={`mb-0.5 flex flex-wrap items-center justify-center gap-x-1 gap-y-0 text-[9px] uppercase tracking-[0.2em] md:mb-2 md:justify-start md:text-[11px] ${crumbBand}`}
+          className={`mb-2 hidden flex-wrap items-center justify-center gap-x-1 gap-y-0 text-[9px] uppercase tracking-[0.2em] md:flex md:justify-start md:text-[11px] ${crumbBand}`}
         >
           <Link href="/" className={crumbLink}>
             Home
@@ -112,18 +111,18 @@ export default function CollectionHeroBanner({ collection }: Props) {
           <span className={crumbDivider} aria-hidden>
             /
           </span>
-          <span className={`py-0.5 md:min-h-0 md:py-0.5 ${usePearlHero ? 'min-h-0' : 'min-h-10 py-1.5'} ${crumbCurrent}`}>{collection.title}</span>
+          <span className={`min-h-0 py-0.5 ${crumbCurrent}`}>{collection.title}</span>
         </nav>
 
         <h1
-          className={`max-w-3xl font-serif leading-snug tracking-tight md:text-2xl lg:text-[1.65rem] lg:leading-snug ${usePearlHero ? 'line-clamp-2 text-sm md:line-clamp-none md:text-2xl' : 'text-xl'} ${headlineColor}`}
+          className={`max-w-3xl font-serif leading-snug tracking-tight md:text-2xl lg:text-[1.65rem] lg:leading-snug ${usePearlHero ? 'line-clamp-2 text-base md:line-clamp-none md:text-2xl' : 'text-xl'} ${headlineColor}`}
         >
           {collection.title}
         </h1>
 
         {blurb ? (
           <p
-            className={`mt-1 max-w-3xl text-xs leading-snug md:mt-1.5 md:text-sm ${usePearlHero ? 'hidden md:block' : ''} ${blurbTone}`}
+            className={`mt-1 line-clamp-2 max-w-3xl text-[11px] leading-snug md:mt-1.5 md:line-clamp-none md:text-sm ${blurbTone}`}
           >
             {blurb}
           </p>

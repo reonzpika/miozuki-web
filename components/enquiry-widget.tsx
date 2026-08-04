@@ -27,7 +27,7 @@ export default function EnquiryWidget() {
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="fixed bottom-5 right-5 z-30 inline-flex items-center gap-2 rounded-full border border-burgundy bg-burgundy px-5 py-3 text-xs uppercase tracking-[0.12em] text-cream shadow-[0_8px_24px_var(--miozuki-shadow)] transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:bottom-6 md:right-6"
+        className="fixed bottom-5 right-5 z-30 inline-flex items-center gap-2 rounded-full border border-burgundy/35 bg-cream/95 px-5 py-3 text-xs uppercase tracking-[0.12em] text-burgundy/80 shadow-[0_6px_18px_var(--miozuki-shadow)] transition-colors hover:border-burgundy/55 hover:bg-surface hover:text-burgundy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:bottom-6 md:right-6"
         style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
       >
         <svg

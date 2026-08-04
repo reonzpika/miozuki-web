@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Gem, MapPin, Sparkles } from 'lucide-react';
 import type { Collection } from '@/lib/shopify';
 import type { CollectionEducationPanel } from '@/lib/collection-page';
 import { richTextToPlain, clipAfterNeedAssistanceQuestion } from '@/components/rich-text';
 
 const TRUST_PILLS = [
-  'S925 sterling silver',
-  'Shipped from Auckland',
-  'NZ-based brand',
-  'Signature-only delivery',
+  { key: 'material', label: 'Sterling silver & 9k gold', icon: Gem, featured: true },
+  { key: 'custom', label: 'Custom engagement ring', icon: Sparkles, featured: true },
+  { key: 'nz', label: 'NZ-based brand', icon: MapPin, featured: true },
 ] as const;
 
 const FOUNDER_IMAGE =
@@ -69,13 +69,26 @@ export function CollectionFlagshipAboveGrid({
       ) : null}
 
       <ul
-        className={`flex flex-wrap gap-2 ${afterHeroBanner ? 'mt-0' : 'mt-5'}`}
+        className={`grid grid-cols-2 gap-2 sm:flex sm:flex-wrap ${afterHeroBanner ? 'mt-0' : 'mt-5'}`}
         aria-label="Why shop with Miozuki"
       >
-        {TRUST_PILLS.map((label) => (
-          <li key={label}>
-            <span className="inline-block rounded-full border border-charcoal/15 bg-cream px-3 py-1.5 text-xs leading-snug text-charcoal/75 shadow-[0_1px_0_var(--miozuki-shadow)] md:px-3.5 md:py-2 md:text-sm">
-              {label}
+        {TRUST_PILLS.map(({ key, label, icon: Icon, featured }) => (
+          <li key={key} className="min-w-0 sm:min-w-fit">
+            <span
+              className={`flex h-full min-h-11 items-center gap-2 rounded-md border px-3 py-2 text-xs leading-snug shadow-[0_1px_0_var(--miozuki-shadow)] md:px-3.5 md:text-sm ${
+                featured
+                  ? 'border-burgundy/25 bg-surface text-charcoal'
+                  : 'border-charcoal/15 bg-cream text-charcoal/75'
+              }`}
+            >
+              <Icon
+                aria-hidden
+                strokeWidth={1.7}
+                className={`h-3.5 w-3.5 shrink-0 md:h-4 md:w-4 ${
+                  featured ? 'text-burgundy' : 'text-charcoal/50'
+                }`}
+              />
+              <span className="min-w-0">{label}</span>
             </span>
           </li>
         ))}

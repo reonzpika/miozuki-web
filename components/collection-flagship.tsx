@@ -69,13 +69,13 @@ export function CollectionFlagshipAboveGrid({
       ) : null}
 
       <ul
-        className={`grid grid-cols-2 gap-2 sm:flex sm:flex-wrap ${afterHeroBanner ? 'mt-0' : 'mt-5'}`}
+        className={`grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:gap-2 ${afterHeroBanner ? 'mt-0' : 'mt-5'}`}
         aria-label="Why shop with Miozuki"
       >
         {TRUST_PILLS.map(({ key, label, icon: Icon, featured }) => (
           <li key={key} className="min-w-0 sm:min-w-fit">
             <span
-              className={`flex h-full min-h-11 items-center gap-2 rounded-md border px-3 py-2 text-xs leading-snug shadow-[0_1px_0_var(--miozuki-shadow)] md:px-3.5 md:text-sm ${
+              className={`flex h-full min-h-[3.25rem] flex-col items-center justify-center gap-1 rounded-md border px-1.5 py-2 text-center text-[10px] leading-tight shadow-[0_1px_0_var(--miozuki-shadow)] sm:min-h-11 sm:flex-row sm:justify-start sm:gap-2 sm:px-3 sm:text-left sm:text-xs md:px-3.5 md:text-sm ${
                 featured
                   ? 'border-burgundy/25 bg-surface text-charcoal'
                   : 'border-charcoal/15 bg-cream text-charcoal/75'
@@ -84,7 +84,7 @@ export function CollectionFlagshipAboveGrid({
               <Icon
                 aria-hidden
                 strokeWidth={1.7}
-                className={`h-3.5 w-3.5 shrink-0 md:h-4 md:w-4 ${
+                className={`h-3.5 w-3.5 shrink-0 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 ${
                   featured ? 'text-burgundy' : 'text-charcoal/50'
                 }`}
               />

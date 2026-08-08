@@ -189,7 +189,10 @@ export default function EmailPopup() {
 
                 <p className="mx-auto mb-7 max-w-sm text-xs leading-relaxed text-cream/80">
                   Join the list for early access to new arrivals and receive{' '}
-                  <span className="font-medium text-cream">$15 off your first order</span>.
+                  <span className="font-medium uppercase tracking-[0.08em] text-cream">$15 off your first order</span>{' '}
+                  <span className="text-[10px] leading-snug text-cream/65">
+                    (discount codes cannot be applied to sale items)
+                  </span>
                 </p>
 
                 {submitted ? (

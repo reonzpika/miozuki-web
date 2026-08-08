@@ -32,9 +32,14 @@ export default function AnnouncementBar() {
           <MessageList />
         </div>
       </div>
-      <div className="border-y border-gold/45 bg-charcoal px-4 py-3 text-center font-sans text-[14px] font-medium uppercase leading-none tracking-[0.12em] text-cream sm:text-[15px]">
+      <div className="border-y border-gold/45 bg-charcoal px-4 py-3 text-center font-sans text-cream">
         <Link href="/collections/moissanite-earrings" className="inline-block underline-offset-4 hover:underline">
-          EARRINGS SALE IS LIVE
+          <span className="block text-[14px] font-medium uppercase leading-none tracking-[0.12em] sm:text-[15px]">
+            EARRINGS SALE IS LIVE
+          </span>
+          <span className="mt-1 block text-[10px] font-light leading-snug tracking-[0.03em] normal-case text-cream/80 sm:text-[11px]">
+            (discount codes cannot be applied to sale items)
+          </span>
         </Link>
       </div>
     </div>

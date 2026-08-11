@@ -32,6 +32,7 @@ export default function ProductsGrid({
   layout = 'default',
   catalogueQuickFilters,
   ratings = {},
+  showFromPriceWhenRange = false,
 }: {
   products: Product[];
   layout?: 'default' | 'flagship';
@@ -41,6 +42,7 @@ export default function ProductsGrid({
    */
   catalogueQuickFilters?: boolean;
   ratings?: Record<string, RatingSummary>;
+  showFromPriceWhenRange?: boolean;
 }) {
   const quickFiltersOn = layout === 'flagship' && (catalogueQuickFilters ?? true);
   const [sortBy, setSortBy] = useState<SortKey>('featured');
@@ -385,6 +387,7 @@ export default function ProductsGrid({
               priority={index < 4}
               imageSizes={cardImageSizes}
               rating={ratings[product.id.split('/').pop() ?? '']}
+              showFromPriceWhenRange={showFromPriceWhenRange}
             />
           ))}
         </div>

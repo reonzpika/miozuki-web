@@ -65,6 +65,7 @@ export default function ProductCard({
   layout = 'default',
   priority = false,
   imageSizes = DEFAULT_IMAGE_SIZES,
+  showFromPriceWhenRange = false,
 }: {
   product: Product;
   rating?: RatingSummary;
@@ -73,10 +74,18 @@ export default function ProductCard({
   priority?: boolean;
   /** `sizes` for the card images; pass a layout-accurate value when the card is not ~70vw on phones. */
   imageSizes?: string;
+  /** On ring collection cards, show ranged variant prices as "From" the lowest Shopify price. */
+  showFromPriceWhenRange?: boolean;
 }) {
   const hoverCapable = useHoverCapable();
   const { handle, title, featuredImage, images, priceRange, tags } = product;
   const price = priceRange.minVariantPrice;
+  const maxPrice = priceRange.maxVariantPrice;
+  const hasPriceRange = parseFloat(maxPrice.amount) > parseFloat(price.amount);
+  const priceLabel = `${showFromPriceWhenRange && hasPriceRange ? 'From ' : ''}${formatPrice(
+    price.amount,
+    price.currencyCode,
+  )}`;
   const compareAtMin = product.compareAtPriceRange?.minVariantPrice ?? null;
   const compareAtForDisplay =
     compareAtMin && parseFloat(compareAtMin.amount) > parseFloat(price.amount)
@@ -152,7 +161,7 @@ export default function ProductCard({
           <p className="mb-1 line-clamp-2 text-[11px] leading-snug text-charcoal/65">{meta}</p>
         ) : null}
         <SalePriceDisplay
-          priceLabel={formatPrice(price.amount, price.currencyCode)}
+          priceLabel={priceLabel}
           compareAt={compareAtForDisplay}
           size="card"
           tone="graphite"

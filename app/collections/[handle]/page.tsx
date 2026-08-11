@@ -122,6 +122,7 @@ export default async function CollectionPage({
           layout="flagship"
           catalogueQuickFilters={false}
           ratings={ratings}
+          showFromPriceWhenRange={handle === 'moissanite-rings'}
         />
       </div>
 

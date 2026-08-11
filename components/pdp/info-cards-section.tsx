@@ -101,7 +101,7 @@ export function PdpInfoCardsSection({
             role="note"
           >
             <p className="text-sm font-medium leading-relaxed text-charcoal">
-              Made To Order: up to 4–6 weeks from production to local NZ delivery.
+              Made To Order: up to 3-5 weeks from production to local NZ delivery.
             </p>
           </div>
         ) : null}

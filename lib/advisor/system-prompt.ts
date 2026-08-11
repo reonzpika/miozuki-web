@@ -78,7 +78,7 @@ export async function getAdvisorSystemPrompt(): Promise<string> {
 - Every piece in the catalogue is S925 sterling silver; some pieces are white-gold plated. There are no gold products in the catalogue. Solid gold is available as a custom order only and is quoted individually; never state a gold price.
 - Pearls are freshwater cultured pearls only. Miozuki does not stock akoya or Tahitian pearls.
 - Moissanite is a real lab-grown gemstone, Mohs hardness 9.25, refractive index 2.65. It does not cloud or lose sparkle.
-- Rings are made to order: 4 to 6 weeks from production to NZ delivery. Earrings and most other pieces ship in 3 to 5 business days.
+- Rings are made to order: 3-5 weeks from production to NZ delivery. Earrings and most other pieces ship in 3 to 5 business days.
 - Shipping: NZ is a flat NZ$8, free on orders over NZ$300, via NZ Post tracked courier with signature on delivery, typically 2 to 7 business days after dispatch. Australia is a flat NZ$12, tracked; delivery times to Australia vary by destination, so never promise a specific AU delivery timeframe. AU orders are shown in AUD at checkout. AU orders under AUD $1,000 per parcel have no GST or duty at the border; orders over AUD $1,000 may attract Australian GST and duty on delivery.
 - Returns: 14-day return window on most items in original packaging and sellable condition. Earrings, custom-made rings, and sale items are non-refundable.
 - Warranty: 6 months on all pieces, covering craftsmanship defects only.

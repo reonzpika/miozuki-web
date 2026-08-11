@@ -45,7 +45,7 @@ export default function SizeGuidePage() {
           <div>
             <p className="mb-4 text-charcoal/70">
               Each Miozuki ring is made just for you, so we recommend ordering our ring sizer first to
-              ensure the perfect fit. Please allow approximately 4–6 weeks lead time.
+              ensure the perfect fit. Please allow approximately 3-5 weeks lead time.
             </p>
             <ul className="list-disc space-y-2 pl-5 text-charcoal/70">
               <li>Measure your ring size at home: easy and accurate.</li>

@@ -29,7 +29,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: 'How long does a bespoke piece take?',
-    a: 'Roughly 4 to 6 weeks. Timelines vary with design complexity and material choices. We provide a clear schedule after the initial discovery, and we keep you updated as the project progresses.',
+    a: 'Roughly 3-5 weeks. Timelines vary with design complexity and material choices. We provide a clear schedule after the initial discovery, and we keep you updated as the project progresses.',
   },
   {
     q: 'How is pricing determined?',
@@ -196,7 +196,7 @@ export default function CustomBridalJewelleryPage() {
           <h2 className="font-serif text-xl text-charcoal mb-4">Our bespoke process and typical timeline</h2>
           <p className="mb-4">
             Commissioning a bespoke piece with Miozuki follows a structured but flexible process. While
-            exact timelines vary by design (roughly 4 to 6 weeks), the typical journey includes concept
+            exact timelines vary by design (roughly 3-5 weeks), the typical journey includes concept
             development, material selection, CAD or hand-drawn renderings, approval of a 3D model or
             sketch, crafting, and a final fitting. We work closely with you at each stage to ensure
             precision and satisfaction.

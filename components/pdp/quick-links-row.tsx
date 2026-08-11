@@ -25,7 +25,7 @@ function PdpShippingGlanceBody() {
         <li className="flex gap-2.5">
           <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy/45" aria-hidden />
           <span>
-            Made-to-order pieces may take <span className="font-medium text-charcoal">4–6 weeks</span> to receive for both NZ and AU.
+            Made-to-order pieces may take <span className="font-medium text-charcoal">3-5 weeks</span> to receive for both NZ and AU.
           </span>
         </li>
         <li className="flex gap-2.5">

@@ -21,8 +21,7 @@ export default function AppointmentPage() {
       </h1>
       <div className="space-y-4 text-sm text-charcoal/65 leading-relaxed mb-10">
         <p>
-          While we do not have a retail store, we are based in Auckland. If you would like to see
-          some of our pieces, please feel free to{' '}
+          While we don&apos;t have a physical retail store, we are based in Auckland. Feel free to{' '}
           <a
             href="https://calendly.com/miozuki-info/30min?month=2026-04"
             target="_blank"
@@ -31,7 +30,15 @@ export default function AppointmentPage() {
           >
             book an online appointment
           </a>{' '}
-          with me - I would be happy to show you.
+          for a quick discovery call, or if you&apos;d prefer to discuss the bespoke process in person,
+          please email us at{' '}
+          <a
+            href="mailto:info@miozuki.co.nz"
+            className="text-burgundy underline underline-offset-2 hover:text-burgundy/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm"
+          >
+            info@miozuki.co.nz
+          </a>{' '}
+          to arrange a suitable time.
         </p>
         <p>I look forward to connecting with you.</p>
         <p>

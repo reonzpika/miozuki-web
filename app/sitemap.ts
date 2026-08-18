@@ -5,6 +5,20 @@ import { prunedBlogSlugs } from '@/lib/pruned-blogs';
 
 const BASE = 'https://www.miozuki.co.nz';
 
+const REDIRECTED_COLLECTION_HANDLES = new Set([
+  'bridal-earring',
+  'engagement-ring-moissanite',
+  'engravable-rings',
+  'moissanite-diamond',
+  'moissanite-ear-rings',
+  'moissanite-engagement-ring-nz',
+  'moissanite-engagement-rings-nz',
+  'moissanite-new-zealand',
+  'moissanite-rings-nz',
+  'pearl-earrings-silver',
+  'promise-rings-nz',
+]);
+
 const STATIC_PATHS: Array<{ path: string; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; priority: number }> = [
   { path: '/', changeFrequency: 'weekly', priority: 1.0 },
   { path: '/collections', changeFrequency: 'weekly', priority: 0.8 },
@@ -59,7 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     })),
-    ...collections.map((c) => ({
+    ...collections.filter((c) => !REDIRECTED_COLLECTION_HANDLES.has(c.handle)).map((c) => ({
       url: `${BASE}/collections/${c.handle}`,
       lastModified: now,
       changeFrequency: 'weekly' as const,

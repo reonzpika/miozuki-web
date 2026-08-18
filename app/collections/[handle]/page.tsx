@@ -37,10 +37,11 @@ export async function generateMetadata({
   if (!collection) return { title: 'Collection | Miozuki' };
   const ogImage = collection.image?.url;
   // Prefer the Shopify "Search engine listing" fields (Ting's lane) when set.
-  const title = `${collection.seo?.title?.trim() || collection.title} | Miozuki`;
+  const seoTitle = collection.seo?.title?.trim();
+  const title = seoTitle || `${collection.title} | Miozuki`;
   const description = metaDescription(collection.seo?.description, collection.description);
   return {
-    title,
+    title: seoTitle ? { absolute: seoTitle } : title,
     description,
     alternates: { canonical: `/collections/${handle}` },
     openGraph: ogImage

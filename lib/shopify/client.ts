@@ -154,6 +154,7 @@ type CollectionByHandleFetch = {
     title: string;
     description: string | null;
     descriptionHtml: string | null;
+    seo: Collection['seo'];
     image: Collection['image'];
     metafield: Collection['metafield'];
     products: {
@@ -212,6 +213,7 @@ export async function getCollectionByHandle(
         title: page.title,
         description: page.description,
         descriptionHtml: page.descriptionHtml,
+        seo: page.seo,
         image: page.image,
         metafield: page.metafield,
         products: { edges: [] },

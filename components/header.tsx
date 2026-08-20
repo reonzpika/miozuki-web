@@ -26,7 +26,10 @@ const NAV = [
   {
     label: 'Necklaces',
     href: '/collections/moissanite-necklace-nz',
-    children: null,
+    children: [
+      { label: 'Moissanite Necklaces', href: '/collections/moissanite-necklace-nz' },
+      { label: 'Pearl Necklaces', href: '/collections/pearl-necklace-nz' },
+    ],
   },
   {
     label: 'Bridal',
@@ -55,6 +58,7 @@ const MOBILE_NAV = [
   { label: 'Moissanite Rings', href: '/collections/moissanite-rings', indent: true },
   { label: 'Moissanite Earrings', href: '/collections/moissanite-earrings', indent: true },
   { label: 'Moissanite Necklaces', href: '/collections/moissanite-necklace-nz', indent: true },
+  { label: 'Pearl Necklaces', href: '/collections/pearl-necklace-nz', indent: true },
   { label: 'Pearl Earrings', href: '/collections/pearl-earrings', indent: true },
   { label: 'Bridal', href: '/collections/bridal-jewellery', indent: true },
   { label: 'Appointment', href: '/pages/appointment-online', indent: false },

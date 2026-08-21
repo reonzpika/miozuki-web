@@ -10,7 +10,13 @@ type FirstVideo = {
   previewImage: { url: string } | null;
 };
 
-export function PdpSecondaryActions({ firstVideo }: { firstVideo: FirstVideo | null }) {
+export function PdpSecondaryActions({
+  firstVideo,
+  showInStockLine = false,
+}: {
+  firstVideo: FirstVideo | null;
+  showInStockLine?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   // Fall back to the poster image if the video source fails to load, rather than
   // showing an empty player. Guards against a future bad/redirected source.
@@ -31,32 +37,10 @@ export function PdpSecondaryActions({ firstVideo }: { firstVideo: FirstVideo | n
 
   return (
     <>
-      <div className={`grid gap-2 ${firstVideo ? 'grid-cols-2' : 'grid-cols-1'}`}>
-        <Link
-          href="#pdp-help-links"
-          className="flex min-h-11 items-center justify-center gap-2 border border-charcoal/10 bg-cream px-3 py-3 text-center text-xs font-medium text-charcoal transition-colors hover:border-charcoal/25 hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
-        >
-          <span className="text-burgundy" aria-hidden>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-          </span>
-          Questions before ordering
-        </Link>
-
-        {firstVideo && (
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
+      <div className="space-y-2">
+        <div className={`grid gap-2 ${firstVideo ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          <Link
+            href="#pdp-help-links"
             className="flex min-h-11 items-center justify-center gap-2 border border-charcoal/10 bg-cream px-3 py-3 text-center text-xs font-medium text-charcoal transition-colors hover:border-charcoal/25 hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
           >
             <span className="text-burgundy" aria-hidden>
@@ -70,13 +54,44 @@ export function PdpSecondaryActions({ firstVideo }: { firstVideo: FirstVideo | n
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none" />
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </span>
-            See it in motion
-          </button>
-        )}
+            Questions before ordering
+          </Link>
+
+          {firstVideo && (
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="flex min-h-11 items-center justify-center gap-2 border border-charcoal/10 bg-cream px-3 py-3 text-center text-xs font-medium text-charcoal transition-colors hover:border-charcoal/25 hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+            >
+              <span className="text-burgundy" aria-hidden>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none" />
+                </svg>
+              </span>
+              See it in motion
+            </button>
+          )}
+        </div>
+
+        {showInStockLine ? (
+          <p className="flex min-h-9 items-center justify-center gap-2 border border-charcoal/8 bg-cream/60 px-3 py-2 text-center text-xs font-medium tracking-wide text-charcoal/55">
+            <span className="h-1.5 w-1.5 rounded-full bg-burgundy/70" aria-hidden />
+            In stock
+          </p>
+        ) : null}
       </div>
 
       {open && firstVideo && (

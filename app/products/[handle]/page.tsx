@@ -31,6 +31,15 @@ function isRingProduct(
   return /(^|[^a-z])rings?([^a-z]|$)/.test(searchable);
 }
 
+function isNecklaceProduct(
+  title: string,
+  productType: string | null | undefined,
+  tags: readonly string[],
+): boolean {
+  const searchable = [title, productType ?? '', ...tags].join(' ').toLowerCase();
+  return /(^|[^a-z])(necklaces?|pendants?)([^a-z]|$)/.test(searchable);
+}
+
 export async function generateStaticParams() {
   const products = await getProducts(100).catch(() => []);
   return products.map((p) => ({ handle: p.handle }));
@@ -151,6 +160,18 @@ export default async function ProductPage({
   const reviewData = await getProductReviews(product.id).catch(() => null);
   const minPrice = product.priceRange.minVariantPrice;
   const productUrl = `https://www.miozuki.co.nz/products/${handle}`;
+  const handleAndProductName = [handle, product.title, ...product.tags].join(' ').toLowerCase();
+  const isDoubleLayeredPearlStrandNecklace =
+    handle === 'double-layered-pearl-strand-necklace' ||
+    handle === 'double-strand-rice-pearl-necklace' ||
+    (handleAndProductName.includes('double') &&
+      handleAndProductName.includes('pearl') &&
+      handleAndProductName.includes('strand') &&
+      handleAndProductName.includes('necklace'));
+  const showMadeToOrderBanner =
+    !isEarringProduct(product.productType, product.tags) &&
+    (!isNecklaceProduct(product.title, product.productType, product.tags) ||
+      isDoubleLayeredPearlStrandNecklace);
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -257,10 +278,13 @@ export default async function ProductPage({
             />
           </div>
 
-          <PdpSecondaryActions firstVideo={firstVideo} />
+          <PdpSecondaryActions
+            firstVideo={firstVideo}
+            showInStockLine={!showMadeToOrderBanner && variants.some((v) => v.availableForSale)}
+          />
 
           <PdpInfoCardsSection
-            showMadeToOrderBanner={!isEarringProduct(product.productType, product.tags)}
+            showMadeToOrderBanner={showMadeToOrderBanner}
             materialsRichText={getMetafield('product_material')}
             productDetailsRichText={getMetafield('product_details')}
             whatsIncludedRichText={getMetafield('what_is_included')}

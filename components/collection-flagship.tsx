@@ -10,6 +10,19 @@ const TRUST_PILLS = [
   { key: 'nz', label: 'NZ-based brand', featured: true },
 ] as const;
 
+const COLLECTION_TRUST_PILLS: Record<string, readonly { key: string; label: string; featured: boolean }[]> = {
+  'pearl-necklace-nz': [
+    { key: 'material', label: 'Freshwater pearls', featured: true },
+    { key: 'finish', label: 'Gift-ready packaging', featured: true },
+    { key: 'nz', label: 'NZ-based brand', featured: true },
+  ],
+  'pearl-earrings': [
+    { key: 'material', label: 'Freshwater pearls', featured: true },
+    { key: 'finish', label: 'Gift-ready packaging', featured: true },
+    { key: 'nz', label: 'NZ-based brand', featured: true },
+  ],
+};
+
 const FOUNDER_IMAGE =
   'https://cdn.shopify.com/s/files/1/0797/0819/3023/files/PXL_20241230_060931026_3_480x480.jpg?v=1767920670';
 
@@ -71,7 +84,7 @@ export function CollectionFlagshipAboveGrid({
         className={`grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:gap-2 ${afterHeroBanner ? 'mt-0' : 'mt-5'}`}
         aria-label="Why shop with Miozuki"
       >
-        {TRUST_PILLS.map(({ key, label, featured }) => (
+        {(COLLECTION_TRUST_PILLS[collection.handle] ?? TRUST_PILLS).map(({ key, label, featured }) => (
           <li key={key} className="min-w-0 sm:min-w-fit">
             <span
               className={`flex h-full min-h-[3rem] items-center justify-center rounded-md border px-2 py-2 text-center text-[11px] font-medium leading-tight shadow-[0_1px_0_var(--miozuki-shadow)] sm:min-h-11 sm:justify-start sm:px-3 sm:text-left sm:text-xs md:px-3.5 md:text-sm ${
@@ -117,7 +130,7 @@ const MOISSANITE_CHIPS = [
 
 const PEARL_CHIPS = [
   'Soft natural lustre',
-  'Light on the ear',
+  'Freshwater character',
   'Beautiful layered or worn solo',
 ] as const;
 

@@ -43,6 +43,14 @@ const PEARL_PILLAR: CollectionEducationPanel = {
  */
 export function getCollectionEducationPanels(handle: string): CollectionEducationPanel[] {
   switch (handle) {
+    case 'pearl-necklace-nz':
+      return [
+        {
+          theme: 'pearl',
+          guideHref: '/pearl-guide/akoya-vs-freshwater-pearls-nz',
+          guideLabel: 'Compare freshwater and akoya pearls',
+        },
+      ];
     case 'pearl-earrings':
       return [
         {

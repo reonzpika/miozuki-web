@@ -131,8 +131,10 @@ export default function RootLayout({
         <AttributionCapture />
         <CartProvider>
           <StorefrontChrome>
-            <AnnouncementBar />
-            <Header />
+            <div className="sticky top-0 z-50">
+              <AnnouncementBar />
+              <Header />
+            </div>
           </StorefrontChrome>
           <div className="flex flex-col flex-1">{children}</div>
           <StorefrontChrome>

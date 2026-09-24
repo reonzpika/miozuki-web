@@ -5,7 +5,6 @@ import { Playfair_Display, DM_Sans } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-import AnnouncementBar from '@/components/announcement-bar';
 import { CartProvider } from '@/components/cart-provider';
 import EmailPopup from '@/components/email-popup';
 import EnquiryWidget from '@/components/enquiry-widget';
@@ -132,7 +131,6 @@ export default function RootLayout({
         <CartProvider>
           <StorefrontChrome>
             <div className="sticky top-0 z-50">
-              <AnnouncementBar />
               <Header />
             </div>
           </StorefrontChrome>

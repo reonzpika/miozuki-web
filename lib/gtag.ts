@@ -14,6 +14,9 @@ declare global {
   }
 }
 
+// Google Ads destination verified in Miozuki account 961-947-1172.
+const GOOGLE_ADS_ID = 'AW-18302159906';
+
 /**
  * Create window.dataLayer + the gtag stub and queue the standard bootstrap
  * commands (js + config). Safe to call more than once; only the first call seeds.
@@ -30,6 +33,9 @@ export function seedGtag(gaId: string) {
   };
   window.gtag('js', new Date());
   window.gtag('config', gaId);
+  // Reuse the existing Google tag for Ads measurement on the custom storefront.
+  // This is base-tag setup only, not a completed-purchase conversion event.
+  window.gtag('config', GOOGLE_ADS_ID);
 }
 
 /** Queue a GA4 event. No-ops when GA is not active (stub never seeded). */

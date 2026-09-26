@@ -32,14 +32,6 @@ export default function AnnouncementBar() {
           <MessageList />
         </div>
       </div>
-      <div className="border-y border-gold/45 bg-charcoal px-4 py-3 text-center font-sans text-cream">
-        <p className="mx-auto max-w-5xl text-[17px] font-light leading-relaxed tracking-[0.03em]">
-          <span className="mr-1.5" aria-hidden>🌙</span>
-          Hi, I&apos;m in Japan 7-25 Sep. &bull; Ready-to-ship orders will be sent after 25 Sep. &bull;{' '}
-          <strong className="font-semibold text-cream">Made-to-order pieces are still available for order.</strong>
-          {' '}With care, Ting.
-        </p>
-      </div>
     </div>
   );
 }

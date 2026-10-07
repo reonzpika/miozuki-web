@@ -1,15 +1,18 @@
 'use client';
 
 import { useEffect } from 'react';
-import { captureAttributionOnLanding } from '@/lib/attribution';
+import { captureAttributionOnLanding, refreshAttributionIdentifiers } from '@/lib/attribution';
 
 /** Mounted once in the root layout. Runs on every page load; capture itself
  * is idempotent (see lib/attribution.ts) so re-mounts across navigation are
- * harmless. Deliberately independent of GA4/gtag loading — see lib/attribution.ts
- * header comment for why. */
+ * harmless. URL details are immediate; IDs refresh when the deferred tag loads. */
 export default function AttributionCapture() {
   useEffect(() => {
     captureAttributionOnLanding();
+    const refresh = () => { void refreshAttributionIdentifiers(); };
+    refresh();
+    window.addEventListener('miozuki:analytics-ready', refresh);
+    return () => window.removeEventListener('miozuki:analytics-ready', refresh);
   }, []);
   return null;
 }

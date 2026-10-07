@@ -1,10 +1,9 @@
 import type { CartAttribute } from './shopify/cart-backend';
 
 // Captures ad-click and GA4 identifiers on landing so a purchase can later be
-// tied back to the session that produced it. Pure JS, first-party only — does
-// not depend on gtag.js having loaded (see components/deferred-analytics.tsx,
-// which defers that load), so this works even for a visitor who converts
-// before the deferred script attaches.
+// tied back to the session that produced it. URL parameters are captured
+// immediately; Google identifiers are refreshed through its supported get API
+// once the deferred tag loads and before the cart hands over to checkout.
 //
 // GCLID (Google Ads' click id) capture requires no consent gate: this store
 // currently ships no cookie-consent banner for its NZ/AU market (confirmed
@@ -40,30 +39,15 @@ interface StoredAttribution {
   capturedAt?: string;
 }
 
-function readCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : null;
-}
-
-// GA4's session cookie is named _ga_<measurement id, minus the "G-" prefix>.
-function gaSessionCookieName(): string | null {
-  const gaId = process.env.NEXT_PUBLIC_GA4_ID;
-  if (!gaId) return null;
-  const suffix = gaId.replace(/^G-/, '');
-  return `_ga_${suffix}`;
-}
-
-// GA4's session cookie value looks like GS1.1.<session_id>.<...>; the session
-// id is the third dot-delimited field.
-function parseGaSessionId(rawCookieValue: string): string | undefined {
-  const parts = rawCookieValue.split('.');
-  return parts.length >= 3 ? parts[2] : undefined;
-}
-
 function readExisting(): StoredAttribution | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as StoredAttribution) : null;
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    const data = parsed as StoredAttribution;
+    if (typeof data.gaClientId !== 'string' || !/^\d+\.\d+$/.test(data.gaClientId)) delete data.gaClientId;
+    if (typeof data.gaSessionId !== 'string' || !/^\d+$/.test(data.gaSessionId)) delete data.gaSessionId;
+    return data;
   } catch {
     return null;
   }
@@ -92,25 +76,11 @@ export function captureAttributionOnLanding() {
 
   const existing = readExisting();
   if (existing && !hasNewTrackingParams) {
-    // No new ad-click/campaign params on this page view — still worth
-    // refreshing the GA4 ids if they weren't captured yet (e.g. gtag.js
-    // hadn't set its cookies on the very first landing).
-    if (!existing.gaClientId || !existing.gaSessionId) {
-      const clientId = readCookie('_ga')?.split('.').slice(-2).join('.');
-      const sessionCookieName = gaSessionCookieName();
-      const sessionRaw = sessionCookieName ? readCookie(sessionCookieName) : null;
-      const sessionId = sessionRaw ? parseGaSessionId(sessionRaw) : undefined;
-      if (clientId || sessionId) {
-        write({ ...existing, gaClientId: clientId ?? existing.gaClientId, gaSessionId: sessionId ?? existing.gaSessionId });
-      }
-    }
+    // Preserve the landing source; refreshAttributionIdentifiers updates IDs
+    // separately when Google's deferred tag is available.
+    write(existing);
     return;
   }
-
-  const clientId = readCookie('_ga')?.split('.').slice(-2).join('.');
-  const sessionCookieName = gaSessionCookieName();
-  const sessionRaw = sessionCookieName ? readCookie(sessionCookieName) : null;
-  const sessionId = sessionRaw ? parseGaSessionId(sessionRaw) : undefined;
 
   const data: StoredAttribution = {
     gclid: params.get('gclid') ?? existing?.gclid,
@@ -122,13 +92,42 @@ export function captureAttributionOnLanding() {
     utm_term: params.get('utm_term') ?? existing?.utm_term,
     utm_content: params.get('utm_content') ?? existing?.utm_content,
     landingPath: existing?.landingPath ?? url.pathname,
-    gaClientId: clientId ?? existing?.gaClientId,
-    gaSessionId: sessionId ?? existing?.gaSessionId,
+    gaClientId: existing?.gaClientId,
+    gaSessionId: existing?.gaSessionId,
     fallbackId: existing?.fallbackId ?? crypto.randomUUID(),
     capturedAt: existing?.capturedAt ?? new Date().toISOString(),
   };
 
   write(data);
+}
+
+/** A blocked or unloaded tag must never hold up shopping indefinitely. */
+export async function refreshAttributionIdentifiers(timeoutMs = 450): Promise<void> {
+  if (typeof window === 'undefined') return;
+  captureAttributionOnLanding();
+  const measurementId = process.env.NEXT_PUBLIC_GA4_ID;
+  if (!measurementId || !window.gtag) return;
+  await new Promise<void>((resolve) => {
+    let remaining = 2;
+    const timer = setTimeout(resolve, timeoutMs);
+    const receive = (key: 'gaClientId' | 'gaSessionId', value: unknown) => {
+      const text = typeof value === 'number' || typeof value === 'string' ? String(value) : '';
+      const valid = key === 'gaClientId' ? /^\d+\.\d+$/.test(text) : /^\d+$/.test(text);
+      const current = readExisting();
+      if (current && valid) write({ ...current, [key]: text });
+      if (--remaining === 0) {
+        clearTimeout(timer);
+        resolve();
+      }
+    };
+    try {
+      window.gtag!('get', measurementId, 'client_id', (value: unknown) => receive('gaClientId', value));
+      window.gtag!('get', measurementId, 'session_id', (value: unknown) => receive('gaSessionId', value));
+    } catch {
+      clearTimeout(timer);
+      resolve();
+    }
+  });
 }
 
 /**

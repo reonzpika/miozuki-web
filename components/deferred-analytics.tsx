@@ -30,6 +30,7 @@ export default function DeferredAnalytics({ gaId }: { gaId: string }) {
     script.id = GTAG_SCRIPT_ID;
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    script.onload = () => window.dispatchEvent(new Event('miozuki:analytics-ready'));
     document.head.appendChild(script);
   }, [enabled, ready, gaId]);
 

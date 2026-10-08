@@ -21,7 +21,8 @@ export default function CartDrawer({
   open: boolean;
   onClose: () => void;
 }) {
-  const { cartId, cartCount, checkoutUrl, updateCartCount, setCheckoutUrl } = useCart();
+  const { cartId, cartCount, checkoutUrl, updateCartCount, setCheckoutUrl, prepareCheckout } = useCart();
+  const checkoutPending = useRef(false);
   const [cart, setCart] = useState<Cart | null>(null);
   const [removing, setRemoving] = useState<string | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -173,6 +174,18 @@ export default function CartDrawer({
             </p>
             <a
               href={checkoutUrl ?? '#'}
+              onClick={async (event) => {
+                if (!checkoutUrl || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                if (checkoutPending.current) return;
+                checkoutPending.current = true;
+                try {
+                  await prepareCheckout();
+                } finally {
+                  window.location.assign(checkoutUrl);
+                  checkoutPending.current = false;
+                }
+              }}
               className="block w-full text-center bg-burgundy text-cream py-4 text-xs tracking-[0.2em] uppercase transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               Checkout

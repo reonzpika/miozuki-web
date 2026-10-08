@@ -1,8 +1,8 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { createCart, addCartLines, getCart, updateCartAttributes, type CartAttribute } from '@/lib/shopify/cart';
-import { getStoredAttributionAttributes } from '@/lib/attribution';
+import { createCart, addCartLines, getCart, type CartAttribute } from '@/lib/shopify/cart';
+import { persistCartAttribution } from '@/lib/cart-attribution';
 
 const CART_ID_KEY = 'miozuki-cart-id';
 
@@ -13,6 +13,7 @@ interface CartContextValue {
   updateCartCount: (count: number) => void;
   checkoutUrl: string | null;
   setCheckoutUrl: (url: string) => void;
+  prepareCheckout: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextValue>({
@@ -22,6 +23,7 @@ const CartContext = createContext<CartContextValue>({
   updateCartCount: () => {},
   checkoutUrl: null,
   setCheckoutUrl: () => {},
+  prepareCheckout: async () => {},
 });
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -86,21 +88,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setCartCount(cart.totalQuantity);
       setCheckoutUrl(cart.checkoutUrl);
 
-      // Best-effort: keep the cart's attribution attributes current so
-      // Shopify carries them onto the order. Never blocks the add-to-cart
-      // UX — a failed attribution write shouldn't stop a real sale.
-      const attrs = getStoredAttributionAttributes();
-      if (attrs.length) {
-        updateCartAttributes(cart.id, attrs).catch(() => {
-          /* attribution is best-effort, swallow */
-        });
-      }
+      await persistCartAttribution(cart.id);
     },
     [cartId]
   );
 
+  const prepareCheckout = useCallback(async () => {
+    if (cartId) await persistCartAttribution(cartId);
+  }, [cartId]);
+
   return (
-    <CartContext.Provider value={{ cartId, cartCount, addToCart, updateCartCount: setCartCount, checkoutUrl, setCheckoutUrl }}>
+    <CartContext.Provider value={{ cartId, cartCount, addToCart, updateCartCount: setCartCount, checkoutUrl, setCheckoutUrl, prepareCheckout }}>
       {children}
     </CartContext.Provider>
   );

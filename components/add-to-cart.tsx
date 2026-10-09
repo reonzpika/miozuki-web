@@ -6,7 +6,8 @@ import RingSizeGuide from '@/components/ring-size-guide';
 import PdpTrustStrip from '@/components/pdp-trust-strip';
 import PdpRingSizeSelect from '@/components/pdp-ring-size-select';
 import { isRingSizeOption } from '@/lib/ring-size-chart';
-import { trackAddToCart } from '@/lib/ga-events';
+import { trackAddToCart, trackViewItem } from '@/lib/ga-events';
+import { useAnalyticsPermission } from '@/lib/tracking-privacy';
 import { useCart } from './cart-provider';
 import SalePriceDisplay from '@/components/sale-price-display';
 
@@ -93,16 +94,25 @@ function isMaterialOption(name: string, values: string[]): boolean {
 type ButtonState = 'idle' | 'loading' | 'added' | 'error' | 'select-size';
 
 export default function AddToCart({
+  productId,
   variants,
   priceRange,
   productTitle,
 }: {
+  productId: string;
   variants: ProductVariant[];
   priceRange: { minVariantPrice: Money; maxVariantPrice: Money };
   /** Shown on the mobile sticky bar (truncated in CSS). */
   productTitle: string;
 }) {
   const { addToCart } = useCart();
+  const analyticsPermission = useAnalyticsPermission();
+  const viewedProduct = useRef<string | null>(null);
+  useEffect(() => {
+    if (analyticsPermission !== 'allowed' || viewedProduct.current === productId || !variants[0]) return;
+    trackViewItem({ productId, productTitle, variant: variants[0], quantity: 1 });
+    viewedProduct.current = productId;
+  }, [analyticsPermission, productId, productTitle, variants]);
   const options = buildOptions(variants);
   /** Single-variant products still carry Shopify's Title/Default Title option; no picker needed. */
   const showVariantPicker = variants.length > 1;
@@ -189,7 +199,7 @@ export default function AddToCart({
     try {
       const quantity = 1;
       await addToCart(variant.id, quantity);
-      trackAddToCart({ productTitle, variant, quantity });
+      trackAddToCart({ productId, productTitle, variant, quantity });
       setBtnState('added');
       setTimeout(() => setBtnState('idle'), 2000);
     } catch {

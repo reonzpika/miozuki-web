@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { createCart, addCartLines, getCart, type CartAttribute } from '@/lib/shopify/cart';
 import { persistCartAttribution } from '@/lib/cart-attribution';
+import { subscribeToPrivacy } from '@/lib/tracking-privacy';
 
 const CART_ID_KEY = 'miozuki-cart-id';
 
@@ -13,7 +14,7 @@ interface CartContextValue {
   updateCartCount: (count: number) => void;
   checkoutUrl: string | null;
   setCheckoutUrl: (url: string) => void;
-  prepareCheckout: () => Promise<void>;
+  prepareCheckout: () => Promise<string | null>;
 }
 
 const CartContext = createContext<CartContextValue>({
@@ -23,7 +24,7 @@ const CartContext = createContext<CartContextValue>({
   updateCartCount: () => {},
   checkoutUrl: null,
   setCheckoutUrl: () => {},
-  prepareCheckout: async () => {},
+  prepareCheckout: async () => null,
 });
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -33,7 +34,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Rehydrate from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem(CART_ID_KEY);
+    let stored: string | null;
+    try { stored = localStorage.getItem(CART_ID_KEY); } catch { return; }
     if (!stored) return;
     getCart(stored)
       .then((cart) => {
@@ -42,10 +44,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           setCartCount(cart.totalQuantity);
           setCheckoutUrl(cart.checkoutUrl);
         } else {
-          localStorage.removeItem(CART_ID_KEY);
+          try { localStorage.removeItem(CART_ID_KEY); } catch { /* storage unavailable */ }
         }
       })
-      .catch(() => localStorage.removeItem(CART_ID_KEY));
+      .catch(() => { /* A transient failure does not prove the basket expired. */ });
   }, []);
 
   const addToCart = useCallback(
@@ -66,7 +68,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           cart = await createCart(variantId, quantity, attributes);
         }
       } catch (firstError) {
-        if (effectiveCartId) {
+        if (effectiveCartId && await getCart(effectiveCartId).then(cart => cart === null).catch(() => false)) {
           try {
             localStorage.removeItem(CART_ID_KEY);
           } catch {
@@ -88,14 +90,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setCartCount(cart.totalQuantity);
       setCheckoutUrl(cart.checkoutUrl);
 
-      await persistCartAttribution(cart.id);
+      const confirmed = await persistCartAttribution(cart.id);
+      if (confirmed) setCheckoutUrl(confirmed.checkoutUrl);
     },
     [cartId]
   );
 
   const prepareCheckout = useCallback(async () => {
-    if (cartId) await persistCartAttribution(cartId);
-  }, [cartId]);
+    const confirmed = cartId ? await persistCartAttribution(cartId) : undefined;
+    if (confirmed) setCheckoutUrl(confirmed.checkoutUrl);
+    return confirmed?.checkoutUrl ?? checkoutUrl;
+  }, [cartId, checkoutUrl]);
+
+  useEffect(() => subscribeToPrivacy(() => {
+    if (cartId) void persistCartAttribution(cartId);
+  }), [cartId]);
 
   return (
     <CartContext.Provider value={{ cartId, cartCount, addToCart, updateCartCount: setCartCount, checkoutUrl, setCheckoutUrl, prepareCheckout }}>

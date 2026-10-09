@@ -6,12 +6,13 @@ export type { Cart, CartAttribute, CartLine };
 
 const CART_API = '/api/shopify/cart';
 
-async function invokeCart<B extends Record<string, unknown>>(body: B): Promise<unknown> {
+async function invokeCart<B extends Record<string, unknown>>(body: B, signal?: AbortSignal): Promise<unknown> {
   const res = await fetch(CART_API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
     cache: 'no-store',
+    signal,
   });
 
   let parsed: unknown = {};
@@ -48,7 +49,7 @@ function hasCartShape(payload: unknown): payload is { cart: Cart } {
 function hasNullableCartShape(payload: unknown): payload is { cart: Cart | null } {
   if (!payload || typeof payload !== 'object') return false;
   const cart = (payload as { cart?: unknown }).cart;
-  if (cart === null || cart === undefined) return true;
+  if (cart === null) return true;
   return hasCartShape(payload);
 }
 
@@ -110,17 +111,18 @@ export async function removeCartLines(cartId: string, lineIds: string[]): Promis
 
 export async function updateCartAttributes(
   cartId: string,
-  attributes: CartAttribute[]
+  attributes: CartAttribute[],
+  signal?: AbortSignal,
 ): Promise<Cart> {
-  const parsed = await invokeCart({ op: 'updateAttributes', cartId, attributes });
+  const parsed = await invokeCart({ op: 'updateAttributes', cartId, attributes }, signal);
   if (!hasCartShape(parsed)) {
     throw new Error(`Unexpected cart response from updateAttributes: ${snippet(parsed)}`);
   }
   return parsed.cart;
 }
 
-export async function getCart(cartId: string): Promise<Cart | null> {
-  const parsed = await invokeCart({ op: 'get', cartId });
+export async function getCart(cartId: string, signal?: AbortSignal): Promise<Cart | null> {
+  const parsed = await invokeCart({ op: 'get', cartId }, signal);
   if (!hasNullableCartShape(parsed)) {
     throw new Error(`Unexpected cart response from get: ${snippet(parsed)}`);
   }

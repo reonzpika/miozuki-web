@@ -21,7 +21,7 @@ declare global {
     jdgmCacheServer?: {
       reloadAll?: () => void;
     };
-    Shopify?: { shop?: string };
+    Shopify?: ShopifyGlobal;
   }
 }
 

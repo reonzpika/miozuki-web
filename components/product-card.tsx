@@ -2,6 +2,12 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import { useAnalyticsPermission } from '@/lib/tracking-privacy';
+import { isProductionTrackingContext } from '@/lib/analytics-host';
+import { gaEvent } from '@/lib/gtag';
+import { productItem } from '@/lib/ecommerce-items';
 import type { Product } from '@/lib/shopify';
 import type { RatingSummary } from '@/lib/judgeme/types';
 import { useHoverCapable } from '@/hooks/use-hover-capable';
@@ -78,6 +84,22 @@ export default function ProductCard({
   showFromPriceWhenRange?: boolean;
 }) {
   const hoverCapable = useHoverCapable();
+  const analyticsPermission = useAnalyticsPermission();
+  const pathname = usePathname();
+  const cardRef = useRef<HTMLAnchorElement>(null);
+  const seen = useRef<string | null>(null);
+  useEffect(() => {
+    const key = `${pathname}:${product.id}`;
+    if (analyticsPermission !== 'allowed' || !isProductionTrackingContext() || seen.current === key || !cardRef.current) return;
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting && entry.intersectionRatio >= 0.5)) return;
+      gaEvent('view_item_list', { item_list_id: pathname, items: [productItem(product)] });
+      seen.current = key;
+      observer.disconnect();
+    }, { threshold: 0.5 });
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [analyticsPermission, pathname, product]);
   const { handle, title, featuredImage, images, priceRange, tags } = product;
   const price = priceRange.minVariantPrice;
   const maxPrice = priceRange.maxVariantPrice;
@@ -103,7 +125,9 @@ export default function ProductCard({
       : null;
 
   return (
-    <Link href={href} className="group block w-full">
+    <Link href={href} ref={cardRef} onClick={() => {
+      if (isProductionTrackingContext()) gaEvent('select_item', { item_list_id: pathname, items: [productItem(product)] });
+    }} className="group block w-full">
       {/* Image */}
       <div
         className={`relative mb-3 overflow-hidden border border-charcoal/12 bg-champagne shadow-[0_12px_36px_rgb(31_31_31/0.08)] ${layout === 'flagship' ? 'aspect-[10/13] rounded-sm' : 'aspect-[4/5] rounded-lg'}`}

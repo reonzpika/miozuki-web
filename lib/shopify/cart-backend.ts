@@ -13,6 +13,7 @@ export interface CartLine {
     title: string;
     price: { amount: string; currencyCode: string };
     product: {
+      id: string;
       title: string;
       handle: string;
       featuredImage: {
@@ -28,6 +29,7 @@ export interface CartLine {
 export interface Cart {
   id: string;
   checkoutUrl: string;
+  attributes?: CartAttribute[];
   totalQuantity: number;
   lines: { edges: { node: CartLine }[] };
   cost: {
@@ -50,6 +52,7 @@ const CREATE_CART = /* GraphQL */ `
       cart {
         id
         checkoutUrl
+        attributes { key value }
         totalQuantity
         lines(first: 100) {
           edges {
@@ -62,6 +65,7 @@ const CREATE_CART = /* GraphQL */ `
                   title
                   price { amount currencyCode }
                   product {
+                    id
                     title
                     handle
                     featuredImage { url altText width height }
@@ -87,6 +91,7 @@ const ADD_CART_LINES = /* GraphQL */ `
       cart {
         id
         checkoutUrl
+        attributes { key value }
         totalQuantity
         lines(first: 100) {
           edges {
@@ -99,6 +104,7 @@ const ADD_CART_LINES = /* GraphQL */ `
                   title
                   price { amount currencyCode }
                   product {
+                    id
                     title
                     handle
                     featuredImage { url altText width height }
@@ -124,6 +130,7 @@ const REMOVE_CART_LINES = /* GraphQL */ `
       cart {
         id
         checkoutUrl
+        attributes { key value }
         totalQuantity
         lines(first: 100) {
           edges {
@@ -136,6 +143,7 @@ const REMOVE_CART_LINES = /* GraphQL */ `
                   title
                   price { amount currencyCode }
                   product {
+                    id
                     title
                     handle
                     featuredImage { url altText width height }
@@ -161,6 +169,7 @@ const UPDATE_CART_ATTRIBUTES = /* GraphQL */ `
       cart {
         id
         checkoutUrl
+        attributes { key value }
         totalQuantity
         lines(first: 100) {
           edges {
@@ -173,6 +182,7 @@ const UPDATE_CART_ATTRIBUTES = /* GraphQL */ `
                   title
                   price { amount currencyCode }
                   product {
+                    id
                     title
                     handle
                     featuredImage { url altText width height }
@@ -197,6 +207,7 @@ const GET_CART = /* GraphQL */ `
     cart(id: $cartId) {
       id
       checkoutUrl
+      attributes { key value }
       totalQuantity
       lines(first: 100) {
         edges {
@@ -209,6 +220,7 @@ const GET_CART = /* GraphQL */ `
                 title
                 price { amount currencyCode }
                 product {
+                  id
                   title
                   handle
                   featuredImage { url altText width height }
@@ -297,6 +309,7 @@ export async function storefrontCreateCart(
   }>(credentials, CREATE_CART, { lines: [line] });
 
   const { cart, userErrors } = data.cartCreate;
+  if (userErrors?.length) throwOnUserErrors(userErrors, "Cart mutation failed");
   if (cart) return finalizeCheckoutUrl(cart);
   throwOnUserErrors(userErrors, 'Could not create cart');
 }
@@ -315,6 +328,7 @@ export async function storefrontAddCartLines(
   }>(credentials, ADD_CART_LINES, { cartId, lines: [line] });
 
   const { cart, userErrors } = data.cartLinesAdd;
+  if (userErrors?.length) throwOnUserErrors(userErrors, "Cart mutation failed");
   if (cart) return finalizeCheckoutUrl(cart);
   throwOnUserErrors(userErrors, 'Could not update cart');
 }
@@ -329,6 +343,7 @@ export async function storefrontRemoveCartLines(
   }>(credentials, REMOVE_CART_LINES, { cartId, lineIds });
 
   const { cart, userErrors } = data.cartLinesRemove;
+  if (userErrors?.length) throwOnUserErrors(userErrors, "Cart mutation failed");
   if (cart) return finalizeCheckoutUrl(cart);
   throwOnUserErrors(userErrors, 'Could not remove line');
 }
@@ -347,6 +362,7 @@ export async function storefrontUpdateCartAttributes(
   }>(credentials, UPDATE_CART_ATTRIBUTES, { cartId, attributes });
 
   const { cart, userErrors } = data.cartAttributesUpdate;
+  if (userErrors?.length) throwOnUserErrors(userErrors, "Cart mutation failed");
   if (cart) return finalizeCheckoutUrl(cart);
   throwOnUserErrors(userErrors, 'Could not update cart attributes');
 }

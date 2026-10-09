@@ -113,7 +113,6 @@ export async function POST(req: NextRequest) {
       currency: order.currency,
       attributionFound: found,
       attributionMissing: missing,
-      attributionValues: Object.fromEntries(found.map((k) => [k, attributeMap.get(k)])),
     })
   );
 
@@ -122,7 +121,12 @@ export async function POST(req: NextRequest) {
   // rollout stage, so a real order's payload shape is inspectable in Vercel
   // logs before any network call is ever made. Never log the raw email —
   // only its hash.
-  if (order.total_price && order.currency && order.created_at) {
+  const uploadPermitted = attributeMap.get('_marketing_permission') === 'allowed' &&
+    attributeMap.get('_ad_user_data_permission') === 'allowed';
+  const hasAdClick = Boolean(attributeMap.get('_gclid') || attributeMap.get('_gbraid') || attributeMap.get('_wbraid'));
+  // The optional Ads sender must respect the same recorded permission as the storefront.
+  // Native Shopify purchase measurement is independent and remains its owner.
+  if (uploadPermitted && hasAdClick && order.total_price && order.currency && order.created_at) {
     const orderForUpload: OrderForUpload = {
       id: order.id,
       createdAt: order.created_at,
@@ -138,6 +142,7 @@ export async function POST(req: NextRequest) {
     const stage = getUploadStage();
     const eventBody = buildIngestEventBody(orderForUpload, attribution, {
       validateOnly: stage !== 'live',
+      consentAllowed: true,
     });
 
     console.log(
@@ -147,20 +152,21 @@ export async function POST(req: NextRequest) {
         orderName: order.name,
         stage,
         hasEmail: Boolean(orderForUpload.hashedEmail),
-        eventBody,
+        payloadPrepared: Boolean(eventBody),
       })
     );
 
     if (stage !== 'disabled') {
       after(async () => {
-        const result = await uploadConversionEvent(orderForUpload, attribution);
+        const result = await uploadConversionEvent(orderForUpload, attribution, true);
         console.log(
           JSON.stringify({
             event: 'orders_paid_dm_upload_result',
             orderId: order.id,
             orderName: order.name,
             stage,
-            ...result,
+            ok: result?.ok ?? false,
+            status: result?.status,
           })
         );
       });

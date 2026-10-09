@@ -272,6 +272,7 @@ export default async function ProductPage({
               showMaterialLine={!isRingProduct(product.title, product.productType, product.tags)}
             />
             <AddToCart
+              productId={product.id}
               variants={variants}
               priceRange={product.priceRange}
               productTitle={product.title}

@@ -65,7 +65,7 @@ export function getUploadStage(): UploadStage {
 export function buildIngestEventBody(
   order: OrderForUpload,
   attribution: AttributionAttributes,
-  opts: { validateOnly: boolean }
+  opts: { validateOnly: boolean; consentAllowed?: boolean }
 ): Record<string, unknown> | null {
   const accountId = process.env.GOOGLE_ADS_DM_OPERATING_ACCOUNT_ID;
   const conversionActionId = process.env.GOOGLE_ADS_DM_CONVERSION_ACTION_ID;
@@ -101,6 +101,7 @@ export function buildIngestEventBody(
       },
     ],
     encoding: 'HEX',
+    ...(opts.consentAllowed ? { consent: { adUserData: 'CONSENT_GRANTED', adPersonalization: 'CONSENT_DENIED' } } : {}),
     events: [event],
     validateOnly: opts.validateOnly,
   };
@@ -116,15 +117,16 @@ export interface UploadResult {
 /** Never throws. Stage-gated by GOOGLE_ADS_DM_UPLOAD_ENABLED — callers should still build+log the body at Stage 0. */
 export async function uploadConversionEvent(
   order: OrderForUpload,
-  attribution: AttributionAttributes
+  attribution: AttributionAttributes,
+  consentAllowed = false
 ): Promise<UploadResult | null> {
   const stage = getUploadStage();
-  if (stage === 'disabled') return null;
+  if (stage === 'disabled' || !consentAllowed) return null;
 
   const auth = getAuth();
   if (!auth) return { ok: false, error: 'Google Ads Data Manager service account not configured.' };
 
-  const body = buildIngestEventBody(order, attribution, { validateOnly: stage === 'validate' });
+  const body = buildIngestEventBody(order, attribution, { validateOnly: stage === 'validate', consentAllowed });
   if (!body) return { ok: false, error: 'Missing GOOGLE_ADS_DM_OPERATING_ACCOUNT_ID or GOOGLE_ADS_DM_CONVERSION_ACTION_ID.' };
 
   try {

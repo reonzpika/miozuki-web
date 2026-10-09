@@ -1,16 +1,17 @@
 'use client';
 
+import { googleConsent, trackingPermission } from './tracking-privacy';
+
 // Minimal GA4 command-queue plumbing, replacing @next/third-parties' GoogleAnalytics.
-// The split exists for performance: the queue (this file) is seeded on first paint
-// at ~zero cost, while the heavy gtag.js network script is only attached after the
-// visitor interacts (see components/deferred-analytics.tsx). Events pushed before
-// gtag.js arrives sit in window.dataLayer and are replayed by gtag.js on load, so
-// nothing is lost — this is the mechanism that keeps add_to_cart reliable.
+// The queue is seeded on first paint and reused. Permitted events can queue
+// before the script loads; blocked scripts/short visits can still lose events.
 
 declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
+    miozukiGoogleDestinations?: Set<string>;
+    miozukiGoogleBootstrap?: boolean;
   }
 }
 
@@ -24,21 +25,40 @@ const GOOGLE_ADS_ID = 'AW-18302159906';
  * as the previous @next/third-parties setup.
  */
 export function seedGtag(gaId: string) {
-  if (window.dataLayer) return;
-  window.dataLayer = [];
-  window.gtag = function gtag() {
+  window.dataLayer ??= [];
+  window.gtag ??= function gtag() {
     // GA requires the Arguments object itself on the queue, not an array copy.
     // eslint-disable-next-line prefer-rest-params
     window.dataLayer!.push(arguments);
   };
-  window.gtag('js', new Date());
-  window.gtag('config', gaId);
+  if (!window.miozukiGoogleBootstrap) {
+    window.gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+    window.gtag('js', new Date());
+    window.miozukiGoogleBootstrap = true;
+  }
+  window.gtag('consent', 'update', googleConsent());
+  window.miozukiGoogleDestinations ??= new Set();
   // Reuse the existing Google tag for Ads measurement on the custom storefront.
   // This is base-tag setup only, not a completed-purchase conversion event.
-  window.gtag('config', GOOGLE_ADS_ID);
+  const destinations = [
+    ...(trackingPermission('analytics') === 'allowed' ? [gaId] : []),
+    ...(trackingPermission('marketing') === 'allowed' ? [GOOGLE_ADS_ID] : []),
+  ];
+  for (const id of destinations) {
+    if (!window.miozukiGoogleDestinations.has(id)) {
+      window.gtag('config', id);
+      window.miozukiGoogleDestinations.add(id);
+    }
+  }
 }
 
 /** Queue a GA4 event. No-ops when GA is not active (stub never seeded). */
 export function gaEvent(eventName: string, params: Record<string, unknown>) {
-  window.gtag?.('event', eventName, params);
+  try {
+  if (trackingPermission('analytics') !== 'allowed') return;
+  const gaId = process.env.NEXT_PUBLIC_GA4_ID;
+  if (!gaId) return;
+  seedGtag(gaId);
+  window.gtag?.('event', eventName, { ...params, send_to: gaId });
+  } catch { /* A measurement failure must never interrupt shopping. */ }
 }

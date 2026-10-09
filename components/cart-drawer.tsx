@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useCart } from './cart-provider';
 import { getCart, removeCartLines } from '@/lib/shopify/cart';
 import type { Cart } from '@/lib/shopify/cart';
+import { trackBeginCheckout, trackRemoveFromCart, trackViewCart } from '@/lib/ga-events';
+import { useAnalyticsPermission } from '@/lib/tracking-privacy';
 
 function formatPrice(amount: string, currencyCode: string) {
   return new Intl.NumberFormat('en-NZ', {
@@ -23,9 +25,17 @@ export default function CartDrawer({
 }) {
   const { cartId, cartCount, checkoutUrl, updateCartCount, setCheckoutUrl, prepareCheckout } = useCart();
   const checkoutPending = useRef(false);
+  const analyticsPermission = useAnalyticsPermission();
+  const viewedCart = useRef<string | null>(null);
   const [cart, setCart] = useState<Cart | null>(null);
   const [removing, setRemoving] = useState<string | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) { viewedCart.current = null; return; }
+    if (!cart || analyticsPermission !== 'allowed' || viewedCart.current === cart.id) return;
+    trackViewCart(cart);
+    viewedCart.current = cart.id;
+  }, [open, cart, analyticsPermission]);
 
   // Fetch cart when drawer opens
   useEffect(() => {
@@ -46,6 +56,8 @@ export default function CartDrawer({
     setRemoving(lineId);
     try {
       const updated = await removeCartLines(cartId, [lineId]);
+      const removed = cart?.lines.edges.find(({ node }) => node.id === lineId)?.node;
+      if (removed) trackRemoveFromCart(removed);
       setCart(updated);
       updateCartCount(updated.totalQuantity);
       setCheckoutUrl(updated.checkoutUrl);
@@ -179,10 +191,12 @@ export default function CartDrawer({
                 event.preventDefault();
                 if (checkoutPending.current) return;
                 checkoutPending.current = true;
+                let destination = checkoutUrl;
                 try {
-                  await prepareCheckout();
+                  try { if (cart) trackBeginCheckout(cart); } catch { /* Telemetry cannot block checkout. */ }
+                  destination = await prepareCheckout() ?? checkoutUrl;
                 } finally {
-                  window.location.assign(checkoutUrl);
+                  window.location.assign(destination);
                   checkoutPending.current = false;
                 }
               }}

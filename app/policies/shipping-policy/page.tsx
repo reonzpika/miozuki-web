@@ -42,8 +42,9 @@ export default function ShippingPolicyPage() {
         <div>
           <h2 className="font-serif text-xl text-charcoal mb-4">Made-to-Order Lead Time</h2>
           <p>
-            Items will be shipped within{' '}
-            <strong className="text-charcoal font-medium">3-5 weeks</strong> once received. If your order
+            Please allow{' '}
+            <strong className="text-charcoal font-medium">3–5 weeks</strong> to receive your made-to-order
+            items. This timeframe includes production and delivery. If your order
             includes both in-stock and made-to-order items, it will be shipped once all items are available
             in a single shipment. Shipping fees apply if you would like split shipping.
           </p>

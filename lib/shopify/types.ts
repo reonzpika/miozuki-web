@@ -62,6 +62,12 @@ export interface Product {
   metafields: (ShopifyMetafield | null)[];
 }
 
+/** What list queries (collection, GET_PRODUCTS) return: no variants, media or metafields. */
+export type ProductSummary = Pick<
+  Product,
+  'id' | 'handle' | 'title' | 'featuredImage' | 'images' | 'priceRange' | 'compareAtPriceRange' | 'tags' | 'productType'
+> & { variants?: Product['variants'] };
+
 export interface Collection {
   id: string;
   handle: string;

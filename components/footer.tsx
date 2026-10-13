@@ -28,6 +28,7 @@ const SHOP_LINKS = [
   { label: 'Moissanite Rings', href: '/collections/moissanite-rings' },
   { label: 'Moissanite Earrings', href: '/collections/moissanite-earrings' },
   { label: 'Moissanite Necklaces', href: '/collections/moissanite-necklace-nz' },
+  { label: 'Pearl Necklaces', href: '/collections/pearl-necklace-nz' },
   { label: 'Pearl Earrings', href: '/collections/pearl-earrings' },
   { label: 'Bridal Jewellery', href: '/collections/bridal-jewellery' },
 ];

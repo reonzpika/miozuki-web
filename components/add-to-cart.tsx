@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { Money, ProductVariant } from '@/lib/shopify';
 import RingSizeGuide from '@/components/ring-size-guide';
 import PdpTrustStrip from '@/components/pdp-trust-strip';
@@ -93,26 +93,64 @@ function isMaterialOption(name: string, values: string[]): boolean {
 
 type ButtonState = 'idle' | 'loading' | 'added' | 'error' | 'select-size';
 
-export default function AddToCart({
-  productId,
-  variants,
-  priceRange,
-  productTitle,
-}: {
+function subscribeToVariantLink(callback: () => void) {
+  window.addEventListener('popstate', callback);
+  return () => window.removeEventListener('popstate', callback);
+}
+
+function linkedVariantId() {
+  return new URLSearchParams(window.location.search).get('variant');
+}
+
+type AddToCartProps = {
   productId: string;
   variants: ProductVariant[];
   priceRange: { minVariantPrice: Money; maxVariantPrice: Money };
   /** Shown on the mobile sticky bar (truncated in CSS). */
   productTitle: string;
-}) {
-  const { addToCart } = useCart();
+};
+
+export default function AddToCart(props: AddToCartProps) {
+  // Keep server/hydration defaults identical, then apply the actual buying link.
+  const requestedVariantId = useSyncExternalStore<string | null | undefined>(
+    subscribeToVariantLink,
+    linkedVariantId,
+    () => undefined,
+  );
   const analyticsPermission = useAnalyticsPermission();
   const viewedProduct = useRef<string | null>(null);
   useEffect(() => {
-    if (analyticsPermission !== 'allowed' || viewedProduct.current === productId || !variants[0]) return;
-    trackViewItem({ productId, productTitle, variant: variants[0], quantity: 1 });
-    viewedProduct.current = productId;
-  }, [analyticsPermission, productId, productTitle, variants]);
+    if (requestedVariantId === undefined || analyticsPermission !== 'allowed' ||
+        viewedProduct.current === props.productId || !props.variants[0]) return;
+    const viewedVariant = requestedVariantId && /^\d+$/.test(requestedVariantId)
+      ? props.variants.find((v) => v.id.split('/').pop() === requestedVariantId)
+      : undefined;
+    trackViewItem({
+      productId: props.productId,
+      productTitle: props.productTitle,
+      variant: viewedVariant ?? props.variants[0],
+      quantity: 1,
+    });
+    viewedProduct.current = props.productId;
+  }, [analyticsPermission, requestedVariantId, props.productId, props.productTitle, props.variants]);
+
+  return (
+    <VariantSelector
+      key={`${props.productId}:${requestedVariantId ?? ''}`}
+      {...props}
+      requestedVariantId={requestedVariantId}
+    />
+  );
+}
+
+function VariantSelector({
+  productId,
+  variants,
+  priceRange,
+  productTitle,
+  requestedVariantId,
+}: AddToCartProps & { requestedVariantId: string | null | undefined }) {
+  const { addToCart } = useCart();
   const options = buildOptions(variants);
   /** Single-variant products still carry Shopify's Title/Default Title option; no picker needed. */
   const showVariantPicker = variants.length > 1;
@@ -121,6 +159,12 @@ export default function AddToCart({
   const showSterlingOnlyMaterial = hasRingSizes && !hasMaterialOptions;
 
   const [selected, setSelected] = useState<Record<string, string>>(() => {
+    const linkedVariant = requestedVariantId && /^\d+$/.test(requestedVariantId)
+      ? variants.find((v) => v.id.split('/').pop() === requestedVariantId)
+      : undefined;
+    if (linkedVariant) {
+      return Object.fromEntries(linkedVariant.selectedOptions.map((opt) => [opt.name, opt.value]));
+    }
     const defaults: Record<string, string> = {};
     for (const opt of options) {
       defaults[opt.name] = isRingSizeOption(opt.name, opt.values)

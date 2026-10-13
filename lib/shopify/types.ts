@@ -77,7 +77,7 @@ export interface Collection {
   image: ShopifyImage | null;
   metafield: { value: string } | null;
   descriptionHtml: string | null;
-  products: { edges: { node: Product }[] };
+  products: { edges: { node: ProductSummary }[] };
 }
 
 export interface ShopifyResponse<T> {

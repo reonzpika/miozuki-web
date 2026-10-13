@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import type { Product } from '@/lib/shopify';
+import type { ProductSummary } from '@/lib/shopify';
 import type { RatingSummary } from '@/lib/judgeme/types';
 import {
   CATALOGUE_QUICK_FILTERS,
@@ -34,7 +34,7 @@ export default function ProductsGrid({
   ratings = {},
   showFromPriceWhenRange = false,
 }: {
-  products: Product[];
+  products: ProductSummary[];
   layout?: 'default' | 'flagship';
   /**
    * Rings / earrings / … chips on the full catalogue only. Collection PLPs pass `false` so every

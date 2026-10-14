@@ -29,6 +29,7 @@ export default function CartDrawer({
   const viewedCart = useRef<string | null>(null);
   const [cart, setCart] = useState<Cart | null>(null);
   const [removing, setRemoving] = useState<string | null>(null);
+  const [acknowledgedTerms, setAcknowledgedTerms] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) { viewedCart.current = null; return; }
@@ -180,13 +181,28 @@ export default function CartDrawer({
                 {formatPrice(cart.cost.subtotalAmount.amount, cart.cost.subtotalAmount.currencyCode)}
               </span>
             </div>
-            <p className="text-xs text-charcoal/65">
-              Shipping and taxes calculated at checkout. We ship to NZ and
-              Australia; AU orders are charged in AUD at checkout.
-            </p>
+            <label className="flex items-start gap-3 text-xs leading-relaxed text-charcoal">
+              <input
+                type="checkbox"
+                checked={acknowledgedTerms}
+                onChange={(event) => setAcknowledgedTerms(event.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 accent-burgundy"
+              />
+              <span>
+                I acknowledge that <strong className="font-medium">made-to-order</strong> items require{' '}
+                <strong className="font-medium">3–5 weeks for production</strong> and delivery, and orders{' '}
+                <strong className="font-medium">cannot be cancelled, returned or refunded</strong> for change of mind once confirmed.
+              </span>
+            </label>
             <a
-              href={checkoutUrl ?? '#'}
+              href={acknowledgedTerms ? (checkoutUrl ?? '#') : undefined}
+              role="link"
+              aria-disabled={!acknowledgedTerms}
               onClick={async (event) => {
+                if (!acknowledgedTerms) {
+                  event.preventDefault();
+                  return;
+                }
                 if (!checkoutUrl || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
                 event.preventDefault();
                 if (checkoutPending.current) return;
@@ -200,10 +216,14 @@ export default function CartDrawer({
                   checkoutPending.current = false;
                 }
               }}
-              className="block w-full text-center bg-burgundy text-cream py-4 text-xs tracking-[0.2em] uppercase transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+              className={`block w-full text-center bg-burgundy text-cream py-4 text-xs tracking-[0.2em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/50 focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${acknowledgedTerms ? 'hover:bg-accent-hover' : 'opacity-50 cursor-not-allowed'}`}
             >
               Checkout
             </a>
+            <p className="text-xs text-charcoal/65">
+              Shipping and taxes calculated at checkout. We ship to NZ and
+              Australia; AU orders are charged in AUD at checkout.
+            </p>
           </div>
         )}
       </div>

@@ -62,7 +62,8 @@ export default function SizeGuidePage() {
                 once the item has gone into production.
               </li>
               <li>
-                We don&apos;t offer resizing; each ring is crafted to your selected size.
+                Solid gold rings include one free resize. Resizing is not offered for other rings;
+                each ring is crafted to your selected size.
               </li>
             </ul>
             <p className="mt-3 text-charcoal/70">

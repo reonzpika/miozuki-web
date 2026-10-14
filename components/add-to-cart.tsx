@@ -388,6 +388,23 @@ function VariantSelector({
                     );
                   })}
                 </div>
+                {hasRingSizes && materialOption && valuesForUi.some((value) => /gold/i.test(value)) ? (
+                  <div className="mt-4 border-l-2 border-burgundy/30 pl-4">
+                    <p className="font-serif text-base text-charcoal">
+                      Free resizing with solid gold
+                    </p>
+                    <p className="mt-2 text-sm font-light leading-relaxed text-charcoal/65">
+                      Your solid gold ring includes one free resize. Unsure of your size?
+                      Book an appointment to have your finger measured.
+                    </p>
+                    <a
+                      href="/pages/appointment-online"
+                      className="mt-3 inline-block text-xs font-medium text-burgundy underline underline-offset-4 hover:text-burgundy/70"
+                    >
+                      Book a sizing appointment
+                    </a>
+                  </div>
+                ) : null}
               </div>
             );
           })}

@@ -1,4 +1,4 @@
-import type { Article, Collection, Product, ShopifyResponse } from './types';
+import type { Article, Collection, Product, ProductSummary, ShopifyResponse } from './types';
 import {
   GET_COLLECTIONS,
   GET_COLLECTION_BY_HANDLE,
@@ -101,8 +101,8 @@ async function shopifyFetch<T>(
 
 // Products
 
-export async function getProducts(first = 24): Promise<Product[]> {
-  const data = await shopifyFetch<{ products: { edges: { node: Product }[] } }>(
+export async function getProducts(first = 24): Promise<ProductSummary[]> {
+  const data = await shopifyFetch<{ products: { edges: { node: ProductSummary }[] } }>(
     GET_PRODUCTS,
     { first },
   );
@@ -158,7 +158,7 @@ type CollectionByHandleFetch = {
     image: Collection['image'];
     metafield: Collection['metafield'];
     products: {
-      edges: { node: Product }[];
+      edges: { node: ProductSummary }[];
       pageInfo: { hasNextPage: boolean; endCursor: string | null };
     };
   } | null;
@@ -194,7 +194,7 @@ export async function getCollectionByHandle(
   const maxProducts = limit ?? 500;
   let after: string | null = null;
   let collection: Collection | null = null;
-  const allEdges: { node: Product }[] = [];
+  const allEdges: { node: ProductSummary }[] = [];
 
   while (allEdges.length < maxProducts) {
     const batchSize =

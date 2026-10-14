@@ -1,4 +1,4 @@
-import type { Product } from '@/lib/shopify';
+import type { ProductSummary } from '@/lib/shopify';
 
 export type CatalogueQuickFilterId =
   | 'all'
@@ -18,19 +18,19 @@ export const CATALOGUE_QUICK_FILTERS: { id: CatalogueQuickFilterId; label: strin
   { id: 'under-300', label: 'Under $300' },
 ];
 
-function searchBlobLc(product: Product): string {
+function searchBlobLc(product: ProductSummary): string {
   return `${product.productType ?? ''}\n${product.title}\n${product.tags.join(' ')}`.toLowerCase();
 }
 
 /** Shopify tags that mark a product as a best seller (sort / catalogue chip). */
-export function productHasBestSellerTag(product: Product): boolean {
+export function productHasBestSellerTag(product: ProductSummary): boolean {
   return product.tags.some((t) =>
     /^(best\s*sellers?|bestsellers?)$/i.test(t.trim()),
   );
 }
 
 export function productMatchesCatalogueQuickFilter(
-  product: Product,
+  product: ProductSummary,
   id: CatalogueQuickFilterId,
 ): boolean {
   const blob = searchBlobLc(product);

@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import ProductCard from '@/components/product-card';
-import type { Product } from '@/lib/shopify';
+import type { ProductSummary } from '@/lib/shopify';
 import type { RatingSummary } from '@/lib/judgeme/types';
 
 const container = {
@@ -20,7 +20,7 @@ export default function BestSellersGrid({
   products,
   ratings = {},
 }: {
-  products: Product[];
+  products: ProductSummary[];
   ratings?: Record<string, RatingSummary>;
 }) {
   const railRef = useRef<HTMLDivElement>(null);

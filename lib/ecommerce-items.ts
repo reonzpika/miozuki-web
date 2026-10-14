@@ -1,4 +1,4 @@
-import type { Product, ProductVariant } from './shopify/types';
+import type { ProductSummary, ProductVariant } from './shopify/types';
 import type { Cart, CartLine } from './shopify/cart-backend';
 
 function numericId(value: unknown) { return typeof value === 'string' ? value.split('/').at(-1) : undefined; }
@@ -16,8 +16,8 @@ export function variantItem(productId: string, title: string, variant: ProductVa
     item_variant: variant.title, price: Number(variant.price.amount), quantity,
   };
 }
-export function productItem(product: Product) {
-  const variant = product.variants.edges[0]?.node;
+export function productItem(product: Pick<ProductSummary, 'id' | 'title' | 'variants'>) {
+  const variant = product.variants?.edges?.[0]?.node;
   return variant ? variantItem(product.id, product.title, variant) : { item_id: product.id, item_name: product.title };
 }
 export function cartLineItem(line: CartLine) {

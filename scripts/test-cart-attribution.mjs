@@ -44,6 +44,12 @@ async function main() {
   mismatch=true;assert.equal(await cart.persistCartAttribution('cart'),undefined,'Read-back mismatch cannot count as confirmed');mismatch=false;
   slow=true; const first=cart.persistCartAttribution('cart');await new Promise(r=>setTimeout(r,10));analytics=marketing='denied';const withdrawal=cart.persistCartAttribution('cart');const deadlineStart=Date.now(); await Promise.all([first,withdrawal]);assert.ok(Date.now()-deadlineStart<2100,'Caller deadline keeps checkout available');await new Promise(r=>setTimeout(r,600));assert.equal(writes.at(-1)._analytics_permission,'denied','Queued withdrawal still drains after caller deadline');assert.equal(writes.at(-1)._gclid,'');
   const items=load('lib/ecommerce-items.ts'); assert.doesNotThrow(()=>items.analyticsItemId(undefined,undefined));assert.equal(items.analyticsItemId('gid://shopify/Product/1','gid://shopify/ProductVariant/2'),'shopify_ZZ_1_2');
+  // Collection/list queries do not select `variants`; cards must not throw on them.
+  const listProduct={id:'gid://shopify/Product/1',title:'Ring'};
+  assert.doesNotThrow(()=>items.productItem(listProduct),'List products without variants must not throw');
+  assert.deepEqual({...items.productItem(listProduct)},{item_id:'gid://shopify/Product/1',item_name:'Ring'});
+  assert.doesNotThrow(()=>items.productItem({...listProduct,variants:{edges:[]}}));
+  assert.equal(items.productItem({...listProduct,variants:{edges:[{node:{id:'gid://shopify/ProductVariant/2',title:'6',price:{amount:'10.0'}}}]}}).item_id,'shopify_ZZ_1_2');
   const events=load('lib/ga-events.ts',{require:name=>name==='@/lib/gtag'?{gaEvent:()=>{throw Error('blocked');}}:name==='@/lib/analytics-host'?{isProductionTrackingContext:()=>true}:items});assert.doesNotThrow(()=>events.trackBeginCheckout({}),'Incomplete telemetry cannot interrupt shopping');
   // Exercise real provider handlers with controlled hooks, not a mirrored algorithm.
   for(const failure of ['stock','network','missing']) {

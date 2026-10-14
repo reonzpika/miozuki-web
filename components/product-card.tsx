@@ -8,7 +8,7 @@ import { useAnalyticsPermission } from '@/lib/tracking-privacy';
 import { isProductionTrackingContext } from '@/lib/analytics-host';
 import { gaEvent } from '@/lib/gtag';
 import { productItem } from '@/lib/ecommerce-items';
-import type { Product } from '@/lib/shopify';
+import type { ProductSummary } from '@/lib/shopify';
 import type { RatingSummary } from '@/lib/judgeme/types';
 import { useHoverCapable } from '@/hooks/use-hover-capable';
 import { MiozukiBrandLogo } from '@/components/miozuki-brand-logo';
@@ -54,7 +54,7 @@ function pickFlagshipBadge(handle: string, tags: string[]): string | null {
   return pickCollectionBadge(tags);
 }
 
-function productMetaLine(product: Product): string | null {
+function productMetaLine(product: ProductSummary): string | null {
   if (product.productType?.trim()) return product.productType.trim();
   const bits = product.tags.filter(Boolean).slice(0, 2);
   return bits.length ? bits.join(' · ') : null;
@@ -73,7 +73,7 @@ export default function ProductCard({
   imageSizes = DEFAULT_IMAGE_SIZES,
   showFromPriceWhenRange = false,
 }: {
-  product: Product;
+  product: ProductSummary;
   rating?: RatingSummary;
   layout?: 'default' | 'flagship';
   /** Eager-load + prioritise this card's primary image (use for the first visible row). */

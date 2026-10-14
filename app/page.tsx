@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getCollections, getCollectionByHandle, getProductByHandle } from '@/lib/shopify';
 import { getAllRatings } from '@/lib/judgeme/client';
-import type { Collection, Product } from '@/lib/shopify';
+import type { Collection, ProductSummary } from '@/lib/shopify';
 import HeroSection from '@/components/hero-section';
 import HomeShopShortcuts from '@/components/home-shop-shortcuts';
 import CollectionsGrid from '@/components/collections-grid';
@@ -134,7 +134,7 @@ export default async function Home() {
   }
   const byHandle = new Map(all.map((c) => [c.handle, c]));
 
-  let products: Product[] = [];
+  let products: ProductSummary[] = [];
 
   try {
     const bestSellers = await getCollectionByHandle('best-sellers', 8);

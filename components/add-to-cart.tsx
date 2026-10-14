@@ -388,7 +388,7 @@ function VariantSelector({
                     );
                   })}
                 </div>
-                {hasRingSizes && materialOption && valuesForUi.some((value) => /gold/i.test(value)) ? (
+                {hasRingSizes && materialOption && /gold/i.test(selected[opt.name] ?? '') ? (
                   <div className="mt-4 border-l-2 border-burgundy/30 pl-4">
                     <p className="font-serif text-base text-charcoal">
                       Free resizing with solid gold

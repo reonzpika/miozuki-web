@@ -15,6 +15,47 @@ import { prunedBlogRedirects, migratedBlogRedirects } from "./pruned-blogs";
 type RedirectList = Awaited<ReturnType<NonNullable<NextConfig["redirects"]>>>;
 
 export const redirects: RedirectList = [
+  // Historical pearl-guide addresses still appearing in search reports.
+  {
+    source: '/pearl-guide/how-to-tell-if-pearls-are-real',
+    destination: '/pearl-guide/how-to-tell-real-pearls',
+    permanent: true,
+  },
+  {
+    source: '/pearl-guide/how-to-tell-real-pearls-from-fake-at-home-tests',
+    destination: '/pearl-guide/how-to-tell-real-pearls',
+    permanent: true,
+  },
+  // Legacy destinations found in Shopify articles. The article links are also
+  // corrected in Shopify; keep old shared and cached links working.
+  {
+    source: '/collections/moissanite-ear-rings-nz',
+    destination: '/collections/moissanite-earrings',
+    permanent: true,
+  },
+  {
+    source: '/collections/pearl-earrings-nz',
+    destination: '/collections/pearl-earrings',
+    permanent: true,
+  },
+  {
+    source: '/collections/moissanite-pearl-fine-jewellery-nz',
+    destination: '/collections/moissanite-nz',
+    permanent: true,
+  },
+  {
+    source: '/pages/material-care',
+    destination: '/pages/jewellery-care-guide',
+    permanent: true,
+  },
+  // Shopify generates order-access links on the primary storefront domain.
+  // This shop's private order pages belong to Shopify, not the custom site.
+  // Next.js also forwards the query string, including secure access keys.
+  {
+    source: '/79708193023/orders/:path*',
+    destination: 'https://checkout.miozuki.co.nz/79708193023/orders/:path*',
+    permanent: false,
+  },
   // Shopify default policy slug -> the content page on Next
   {
     source: '/policies/refund-policy',

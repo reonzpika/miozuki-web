@@ -15,6 +15,17 @@ import { prunedBlogRedirects, migratedBlogRedirects } from "./pruned-blogs";
 type RedirectList = Awaited<ReturnType<NonNullable<NextConfig["redirects"]>>>;
 
 export const redirects: RedirectList = [
+  // Historical pearl-guide addresses still appearing in search reports.
+  {
+    source: '/pearl-guide/how-to-tell-if-pearls-are-real',
+    destination: '/pearl-guide/how-to-tell-real-pearls',
+    permanent: true,
+  },
+  {
+    source: '/pearl-guide/how-to-tell-real-pearls-from-fake-at-home-tests',
+    destination: '/pearl-guide/how-to-tell-real-pearls',
+    permanent: true,
+  },
   // Legacy destinations found in Shopify articles. The article links are also
   // corrected in Shopify; keep old shared and cached links working.
   {

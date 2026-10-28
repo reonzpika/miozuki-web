@@ -276,6 +276,7 @@ export default async function ProductPage({
               variants={variants}
               priceRange={product.priceRange}
               productTitle={product.title}
+              sizeChartJson={handle === 'classic-moissanite-solitaire-ring' ? getMetafield('ring_size_chart') : null}
             />
           </div>
 

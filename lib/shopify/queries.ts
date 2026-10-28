@@ -80,6 +80,7 @@ export const GET_PRODUCT_BY_HANDLE = /* GraphQL */ `
         { namespace: "custom", key: "what_is_included" }
         { namespace: "custom", key: "product_material" }
         { namespace: "custom", key: "product_details" }
+        { namespace: "custom", key: "ring_size_chart" }
       ]) {
         namespace
         key

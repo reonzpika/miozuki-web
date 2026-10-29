@@ -128,7 +128,7 @@ export function normalizeShopifyVideoUrl(url: string): string {
 export async function getProductByHandle(handle: string): Promise<Product | null> {
   const data = await shopifyFetch<{ productByHandle: Product | null }>(
     GET_PRODUCT_BY_HANDLE,
-    { handle },
+    { handle, variantLimit: handle === 'classic-moissanite-solitaire-ring' ? 100 : 50 },
   );
   if (!data) return null;
   const product = data.productByHandle;

@@ -181,7 +181,8 @@ function VariantSelector({
 
   const [btnState, setBtnState] = useState<ButtonState>('idle');
   const chartForMaterial = sizeChart && options.some((option) =>
-    isMaterialOption(option.name, option.values) && selected[option.name] === sizeChart.material
+    isMaterialOption(option.name, option.values)
+      && (Array.isArray(sizeChart.material) ? sizeChart.material : [sizeChart.material]).includes(selected[option.name])
   ) ? sizeChart : null;
   const RingSizeSelect = chartForMaterial ? ProductRingSizeSelect : PdpRingSizeSelect;
   const [showStickyCart, setShowStickyCart] = useState(false);

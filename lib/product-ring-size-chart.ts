@@ -1,5 +1,5 @@
 export type ProductRingSizeChart = {
-  material: string;
+  material: string | string[];
   sizes: Record<string, { diametreMm: number; approxNz: string }>;
 };
 
@@ -8,7 +8,8 @@ export function readProductRingSizeChart(raw?: string | null): ProductRingSizeCh
   if (!raw) return null;
   try {
     const chart = JSON.parse(raw) as Partial<ProductRingSizeChart> | null;
-    if (!chart || typeof chart.material !== 'string' || !chart.material.trim()
+    const materials = chart && (Array.isArray(chart.material) ? chart.material : [chart.material]);
+    if (!chart || !materials?.length || !materials.every((material) => typeof material === 'string' && material.trim())
       || !chart.sizes || typeof chart.sizes !== 'object' || Array.isArray(chart.sizes)) return null;
     const entries = Object.entries(chart.sizes);
     if (!entries.length || !entries.every(([size, row]) => /^\d+(?:\.\d{1,2})?$/.test(size)

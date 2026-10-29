@@ -32,7 +32,7 @@ export const GET_PRODUCTS = /* GraphQL */ `
 `;
 
 export const GET_PRODUCT_BY_HANDLE = /* GraphQL */ `
-  query GetProductByHandle($handle: String!) {
+  query GetProductByHandle($handle: String!, $variantLimit: Int = 50) {
     productByHandle(handle: $handle) {
       id
       handle
@@ -64,7 +64,7 @@ export const GET_PRODUCT_BY_HANDLE = /* GraphQL */ `
         minVariantPrice { amount currencyCode }
         maxVariantPrice { amount currencyCode }
       }
-      variants(first: 50) {
+      variants(first: $variantLimit) {
         edges {
           node {
             id

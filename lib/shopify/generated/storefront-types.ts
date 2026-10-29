@@ -447,6 +447,7 @@ export type GetProductsQuery = { products: { edges: Array<{ node: { id: string, 
 
 export type GetProductByHandleQueryVariables = Exact<{
   handle: string;
+  variantLimit?: number | null | undefined;
 }>;
 
 

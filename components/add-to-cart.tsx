@@ -6,7 +6,7 @@ import RingSizeGuide from '@/components/ring-size-guide';
 import PdpTrustStrip from '@/components/pdp-trust-strip';
 import PdpRingSizeSelect from '@/components/pdp-ring-size-select';
 import ProductRingSizeSelect from '@/components/product-ring-size-select';
-import { readProductRingSizeChart } from '@/lib/product-ring-size-chart';
+import { isProductRingSizeAllowed, readProductRingSizeChart } from '@/lib/product-ring-size-chart';
 import { isRingSizeOption } from '@/lib/ring-size-chart';
 import { trackAddToCart, trackViewItem } from '@/lib/ga-events';
 import { useAnalyticsPermission } from '@/lib/tracking-privacy';
@@ -185,12 +185,16 @@ function VariantSelector({
       && (Array.isArray(sizeChart.material) ? sizeChart.material : [sizeChart.material]).includes(selected[option.name])
   ) ? sizeChart : null;
   const RingSizeSelect = chartForMaterial ? ProductRingSizeSelect : PdpRingSizeSelect;
+  const selectedMaterial = options.find((option) => isMaterialOption(option.name, option.values));
+  const chartAllowsSize = (value: string) => !chartForMaterial || isProductRingSizeAllowed(
+    chartForMaterial, value, selectedMaterial ? selected[selectedMaterial.name] : ''
+  );
   const [showStickyCart, setShowStickyCart] = useState(false);
   const mainAddButtonRef = useRef<HTMLButtonElement>(null);
 
   const needsRingSize = options.some(
     (o) => isRingSizeOption(o.name, o.values) && (!selected[o.name]
-      || (chartForMaterial && !Object.hasOwn(chartForMaterial.sizes, selected[o.name])))
+      || !chartAllowsSize(selected[o.name]))
   );
 
   const variant = findVariant(variants, selected);
@@ -325,10 +329,9 @@ function VariantSelector({
             const ringSize = isRingSizeOption(opt.name, opt.values);
             const materialOption = isMaterialOption(opt.name, opt.values);
             const valuesForUi = ringSize
-              ? sortRingSizeValues(sizeChart ? opt.values.filter((value) =>
-                (!chartForMaterial || Object.hasOwn(chartForMaterial.sizes, value))
-                && findMatchingVariants(variants, { ...selected, [opt.name]: value }).length > 0
-              ) : opt.values)
+              ? sortRingSizeValues(chartForMaterial ? Object.keys(chartForMaterial.sizes) : sizeChart
+                ? opt.values.filter((value) => findMatchingVariants(variants, { ...selected, [opt.name]: value }).length > 0)
+                : opt.values)
               : opt.values;
 
             if (ringSize) {
@@ -347,15 +350,17 @@ function VariantSelector({
                     id={fieldId}
                     labelId={labelId}
                     values={valuesForUi}
-                    selectedValue={chartForMaterial && !Object.hasOwn(chartForMaterial.sizes, selected[opt.name]) ? '' : selected[opt.name]}
+                    selectedValue={chartAllowsSize(selected[opt.name]) ? selected[opt.name] : ''}
                     diametreForValue={chartForMaterial ? (value) => chartForMaterial.sizes[value]?.diametreMm : undefined}
                     approxNzForValue={chartForMaterial ? (value) => chartForMaterial.sizes[value]?.approxNz : undefined}
+                    estimatedDiametreForValue={chartForMaterial ? (value) => chartForMaterial.sizes[value]?.estimatedDiametre ?? false : undefined}
                     showRequired={btnState === 'select-size'}
                     onChange={(val) => {
                       setSelected((s) => ({ ...s, [opt.name]: val }));
                       if (btnState === 'select-size') setBtnState('idle');
                     }}
                     availabilityForValue={(val) => {
+                      if (!chartAllowsSize(val)) return false;
                       const testVariant = findVariant(variants, {
                         ...selected,
                         [opt.name]: val,

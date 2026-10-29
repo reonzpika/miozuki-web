@@ -39,6 +39,7 @@ type Props = {
   /** Design-specific diameter from an explicitly supplied sizing chart. */
   diametreForValue?: (value: string) => number | undefined;
   approxNzForValue?: (value: string) => string | undefined;
+  estimatedDiametreForValue?: (value: string) => boolean;
   /** Highlights the field after add-to-cart without a selection. */
   showRequired?: boolean;
 };
@@ -52,6 +53,7 @@ export default function ProductRingSizeSelect({
   availabilityForValue,
   diametreForValue,
   approxNzForValue,
+  estimatedDiametreForValue,
   showRequired = false,
 }: Props) {
   const listboxId = useId();
@@ -79,6 +81,11 @@ export default function ProductRingSizeSelect({
   const phrase = selectedValue ? selectedLabel.detail : null;
   const useColumns = Boolean(diametreForValue && approxNzForValue);
   const columnLayout = 'grid grid-cols-[3.25rem_minmax(0,1fr)_4.5rem] items-center gap-2';
+  const diameterLabel = (value: string) => {
+    const mm = diametreForValue?.(value);
+    if (mm === undefined) return '';
+    return estimatedDiametreForValue?.(value) ? `~${mm.toFixed(2).replace(/0$/, '')}` : mm.toFixed(1);
+  };
 
   const triggerClasses =
     'flex w-full min-h-[3.125rem] cursor-pointer items-center border bg-cream px-3.5 py-2.5 pr-11 text-left text-xs leading-normal text-charcoal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-cream';
@@ -106,7 +113,7 @@ export default function ProductRingSizeSelect({
           {selectedValue && useColumns ? (
             <>
               <span className="text-sm font-medium tabular-nums">{selectedLabel.primary}</span>
-              <span className="text-center text-xs tabular-nums text-charcoal/65">{diametreForValue?.(selectedValue)?.toFixed(1)} mm</span>
+              <span className="text-center text-xs tabular-nums text-charcoal/65">{diameterLabel(selectedValue)} mm</span>
               <span className="text-right text-xs text-charcoal/65">NZ {approxNzForValue?.(selectedValue)}</span>
             </>
           ) : selectedValue ? (
@@ -166,7 +173,7 @@ export default function ProductRingSizeSelect({
             const detailLabel = !available
               ? `${rowPhrase ? `${rowPhrase} · ` : ''}Unavailable`
               : (rowPhrase ?? '');
-            const rowLabel = `${rowSizing.primary}${detailLabel ? ` · ${detailLabel}` : ''}`;
+            const rowLabel = `${rowSizing.primary}${detailLabel ? ` · ${detailLabel}` : ''}${estimatedDiametreForValue?.(val) ? ' · estimated diametre' : ''}`;
 
             return (
               <button
@@ -192,7 +199,7 @@ export default function ProductRingSizeSelect({
                 </span>
                 {useColumns ? (
                   <>
-                    <span className="text-center text-xs tabular-nums text-charcoal/65">{diametreForValue?.(val)?.toFixed(1)} mm</span>
+                    <span className="text-center text-xs tabular-nums text-charcoal/65">{diameterLabel(val)} mm</span>
                     <span className="text-right text-xs text-charcoal/65">{approxNzForValue?.(val)}</span>
                   </>
                 ) : <span className="min-w-0 flex-1 text-right text-xs leading-snug text-charcoal/65">
@@ -210,6 +217,7 @@ export default function ProductRingSizeSelect({
           ? 'Inside diametres follow this design’s HK sizing chart. '
           : 'Sizes use US sizing, with inside diametres in mm for reference. Quarter-size diametres are approximate. '}
         {approxNzForValue && 'NZ equivalents are approximate. '}
+        {values.some((value) => estimatedDiametreForValue?.(value)) && 'Diametres marked ~ are estimates between the supplier’s chart sizes. '}
         If your ring sizer shows a size that isn’t listed, please contact us before ordering.
       </p>
     </>

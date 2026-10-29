@@ -97,7 +97,6 @@ export default function ProductRingSizeSelect({
       : 'border-charcoal/20 focus:border-charcoal/50';
 
   return (
-    <>
     <div ref={containerRef} className="relative max-w-md">
       <button
         type="button"
@@ -212,14 +211,5 @@ export default function ProductRingSizeSelect({
         </div>
       ) : null}
     </div>
-      <p className="mt-4 text-xs font-light leading-6 text-charcoal/70">
-        {diametreForValue
-          ? 'Inside diametres follow this design’s HK sizing chart. '
-          : 'Sizes use US sizing, with inside diametres in mm for reference. Quarter-size diametres are approximate. '}
-        {approxNzForValue && 'NZ equivalents are approximate. '}
-        {values.some((value) => estimatedDiametreForValue?.(value)) && 'Diametres marked ~ are estimates between the supplier’s chart sizes. '}
-        If your ring sizer shows a size that isn’t listed, please contact us before ordering.
-      </p>
-    </>
   );
 }

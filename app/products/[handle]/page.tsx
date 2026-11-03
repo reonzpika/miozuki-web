@@ -158,7 +158,6 @@ export default async function ProductPage({
   const shareUrl = `/products/${encodeURIComponent(handle)}`;
 
   const reviewData = await getProductReviews(product.id).catch(() => null);
-  const minPrice = product.priceRange.minVariantPrice;
   const productUrl = `https://www.miozuki.co.nz/products/${handle}`;
   const handleAndProductName = [handle, product.title, ...product.tags].join(' ').toLowerCase();
   const isDoubleLayeredPearlStrandNecklace =
@@ -172,9 +171,7 @@ export default async function ProductPage({
     !isEarringProduct(product.productType, product.tags) &&
     (!isNecklaceProduct(product.title, product.productType, product.tags) ||
       isDoubleLayeredPearlStrandNecklace);
-  const productSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+  const commonProductSchema = {
     name: product.title,
     description: descPlain || undefined,
     image: product.featuredImage?.url
@@ -190,16 +187,74 @@ export default async function ProductPage({
           },
         }
       : {}),
-    offers: {
-      '@type': 'Offer',
-      priceCurrency: minPrice.currencyCode,
-      price: minPrice.amount,
-      availability: variants.some((v) => v.availableForSale)
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
-      url: productUrl,
-    },
   };
+  // Describe the actual selectable offers, not one unqualified minimum price.
+  // Keep Shopify's option labels and values as the source of material/size facts.
+  const variantProducts = variants.map((variant) => {
+    const variantId = variant.id.split('/').pop()!;
+    const variantUrl = `${productUrl}?variant=${encodeURIComponent(variantId)}`;
+    const properties = variant.selectedOptions
+      .filter((option) => option.value !== 'Default Title')
+      .map((option) => ({
+        '@type': 'PropertyValue',
+        name: option.name,
+        value: option.value,
+      }));
+    const material = variant.selectedOptions.find((option) => /material/i.test(option.name))?.value;
+    const size = variant.selectedOptions.find((option) => /size/i.test(option.name))?.value;
+    const color = variant.selectedOptions.find((option) => /colou?r/i.test(option.name))?.value;
+    return {
+      '@type': 'Product',
+      '@id': `${variantUrl}#product`,
+      name: variant.title === 'Default Title' ? product.title : `${product.title} - ${variant.title}`,
+      description: descPlain || undefined,
+      image: commonProductSchema.image,
+      brand: commonProductSchema.brand,
+      ...(material ? { material } : {}),
+      ...(size ? { size } : {}),
+      ...(color ? { color } : {}),
+      ...(properties.length ? { additionalProperty: properties } : {}),
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: variant.price.currencyCode,
+        price: variant.price.amount,
+        availability: variant.availableForSale
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+        url: variantUrl,
+      },
+    };
+  });
+  const variesBy = [
+    ['material', /material/i],
+    ['size', /size/i],
+    ['color', /colou?r/i],
+  ] as const;
+  const varyingProperties = variesBy
+    .filter(([, pattern]) => new Set(variants.flatMap((variant) =>
+      variant.selectedOptions.filter((option) => pattern.test(option.name)).map((option) => option.value)
+    )).size > 1)
+    .map(([property]) => `https://schema.org/${property}`);
+  const productSchema = variants.length > 1 && varyingProperties.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'ProductGroup',
+        '@id': `${productUrl}#product-group`,
+        ...commonProductSchema,
+        url: productUrl,
+        productGroupID: product.id,
+        variesBy: varyingProperties,
+        hasVariant: variantProducts,
+      }
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        '@id': `${productUrl}#product`,
+        ...commonProductSchema,
+        url: productUrl,
+        // Also preserve exact offers for products with non-material/size options.
+        offers: variantProducts.map((variant) => variant.offers),
+      };
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

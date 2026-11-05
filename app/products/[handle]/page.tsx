@@ -16,6 +16,7 @@ import { PdpCustomerPhotosStrip } from '@/components/pdp/customer-photos-strip';
 import { PdpQuickLinksRow } from '@/components/pdp/quick-links-row';
 import { PdpCustomEnquiry } from '@/components/pdp/custom-enquiry';
 import { isEarringProduct } from '@/lib/product-helpers';
+import { isProductRingSizeAllowed, readProductRingSizeChart } from '@/lib/product-ring-size-chart';
 import { getProductReviews } from '@/lib/judgeme/client';
 import { metaDescription } from '@/lib/meta-description';
 import JsonLd from '@/components/json-ld';
@@ -148,6 +149,9 @@ export default async function ProductPage({
 
   const getMetafield = (key: string) =>
     product.metafields?.find((m) => m?.key === key)?.value ?? null;
+  const sizeChartJson = ['classic-moissanite-solitaire-ring', 'seven-stones-moissanite-half-eternity-ring'].includes(handle)
+    ? getMetafield('ring_size_chart')
+    : null;
 
   const descHtml = product.descriptionHtml ?? null;
   const descPlain = product.description ?? null;
@@ -188,9 +192,18 @@ export default async function ProductPage({
         }
       : {}),
   };
-  // Describe the actual selectable offers, not one unqualified minimum price.
-  // Keep Shopify's option labels and values as the source of material/size facts.
-  const variantProducts = variants.map((variant) => {
+  // Apply the existing Classic silver sizing rule to its published offers.
+  const silver = 'Sterling silver';
+  const classicChart = handle === 'classic-moissanite-solitaire-ring' ? readProductRingSizeChart(sizeChartJson) : null;
+  const classicSilverChart = classicChart && [classicChart.material].flat().includes(silver) ? classicChart : null;
+  const offerVariants = classicSilverChart ? variants.filter(({ selectedOptions }) => {
+    const material = selectedOptions.find(({ name }) => /material/i.test(name))?.value;
+    if (material !== silver) return true;
+    const size = selectedOptions.find(({ name }) => /^(?:ring )?size$/i.test(name.trim()))?.value;
+    return !size || isProductRingSizeAllowed(classicSilverChart, size, silver);
+  }) : variants;
+
+  const variantProducts = offerVariants.map((variant) => {
     const variantId = variant.id.split('/').pop()!;
     const variantUrl = `${productUrl}?variant=${encodeURIComponent(variantId)}`;
     const properties = variant.selectedOptions
@@ -231,11 +244,11 @@ export default async function ProductPage({
     ['color', /colou?r/i],
   ] as const;
   const varyingProperties = variesBy
-    .filter(([, pattern]) => new Set(variants.flatMap((variant) =>
+    .filter(([, pattern]) => new Set(offerVariants.flatMap((variant) =>
       variant.selectedOptions.filter((option) => pattern.test(option.name)).map((option) => option.value)
     )).size > 1)
     .map(([property]) => `https://schema.org/${property}`);
-  const productSchema = variants.length > 1 && varyingProperties.length > 0
+  const productSchema = offerVariants.length > 1 && varyingProperties.length > 0
     ? {
         '@context': 'https://schema.org',
         '@type': 'ProductGroup',
@@ -331,7 +344,7 @@ export default async function ProductPage({
               variants={variants}
               priceRange={product.priceRange}
               productTitle={product.title}
-              sizeChartJson={['classic-moissanite-solitaire-ring', 'seven-stones-moissanite-half-eternity-ring'].includes(handle) ? getMetafield('ring_size_chart') : null}
+              sizeChartJson={sizeChartJson}
             />
           </div>
 

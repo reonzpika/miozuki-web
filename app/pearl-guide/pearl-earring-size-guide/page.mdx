@@ -1,0 +1,161 @@
+import { HubCta } from '@/components/hub/hub-cta';
+import { HubFaq } from '@/components/hub/hub-faq';
+import { GuideSchema } from '@/components/hub/guide-schema';
+import Image from 'next/image';
+
+export const metadata = {
+  title: 'Pearl Earring Size Guide: 4–12 mm Studs | Miozuki',
+  description: 'Compare 4–12 mm pearl studs with a proportional size chart and on-ear illustrations. See how two Miozuki pearl earrings look when worn.',
+  alternates: { canonical: '/pearl-guide/pearl-earring-size-guide' },
+};
+
+# Pearl Earring Size Guide: What the Measurements Look Like On
+
+<GuideSchema title="Pearl Earring Size Guide: What the Measurements Look Like On" path="/pearl-guide/pearl-earring-size-guide" updated="2026-11-06" />
+
+I recommend **4 or 6 mm pearl studs** for a subtle look, **8 mm** for a fuller look, or **10 to 12 mm** for a bolder look. How much of your earlobe the pearl covers depends on the size of your lobe and where your piercing sits.
+
+## How round pearl studs look from 4 to 12 mm
+
+A **4 mm** pearl gives you a tiny point of light. At **6 mm**, you can see more of its round shape. An **8 mm** pearl has a fuller look, while **10–12 mm** studs give the pearl a more noticeable presence on the lobe. All five measurements below are the diameter of a round pearl, measured straight across.
+
+<figure className="my-8">
+<div className="relative">
+<Image src="/images/guides/pearl-stud-sizes-on-ear.webp" alt="AI illustration of five round pearl studs on the ear, labelled 4, 6, 8, 10 and 12 mm from smallest to largest." width={1536} height={1024} unoptimized loading="eager" className="h-auto w-full rounded-md" />
+{[
+  { size: 4, left: '17%', top: '48%' },
+  { size: 6, left: '50%', top: '48%' },
+  { size: 8, left: '83%', top: '48%' },
+  { size: 10, left: '32%', top: '97%' },
+  { size: 12, left: '68%', top: '97%' },
+].map(({ size, left, top }) => (
+  <span key={size} aria-hidden="true" style={{ left, top }} className="absolute -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-sm bg-cream px-2 py-0.5 text-xs font-semibold text-charcoal sm:text-sm">{size} mm</span>
+))}
+</div>
+<figcaption className="mt-3 text-sm text-muted">AI illustration of how round pearl studs can sit on the ear. The labels show the intended sizes. Use the outlines below to compare the diameters in proportion.</figcaption>
+</figure>
+
+<figure className="my-8 rounded-md border border-border bg-cream p-3 sm:p-6">
+<div className="grid grid-cols-5 gap-1 sm:gap-3">
+{[4, 6, 8, 10, 12].map((size) => (
+  <div key={size} className="min-w-0 text-center">
+    <svg viewBox="0 0 32 44" aria-hidden="true" className="mx-auto w-full max-w-[96px] text-burgundy">
+      <path d="M10 14 C8 7 12 3 19 3 C26 3 29 9 28 15 C27 22 23 24 23 30 C23 36 20 40 16 40 C11 40 8 36 9 31 C10 27 13 24 13 21 C13 18 11 17 10 14 Z" fill="var(--color-surface)" stroke="currentColor" strokeWidth="0.75" />
+      <path d="M13 13 C12 8 16 6 20 7 C25 8 26 13 24 17 C22 21 19 22 18 26 M15 17 C18 14 22 16 21 20" fill="none" stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" />
+      <circle cx="15.5" cy="34" r={size / 2} fill="var(--color-surface)" stroke="currentColor" strokeWidth="0.75" />
+    </svg>
+    <p className="mt-1 whitespace-nowrap text-xs font-medium sm:text-sm">{size} mm</p>
+  </div>
+))}
+</div>
+<figcaption className="mt-3 text-sm text-muted">The same illustrated ear and piercing position are used in every view. The pearl diameters are drawn in proportion to one another. Lobe size and piercing position affect how much each size covers on your ear.</figcaption>
+</figure>
+
+| Round pearl size | What you might notice when worn |
+|---|---|
+| **4 mm** | A tiny accent with plenty of lobe visible around it. Consider this if you like the look of a small stud or want a little pearl in a second piercing. |
+| **6 mm** | A small, distinct pearl with an easy-to-see round shape. It can suit you if you like a modest stud that still looks clearly like a pearl. |
+| **8 mm** | A fuller circle that stands out more than a 6 mm stud. How much of your lobe it covers depends on your piercing position and lobe size. |
+| **10 mm** | A bolder stud that covers more of the lobe. If the post sits behind the centre, a 10 mm pearl reaches about 5 mm below the piercing. Compare that with the distance to the bottom edge of your lobe. |
+| **12 mm** | A prominent round stud. It may extend below the edge of your lobe if the lobe is small or the piercing sits low. Look at a photo of the earrings being worn and ask about the backing if you are unsure how they will sit. |
+
+If you are deciding between **6 and 8 mm**, the extra 2 mm adds about 1 mm on either side of the centre. Try drawing both circles and holding them by your ear to see which one looks more like you. For a baroque stud, check its height and width separately because the outline can stretch further in one direction.
+
+## See how two Miozuki studs sit on the ear
+
+These two pairs from the [Miozuki pearl earrings collection](/collections/pearl-earrings) show what that means in practice. One pairs a small round pearl with moissanite. The other puts a wider, longer baroque pearl in view.
+
+<figure className="my-8">
+<div className="grid grid-cols-2 gap-4 sm:gap-6">
+<div>
+<div className="relative aspect-[4/5] overflow-hidden rounded-md bg-cream">
+<Image src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/moissanite-pearl-duo-studs-7584446.jpg?v=1773183967" alt="Miozuki Duo Stud shown at the lobe, with a round pearl below the moissanite" fill sizes="(max-width: 640px) 45vw, 340px" className="object-cover" />
+</div>
+<p className="mt-2 text-sm font-medium">Moissanite &amp; Pearl Duo Studs</p>
+</div>
+<div>
+<div className="relative aspect-[4/5] overflow-hidden rounded-md bg-cream">
+<Image src="https://cdn.shopify.com/s/files/1/0797/0819/3023/files/fresh-water-baroque-pearl-studs-9188211.jpg?v=1773183972" alt="Miozuki Baroque Pearl Stud shown at the lobe, with a wider, irregular pearl" fill sizes="(max-width: 640px) 45vw, 340px" className="object-cover" />
+</div>
+<p className="mt-2 text-sm font-medium">Fresh Water Baroque Pearl Studs</p>
+</div>
+</div>
+<figcaption className="mt-3 text-sm text-muted">These Miozuki gallery images show where each stud sits on the ear. The photos are framed differently. Use the outlines below to compare pearl sizes.</figcaption>
+</figure>
+
+## Which measurement are you looking at?
+
+| Measurement | What it tells you |
+|---|---|
+| Round pearl diameter | How wide the pearl is across its face. A 6 mm round pearl measures about 6 mm across. |
+| Baroque pearl height and width | How tall the pearl is and how wide it is at its broadest point in the listed orientation. |
+| Overall earring height | How much space the visible design takes up from top to bottom. Ask what the seller includes in that measurement. |
+| How far a drop hangs | Where its lowest point sits in relation to the piercing. Ask for the distance from the piercing to the bottom if that is the number you need. |
+
+[GIA’s guide to measuring pearls](https://4cs.gia.edu/en-us/blog/pearl-quality-101-gia-examines-classifies-pearls/) explains why round pearls are described by diameter and other shapes are measured in more than one direction. The extra number helps when you are looking at a baroque pair. A tall, narrow pearl and a tall, wide pearl can look quite different even when they are the same height.
+
+<figure className="my-8 rounded-md border border-border bg-cream p-4 sm:p-6">
+<div className="grid grid-cols-2 gap-4 sm:gap-6">
+<div>
+<svg viewBox="0 0 24 24" role="img" aria-label="Circle representing a 6 millimetre round pearl" className="mx-auto w-full max-w-[160px] text-burgundy">
+<circle cx="12" cy="12" r="3" fill="var(--color-surface)" stroke="currentColor" strokeWidth="0.28" />
+</svg>
+<p className="text-center text-sm font-medium">6 mm round pearl</p>
+</div>
+<div>
+<svg viewBox="0 0 24 24" role="img" aria-label="Irregular outline spanning 18.5 millimetres high and 13.5 millimetres wide" className="mx-auto w-full max-w-[160px] text-burgundy">
+<path d="M11 2.75 C14 2.75 16.1 4.4 16.8 7.3 C17.7 8.4 18.75 9.4 18.75 12 C18.75 14.2 17.2 14.7 16.9 17 C16.4 19.8 14 21.25 11.7 21.25 C9.8 21.25 8.2 19.8 7.4 17.6 C6.5 16.3 5.25 14.8 5.25 12 C5.25 10.4 6.8 8.5 7 6.7 C7.4 4.3 9.1 2.75 11 2.75 Z" fill="var(--color-surface)" stroke="currentColor" strokeWidth="0.28" />
+</svg>
+<p className="text-center text-sm font-medium">18.5 × 13.5 mm baroque example</p>
+</div>
+</div>
+<figcaption className="mt-3 text-sm text-muted">Pearl outlines drawn at the same scale relative to each other. The baroque example uses 18.5 mm high by 13.5 mm wide, the midpoints of the listed ranges. Actual pearls vary, and the drawings resize to fit your screen.</figcaption>
+</figure>
+
+## What a 6 mm pearl looks like in the Duo Studs
+
+The [Moissanite & Pearl Duo Studs](/products/moissanite-pearl-duo-studs) pair a **6 mm round freshwater pearl** with a **5 mm moissanite**. Look closely at the ear image and you can pick out two separate shapes, with the moissanite sitting above the pearl. The moissanite adds visible height above the pearl.
+
+If you already own a plain 6 mm pearl stud, use it as a reference for the pearl itself. For a comparison of the entire Duo earring, look at both stones and their setting together. Ask for the finished height if that measurement matters to you.
+
+## How an 18–19 mm baroque pearl looks on the ear
+
+The pearls in the [Fresh Water Baroque Pearl Studs](/products/fresh-water-baroque-pearl-studs) are listed at about **18–19 mm high and 13–14 mm wide**. In the gallery image, the pearl takes up a broader area around the lobe, and its uneven edges are part of what you notice. The taller number tells you how far the pearl spans from top to bottom. The width helps you picture how much of the lobe it may cover.
+
+Each pearl can vary a little in shape and size. If you are drawn to a particular curve or outline in the photograph, ask whether you can see the pair you are considering. Where it sits on you will also depend on where your piercing is in relation to the edge of your lobe.
+
+## How to picture the size on your own ear
+
+1. **Start with a pair you already wear.** Lay one earring next to a millimetre ruler and measure across the part you see when you wear it. That gives you a familiar size to compare against.
+2. **Sketch the shape on paper.** Try a 6 mm circle for a round pearl, or sketch a baroque shape inside a rectangle about 19 mm tall and 14 mm wide. Hold the paper beside your ear in a mirror. It gives you a rough idea of the space the pearl takes up.
+3. **Look for the piercing in the photo.** A stud with the post near the top of its design may extend further below the piercing than one with the post nearer the middle. A side view can also show how far the earring sits away from the ear.
+4. **Ask for the missing number.** For a drop, ask how far it hangs below the piercing. If weight matters to you, ask for the weight of one earring and compare it with a pair you already enjoy wearing.
+
+If two sizes look similar on a screen, try the paper comparison with both. Look in a mirror from the distance you would normally stand, then see which outline you prefer. The paper gives you a sense of coverage. The photos show the shape and setting, and a try-on is where you can judge the feel for yourself.
+
+## Choose how much pearl you want to see
+
+For a small touch of pearl, begin with a smaller diameter and check whether other stones or metal add height. If you want the pearl to be the first thing you notice, look at its width as well as its height. A wider baroque stud can give you that look while sitting at the lobe. If you want movement below the ear, check where a drop ends and how it moves when worn.
+
+Once you know what you want to see in the mirror, the [pearl earrings buying guide](/pearl-guide/pearl-earrings-nz) can help you decide between styles. You can also [ask Miozuki about a measurement](/pages/contact) if the listing gives only the pearl size.
+
+<HubFaq items={[
+  {
+    q: 'Is a 6 mm pearl the same size as a 6 mm earring?',
+    a: 'A 6 mm round pearl measures 6 mm across. The finished earring can take up more space when a setting, another stone or a hook adds to it.'
+  },
+  {
+    q: 'How do I read baroque pearl measurements?',
+    a: 'Compare both height and width. Height shows how far the pearl spans from top to bottom, while width helps you picture how much space it may take up across the lobe.'
+  },
+  {
+    q: 'Why do pearl earrings look bigger in some photos?',
+    a: 'Camera distance and cropping can change how large the same earring appears. Use the stated measurements to compare size and look at worn images for where the piece sits in relation to the piercing.'
+  },
+  {
+    q: 'How can I tell how far pearl drop earrings will hang?',
+    a: 'Ask for the distance from the piercing to the lowest point of the earring when worn. A measurement for the pearl alone leaves out the hook or setting above it.'
+  }
+]} />
+
+<HubCta href="/collections/pearl-earrings" label="Browse pearl earrings" heading="Find the size that feels like you" body="Explore the Duo and Baroque studs and compare the gallery views with the listed measurements." />

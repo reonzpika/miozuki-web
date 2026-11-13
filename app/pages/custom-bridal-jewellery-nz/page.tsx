@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: 'Custom Bridal Jewellery NZ (Bespoke Orders) | Miozuki',
   description:
     'Design bespoke bridal jewellery in NZ with Miozuki: custom moissanite and freshwater pearl engagement rings, bridal sets, earrings, and pendants, handcrafted to your story.',
+  alternates: { canonical: '/pages/custom-bridal-jewellery-nz' },
 };
 
 const linkClass =

@@ -36,7 +36,13 @@ const FLAGSHIP_BADGE_BY_HANDLE: Record<string, string> = {
   'emerald-cut-moissanite-hoop': 'Bridal',
 };
 
+function isNewArrivalTag(tag: string): boolean {
+  return tag.trim().toLowerCase() === 'new arrival';
+}
+
 function pickCollectionBadge(tags: string[]): string | null {
+  if (tags.some(isNewArrivalTag)) return 'New Arrival';
+
   const lower = tags.map((t) => t.toLowerCase());
   for (const key of BADGE_KEYWORDS) {
     const i = lower.findIndex((t) => t.includes(key));
@@ -56,7 +62,7 @@ function pickFlagshipBadge(handle: string, tags: string[]): string | null {
 
 function productMetaLine(product: ProductSummary): string | null {
   if (product.productType?.trim()) return product.productType.trim();
-  const bits = product.tags.filter(Boolean).slice(0, 2);
+  const bits = product.tags.filter((tag) => tag && !isNewArrivalTag(tag)).slice(0, 2);
   return bits.length ? bits.join(' · ') : null;
 }
 

@@ -32,6 +32,11 @@ export default function AnnouncementBar() {
           <MessageList />
         </div>
       </div>
+      <div className="border-y border-gold/45 bg-charcoal px-4 py-3 text-center font-sans text-cream">
+        <p className="mx-auto max-w-5xl text-[17px] font-semibold leading-relaxed tracking-[0.03em]">
+          Black Friday Sale  | Up to 25% OFF Sitewide
+        </p>
+      </div>
     </div>
   );
 }

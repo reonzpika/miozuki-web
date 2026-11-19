@@ -25,9 +25,9 @@ export default function SalePriceDisplay({
   const sellingAmount = priceLabel.replace(/[^0-9.]/g, '');
   const selling = parseFloat(sellingAmount);
   const was = compareAt ? parseFloat(compareAt.amount) : NaN;
+  const pricePrefix = priceLabel.startsWith('From ') ? 'From ' : '';
   const onSale =
     Boolean(compareAt) &&
-    !priceLabel.startsWith('From ') &&
     Number.isFinite(was) &&
     Number.isFinite(selling) &&
     was > selling;
@@ -63,6 +63,7 @@ export default function SalePriceDisplay({
       }
     >
       <span className={compareClass}>
+        {pricePrefix}
         {formatPrice(compareAt.amount, compareAt.currencyCode)}
       </span>
       <span className={size === 'sm' ? 'truncate' : undefined}>{priceLabel}</span>

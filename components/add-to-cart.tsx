@@ -215,17 +215,13 @@ function VariantSelector({
 
   // Crossed-out "was" price only when Shopify compare-at is higher than the selling price.
   const compareAtForDisplay = (() => {
-    if (variant?.compareAtPrice) {
-      const selling = parseFloat(variant.price.amount);
-      const was = parseFloat(variant.compareAtPrice.amount);
-      return was > selling ? variant.compareAtPrice : null;
-    }
-    if (!hasPriceRange && variants[0]?.compareAtPrice) {
-      const selling = parseFloat(minP.amount);
-      const was = parseFloat(variants[0].compareAtPrice.amount);
-      return was > selling ? variants[0].compareAtPrice : null;
-    }
-    return null;
+    const displayedVariant = variant ?? matchingVariants.find(
+      (candidate) => parseFloat(candidate.price.amount) === parseFloat(displayMinPrice.amount)
+    );
+    if (!displayedVariant?.compareAtPrice) return null;
+    const selling = parseFloat(displayedVariant.price.amount);
+    const was = parseFloat(displayedVariant.compareAtPrice.amount);
+    return was > selling ? displayedVariant.compareAtPrice : null;
   })();
 
   useEffect(() => {

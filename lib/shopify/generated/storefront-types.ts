@@ -391,8 +391,8 @@ export type CartCreateMutationVariables = Exact<{
 
 
 export type CartCreateMutation = { cartCreate: { cart: { id: string, checkoutUrl: string, totalQuantity: number, attributes: Array<{ key: string, value: string | null }>, lines: { edges: Array<{ node:
-            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
-            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
            }> }, cost: { totalAmount: { amount: string, currencyCode: CurrencyCode }, subtotalAmount: { amount: string, currencyCode: CurrencyCode } } } | null, userErrors: Array<{ field: Array<string> | null, message: string }> } | null };
 
 export type CartLinesAddMutationVariables = Exact<{
@@ -402,8 +402,8 @@ export type CartLinesAddMutationVariables = Exact<{
 
 
 export type CartLinesAddMutation = { cartLinesAdd: { cart: { id: string, checkoutUrl: string, totalQuantity: number, attributes: Array<{ key: string, value: string | null }>, lines: { edges: Array<{ node:
-            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
-            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
            }> }, cost: { totalAmount: { amount: string, currencyCode: CurrencyCode }, subtotalAmount: { amount: string, currencyCode: CurrencyCode } } } | null, userErrors: Array<{ field: Array<string> | null, message: string }> } | null };
 
 export type CartLinesRemoveMutationVariables = Exact<{
@@ -413,8 +413,8 @@ export type CartLinesRemoveMutationVariables = Exact<{
 
 
 export type CartLinesRemoveMutation = { cartLinesRemove: { cart: { id: string, checkoutUrl: string, totalQuantity: number, attributes: Array<{ key: string, value: string | null }>, lines: { edges: Array<{ node:
-            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
-            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
            }> }, cost: { totalAmount: { amount: string, currencyCode: CurrencyCode }, subtotalAmount: { amount: string, currencyCode: CurrencyCode } } } | null, userErrors: Array<{ field: Array<string> | null, message: string }> } | null };
 
 export type CartAttributesUpdateMutationVariables = Exact<{
@@ -424,8 +424,8 @@ export type CartAttributesUpdateMutationVariables = Exact<{
 
 
 export type CartAttributesUpdateMutation = { cartAttributesUpdate: { cart: { id: string, checkoutUrl: string, totalQuantity: number, attributes: Array<{ key: string, value: string | null }>, lines: { edges: Array<{ node:
-            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
-            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+            | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
            }> }, cost: { totalAmount: { amount: string, currencyCode: CurrencyCode }, subtotalAmount: { amount: string, currencyCode: CurrencyCode } } } | null, userErrors: Array<{ field: Array<string> | null, message: string }> } | null };
 
 export type GetCartQueryVariables = Exact<{
@@ -434,8 +434,8 @@ export type GetCartQueryVariables = Exact<{
 
 
 export type GetCartQuery = { cart: { id: string, checkoutUrl: string, totalQuantity: number, attributes: Array<{ key: string, value: string | null }>, lines: { edges: Array<{ node:
-          | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
-          | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+          | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
+          | { id: string, quantity: number, merchandise: { id: string, title: string, price: { amount: string, currencyCode: CurrencyCode }, compareAtPrice: { amount: string, currencyCode: CurrencyCode } | null, product: { id: string, title: string, handle: string, featuredImage: { url: string, altText: string | null, width: number | null, height: number | null } | null } } }
          }> }, cost: { totalAmount: { amount: string, currencyCode: CurrencyCode }, subtotalAmount: { amount: string, currencyCode: CurrencyCode } } } | null };
 
 export type GetProductsQueryVariables = Exact<{

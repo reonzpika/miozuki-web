@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useCart } from './cart-provider';
 import { getCart, removeCartLines } from '@/lib/shopify/cart';
 import type { Cart } from '@/lib/shopify/cart';
+import SalePriceDisplay from '@/components/sale-price-display';
 import { trackBeginCheckout, trackRemoveFromCart, trackViewCart } from '@/lib/ga-events';
 import { useAnalyticsPermission } from '@/lib/tracking-privacy';
 
@@ -150,12 +151,16 @@ export default function CartDrawer({
                     </p>
                   )}
                   <div className="flex items-center justify-between mt-2">
-                    <p className="text-sm text-burgundy font-medium">
-                      {formatPrice(line.merchandise.price.amount, line.merchandise.price.currencyCode)}
+                    <div className="flex min-w-0 flex-wrap items-baseline gap-x-1 text-sm text-burgundy font-medium">
+                      <SalePriceDisplay
+                        priceLabel={formatPrice(line.merchandise.price.amount, line.merchandise.price.currencyCode)}
+                        compareAt={line.merchandise.compareAtPrice}
+                        size="sm"
+                      />
                       {line.quantity > 1 && (
                         <span className="text-charcoal/65 text-xs ml-1">×{line.quantity}</span>
                       )}
-                    </p>
+                    </div>
                     <button
                       type="button"
                       onClick={() => handleRemove(line.id)}

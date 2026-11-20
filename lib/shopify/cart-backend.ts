@@ -12,6 +12,7 @@ export interface CartLine {
     id: string;
     title: string;
     price: { amount: string; currencyCode: string };
+    compareAtPrice?: { amount: string; currencyCode: string } | null;
     product: {
       id: string;
       title: string;
@@ -64,6 +65,7 @@ const CREATE_CART = /* GraphQL */ `
                   id
                   title
                   price { amount currencyCode }
+                  compareAtPrice { amount currencyCode }
                   product {
                     id
                     title
@@ -103,6 +105,7 @@ const ADD_CART_LINES = /* GraphQL */ `
                   id
                   title
                   price { amount currencyCode }
+                  compareAtPrice { amount currencyCode }
                   product {
                     id
                     title
@@ -142,6 +145,7 @@ const REMOVE_CART_LINES = /* GraphQL */ `
                   id
                   title
                   price { amount currencyCode }
+                  compareAtPrice { amount currencyCode }
                   product {
                     id
                     title
@@ -181,6 +185,7 @@ const UPDATE_CART_ATTRIBUTES = /* GraphQL */ `
                   id
                   title
                   price { amount currencyCode }
+                  compareAtPrice { amount currencyCode }
                   product {
                     id
                     title
@@ -219,6 +224,7 @@ const GET_CART = /* GraphQL */ `
                 id
                 title
                 price { amount currencyCode }
+                compareAtPrice { amount currencyCode }
                 product {
                   id
                   title

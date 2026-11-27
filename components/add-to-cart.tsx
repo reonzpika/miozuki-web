@@ -9,6 +9,7 @@ import ProductRingSizeSelect from '@/components/product-ring-size-select';
 import { isProductRingSizeAllowed, readProductRingSizeChart } from '@/lib/product-ring-size-chart';
 import { isRingSizeOption } from '@/lib/ring-size-chart';
 import { trackAddToCart, trackViewItem } from '@/lib/ga-events';
+import { trackMetaAddToCart } from '@/lib/meta-events';
 import { useAnalyticsPermission } from '@/lib/tracking-privacy';
 import { useCart } from './cart-provider';
 import SalePriceDisplay from '@/components/sale-price-display';
@@ -254,7 +255,10 @@ function VariantSelector({
     try {
       const quantity = 1;
       await addToCart(variant.id, quantity);
-      trackAddToCart({ productId, productTitle, variant, quantity });
+      trackMetaAddToCart({ productTitle, variant, quantity });
+      try {
+        trackAddToCart({ productId, productTitle, variant, quantity });
+      } catch { /* A blocked analytics tag must not make a successful cart addition look failed. */ }
       setBtnState('added');
       setTimeout(() => setBtnState('idle'), 2000);
     } catch {
